@@ -116,8 +116,8 @@ public class OrderServiceImpl implements OrderService {
 		orderMapper.updateOrderRemarked(phoneId,orderId);		
 	}
 
-	public List<SuperAdminOrder> superAdminGetOrder(Integer isSelected) {
-		return orderMapper.superAdminGetOrder(isSelected);
+	public List<SuperAdminOrder> superAdminGetOrder(Map<String, Object> requestMap) {
+		return orderMapper.superAdminGetOrder(requestMap);
 	}
 
 	//弃用，因为现在删除只是将其置为无效
@@ -137,24 +137,24 @@ public class OrderServiceImpl implements OrderService {
 
 
 	//配送员获取配送订单
-	public List<DeliverOrder> deliverGetOrder(String phoneId) {
-		return orderMapper.deliverGetOrder(phoneId);
+	public List<DeliverOrder> deliverGetOrder(Map<String, Object> requestMap) {
+		return orderMapper.deliverGetOrder(requestMap);
 	}
 
 	public List<DeliverChildOrder> getDeliverChildOrders(String togetherId) {
 		return orderMapper.getDeliverChildOrders(togetherId);
 	}
 
-	public List<PCOrder> getPCOrders(Short status,Integer limit,Integer offset,String search) {
+	public List<PCOrder> getPCOrders(Integer campusId, Short status,Integer limit,Integer offset,String search) {
 		Calendar calendar=Calendar.getInstance();
 
 		if(status!=1){
 			calendar.add(Calendar.MONTH, -1);
 			calendar.set(Calendar.DAY_OF_MONTH, 1);            //设定默认只显示近两个月的数据
-			return orderMapper.getPCOrders(status,calendar.getTime(),limit,offset,search);
+			return orderMapper.getPCOrders(campusId, status,calendar.getTime(),limit,offset,search);
 		}else{
 			calendar.add(Calendar.DAY_OF_MONTH, -14);        //代发货订单默认显示两周内订单
-			return orderMapper.getPCOrdersWithOutAdmin(status, calendar.getTime(),limit,offset,search);
+			return orderMapper.getPCOrdersWithOutAdmin(campusId, status, calendar.getTime(),limit,offset,search);
 		}
 	}
 

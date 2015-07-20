@@ -58,7 +58,7 @@ public interface OrderMapper {
 
 	void updateOrderRemarked(@Param(value="phone")String phoneId, @Param(value="orderId")Long orderId);
 
-	List<SuperAdminOrder> superAdminGetOrder(@Param(value="isSelected")Integer isSelected);
+	List<SuperAdminOrder> superAdminGetOrder(Map<String, Object> requestMap);
 
 	int getExitOrderUserRank(@Param(value="phone")String phoneId, @Param(value="rank")String rank);
 
@@ -66,13 +66,13 @@ public interface OrderMapper {
 
 	Order selectByPrimaryKey(@Param(value="orderId")Long orderId, @Param(value="phoneId")String phoneId);
 
-	List<DeliverOrder> deliverGetOrder(@Param(value="phone")String phone);
+	List<DeliverOrder> deliverGetOrder(Map<String, Object> requestMap);
 
 	List<DeliverChildOrder> getDeliverChildOrders(@Param(value="togetherId")String togetherId);
 
-	List<PCOrder> getPCOrders(@Param(value="status")Short status,@Param(value="time") Date time,@Param(value="limit")Integer limit, @Param(value="offset")Integer offset, @Param(value="search")String search);
+	List<PCOrder> getPCOrders(@Param(value="campusId")Integer campusId, @Param(value="status")Short status,@Param(value="time") Date time,@Param(value="limit")Integer limit, @Param(value="offset")Integer offset, @Param(value="search")String search);
 
-	List<PCOrder> getPCOrdersWithOutAdmin(@Param(value="status")Short status,@Param(value="time") Date time,@Param(value="limit")Integer limit, @Param(value="offset")Integer offset, @Param(value="search")String search);
+	List<PCOrder> getPCOrdersWithOutAdmin(@Param(value="campusId")Integer campusId, @Param(value="status")Short status,@Param(value="time") Date time,@Param(value="limit")Integer limit, @Param(value="offset")Integer offset, @Param(value="search")String search);
 
 	Long getPCOrdersCount(@Param(value="status")Short status, @Param(value="time")Date time, @Param(value="search")String search);
 

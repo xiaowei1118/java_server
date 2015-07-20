@@ -51,7 +51,7 @@ public interface OrderService {
 
 	void updateOrderRemarked(String phoneId, Long orderId);
 
-	List<SuperAdminOrder> superAdminGetOrder(Integer isSelected);
+	List<SuperAdminOrder> superAdminGetOrder(Map<String, Object> requestMap);
 
 	int getExitOrderUserRank(String phoneId, String rank);
 
@@ -59,11 +59,11 @@ public interface OrderService {
 
 	Order selectOneOrder(String phoneId, String orderId);
 
-	List<DeliverOrder> deliverGetOrder(String phoneId);
+	List<DeliverOrder> deliverGetOrder(Map<String, Object> requestMap);
 
 	List<DeliverChildOrder> getDeliverChildOrders(String togetherId);
 
-	List<PCOrder> getPCOrders(Short status,Integer limit, Integer offset, String search);
+	List<PCOrder> getPCOrders(Integer campusId, Short status,Integer limit, Integer offset, String search);
 
 	Long getPCOrdersCount(Short status,String search);
 
