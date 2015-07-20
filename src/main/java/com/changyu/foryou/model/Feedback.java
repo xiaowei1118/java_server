@@ -11,6 +11,8 @@ public class Feedback {
     private String phoneId;
 
     private String suggestion;
+    
+    private Integer campusId;
 
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date date;
@@ -42,4 +44,12 @@ public class Feedback {
     public void setDate(Date date) {
         this.date = date;
     }
+
+	public Integer getCampusId() {
+		return campusId;
+	}
+
+	public void setCampusId(Integer campusId) {
+		this.campusId = campusId;
+	}
 }

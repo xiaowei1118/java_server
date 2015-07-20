@@ -8,9 +8,9 @@
     <result column="date" property="date" jdbcType="DATE" />
   </resultMap>
   <insert id="insert" parameterType="com.changyu.foryou.model.Feedback" >
-    insert into feedback (phone_id, suggestion, date
+    insert into feedback (phone_id, suggestion, date,campus_id
       )
-    values (#{phoneId,jdbcType=VARCHAR}, #{suggestion,jdbcType=VARCHAR}, #{date,jdbcType=DATE}
+    values (#{phoneId,jdbcType=VARCHAR}, #{suggestion,jdbcType=VARCHAR}, #{date,jdbcType=DATE},#{campusId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.changyu.foryou.model.Feedback" >
