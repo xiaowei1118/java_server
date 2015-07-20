@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta charset='utf-8'>
+<head>
+<title>米奇零点后台管理</title>
+<link rel='stylesheet' type='text/css' href='css/bootstrap.min.css'>
+<link rel='stylesheet' type='text/css' href='css/style.css'>
+<link rel="shortcut icon" href="img/icon.png">
+<script type='text/javascript' src="js/jquery-1.7.2.min.js"></script>
+<script type='text/javascript' src="js/bootstrap.min.js"></script>
+<script type='text/javascript' src="js/main.js"></script>
+<style>
+a:hover {
+	text-decoration: none
+}
+.left{
+	width: 120px;
+	float:left;
+	margin-left:-22px;
+}
+.right{
+   float:right;
+   width:91%;
+   margin:10px auto;
+}
+</style>
+<script type="text/javascript">
+		$(function(){
+			$.get("../foryou/user/getUserType.do", function(text){            
+				if (text=="1") {
+					$("#user-link").hide();
+				};
+
+			});
+		});
+	</script>
+</head>
+<body>
+	<header class='navbar blue blue2 navbar-fixed-top'>
+		<div class='navbar-inner'>
+			<div class='container-fluid'>
+				<a class='brand pull-left'><img class='icon-white icon-leaf'></i>米奇零点</a>
+				<ul class='nav pull-right'>
+					<li><a href="../foryou/user/logout.do" rel='tooltip'
+						title='退出'><i class='icon-white icon-off'></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<section class='container-fluid pad20'>
+		<section class='row-fluid'>
+			<div class="sideBar left">
+				<br />
+				<ul>
+					<li><figure>
+							<i class='icon-home'></i>
+							<a href="pages/main.html" target="content"> 首页 </a>
+						</figure></li>
+					<hr />
+					<li id="user-link"><figure>
+							<a href="pages/user.html" target="content"> <i
+								class='icon-user'></i> 用戶&nbsp;&nbsp;
+
+							</a>
+						</figure>
+						</li>
+					<hr />
+					<li class='dropper'>
+						<figure>
+							<i class='icon-circle-arrow-down'></i>
+							<span>食品分类&nbsp;&gt;</span>
+						</figure>
+						<hr/>
+						<ul class='subSide'>
+							<li><a href="pages/food_first_category.html"
+								target="content"><i class='icon-inbox'></i>一级分类</a></li>
+						    <hr/>
+							<li><a href="pages/food_second_category.html"
+								target="content"><i class='icon-inbox'></i>二级分类</a></li>
+							<hr/>
+						</ul>
+					</li>
+					
+					<li><figure>
+							<a href="pages/food.html" target="content"> <i
+								class='icon-eject'></i> 食品&nbsp;&nbsp;
+
+							</a>
+						</figure></li>
+					<hr/>
+					<li><figure>
+							<a href="pages/food_comment.html" target="content"> <i
+								class='icon-thumbs-up'></i> 食品评价&nbsp;&nbsp;
+
+							</a>
+						</figure></li>
+
+					<hr />
+					<li><figure>
+							<a href="pages/orderTotal.html" target="content"> <i
+								class='icon-fire'></i>订单汇总&nbsp;&nbsp;
+							</a>
+						</figure></li>
+					<hr/>
+					<li class='dropper'>
+						<figure>
+							<i class='icon-circle-arrow-down'></i>
+							<span>订单&nbsp;&gt;</span>
+						</figure>
+						<hr/>
+						<ul class='subSide'>
+							<li><a href="pages/order_success.html" target="content"><i
+									class='icon-fire'></i>已成功</a></li><hr/>
+							<li><a href="pages/order_wait_release.html" target="content"><i
+									class='icon-fire'></i>待发货</a></li><hr/>
+							<li><a href="pages/order_deliver.html" target="content"><i
+									class='icon-fire'></i>配送中</a></li><hr/>
+						</ul>
+					</li>
+					
+					<li><figure>
+							<a href="pages/news.html" target="content"> <i
+								class='icon-th-large'></i> 主页图片&nbsp;&nbsp;
+							</a>
+						</figure></li><hr/>
+					<li><figure>
+							<a href="pages/push.html" target="content"> <i
+								class='icon-arrow-right'></i> 消息推送&nbsp;&nbsp;
+							</a>
+						</figure></li>
+					<hr />
+
+					<li><figure>
+							<a href="pages/feedback.html" target="content"><i
+								class='icon-eye-open'></i> 用户反馈 </a>
+						</figure></li><hr/>
+					<li><figure>
+							<a href="pages/help.html" target="content"><i
+								class='icon-question-sign'></i> 帮助 </a>
+						</figure></li><hr/>
+				</ul>
+
+			</div>
+			<div class='right content'>
+				<iframe name="content" src="pages/main.html"
+					style="height:100%;width:100%" scroling="yes" frameborder="0"
+					border="0" marginwidth="0" marginheight="0"></iframe>
+			</div>
+
+		</section>
+	</section>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-table.min.css">
+    <link rel="shortcut icon" href="img/icon.png">
+    <link rel="stylesheet"
+    href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+</head> 
+<style>
+    .ml10 {
+        margin-left: 10px;
+    }
+</style>
+
+
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>
+				用户管理&nbsp;&nbsp;
+			</h1>
+		</div>
+
+		<table id="table" 
+       data-id-field="phone"
+       data-toggle="table"
+       data-url="../../foryou/user/getAllUser.do"
+       data-pagination="true"
+       data-side-pagination="server"
+       data-search="true"
+       data-height="80%"
+       data-show-refresh="true" 
+       data-show-columns="true"   
+       data-show-toggle="true" 
+       data-toolbar-align="right" 
+       >
+       <thead>
+        <tr>
+           <th data-align="left" data-field="phone">手机号</th>
+           <th data-align="left" data-field="nickname">昵称</th>
+           <th data-align="left" data-field="type" data-sortable="true"
+           data-formatter="formatter">权限</th>
+           <th data-align="left" data-field="createTime"
+           data-sortable="true">注册时间</th>
+           <th data-align="left" data-field="lastLoginDate"
+           data-sortable="true">最后登录时间</th>
+           <th data-align="left" data-field="defaultAddress"
+           data-sortable="true">默认地址</th>
+           <th data-align="left" data-field="token" data-sortable="true"
+           data-formatter="userClass">用户类型</th>
+           <th data-align="left" data-field="action" data-formatter="actionFormatter" data-events="actionEvents">权限修改</th>
+       </tr>
+   </thead>
+</table>
+</div>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+<script
+src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+    <![endif]-->
+
+   <script>
+       function formatter(value, row, index) {
+          if (value == "0")
+             return "超级管理员";
+         else if (value == "1") {
+             return "管理员";
+         } else {
+             return "普通用户";
+         }
+     }
+ function userClass(value, row, index) {
+          if (value!=null&&value != "")
+             return "苹果";
+         else {
+             return "安卓";
+         }
+     }
+
+
+     function actionFormatter(value, row, index) {
+        return [
+        '<a class="admin" href="javascript:void(0)" title="设为管理员">',
+        '<i class="icon-briefcase"></i>',
+        '</a>',
+        '<a class="common ml10" href="javascript:void(0)" title="取消管理员">',
+        '<i class="icon-hdd"></i>',
+        '</a>',
+        '<a class="superAdmin ml10" href="javascript:void(0)" title="设置超级管理员">',
+        '<i class="icon-heart"></i>',
+        '</a>'
+        ].join('');
+    }
+
+    window.actionEvents = {
+        'click .admin': function (e, value, row, index) {
+            $.post("../../foryou/user/setUserAdmin.do",
+               {phone:row.phone},
+               function(text){
+                  if(text!=1){
+                     alert("设置管理员失败。");
+                 }else{
+                     $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+                 }
+
+             }
+             );
+        },
+        'click .common': function (e, value, row, index) {
+            $.post("../../foryou/user/setUserCommon.do",
+               {phone:row.phone},
+               function(text){
+                  if(text!=1){
+                     alert("设置为普通用户失败。");
+                 }else{
+                     $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+                 }
+
+             }
+             );
+        },
+        'click .superAdmin': function (e, value, row, index) {
+            $.post("../../foryou/user/setUserSuperAdmin.do",
+               {phone:row.phone},
+               function(text){
+                  if(text!=1){
+                     alert("设置超级管理员失败。");
+                 }else{
+                     $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+                 }
+
+             }
+             );
+        }
+    };
+
+</script>
+</body>
+
+</html>

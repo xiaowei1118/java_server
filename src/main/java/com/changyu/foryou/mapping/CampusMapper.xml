@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.CampusMapper" >
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.Campus" >
+    <id column="campus_id" property="campusId" jdbcType="INTEGER" />
+    <result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="location_x" property="locationX" jdbcType="DOUBLE" />
+    <result column="location_y" property="locationY" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    campus_id, campus_name, city_id, location_x, location_y
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from campus
+    where campus_id = #{campusId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from campus
+    where campus_id = #{campusId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.changyu.foryou.model.Campus" >
+    insert into campus (campus_id, campus_name, city_id, 
+      location_x, location_y)
+    values (#{campusId,jdbcType=INTEGER}, #{campusName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+      #{locationX,jdbcType=DOUBLE}, #{locationY,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.Campus" >
+    insert into campus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="campusId != null" >
+        campus_id,
+      </if>
+      <if test="campusName != null" >
+        campus_name,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="locationX != null" >
+        location_x,
+      </if>
+      <if test="locationY != null" >
+        location_y,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="campusId != null" >
+        #{campusId,jdbcType=INTEGER},
+      </if>
+      <if test="campusName != null" >
+        #{campusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="locationX != null" >
+        #{locationX,jdbcType=DOUBLE},
+      </if>
+      <if test="locationY != null" >
+        #{locationY,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Campus" >
+    update campus
+    <set >
+      <if test="campusName != null" >
+        campus_name = #{campusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="locationX != null" >
+        location_x = #{locationX,jdbcType=DOUBLE},
+      </if>
+      <if test="locationY != null" >
+        location_y = #{locationY,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where campus_id = #{campusId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Campus" >
+    update campus
+    set campus_name = #{campusName,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=INTEGER},
+      location_x = #{locationX,jdbcType=DOUBLE},
+      location_y = #{locationY,jdbcType=DOUBLE}
+    where campus_id = #{campusId,jdbcType=INTEGER}
+  </update>
+</mapper>

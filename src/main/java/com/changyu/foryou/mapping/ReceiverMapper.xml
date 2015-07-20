@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.ReceiverMapper">
+	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Receiver">
+		<id column="rank" property="rank" jdbcType="VARCHAR" />
+		<id column="phone_id" property="phoneId" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="tag" property="tag" jdbcType="SMALLINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		rank, phone_id, phone, name, address, tag
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="com.changyu.foryou.model.ReceiverKey">
+		select
+		<include refid="Base_Column_List" />
+		from receiver
+		where rank = #{rank,jdbcType=VARCHAR}
+		and phone_id = #{phoneId,jdbcType=VARCHAR}
+		and is_out=0
+	</select>
+	<update id="deleteByPrimaryKey" parameterType="com.changyu.foryou.model.ReceiverKey">
+		update receiver
+		set is_out=1
+		where rank = #{rank,jdbcType=VARCHAR}
+		and phone_id = #{phoneId,jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="com.changyu.foryou.model.Receiver">
+		insert into receiver (rank, phone_id, phone,
+		name, address, tag,is_out
+		)
+		values (#{rank,jdbcType=VARCHAR}, #{phoneId,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{tag,jdbcType=SMALLINT},0
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Receiver">
+		insert into receiver
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rank != null">
+				rank,
+			</if>
+			<if test="phoneId != null">
+				phone_id,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="tag != null">
+				tag,
+			</if>
+			<if test="1==1">
+				is_out,
+			</if>
+			 
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="rank != null">
+				#{rank,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneId != null">
+				#{phoneId,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tag != null">
+				#{tag,jdbcType=SMALLINT},
+			</if>
+			<if test="1==1">
+				0,
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Receiver">
+		update receiver
+		<set>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tag != null">
+				tag = #{tag,jdbcType=SMALLINT},
+			</if>
+		</set>
+		where rank = #{rank,jdbcType=VARCHAR}
+		and phone_id = #{phoneId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Receiver">
+		update receiver
+		set phone = #{phone,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		tag = #{tag,jdbcType=SMALLINT}
+		where rank = #{rank,jdbcType=VARCHAR}
+		and phone_id = #{phoneId,jdbcType=VARCHAR}
+	</update>
+
+
+	<!-- 以下为新增 -->
+	<update id="setDefaultAddress">
+		update receiver
+		set
+		tag = 0
+		where phone_id =
+		#{phoneId,jdbcType=VARCHAR} and rank =
+		#{rank,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getReceiverCounts" resultType="Integer">
+		select count(*)
+		from
+		receiver
+		where phone_id = #{phoneId,jdbcType=VARCHAR}
+		and is_out=0
+	</select>
+
+	<select id="selectByPhoneId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from receiver
+		where phone_id = #{phoneId,jdbcType=VARCHAR}
+		and is_out =0
+		order by rank ASC
+	</select>
+
+	<update id="setReceiverTag">
+		update receiver
+		set
+		tag = 1
+		where phone_id =
+		#{phoneId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

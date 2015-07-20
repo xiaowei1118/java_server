@@ -1,0 +1,104 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>用户管理</title>
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
+	 <link rel="shortcut icon" href="img/icon.png">
+	<link rel="stylesheet"
+	href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+</head>
+
+
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+<script
+src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.js"></script>
+<script src="../js/bootstrap-table-export.min.js"></script>
+<script
+src="//rawgit.com/kayalshri/tableExport.jquery.plugin/master/tableExport.js"></script>
+<script
+src="//rawgit.com/kayalshri/tableExport.jquery.plugin/master/jquery.base64.js"></script>
+<script src="../js/bootstrap-table-editable.min.js"></script>
+<script
+src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+<!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+    <![endif]-->
+    <script
+    src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script>
+
+    	function actionFormatter(value, row, index) {
+    		return [
+    		'<a class="delete" href="javascript:void(0)" title="删除该评价">',
+    		'<i class="icon-trash"></i>',
+    		'</a>'
+    		].join('');
+    	}
+
+    	window.actionEvents = {
+    		'click .delete': function (e, value, row, index) {
+    			$.post("../../foryou/food/deleteFoodCommentById.do",
+    			{
+    				foodId:row.foodId,
+    				date:row.date,
+    				grade:row.grade
+    			},
+    			function(text){
+    				if(text!=1){
+    					alert("删除评价失败");
+    				}else{
+    					$('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+    				}
+
+    			}
+    			);
+    		},
+    	};
+
+    </script>
+    <body>
+    	<div class="container">
+    		<div class="row-fluid">
+    			<div class="page-header">
+    				<h1>
+    					食品评价管理
+    				</h1>
+    			</div>
+    			<div>
+    				<table id="table" 
+    				data-id-field="phone"
+    				data-toggle="table"
+    				data-url="../../foryou/food/getAllComments.do"
+    				data-pagination="true"
+    				data-side-pagination="server"
+    				data-search="true"
+    				data-height="80%"
+    				data-show-refresh="true" 
+    				data-show-columns="true"   
+    				data-show-toggle="true" 
+    				data-toolbar-align="right" 
+    				>
+    				<thead>
+    					<tr>
+    						<th data-align="left" data-field="foodId" data-sortable="true">食品Id</th>
+    						<th data-align="left" data-field="foodName">食品名称</th>
+    						<th data-align="left" data-field="date" data-sortable="true">评论时间</th>
+    						<th data-align="left" data-field="nickName" >评论人</th>
+    						<th data-align="left" data-field="grade" data-sortable="true">评分</th>
+    						<th data-align="left" data-field="comment">内容</th>
+    						<th data-align="left" data-field="action" data-formatter="actionFormatter" data-events="actionEvents">删除评价</th>
+    					</tr>
+    				</thead>
+    			</table>
+    		</div>
+    	</div>
+    </div>
+</body>
+</html>

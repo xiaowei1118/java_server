@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>用户反馈</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrap-table.min.css">
+<link rel="shortcut icon" href="img/icon.png">
+
+</head>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+
+
+<!-- <script src="../js/bootstrap-table.min.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script> -->
+
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.js"></script>
+
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<body>
+	<div class="container">
+		<div class="row-fluid">
+			<div class="page-header">
+				<h1>用户反馈</h1>
+			</div>
+
+			<div>
+				<table data-toggle="table"
+				       data-url="../../foryou/user/getFeedbacks.do"
+				       data-search="true"
+				       data-show-refresh="true"
+				       data-show-toggle="true"
+				       data-pagination="true"
+				       data-show-columns="true" 
+				       data-height="80%">
+					<thead>
+						<tr>
+							<th data-align="left" data-field="phoneId">用户手机号</th>
+							<th data-align="left" data-field="date">反馈时间</th>
+							<th data-align="left" data-field="suggestion">反馈内容</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

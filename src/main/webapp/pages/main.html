@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>无标题文档</title>
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
+	<link rel="shortcut icon" href="img/icon.png">
+</head>
+
+<body>
+	<div class="container">
+		<div class="row-fluid">
+			<div class="page-header">
+				<h1>
+					首页
+				</h1>
+			</div>
+			<div>
+				<ul id="myTab" class="nav nav-tabs" role="tablist">
+					<li class="active"><a href="#devicePercent" role="tab" data-toggle="tab">用户设备占比</a></li>
+					<li><a href="#rule" role="tab" data-toggle="tab">规则</a></li>
+					<li><a href="#forum" role="tab" data-toggle="tab">论坛</a></li>
+					<li><a href="#security" role="tab" data-toggle="tab">安全</a></li>
+					<li><a href="#welfare" role="tab" data-toggle="tab">公益</a></li>
+				</ul>
+			</div>
+			<!-- 选项卡面板 -->
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane active" id="devicePercent"></div>
+				<div class="tab-pane" id="rule"></div>
+				<div class="tab-pane" id="forum"></div>
+				<div class="tab-pane" id="security"></div>
+				<div class="tab-pane" id="welfare"></div>
+			</div>
+		</div>
+	</div>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/highcharts.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$.get("../user/getUserDevicePercent.do",function(text){
+				var json = eval('(' + text + ')');
+
+             $('#devicePercent').highcharts({
+             	chart: {
+             		plotBackgroundColor: null,
+             		plotBorderWidth: null,
+             		plotShadow: false
+             	},
+             	title: {
+             		text: 'Ios 和 Android用户占比'
+             	},
+             	tooltip: {
+             		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+             	},
+             	plotOptions: {
+             		pie: {
+             			allowPointSelect: true,
+             			cursor: 'pointer',
+             			dataLabels: {
+             				enabled: true,
+             				color: '#000000',
+             				connectorColor: '#000000',
+             				format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+             			}
+             		}
+             	},
+             	series: [{
+             		type: 'pie',
+             		name: '设别占比',
+             		data: [
+             		['Android',   json.android],
+             		{
+             			name: 'Ios',
+             			y: json.ios,
+             			sliced: true,
+             			selected: true
+             		},
+             		]
+             	}]
+             });
+});
+
+});
+</script>
+</body>
+</html>

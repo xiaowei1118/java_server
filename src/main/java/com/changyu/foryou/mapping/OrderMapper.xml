@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.OrderMapper">
+	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Order">
+		<id column="order_id" property="orderId" jdbcType="BIGINT" />
+		<id column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="together_id" property="togetherId" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="is_remarked" property="isRemarked" jdbcType="SMALLINT" />
+		<result column="tag" property="tag" jdbcType="SMALLINT" />
+		<result column="food_special" property="foodSpecial" jdbcType="INTEGER" />
+		<result column="food_id" property="foodId" jdbcType="BIGINT" />
+		<result column="rank" property="rank" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 对应购物车model -->
+	<resultMap id="CartGoodMap" type="com.changyu.foryou.model.CartGood">
+		<id column="order_id" property="orderId" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="discount_price" property="discountPrice"
+			jdbcType="REAL" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="tag" property="tag" jdbcType="SMALLINT" />
+		<result column="food_special" property="foodSpecial" jdbcType="INTEGER" />
+		<result column="food_id" property="foodId" jdbcType="BIGINT" />
+		<result column="img_url" property="imageUrl" jdbcType="VARCHAR" />
+		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
+	</resultMap>
+
+	<!-- 配送员配送界面model -->
+	<resultMap id="DeliverOrderMap" type="com.changyu.foryou.model.DeliverOrder">
+		<id column="together_id" property="togetherId" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickName" jdbcType="VARCHAR" />
+		<result column="custome_phone" property="customePhone"
+			jdbcType="VARCHAR" />
+		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="reserve_time" property="reserveTime" jdbcType="VARCHAR" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="together_date" property="togetherDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!-- 配送员配送界面的子订单 -->
+	<resultMap id="DeliverChildOrderMap" type="com.changyu.foryou.model.DeliverChildOrder">
+		<id column="food_name" property="foodName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="discount_price" property="discountPrice"
+			jdbcType="REAL" />
+		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="special_name" property="specialName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 用户订单model -->
+	<resultMap id="SmallOrderMap" type="com.changyu.foryou.model.SmallOrder">
+		<id column="order_id" property="orderId" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="together_id" property="togetherId" jdbcType="VARCHAR" />
+		<result column="food_id" property="foodId" jdbcType="BIGINT" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="discount_price" property="discountPrice"
+			jdbcType="REAL" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="img_url" property="imageUrl" jdbcType="VARCHAR" />
+		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
+		<result column="is_remarked" property="isRemarked" jdbcType="SMALLINT" />
+		<result column="rank" property="rank" jdbcType="VARCHAR" />
+		<result column="together_date" property="togetherDate"
+			jdbcType="VARCHAR" />
+		<result column="special_name" property="specialName" jdbcType="VARCHAR" />
+		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 超级管理员管理派单model -->
+	<resultMap id="SuperAdminOrderMap" type="com.changyu.foryou.model.SuperAdminOrder">
+		<result column="together_id" property="togetherId" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="together_date" property="togetherDate"
+			jdbcType="TIMESTAMP" />
+		<result column="phone" property="userPhone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
+		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+		<result column="reserve_time" property="reserveTime" jdbcType="VARCHAR" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- web管理单显示订单 -->
+	<resultMap id="PCSimpleOrderMap" type="com.changyu.foryou.model.PCOrder">
+		<id column="together_id" property="togetherId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="discount_price" property="discountPrice"
+			jdbcType="REAL" />
+		<result column="food_price" property="foodPrice" jdbcType="REAL" />
+		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
+		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
+		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="receiver_phone" property="receiverPhone"
+			jdbcType="VARCHAR" />
+		<result column="together_date" property="togetherDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		order_id, phone, create_time, status, price,
+		order_count,together_id,
+		is_remarked,
+		tag,
+		food_special,
+		food_id,rank
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from orders
+		where order_id = #{orderId,jdbcType=BIGINT} AND phone =
+		#{phoneId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 删除购物车里面的订单 -->
+	<delete id="deleteByPrimaryKey">
+		delete from orders
+		where
+		order_id=#{orderId,jdbcType=BIGINT} And
+		phone=#{phoneId,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- 将某笔订单置为无效 -->
+	<delete id="setOrderInvalid">
+		update orders
+		set tag=0
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.changyu.foryou.model.Order">
+		insert into orders (order_id,
+		phone, create_time,
+		status, price, order_count,
+		is_remarked,
+		tag,
+		food_special, food_id)
+		values (#{orderId,jdbcType=BIGINT},
+		#{phone,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=SMALLINT}, #{price,jdbcType=REAL},
+		#{orderCount,jdbcType=INTEGER},
+		#{isRemarked,jdbcType=SMALLINT},
+		#{tag,jdbcType=SMALLINT},
+		#{foodSpecial,jdbcType=INTEGER},
+		#{foodId,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Order">
+		insert into orders
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="campusId != null">
+				campus_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="orderCount != null">
+				order_count,
+			</if>
+
+			<if test="isRemarked != null">
+				is_remarked,
+			</if>
+			<if test="tag != null">
+				tag,
+			</if>
+			<if test="foodSpecial != null">
+				food_special,
+			</if>
+			<if test="foodId != null">
+				food_id,
+			</if>
+			<if test="togetherId != null">
+				together_id
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				#{orderId,jdbcType=BIGINT},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="campusId != null">
+				#{campusId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=SMALLINT},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=REAL},
+			</if>
+			<if test="orderCount != null">
+				#{orderCount,jdbcType=INTEGER},
+			</if>
+			<if test="isRemarked != null">
+				#{isRemarked,jdbcType=SMALLINT},
+			</if>
+			<if test="tag != null">
+				#{tag,jdbcType=SMALLINT},
+			</if>
+			<if test="foodSpecial != null">
+				#{foodSpecial,jdbcType=INTEGER},
+			</if>
+			<if test="foodId != null">
+				#{foodId,jdbcType=BIGINT},
+			</if>
+			<if test="togetherId != null">
+				#{togetherId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Order">
+		update orders
+		<set>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=REAL},
+			</if>
+			<if test="orderCount != null">
+				order_count = #{orderCount,jdbcType=INTEGER},
+			</if>
+
+			<if test="isRemarked != null">
+				is_remarked = #{isRemarked,jdbcType=SMALLINT},
+			</if>
+			<if test="tag != null">
+				tag = #{tag,jdbcType=SMALLINT},
+			</if>
+			<if test="foodSpecial != null">
+				food_special = #{foodSpecial,jdbcType=INTEGER},
+			</if>
+			<if test="foodId != null">
+				food_id = #{foodId,jdbcType=BIGINT},
+			</if>
+			<if test="togetherId != null">
+				together_id = #{togetherId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where order_id = #{orderId,jdbcType=BIGINT} And
+		phone=#{phoneId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Order">
+		update orders
+		set
+		phone = #{phone,jdbcType=VARCHAR},
+		together_id =
+		#{togetherId,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		status = #{status,jdbcType=SMALLINT},
+		price = #{price,jdbcType=REAL},
+		order_count =
+		#{orderCount,jdbcType=INTEGER},
+
+		is_remarked =
+		#{isRemarked,jdbcType=SMALLINT},
+		tag =
+		#{tag,jdbcType=SMALLINT},
+		food_special =
+		#{foodSpecial,jdbcType=INTEGER},
+		food_id =
+		#{foodId,jdbcType=BIGINT}
+		where order_id = #{orderId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 获取用户购物车信息 tag 是否失效，food.status 表示上架状态，1表示上架，order.status 表示订单状态 1订单下达，2订单配送，3订单完成 -->
+
+	<select id="getOrderListByPhone" resultMap="CartGoodMap">
+		select
+		order_id,orders.food_id as food_id,food.tag as
+		tag,img_url,food.status as status,
+		orders.order_count as order_count
+		,orders.food_special as
+		food_special,food.is_discount as is_discount,
+		food.price as price,food.name as name,discount_price
+		from orders,food
+		where
+		orders.food_id=food.food_id and orders.campus_id = food.campus_id and phone =
+		#{phoneId,jdbcType=VARCHAR} and orders.campus_id=#{campusId,jdbcType=INTEGER}
+		and food.status=1 and
+		orders.tag = 1 and
+		orders.status = 0
+		order by
+		create_time DESC
+		<if test="limit !=null and offset !=null">
+			LIMIT #{limit,jdbcType=INTEGER} OFFSET
+			#{offset,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getSuccessOrder" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from orders
+		where phone = #{phoneId,jdbcType=VARCHAR} and
+		tag = 1 and
+		status &lt;3
+		order by create_time DESC
+	</select>
+
+	<!-- 更新购物车中食品的个数 -->
+	<update id="updateOrderCount">
+		update
+		orders
+		set
+		order_count=#{orderCount,jdbcType=INTEGER}
+		where
+		order_id=#{orderId,jdbcType=BIGINT} And
+		phone=#{phoneId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 下单 -->
+	<update id="changeOrderStatus2Buy">
+		update
+		orders
+		set
+		status=1,message=#{message,jdbcType=VARCHAR},reserve_time=#{reserveTime,jdbcType=VARCHAR},
+		together_id=#{togetherId,jdbcType=VARCHAR},rank=#{rank,jdbcType=VARCHAR},together_date=Now()
+		where
+		order_id=#{orderId,jdbcType=BIGINT} And
+		phone=#{phoneId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 配送员更改订单至配送状态 -->
+	<update id="changeOrderStatus2Deliver">
+		update
+		orders
+		set
+		status=2
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		And
+		admin_phone=#{phoneId,jdbcType=VARCHAR}    <!-- 配送员号码 -->
+	</update>
+
+	<!-- 配送员更改订单至完成状态 -->
+	<update id="changeOrderStatus2Finish">
+		update
+		orders
+		set
+		status=3
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		And
+		admin_phone=#{phoneId,jdbcType=VARCHAR}    <!-- 配送员号码 -->
+	</update>
+
+	<delete id="deleteAllUserOrder" parameterType="String">
+		delete from orders
+		where tag =1 And phone=#{phoneId,jdbcType=VARCHAR} and status=0
+	</delete>
+
+
+	<!-- 获取用户的订单 -->
+	<select id="getOrderListInMine" resultMap="SmallOrderMap"
+		parameterType="String">
+		select
+		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,food_special.name
+		as special_name,
+		orders.order_count as
+		order_count ,
+		food.is_discount as
+		is_discount,
+		food.price as
+		price,food.name as name,
+		discount_price
+		from
+		orders,food,food_special
+		where
+		orders.food_id=food.food_id
+		and
+		orders.food_id=food_special.food_id
+		and food_special.special_id
+		=orders.food_special and phone =
+		#{phoneId,jdbcType=VARCHAR} And
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		<if test="status!=null">
+			and orders.status = #{status,jdbcType=SMALLINT}
+			<if test="status==3">
+				and is_remarked = 0
+			</if>
+		</if>
+		<if test="status==null">
+			and orders.status !=0
+		</if>
+		and DATE_SUB(CURDATE(), INTERVAL 10 DAY) &lt;= date(together_date)
+		and
+		orders.tag=1
+		order by together_date DESC,create_time DESC
+	</select>
+
+    <!-- 弃用 -->
+	<select id="getOrderListInMineWait2Deliver" resultMap="SmallOrderMap"
+		parameterType="String">
+		select
+		order_id,img_url,is_remarked,orders.status,
+		orders.order_count as order_count ,
+		food.is_discount as is_discount,
+		food.price as price,food.name as name,
+		discount_price
+		from orders,food
+		where
+		orders.food_id=food.food_id and phone =
+		#{phoneId,jdbcType=VARCHAR}
+		and orders.status = 1 and orders.tag=1
+		order by create_time
+		DESC
+	</select>
+
+    <!-- 弃用 -->
+	<select id="getOrderListInMineDeliver" resultMap="SmallOrderMap"
+		parameterType="String">
+		select
+		order_id,img_url,is_remarked,orders.status,
+		orders.order_count as order_count ,
+		food.is_discount as is_discount,
+		food.price as price,food.name as name,
+		discount_price
+		from orders,food
+		where
+		orders.food_id=food.food_id and phone =
+		#{phoneId,jdbcType=VARCHAR}
+		and orders.status = 2 and orders.tag=1
+		order by create_time
+		DESC
+	</select>
+
+	<!-- 弃用 -->
+	<select id="getOrderListInMineFinish" resultMap="SmallOrderMap"
+		parameterType="String">
+		select
+		order_id,img_url,is_remarked,orders.status,
+		orders.order_count as order_count ,
+		food.is_discount as is_discount,
+		food.price as price,food.name as name,
+		discount_price
+		from orders,food
+		where
+		orders.food_id=food.food_id and phone =
+		#{phoneId,jdbcType=VARCHAR}
+		and orders.status = 3 and orders.tag=1
+		order by create_time
+		DESC
+	</select>
+
+	<!-- 获取用户的订单togetherId -->
+	<select id="getTogetherId" resultType="String" parameterType="String">
+		select distinct
+		together_id
+		from orders
+		<where>
+			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
+			orders.tag=1 and DATE_SUB(CURDATE(), INTERVAL 10 DAY) &lt;=
+			date(together_date)
+			<if test="status!=null">
+				and status = #{status,jdbcType=SMALLINT}
+				<if test="status==3">
+					and is_remarked = 0
+				</if>
+			</if>
+			<if test="status==null">
+				and status !=0
+			</if>
+		</where>
+		order by together_date DESC
+		<if test="limit !=null and offset !=null">
+			LIMIT #{limit,jdbcType=INTEGER} OFFSET
+			#{offset,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<!-- 检查购物车中是否以前添加过同样的商品 -->
+	<select id="selectOrder" resultMap="BaseResultMap"
+		parameterType="com.changyu.foryou.model.Order">
+		select
+		<include refid="Base_Column_List" />
+		from orders
+		where phone=
+		#{phone,jdbcType=VARCHAR} And food_id=
+		#{foodId,jdbcType=BIGINT} And
+		food_special =
+		#{foodSpecial,jdbcType=SMALLINT} and status=0 and orders.tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+		order by
+		create_time DESC
+	</select>
+
+	<delete id="deleteCartGood" parameterType="com.changyu.foryou.model.Order">
+		delete from orders
+		where phone=
+		#{phone,jdbcType=VARCHAR} And food_id=
+		#{foodId,jdbcType=BIGINT} And
+		food_special =
+		#{foodSpecial,jdbcType=SMALLINT} and status=0
+	</delete>
+
+	<!-- -->
+	<select id="selectPersonOrder" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from orders
+		where phone=
+		#{phoneId,jdbcType=VARCHAR} And order_id=
+		#{orderId,jdbcType=BIGINT} and status=3 and orders.tag=1
+	</select>
+
+
+	<!-- 设置订单为已评价 -->
+	<update id="updateOrderRemarked">
+		update
+		orders
+		set
+		is_remarked=1
+		where phone=
+		#{phone,jdbcType=VARCHAR} And order_id=
+		#{orderId,jdbcType=BIGINT} and
+		status=3 and tag=1
+	</update>
+
+	<!-- 超级管理员获取订单 -->
+	<select id="superAdminGetOrder" resultMap="SuperAdminOrderMap">
+		SELECT
+		together_id,users.nickname as admin_name,
+		together_date,message,reserve_time,
+		address
+		FROM
+		orders,
+		food,
+		receiver,
+		users
+		WHERE
+		orders.food_id = food.food_id and
+		orders.tag=1
+		and
+		orders.rank=receiver.rank and
+		orders.phone=receiver.phone_id and
+		DATE_SUB(CURDATE(), INTERVAL 10
+		DAY) &lt;= date(together_date)
+		<if test="isSelected == 0">
+			and orders.status = 1 and admin_phone is null
+		</if>
+		<if test="isSelected == 1">
+			and users.phone=orders.admin_phone and orders.status = 1
+			and admin_phone is not null
+		</if>
+		group by together_id
+		order by together_date DESC
+	</select>
+
+	<select id="getExitOrderUserRank" resultType="Integer">
+		select
+		count(*)
+		from
+		orders
+		where phone=
+		#{phone,jdbcType=VARCHAR} And and (status = 1
+		or
+		status =2) and rank = #{rank,jdbcType=VARCHAR} and orders.tag=1
+	</select>
+
+	<!-- 设置配送员 -->
+	<update id="setDeliverAdmin">
+		update
+		orders
+		set
+		admin_phone=#{adminPhone,jdbcType=VARCHAR}
+		where together_id=
+		#{togetherId,jdbcType=VARCHAR} and status = 1
+	</update>
+
+	<!-- 配送员获取大订单列表 -->
+	<select id="deliverGetOrder" resultMap="DeliverOrderMap">
+		SELECT
+		together_id,receiver.name as nickname,receiver.phone as custome_phone,
+		together_date,orders.reserve_time,orders.message,
+		orders.status,
+		address
+		FROM
+		orders,
+		receiver
+		WHERE
+		orders.rank=receiver.rank and
+		orders.status !=0 and orders.status !=3
+		and DATE_SUB(CURDATE(),
+		INTERVAL 10 DAY) &lt;= date(together_date) and
+		orders.phone=receiver.phone_id and orders.admin_phone =
+		#{phone,jdbcType=VARCHAR} and orders.tag=1
+		group by together_id
+		order by
+		together_date
+		DESC
+	</select>
+
+	<!-- 配送员获取子订单，不包含成功订单 -->
+	<select id="getDeliverChildOrders" resultMap="DeliverChildOrderMap">
+		SELECT
+		food.name as
+		food_name,food.price,discount_price,is_discount,order_count,food_special.name
+		as special_name,
+		orders.status
+		FROM
+		orders,
+		food,
+		food_special
+		WHERE
+		orders.food_id=food.food_id and
+		orders.food_id=food_special.food_id and
+		orders.status !=0 and
+		orders.status != 3 and food_special.special_id
+		=orders.food_special and orders.tag=1
+		and
+		together_id=#{togetherId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- web端获取订单（除待发货订单） -->
+	<select id="getPCOrders" resultMap="PCSimpleOrderMap">
+		SELECT
+		together_id,
+		orders.phone,
+		food. NAME AS NAME,
+		order_count,
+		address,
+		orders.admin_phone,
+		together_date,
+		receiver.phone as
+		receiver_phone,
+		food.price as food_price,
+		orders.price,
+		is_discount,
+		discount_price,
+		users.nickname as admin_name
+		FROM
+		orders,
+		food,
+		receiver,
+		users
+		WHERE
+		orders.food_id = food.food_id
+		AND orders.admin_phone =
+		users.phone
+		AND orders.rank = receiver.rank
+		AND
+		orders.phone =
+		receiver.phone_id
+		AND
+		orders.status=#{status,jdbcType=SMALLINT}
+		AND
+		together_date>=#{time,jdbcType=DATE} and orders.tag=1
+		<if test="search!=null">
+			and orders.phone like "%${search}%"
+		</if>
+		order by together_date DESC,orders.phone ASC
+		limit ${offset},${limit}
+	</select>
+
+	<!-- web端获取代发货订单 -->
+	<select id="getPCOrdersWithOutAdmin" resultMap="PCSimpleOrderMap">
+		SELECT
+		together_id,
+		orders.admin_phone,
+		orders.phone,
+		food. NAME AS NAME,
+		order_count,
+		receiver.address,
+		receiver.phone as receiver_phone,
+		orders.admin_phone,
+		food.price as food_price,
+		orders.price,
+		is_discount,
+		discount_price,
+		together_date
+		FROM
+		orders,
+		food,
+		receiver
+		WHERE
+		orders.food_id =
+		food.food_id
+		AND orders.rank
+		= receiver.rank
+		AND
+		orders.phone =
+		receiver.phone_id
+		AND orders.status=1
+		AND
+		together_date>=#{time,jdbcType=DATE} and orders.tag=1
+		<if test="search!=null">
+			and orders.phone like "%${search}%"
+		</if>
+		order by together_date DESC,orders.phone ASC
+		limit ${offset},${limit}
+	</select>
+
+	<select id="getPCOrdersCount" resultType="Long">
+		SELECT
+		count(*)
+		FROM
+		orders
+		WHERE
+		together_date>=#{time,jdbcType=DATE} and
+		orders.tag=1
+		<if test="search!=null">
+			and orders.phone like "%${search}%"
+		</if>
+		<if test="status!=null">
+			and status=#{status,jdbcType=SMALLINT}
+		</if>
+	</select>
+
+	<!-- 获取某天的总订单详情和数目 -->
+	<select id="selectOrdersByDate" resultMap="DeliverOrderMap">
+		select *
+		from together_order
+		where
+		<if test="date!=null">		
+			DATE_FORMAT(together_date,"%Y-%m-%d")=#{date,jdbcType=DATE}
+		</if>
+		<if test="date==null">
+			 DATE_FORMAT(together_date,"%Y-%m-%d")=CURDATE()
+		</if>
+		ORDER BY
+		together_date ASC
+	</select>
+
+	<!-- 获取大订单中的小订单子订单,包含成功订单 -->
+	<select id="getAllChildOrder" resultMap="DeliverChildOrderMap">
+		select *
+		from detail_order
+		where 
+		together_id=#{togetherId,jdbcType=VARCHAR}
+	</select>
+</mapper>

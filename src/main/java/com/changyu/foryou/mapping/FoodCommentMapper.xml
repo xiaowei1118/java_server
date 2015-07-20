@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.FoodCommentMapper">
+ <cache eviction="LRU" flushInterval="180000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.FoodComment">
+		<result column="food_id" property="foodId" jdbcType="BIGINT" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="name" property="foodName" jdbcType="VARCHAR" />
+		<result column="comment" property="comment" jdbcType="VARCHAR" />
+		<result column="date" property="date" jdbcType="DATE" />
+		<result column="grade" property="grade" jdbcType="SMALLINT" />
+		<result column="nickname" property="nickName" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="tag" property="tag" jdbcType="SMALLINT" />
+	</resultMap>
+	<insert id="insert" parameterType="com.changyu.foryou.model.FoodComment">
+		insert into food_comment (food_id, campus_id,comment, date,
+		grade, phone, tag
+		)
+		values (#{foodId,jdbcType=BIGINT}, #{campusId,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR},
+		#{date,jdbcType=DATE},
+		#{grade,jdbcType=SMALLINT}, #{phone,jdbcType=VARCHAR}, #{tag,jdbcType=SMALLINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.changyu.foryou.model.FoodComment">
+		insert into food_comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="foodId != null">
+				food_id,
+			</if>
+			<if test="campusId != null">
+				campus_id,
+			</if>
+			<if test="comment != null">
+				comment,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="grade != null">
+				grade,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="tag != null">
+				tag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="foodId != null">
+				#{foodId,jdbcType=BIGINT},
+			</if>
+			<if test="campusId != null">
+				#{campusId,jdbcType=INTEGER},
+			</if>
+			<if test="comment != null">
+				#{comment,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				now(),
+			</if>
+			<if test="grade != null">
+				#{grade,jdbcType=SMALLINT},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="tag != null">
+				#{tag,jdbcType=SMALLINT},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="getCommentCountsById" resultType="Long">
+		SELECT
+		count(*)
+		FROM food_comment
+		WHERE
+		food_id=#{foodId,jdbcType=BIGINT} 
+		AND tag=1 and comment is not null and comment !="" 
+		and campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+
+	<select id="getCommentsById" resultMap="BaseResultMap">
+		SELECT
+		food_id, campus_id,comment, date,
+		grade, food_comment.phone,nickname,users.img_url
+		FROM food_comment,users
+		WHERE
+		food_comment.phone = users.phone AND food_id=#{foodId,jdbcType=BIGINT} 	and campus_id=#{campusId,jdbcType=INTEGER}
+		AND tag=1 and comment is not null and comment !="" 
+		<if test="limit!=null and offset !=null">
+			LIMIT #{limit} OFFSET #{offset,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getAllComments" resultMap="BaseResultMap">
+		SELECT
+		food.food_id,food.campus_id,
+		name,
+		COMMENT,
+		date,
+		food_comment.grade,
+		nickname
+		FROM
+		food_comment,
+		users,
+		food
+		<where>
+			food_comment.phone = users.phone and
+			food_comment.food_id=food.food_id 
+			and food.campus_id=food_comment.campus_id
+			and comment is not null and comment !="" 
+			and food.campus_id=#{campusId,jdbcType=INTEGER}
+			<if test="search != null and search !='' ">
+				and food_id =
+				#{search,jdbcType=INTEGER})
+			</if>
+		</where>
+		<if test="sort != null">
+			order by ${sort}
+		</if>
+		<if test="sort !=null and order != null">
+			${order}
+		</if>
+		<if test="offset != null and limit != null">
+			limit #{offset,jdbcType=INTEGER} ,
+			#{limit,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getFoodCommentCount" resultType="Integer">
+		SELECT
+		  count(*)
+		FROM
+		food_comment,
+		users,
+		food
+		<where>
+			food_comment.phone = users.phone and food.campus_id=food_comment.campus_id and
+			food_comment.food_id=food.food_id and comment is not null and comment !=""
+			and food.campus_id=#{campusId,jdbcType=INTEGER}
+			<if test="search != null and search !='' ">
+				and  food_id =
+				#{search,jdbcType=VARCHAR}) 
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deleteFoodComment">
+	    delete
+	    from 
+	     food_comment
+	    <where>
+	       food_id=#{foodId,jdbcType=BIGINT}
+	       and date_format(date,'%Y-%m-%d')=#{date,jdbcType=DATE}
+	       and grade=#{grade} and campus_id=#{campusId,jdbcType=INTEGER}
+	    </where>
+	</delete>
+	
+	<select id="getAvageGrade" resultType="Float">
+	   SELECT 
+	     AVG(grade)
+	   from food_comment
+	   where
+	     food_id=#{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+	
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.FeedbackMapper" >
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.Feedback" >
+    <result column="phone_id" property="phoneId" jdbcType="VARCHAR" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="DATE" />
+  </resultMap>
+  <insert id="insert" parameterType="com.changyu.foryou.model.Feedback" >
+    insert into feedback (phone_id, suggestion, date
+      )
+    values (#{phoneId,jdbcType=VARCHAR}, #{suggestion,jdbcType=VARCHAR}, #{date,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.Feedback" >
+    insert into feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="phoneId != null" >
+        phone_id,
+      </if>
+      <if test="suggestion != null" >
+        suggestion,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="phoneId != null" >
+        #{phoneId,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="getFeedbacks" resultMap="BaseResultMap">
+     select phone_id,suggestion,date
+     from 
+     feedback
+     order by date DESC
+  </select>
+</mapper>
