@@ -299,9 +299,7 @@ public class UserController {
 	@RequestMapping(value="mineInfo")
 	public @ResponseBody Map<String, Object> getMineInfo(@RequestParam String phone){
 		Map<String, Object> map = new HashMap<String, Object>();
-
 		try {
-
 			Users users=userService.selectByUsername(phone);
 			Map<String, Object> counts=orderService.getOrderSummaryCount(phone);
 
@@ -330,10 +328,11 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="feedbackMessage")
-	public @ResponseBody Map<String, Object> feedbackMessage(@RequestParam String phoneId,@RequestParam String suggestion){
+	public @ResponseBody Map<String, Object> feedbackMessage(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam String suggestion){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try{
 			Feedback feedback=new Feedback();
+			feedback.setCampusId(campusId);
 			feedback.setPhoneId(phoneId);
 			feedback.setSuggestion(suggestion);
 			Calendar calendar=Calendar.getInstance();
