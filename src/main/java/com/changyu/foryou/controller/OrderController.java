@@ -617,8 +617,7 @@ public class OrderController {
 			requestMap.put("limit", limit);
 			requestMap.put("offset", (page-1)*limit);
 		}else{
-			requestMap.put("limit", 5);
-			requestMap.put("offset", 0);
+			
 		}
 		try {
 			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(requestMap);
@@ -702,8 +701,7 @@ public class OrderController {
 			requestMap.put("offset", (page-1)*limit);
 			requestMap.put("limit", limit);
 		}else{
-			requestMap.put("offset", 0);
-			requestMap.put("limit", 5);
+			
 		}
 		try {
 			//获取一笔订单列表
@@ -822,8 +820,7 @@ public class OrderController {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page-1)*limit);
 			}else{
-				paramMap.put("limit", 5);
-				paramMap.put("offset", 0);
+				
 			}
 			
 			System.out.println(date);
