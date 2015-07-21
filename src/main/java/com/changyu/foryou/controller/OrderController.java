@@ -619,7 +619,8 @@ public class OrderController {
 			requestMap.put("limit", limit);
 			requestMap.put("offset", (page-1)*limit);
 		}else{
-			
+			requestMap.put("limit", 5);
+			requestMap.put("offset", 0);
 		}
 >>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 		try {
@@ -707,7 +708,8 @@ public class OrderController {
 			requestMap.put("offset", (page-1)*limit);
 			requestMap.put("limit", limit);
 		}else{
-			
+			requestMap.put("offset", 0);
+			requestMap.put("limit", 5);
 		}
 >>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 		try {
@@ -830,7 +832,8 @@ public class OrderController {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page-1)*limit);
 			}else{
-				
+				paramMap.put("limit", 5);
+				paramMap.put("offset", 0);
 			}
 			
 >>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
