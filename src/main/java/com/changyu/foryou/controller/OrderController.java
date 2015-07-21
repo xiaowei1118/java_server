@@ -608,6 +608,20 @@ public class OrderController {
 	@RequestMapping("/superAdminGetOrder")
 	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected){
 		Map<String, Object> map=new HashMap<String, Object>();
+<<<<<<< HEAD
+=======
+		
+		Map<String, Object> requestMap=new HashMap<String, Object>();
+		requestMap.put("isSelected", isSelected);
+		requestMap.put("campusId", campusId);
+		
+		if(page!=null&&limit!=null){
+			requestMap.put("limit", limit);
+			requestMap.put("offset", (page-1)*limit);
+		}else{
+			
+		}
+>>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 		try {
 			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(isSelected);
 
@@ -684,6 +698,18 @@ public class OrderController {
 	@RequestMapping("/DeliverAdminGetOrder")
 	public @ResponseBody Map<String, Object>  deliverGetOrder(@RequestParam String phoneId){
 		Map<String, Object> map=new HashMap<String, Object>();
+<<<<<<< HEAD
+=======
+		Map<String, Object> requestMap=new HashMap<String, Object>();
+		requestMap.put("phoneId", phoneId);
+		requestMap.put("campusId", campusId);
+		if(page!=null&&limit!=null){
+			requestMap.put("offset", (page-1)*limit);
+			requestMap.put("limit", limit);
+		}else{
+			
+		}
+>>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 		try {
 			//获取一笔订单列表
 			List<DeliverOrder> deliverOrders=orderService.deliverGetOrder(phoneId);
@@ -796,6 +822,18 @@ public class OrderController {
 			else date=date.replace("年", "-").replace("月","-").replace("日","");
 			Map<String, Object> paramMap=new HashMap<String,Object>();
 			paramMap.put("date", date);
+<<<<<<< HEAD
+=======
+			paramMap.put("campusId", campusId);
+			
+			if(page!=null&&limit!=null){
+				paramMap.put("limit", limit);
+				paramMap.put("offset", (page-1)*limit);
+			}else{
+				
+			}
+			
+>>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 			System.out.println(date);
 			List<DeliverOrder> deliverOrders=orderService.selectOrdersByDate(paramMap);
             Float totalPrice=0f;
