@@ -606,10 +606,8 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/superAdminGetOrder")
-	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected){
+	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected,@RequestParam Integer campusId,Integer limit,Integer page){
 		Map<String, Object> map=new HashMap<String, Object>();
-<<<<<<< HEAD
-=======
 		
 		Map<String, Object> requestMap=new HashMap<String, Object>();
 		requestMap.put("isSelected", isSelected);
@@ -622,7 +620,6 @@ public class OrderController {
 			requestMap.put("limit", 5);
 			requestMap.put("offset", 0);
 		}
->>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 		try {
 			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(isSelected);
 
@@ -697,10 +694,9 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/DeliverAdminGetOrder")
-	public @ResponseBody Map<String, Object>  deliverGetOrder(@RequestParam String phoneId){
+	public @ResponseBody Map<String, Object>  deliverGetOrder(@RequestParam String phoneId,@RequestParam Integer campusId,Integer limit,Integer page){
 		Map<String, Object> map=new HashMap<String, Object>();
-<<<<<<< HEAD
-=======
+
 		Map<String, Object> requestMap=new HashMap<String, Object>();
 		requestMap.put("phoneId", phoneId);
 		requestMap.put("campusId", campusId);
@@ -711,7 +707,6 @@ public class OrderController {
 			requestMap.put("offset", 0);
 			requestMap.put("limit", 5);
 		}
->>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 		try {
 			//获取一笔订单列表
 			List<DeliverOrder> deliverOrders=orderService.deliverGetOrder(phoneId);
@@ -815,7 +810,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="getOrdersByDate")
-	@ResponseBody public  Map<String, Object> getOrdersByDate(String date){
+	@ResponseBody public  Map<String, Object> getOrdersByDate(String date,@RequestParam Integer campusId,Integer limit,Integer page){
 		Map<String, Object> resultMap=new HashMap<String,Object>(); 
 		DecimalFormat df = new DecimalFormat("####.00");
 		
@@ -824,19 +819,13 @@ public class OrderController {
 			else date=date.replace("年", "-").replace("月","-").replace("日","");
 			Map<String, Object> paramMap=new HashMap<String,Object>();
 			paramMap.put("date", date);
-<<<<<<< HEAD
-=======
-			paramMap.put("campusId", campusId);
+        	paramMap.put("campusId", campusId);
 			
 			if(page!=null&&limit!=null){
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page-1)*limit);
-			}else{
-				paramMap.put("limit", 5);
-				paramMap.put("offset", 0);
 			}
 			
->>>>>>> parent of d927f46... Revert "修改分页机制：如果不传分页参数，就返回所有数据"
 			System.out.println(date);
 			List<DeliverOrder> deliverOrders=orderService.selectOrdersByDate(paramMap);
             Float totalPrice=0f;
