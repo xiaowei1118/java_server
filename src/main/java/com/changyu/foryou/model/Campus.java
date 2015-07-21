@@ -7,9 +7,9 @@ public class Campus {
 
     private Integer cityId;
 
-    private Double locationX;
+   /* private Double locationX;
 
-    private Double locationY;
+    private Double locationY;*/
 
     public Integer getCampusId() {
         return campusId;
@@ -27,11 +27,11 @@ public class Campus {
         this.campusName = campusName == null ? null : campusName.trim();
     }
 
-    public Integer getCityId() {
+   public Integer getCityId() {
         return cityId;
     }
 
-    public void setCityId(Integer cityId) {
+   /* public void setCityId(Integer cityId) {
         this.cityId = cityId;
     }
 
@@ -49,5 +49,5 @@ public class Campus {
 
     public void setLocationY(Double locationY) {
         this.locationY = locationY;
-    }
+    }*/
 }

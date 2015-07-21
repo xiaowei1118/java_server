@@ -1,9 +1,9 @@
 package com.changyu.foryou.model;
 
 public class City {
-    private Integer cityId;
+    protected Integer cityId;
 
-    private String cityName;
+    protected String cityName;
 
     public Integer getCityId() {
         return cityId;

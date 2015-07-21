@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
@@ -13,7 +12,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
 ">
 
-   <task:annotation-driven/>
+	<task:annotation-driven />
 	<!-- jndi方式 -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
@@ -27,28 +26,38 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	</bean>
 
 	<!-- 配置数据源 -->
-	<!-- <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource" 
-		init-method="init" destroy-method="close"> <property name="url" value="${jdbc_url}" 
-		/> <property name="username" value="${jdbc_username}" /> <property name="password" 
-		value="${jdbc_password}" /> <property name="initialSize" value="0" /> <property 
-		name="maxActive" value="20" /> <property name="maxIdle" value="20" /> <property 
-		name="minIdle" value="0" /> <property name="maxWait" value="60000" /> <property 
-		name="poolPreparedStatements" value="true" /> <property name="maxPoolPreparedStatementPerConnectionSize" 
-		value="33" /> <property name="validationQuery" value="${validationQuery}" 
-		/> <property name="testOnBorrow" value="false" /> <property name="testOnReturn" 
-		value="false" /> <property name="testWhileIdle" value="true" /> <property 
-		name="timeBetweenEvictionRunsMillis" value="60000" /> <property name="minEvictableIdleTimeMillis" 
-		value="25200000" /> <property name="removeAbandoned" value="true" /> <property 
-		name="removeAbandonedTimeout" value="1800" /> <property name="logAbandoned" 
-		value="true" /> <property name="filters" value="stat" /> <property name="filters" 
-		value="mergeStat" /> </bean> -->
-	<!-- myBatis文件 -->
+	<!-- <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc_url}" />
+		<property name="username" value="${jdbc_username}" />
+		<property name="password" value="${jdbc_password}" />
+		<property name="initialSize" value="0" />
+		<property name="maxActive" value="20" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="0" />
+		<property name="maxWait" value="60000" />
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="33" />
+		<property name="validationQuery" value="${validationQuery}" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="1800" />
+		<property name="logAbandoned" value="true" />
+		<property name="filters" value="stat" />
+		<property name="filters" value="mergeStat" />
+	</bean>
+ -->
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
 		<property name="mapperLocations" value="classpath:com/changyu/foryou/mapping/*.xml" />
-		<property name="configLocation" value="classpath:/config.xml"/>
+		<property name="configLocation" value="classpath:/config.xml" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
