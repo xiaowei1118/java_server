@@ -606,22 +606,11 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/superAdminGetOrder")
-	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected,@RequestParam Integer campusId,Integer page, Integer limit){
+	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected){
 		Map<String, Object> map=new HashMap<String, Object>();
-		
-		Map<String, Object> requestMap=new HashMap<String, Object>();
-		requestMap.put("isSelected", isSelected);
-		requestMap.put("campusId", campusId);
-		
-		if(page!=null&&limit!=null){
-			requestMap.put("limit", limit);
-			requestMap.put("offset", (page-1)*limit);
-		}else{
-			requestMap.put("limit", 5);
-			requestMap.put("offset", 0);
-		}
 		try {
-			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(requestMap);
+			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(isSelected);
+
 			for(SuperAdminOrder superAdminOrder:orders){
 				String togetherId=superAdminOrder.getTogetherId();
 
@@ -693,21 +682,11 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/DeliverAdminGetOrder")
-	public @ResponseBody Map<String, Object>  deliverGetOrder(@RequestParam String phoneId,@RequestParam Integer campusId,Integer page, Integer limit){
+	public @ResponseBody Map<String, Object>  deliverGetOrder(@RequestParam String phoneId){
 		Map<String, Object> map=new HashMap<String, Object>();
-		Map<String, Object> requestMap=new HashMap<String, Object>();
-		requestMap.put("phoneId", phoneId);
-		requestMap.put("campusId", campusId);
-		if(page!=null&&limit!=null){
-			requestMap.put("offset", (page-1)*limit);
-			requestMap.put("limit", limit);
-		}else{
-			requestMap.put("offset", 0);
-			requestMap.put("limit", 5);
-		}
 		try {
 			//获取一笔订单列表
-			List<DeliverOrder> deliverOrders=orderService.deliverGetOrder(requestMap);
+			List<DeliverOrder> deliverOrders=orderService.deliverGetOrder(phoneId);
 
 			for(DeliverOrder  deliverOrder:deliverOrders){
 				String togetherId=deliverOrder.getTogetherId();
@@ -747,11 +726,12 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="/getPCSimpleOrder")
-	public @ResponseBody Map<String, Object> getPcOrders(@RequestParam Integer campusId, Short status,Integer limit,Integer offset,String search){
+	public @ResponseBody Map<String, Object> getPcOrders(Short status,Integer limit,Integer offset,String search){
 		Map<String, Object> map=new HashMap<String, Object>();
-		List<PCOrder> lists=orderService.getPCOrders(campusId,status,limit,offset,search);   
+
+		List<PCOrder> lists=orderService.getPCOrders(status,limit,offset,search);   
 		DecimalFormat df = new DecimalFormat("####.00");
-		System.out.println(lists.size());
+		
 		for(PCOrder order:lists){
 			//如果是完成订单，直接显示交易价格，否则计算应收取的价格
 			if(order.getPrice()==null){
@@ -807,7 +787,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="getOrdersByDate")
-	@ResponseBody public  Map<String, Object> getOrdersByDate(@RequestParam Integer campusId,String date,Integer page, Integer limit){
+	@ResponseBody public  Map<String, Object> getOrdersByDate(String date){
 		Map<String, Object> resultMap=new HashMap<String,Object>(); 
 		DecimalFormat df = new DecimalFormat("####.00");
 		
@@ -816,16 +796,6 @@ public class OrderController {
 			else date=date.replace("年", "-").replace("月","-").replace("日","");
 			Map<String, Object> paramMap=new HashMap<String,Object>();
 			paramMap.put("date", date);
-			paramMap.put("campusId", campusId);
-			
-			if(page!=null&&limit!=null){
-				paramMap.put("limit", limit);
-				paramMap.put("offset", (page-1)*limit);
-			}else{
-				paramMap.put("limit", 5);
-				paramMap.put("offset", 0);
-			}
-			
 			System.out.println(date);
 			List<DeliverOrder> deliverOrders=orderService.selectOrdersByDate(paramMap);
             Float totalPrice=0f;

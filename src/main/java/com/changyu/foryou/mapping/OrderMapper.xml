@@ -86,7 +86,6 @@
 	<!-- 超级管理员管理派单model -->
 	<resultMap id="SuperAdminOrderMap" type="com.changyu.foryou.model.SuperAdminOrder">
 		<result column="together_id" property="togetherId" jdbcType="VARCHAR" />
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
 		<result column="price" property="price" jdbcType="REAL" />
 		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
 		<result column="together_date" property="togetherDate"
@@ -102,7 +101,6 @@
 	<!-- web管理单显示订单 -->
 	<resultMap id="PCSimpleOrderMap" type="com.changyu.foryou.model.PCOrder">
 		<id column="together_id" property="togetherId" jdbcType="VARCHAR" />
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="price" property="price" jdbcType="REAL" />
@@ -567,7 +565,7 @@
 	<!-- 超级管理员获取订单 -->
 	<select id="superAdminGetOrder" resultMap="SuperAdminOrderMap">
 		SELECT
-		together_id,orders.campus_id,users.nickname as admin_name,
+		together_id,users.nickname as admin_name,
 		together_date,message,reserve_time,
 		address
 		FROM
@@ -576,12 +574,13 @@
 		receiver,
 		users
 		WHERE
-		orders.campus_id = #{campusId,jdbcType=INTEGER}
-		and
+		orders.food_id = food.food_id and
 		orders.tag=1
 		and
 		orders.rank=receiver.rank and
-		orders.phone=receiver.phone_id
+		orders.phone=receiver.phone_id and
+		DATE_SUB(CURDATE(), INTERVAL 10
+		DAY) &lt;= date(together_date)
 		<if test="isSelected == 0">
 			and orders.status = 1 and admin_phone is null
 		</if>
@@ -589,11 +588,8 @@
 			and users.phone=orders.admin_phone and orders.status = 1
 			and admin_phone is not null
 		</if>
-		group by orders.together_id order by orders.together_date DESC
-		<if test="offset!=null and limit !=null">
-			limit #{limit} offset #{offset}
-		</if>
-		
+		group by together_id
+		order by together_date DESC
 	</select>
 
 	<select id="getExitOrderUserRank" resultType="Integer">
@@ -628,18 +624,16 @@
 		orders,
 		receiver
 		WHERE
-		orders.campus_id=#{campusId,jdbcType=INTEGER} and
 		orders.rank=receiver.rank and
-		orders.status in(1,2) and
+		orders.status !=0 and orders.status !=3
+		and DATE_SUB(CURDATE(),
+		INTERVAL 10 DAY) &lt;= date(together_date) and
 		orders.phone=receiver.phone_id and orders.admin_phone =
-		#{phoneId,jdbcType=VARCHAR} and orders.tag=1
+		#{phone,jdbcType=VARCHAR} and orders.tag=1
 		group by together_id
 		order by
 		together_date
 		DESC
-		<if test="offset != null and limit != null">
-		limit #{limit} offset #{offset}
-		</if>
 	</select>
 
 	<!-- 配送员获取子订单，不包含成功订单 -->
@@ -667,7 +661,6 @@
 	<select id="getPCOrders" resultMap="PCSimpleOrderMap">
 		SELECT
 		together_id,
-		orders.campus_id,
 		orders.phone,
 		food. NAME AS NAME,
 		order_count,
@@ -687,7 +680,6 @@
 		receiver,
 		users
 		WHERE
-		orders.campus_id = #{campusId, jdbcType=INTEGER} AND
 		orders.food_id = food.food_id
 		AND orders.admin_phone =
 		users.phone
@@ -710,7 +702,6 @@
 	<select id="getPCOrdersWithOutAdmin" resultMap="PCSimpleOrderMap">
 		SELECT
 		together_id,
-		orders.campus_id,
 		orders.admin_phone,
 		orders.phone,
 		food. NAME AS NAME,
@@ -728,8 +719,7 @@
 		food,
 		receiver
 		WHERE
-		orders.campus_id=#{campusId,jdbcType=INTEGER}
-		AND orders.food_id =
+		orders.food_id =
 		food.food_id
 		AND orders.rank
 		= receiver.rank
@@ -767,7 +757,6 @@
 		select *
 		from together_order
 		where
-		campus_id=#{campusId,jdbcType=INTEGER} AND
 		<if test="date!=null">		
 			DATE_FORMAT(together_date,"%Y-%m-%d")=#{date,jdbcType=DATE}
 		</if>
@@ -776,9 +765,6 @@
 		</if>
 		ORDER BY
 		together_date ASC
-		<if test="limit != null and offset != null">
-		limit #{limit} offset #{offset}
-		</if>
 	</select>
 
 	<!-- 获取大订单中的小订单子订单,包含成功订单 -->

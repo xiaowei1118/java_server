@@ -11,8 +11,6 @@ public class PCOrder {
     
     private String togetherId;
     
-    private Integer campusId;
-    
     private String phone;
     
     private String name; //食品名称
@@ -164,16 +162,6 @@ public class PCOrder {
 
 	public void setAdminPhone(String adminPhone) {
 		this.adminPhone = adminPhone;
-	}
-
-
-	public Integer getCampusId() {
-		return campusId;
-	}
-
-
-	public void setCampusId(Integer campusId) {
-		this.campusId = campusId;
 	}
 	
 

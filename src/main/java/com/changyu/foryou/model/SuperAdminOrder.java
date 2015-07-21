@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class SuperAdminOrder {
 	private String togetherId;
-	private Integer campusId;
 	private Date togetherDate;
 	private String address;
 	private String userPhone;
@@ -68,12 +67,6 @@ public class SuperAdminOrder {
 	}
 	public void setMessage(String message) {
 		this.message = message;
-	}
-	public Integer getCampusId() {
-		return campusId;
-	}
-	public void setCampusId(Integer campusId) {
-		this.campusId = campusId;
 	}
 
 }
