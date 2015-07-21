@@ -17,7 +17,7 @@ public class DeliverChildOrder {
 
 	//private String  imageUrl;
 
-	private String specialName;
+//	private String specialName;
 
 
 	public String getFoodName() {
@@ -68,13 +68,13 @@ public class DeliverChildOrder {
 		this.orderCount = orderCount;
 	}
 
-	public String getSpecialName() {
+	/*public String getSpecialName() {
 		return specialName;
 	}
 
 	public void setSpecialName(String specialName) {
 		this.specialName = specialName;
-	}
+	}*/
 	
 
 }

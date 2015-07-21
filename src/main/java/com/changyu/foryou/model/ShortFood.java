@@ -8,6 +8,16 @@ public class ShortFood {
 
 	private Float price;
 
+	private Integer foodCount;
+	
+	public Integer getFoodCount() {
+		return foodCount;
+	}
+
+	public void setFoodCount(Integer foodCount) {
+		this.foodCount = foodCount;
+	}
+
 	public Long getFoodId() {
 		return foodId;
 	}

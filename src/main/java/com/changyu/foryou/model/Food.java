@@ -38,7 +38,7 @@ public class Food {
     
 	private Long commentNumber;
 	
-	private List<FoodSpecial> foodSpecial;
+	//private List<FoodSpecial> foodSpecial;
 	
 	private Integer campusId;
 	
@@ -239,7 +239,7 @@ public class Food {
 	public void setSaleNumber(Long saleNumber) {
 		this.saleNumber = saleNumber;
 	}
-	public List<FoodSpecial> getFoodSpecial() {
+	/*public List<FoodSpecial> getFoodSpecial() {
 		return foodSpecial;
 	}
 	public void setFoodSpecial(List<FoodSpecial> foodSpecial) {
@@ -248,7 +248,7 @@ public class Food {
 		for (int i = 0; i < foodSpecial.size(); i++) {
 			this.foodCount+=foodSpecial.get(i).getFoodCount();
 		}
-	}
+	}*/
 	public Integer getFoodCount() {
 		return foodCount;
 	}

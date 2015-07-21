@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.changyu.foryou.mapper.FeedbackMapper;
 import com.changyu.foryou.mapper.UsersMapper;
@@ -19,17 +20,9 @@ public class UserServiceImpl implements UserService {
 	private UsersMapper usersMapper;         //操作用户信息
 	private FeedbackMapper feedbackMapper;   //操作用户反馈表
 
-	public FeedbackMapper getFeedbackMapper() {
-		return feedbackMapper;
-	}
-
 	@Autowired
 	public void setFeedbackMapper(FeedbackMapper feedbackMapper) {
 		this.feedbackMapper = feedbackMapper;
-	}
-
-	public UsersMapper getUsersMapper() {
-		return usersMapper;
 	}
 
 	@Autowired
@@ -55,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 
-
+    @Transactional(rollbackFor=Exception.class)
 	public void updateLastLoginTime(Date date,String phone) {
 		usersMapper.updateLastLoginTime(date,phone);
 	}

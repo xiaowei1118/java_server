@@ -3,6 +3,11 @@ package com.changyu.foryou.tools;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+/**
+ * 
+ * @author xiaowei
+ *copyright @倡予科技有限公司
+ */
 public class XssHttpServletRequestWraper extends HttpServletRequestWrapper {
 
 	public XssHttpServletRequestWraper(HttpServletRequest request) {
@@ -22,14 +27,17 @@ public class XssHttpServletRequestWraper extends HttpServletRequestWrapper {
 	@Override
 	public String[] getParameterValues(String name) {
 		String[] values = super.getParameterValues(name);
-		String[] newValues = new String[values.length];
-		
-		for(int i =0; i< values.length; i++){
-			newValues[i] = clearXss(values[i]);
-			System.out.println(newValues[i]);
-		}
-		
-		return newValues;
+		if(values!=null){
+			String[] newValues = new String[values.length];
+			
+			for(int i =0; i< values.length; i++){
+				newValues[i] = clearXss(values[i]);
+				System.out.println(newValues[i]);
+			}
+			return newValues;
+		}else{
+			return values;
+		}	
 	}
 
 	/**

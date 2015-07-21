@@ -2,6 +2,8 @@ package com.changyu.foryou.controller;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,17 +57,9 @@ public class OrderController {
 		this.pushService = pushService;
 	}
 
-	public UserService getUserServce() {
-		return userService;
-	}
-
 	@Autowired
 	public void setUserServce(UserService userService) {
 		this.userService = userService;
-	}
-
-	public FoodService getFoodService() {
-		return foodService;
 	}
 
 	@Autowired
@@ -75,10 +69,7 @@ public class OrderController {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
-	public OrderService getOrderService() {
-		return orderService;
-	}
-
+	
 	@Autowired
 	public void setOrderService(OrderService orderService) {
 		this.orderService = orderService;
@@ -94,11 +85,11 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/createOrder")
-	public @ResponseBody Map<String, Object> createOrder(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam Long foodId, @RequestParam Integer foodCount,Integer foodSpecial){
+	public @ResponseBody Map<String, Object> createOrder(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam Long foodId, @RequestParam Integer foodCount){
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		try {
-			Order order=new Order(campusId,phoneId,foodId,foodCount,foodSpecial);
+			Order order=new Order(campusId,phoneId,foodId,foodCount);
 			List<Order> oldOrders= orderService.selectOrder(order);
 
 			//待优化。。。。。。。将delete和insert改为一次操作
@@ -289,13 +280,8 @@ public class OrderController {
 					if(cartGood.getIsDiscount()!=0){
 						cartGood.setDiscountPrice(cartGood.getDiscountPrice());   //获取折扣价
 					}
-                    //Map<String,Object> paramMap=new HashMap<String,Object>();
                     paramMap.put("foodId", cartGood.getFoodId());
-                    paramMap.put("foodSpeical",cartGood.getFoodSpecial());
                     paramMap.put("campusId", campusId);
-                    
-					cartGood.setSpecialName(foodService.getSpecialName(paramMap));  //获取食品口味名称
-					cartGood.setFoodCount(foodService.getFoodSpecialCount(paramMap));   //获取该口味的数量
 				}  	   
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取购物车订单成功");
@@ -420,7 +406,7 @@ public class OrderController {
 		try {
 			List<Order> orderList=orderService.getOrderSuccessList(phoneId);
 			if(orderList!=null&&orderList.size()!=0){
-				map.put(Constants.STATUS, Constants.FAILURE);
+				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
 				map.put("orderList", orderList);
 			}else{
@@ -447,17 +433,18 @@ public class OrderController {
 	@RequestMapping("/orderToBuy")
 	public @ResponseBody Map<String, Object> changeOrderStatus2Buy(@RequestParam String phoneId,@RequestParam String orderId,@RequestParam String rank,String reserveTime,String message){
 		Map<String, Object> map=new HashMap<String, Object>();
-
-		map.put(Constants.STATUS, Constants.FAILURE);
-		map.put(Constants.MESSAGE, "暑期间米奇暂停运营，非常抱歉，亲，下学期再见喽。");
-		/*try {
+        Map<String,Object> paramMap=new HashMap<String,Object>();
+        
+		/*map.put(Constants.STATUS, Constants.FAILURE);
+		map.put(Constants.MESSAGE, "暑期间米奇暂停运营，非常抱歉，亲，下学期再见喽。");*/
+		try {
 			Calendar calendar=Calendar.getInstance();
 			//判断是否超出营业时间，营业时间为9：00--21：30
-			if(calendar.get(Calendar.HOUR_OF_DAY)>22||(calendar.get(Calendar.HOUR_OF_DAY)>=21&&calendar.get(Calendar.MINUTE)>30)||calendar.get(Calendar.HOUR_OF_DAY)<9){
+			/*if(calendar.get(Calendar.HOUR_OF_DAY)>22||(calendar.get(Calendar.HOUR_OF_DAY)>=21&&calendar.get(Calendar.MINUTE)>30)||calendar.get(Calendar.HOUR_OF_DAY)<9){
 				map.put(Constants.STATUS, Constants.FAILURE);
 				map.put(Constants.MESSAGE, "米奇的营业时间为9：00--21：30，欢迎下次光顾。");
 				return map;
-			}
+			}*/
 
 			
 			String[] orderString=orderId.split(",");
@@ -473,7 +460,9 @@ public class OrderController {
 				//更新库存和销量
 				Order order=orderService.selectOneOrder(phoneId,id);   //获取该笔订单的消息
 
-				foodService.changeFoodCount(order.getFoodId(),order.getFoodSpecial(),order.getOrderCount());   //增加销量，减少存货
+				paramMap.put("foodId",order.getFoodId());
+				paramMap.put("orderCount",order.getOrderCount());
+				foodService.changeFoodCount(paramMap);   //增加销量，减少存货
 
 				if(flag==0||flag==-1){
 					break;
@@ -485,7 +474,7 @@ public class OrderController {
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
 
 				//开启线程去访问极光推送
-				new Thread(new Runnable() {
+				/*new Thread(new Runnable() {
 
 					@Override
 					public void run() {
@@ -502,7 +491,7 @@ public class OrderController {
 							pushService.sendPush(phone, "一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
 						}
 					}
-				}).start();
+				}).start();*/
 
 			}else{
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -513,7 +502,7 @@ public class OrderController {
 			e.printStackTrace();
 			map.put(Constants.STATUS, Constants.FAILURE);
 			map.put(Constants.MESSAGE, "下单失败，请重新开始下单");
-		}*/
+		}
 		return map;
 	}
 
@@ -524,11 +513,11 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/orderToDeliver")
-	public @ResponseBody Map<String, Object> changeOrderStatus2Deliver(@RequestParam String phoneId,@RequestParam final String togetherId){
+	public @ResponseBody Map<String, Object> changeOrderStatus2Deliver(@RequestParam String adminPhone,@RequestParam final String togetherId){
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		try {
-			int flag=orderService.changeOrderStatus2Deliver(phoneId,togetherId);
+			int flag=orderService.changeOrderStatus2Deliver(adminPhone,togetherId);
 
 			if(flag!=-1&&flag!=0){
 
@@ -536,7 +525,7 @@ public class OrderController {
 				map.put(Constants.MESSAGE, "正在配送中！");
 
 				//开启线程访问服务器进行推送
-				new Thread(new Runnable() {
+				/*new Thread(new Runnable() {
 
 					@Override
 					public void run() {
@@ -546,7 +535,7 @@ public class OrderController {
 						pushService.sendPush(userPhone, "您有一笔订单正在配送中,请稍候。感谢您对米奇零点的支持", 1);
 
 					}
-				}).start();
+				}).start();*/
 
 			}else{
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -567,17 +556,17 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/orderToFinish")
-	public @ResponseBody Map<String, Object> changeOrderStatus2Finish(@RequestParam String phoneId,@RequestParam String togetherId){
+	public @ResponseBody Map<String, Object> changeOrderStatus2Finish(@RequestParam String adminPhone,@RequestParam String togetherId){
 		Map<String, Object> map=new HashMap<String, Object>();
 		try {
-			int flag=orderService.changeOrderStatus2Finish(phoneId,togetherId);
+			int flag=orderService.changeOrderStatus2Finish(adminPhone,togetherId);
 			if(flag!=-1&&flag!=0){
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "订单完成，谢谢您的惠顾！");
 
 				final String userPhone=userService.getUserPhone(togetherId);
 
-				new Thread(new Runnable() {
+				/*new Thread(new Runnable() {
 
 					@Override
 					public void run() {
@@ -585,7 +574,7 @@ public class OrderController {
 						pushService.sendPush(userPhone, "您有一笔订单已完成交易,赶快去评价吧！米奇零点欢迎您下次惠顾", 1);
 
 					}
-				}).start();
+				}).start();*/
 
 
 			}else{
@@ -600,7 +589,9 @@ public class OrderController {
 		return map;
 	}
 
-	/**
+	
+	
+	/**========================================================
 	 * 超级管理员获取待发货单信息
 	 * @param isSelected
 	 * @return
@@ -653,14 +644,14 @@ public class OrderController {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "设置配送员成功！");
 
-				new Thread(new Runnable() {
+				/*new Thread(new Runnable() {
 
 					public void run() {
 						//推送
 						pushService.sendPush(adminPhone, "米奇零点提醒您，一笔新订单已达到，请及时配送，辛苦您了。", 1);
 
 					}
-				}).start();
+				}).start();*/
 
 
 			}else{
@@ -756,7 +747,7 @@ public class OrderController {
 	 * @param togetherId
 	 * @return
 	 */
-	@RequestMapping(value="/setOrderInvalid",method=RequestMethod.POST)
+	@RequestMapping(value="/setOrderInvalid")
 	public @ResponseBody Map<String, Object> setOrderInvalid(@RequestParam String togetherId) {
 		Map<String, Object> resultMap=new HashMap<String, Object>();
 

@@ -192,8 +192,8 @@ public class FoodServiceImpl implements FoodService{
 
 	public Integer changeFoodCount(Map<String,Object> paramMap) {
 		int flag=0;
-		flag= foodSpecialMapper.changeFoodCount(paramMap);
-		flag=foodMapper.changeFoodSaleNumber(paramMap);
+		//flag= foodSpecialMapper.changeFoodCount(paramMap);
+		flag=foodMapper.changeFoodNumber(paramMap);
 		return flag;		
 	}
 

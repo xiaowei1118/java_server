@@ -29,6 +29,7 @@ function getSignature(){
 	paramArray.push(secret); 
 	
 	var shaSource = paramArray.join("");  
+	console.log(shaSource);
 	var sign = $.md5(shaSource);  
 	return sign;
 }   

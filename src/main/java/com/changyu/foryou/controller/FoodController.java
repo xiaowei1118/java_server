@@ -1,7 +1,6 @@
 package com.changyu.foryou.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,14 +46,6 @@ public class FoodController {
 	private OrderService orderService;
 
 	protected static final Logger LOG = LoggerFactory.getLogger(FoodController.class);
-
-	public FoodService getFoodService() {
-		return foodService;
-	}
-
-	public OrderService getOrderService() {
-		return orderService;
-	}
 
 	@Autowired
 	public void setOrderService(OrderService orderService) {
@@ -192,7 +182,7 @@ public class FoodController {
 			paramMap.put("campusId",campusId);
 
 			Food food= foodService.selectFoodByPrimaryKey(paramMap);
-			List<FoodSpecial> foodSpecials=foodService.getFoodSpecial(paramMap);
+			//List<FoodSpecial> foodSpecials=foodService.getFoodSpecial(paramMap);
 
 			if(food!=null){
 				Float gradeFloat=foodService.getAvageGrade(paramMap);
@@ -203,7 +193,7 @@ public class FoodController {
 				}
 
 				food.setCommentNumber(foodService.getCommentCountsById(paramMap));
-				food.setFoodSpecial(foodSpecials);
+				//food.setFoodSpecial(foodSpecials);
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取食品成功");
 				map.put("food", food);
@@ -390,7 +380,7 @@ public class FoodController {
 	}*/
 
 	/**
-	 * 添加食品口味
+	 * 添加食品口味   弃用
 	 * @param campusId
 	 * @param foodId
 	 * @param specialName
@@ -964,6 +954,24 @@ public class FoodController {
 		return map;
 	}*/
 
+	/**
+	 * 弃用，不再有口味
+	 * @param campusId
+	 * @param foodId
+	 * @param speicalId1
+	 * @param speicalId2
+	 * @param specialId3
+	 * @param specialName1
+	 * @param specialName2
+	 * @param specialName3
+	 * @param specialCount1
+	 * @param specialCount2
+	 * @param specialCount3
+	 * @param isDelete1
+	 * @param isDelete2
+	 * @param isDelete3
+	 * @return
+	 */
 	@RequestMapping(value="/updateSpecialById")
 	public @ResponseBody Map<String, Object> updateSpecialById(@RequestParam Integer campusId,@RequestParam Long foodId,String speicalId1,String speicalId2,String
 			specialId3,String specialName1,String specialName2,String specialName3,Integer specialCount1,Integer specialCount2,Integer specialCount3,

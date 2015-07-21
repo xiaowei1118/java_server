@@ -13,7 +13,11 @@ import java.util.TreeMap;
 
 import javax.crypto.KeyGenerator;
 
-
+/***
+ * 
+ * @author xiaowei
+ *coryright @ xiaowei
+ */
 
 public class Sign {
 	/**
@@ -23,20 +27,24 @@ public class Sign {
 	 * @return 签名
 	 * @throws IOException
 	 */
-	public static String getSignature(HashMap<String,String> params) throws IOException
+	public static String getSignature(HashMap<String,String[]> params) throws IOException
 	{
-		String secret=params.get("secrect");
-		params.remove("secrect");
+		String[] secret=params.get("secret");
+		//params.remove("secret");
 	    // 先将参数以其参数名的字典序升序进行排序
-	    Map<String, String> sortedParams = new TreeMap<String, String>(params);
-	    Set<Entry<String, String>> entrys = sortedParams.entrySet();
+	    Map<String, String[]> sortedParams = new TreeMap<String, String[]>(params);
+	    Set<Entry<String, String[]>> entrys = sortedParams.entrySet();
 	 
 	    // 遍历排序后的字典，将所有参数按"key=value"格式拼接在一起
 	    StringBuilder basestring = new StringBuilder();
-	    for (Entry<String, String> param : entrys) {
-	        basestring.append(param.getKey()).append("=").append(param.getValue());
+	    for (Entry<String, String[]> param : entrys) {
+	    	if(param.getKey().equals("secret")||param.getKey().equals("sign")){
+	    		continue;
+	    	}
+	    	String value = ((String[])param.getValue())[0];
+	        basestring.append(param.getKey()).append("=").append(value);
 	    }
-	    basestring.append(secret);
+	    basestring.append(secret[0]);
 	 
 	    // 使用MD5对待签名串求签
 	    byte[] bytes = null;

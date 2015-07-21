@@ -15,8 +15,8 @@ import com.changyu.foryou.tools.JpushInterface;
 
 @Service("pushService")
 public class PushServiceImpl implements PushService{
-	private static final String appKey = "e9e04345a608f9fb23a3b61b";
-	private static final String masterSecret = "70a4b68027698fe532d95436";
+	private static final String appKey = "e9e04345a608f9fb23a3b616";
+	private static final String masterSecret = "70a4b68027698fe532d95496";
 	
 	private  static final Logger log = LoggerFactory.getLogger(PushServiceImpl.class);
 

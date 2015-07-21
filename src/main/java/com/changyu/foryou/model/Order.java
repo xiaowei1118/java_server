@@ -21,7 +21,7 @@ public class Order {
 
     private Short tag;
 
-    private Integer foodSpecial;
+   // private Integer foodSpecial;
 
     private Long foodId;
 
@@ -33,13 +33,11 @@ public class Order {
     	
     }
     
-    public Order(Integer campusId,String phoneId, Long foodId2, Integer foodCount,
-			Integer foodSpecial2) {
+    public Order(Integer campusId,String phoneId, Long foodId2, Integer foodCount) {
     	this.setCampusId(campusId);
     	this.phone=phoneId;
     	foodId=foodId2;
     	orderCount=foodCount;
-    	foodSpecial=foodSpecial2;
     	tag=1;
     	createTime=new Date();
     	status=0;
@@ -109,14 +107,6 @@ public class Order {
 
     public void setTag(Short tag) {
         this.tag = tag;
-    }
-
-    public Integer getFoodSpecial() {
-        return foodSpecial;
-    }
-
-    public void setFoodSpecial(Integer foodSpecial) {
-        this.foodSpecial = foodSpecial;
     }
 
     public Long getFoodId() {

@@ -19,13 +19,13 @@ public class CartGood {
 
     private Short tag;
 
-    private Integer foodSpecial;
+    //private Integer foodSpecial;
 
     private Long foodId;
 
 	private String  imageUrl;
     
-    private String specialName;
+    //private String specialName;
     
     private Integer foodCount;
     
@@ -72,13 +72,13 @@ public class CartGood {
 	}
 
 
-	public Integer getFoodSpecial() {
+	/*public Integer getFoodSpecial() {
 		return foodSpecial;
 	}
 
 	public void setFoodSpecial(Integer foodSpecial) {
 		this.foodSpecial = foodSpecial;
-	}
+	}*/
 
 	public Long getFoodId() {
 		return foodId;
@@ -128,14 +128,14 @@ public class CartGood {
 		this.name = name;
 	}
 
-	public String getSpecialName() {
+	/*public String getSpecialName() {
 		return specialName;
 	}
 
 	public void setSpecialName(String specialName) {
 		this.specialName = specialName;
 	}
-
+*/
 	public Integer getFoodCount() {
 		return foodCount;
 	}

@@ -12,7 +12,6 @@
 		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
 		<result column="is_remarked" property="isRemarked" jdbcType="SMALLINT" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
-		<result column="food_special" property="foodSpecial" jdbcType="INTEGER" />
 		<result column="food_id" property="foodId" jdbcType="BIGINT" />
 		<result column="rank" property="rank" jdbcType="VARCHAR" />
 	</resultMap>
@@ -28,7 +27,6 @@
 			jdbcType="REAL" />
 		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
-		<result column="food_special" property="foodSpecial" jdbcType="INTEGER" />
 		<result column="food_id" property="foodId" jdbcType="BIGINT" />
 		<result column="img_url" property="imageUrl" jdbcType="VARCHAR" />
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
@@ -58,7 +56,6 @@
 			jdbcType="REAL" />
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
 		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
-		<result column="special_name" property="specialName" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<!-- 用户订单model -->
@@ -78,7 +75,6 @@
 		<result column="rank" property="rank" jdbcType="VARCHAR" />
 		<result column="together_date" property="togetherDate"
 			jdbcType="VARCHAR" />
-		<result column="special_name" property="specialName" jdbcType="VARCHAR" />
 		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
 	</resultMap>
@@ -123,12 +119,10 @@
 		order_count,together_id,
 		is_remarked,
 		tag,
-		food_special,
 		food_id,rank
 	</sql>
 
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Long">
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from orders
@@ -157,8 +151,7 @@
 		phone, create_time,
 		status, price, order_count,
 		is_remarked,
-		tag,
-		food_special, food_id)
+		tag, food_id)
 		values (#{orderId,jdbcType=BIGINT},
 		#{phone,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP},
@@ -166,7 +159,6 @@
 		#{orderCount,jdbcType=INTEGER},
 		#{isRemarked,jdbcType=SMALLINT},
 		#{tag,jdbcType=SMALLINT},
-		#{foodSpecial,jdbcType=INTEGER},
 		#{foodId,jdbcType=BIGINT})
 	</insert>
 	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Order">
@@ -199,9 +191,6 @@
 			</if>
 			<if test="tag != null">
 				tag,
-			</if>
-			<if test="foodSpecial != null">
-				food_special,
 			</if>
 			<if test="foodId != null">
 				food_id,
@@ -238,9 +227,6 @@
 			<if test="tag != null">
 				#{tag,jdbcType=SMALLINT},
 			</if>
-			<if test="foodSpecial != null">
-				#{foodSpecial,jdbcType=INTEGER},
-			</if>
 			<if test="foodId != null">
 				#{foodId,jdbcType=BIGINT},
 			</if>
@@ -271,9 +257,6 @@
 			<if test="tag != null">
 				tag = #{tag,jdbcType=SMALLINT},
 			</if>
-			<if test="foodSpecial != null">
-				food_special = #{foodSpecial,jdbcType=INTEGER},
-			</if>
 			<if test="foodId != null">
 				food_id = #{foodId,jdbcType=BIGINT},
 			</if>
@@ -301,8 +284,6 @@
 		#{isRemarked,jdbcType=SMALLINT},
 		tag =
 		#{tag,jdbcType=SMALLINT},
-		food_special =
-		#{foodSpecial,jdbcType=INTEGER},
 		food_id =
 		#{foodId,jdbcType=BIGINT}
 		where order_id = #{orderId,jdbcType=BIGINT}
@@ -315,8 +296,7 @@
 		order_id,orders.food_id as food_id,food.tag as
 		tag,img_url,food.status as status,
 		orders.order_count as order_count
-		,orders.food_special as
-		food_special,food.is_discount as is_discount,
+		,food.is_discount as is_discount,
 		food.price as price,food.name as name,discount_price
 		from orders,food
 		where
@@ -401,8 +381,7 @@
 	<select id="getOrderListInMine" resultMap="SmallOrderMap"
 		parameterType="String">
 		select
-		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,food_special.name
-		as special_name,
+		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,
 		orders.order_count as
 		order_count ,
 		food.is_discount as
@@ -411,13 +390,10 @@
 		price,food.name as name,
 		discount_price
 		from
-		orders,food,food_special
+		orders,food
 		where
 		orders.food_id=food.food_id
-		and
-		orders.food_id=food_special.food_id
-		and food_special.special_id
-		=orders.food_special and phone =
+		and phone =
 		#{phoneId,jdbcType=VARCHAR} And
 		together_id=#{togetherId,jdbcType=VARCHAR}
 		<if test="status!=null">
@@ -429,7 +405,6 @@
 		<if test="status==null">
 			and orders.status !=0
 		</if>
-		and DATE_SUB(CURDATE(), INTERVAL 10 DAY) &lt;= date(together_date)
 		and
 		orders.tag=1
 		order by together_date DESC,create_time DESC
@@ -496,8 +471,7 @@
 		from orders
 		<where>
 			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
-			orders.tag=1 and DATE_SUB(CURDATE(), INTERVAL 10 DAY) &lt;=
-			date(together_date)
+			orders.tag=1
 			<if test="status!=null">
 				and status = #{status,jdbcType=SMALLINT}
 				<if test="status==3">
@@ -523,9 +497,7 @@
 		from orders
 		where phone=
 		#{phone,jdbcType=VARCHAR} And food_id=
-		#{foodId,jdbcType=BIGINT} And
-		food_special =
-		#{foodSpecial,jdbcType=SMALLINT} and status=0 and orders.tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+		#{foodId,jdbcType=BIGINT} and status=0 and orders.tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
 		order by
 		create_time DESC
 	</select>
@@ -534,9 +506,7 @@
 		delete from orders
 		where phone=
 		#{phone,jdbcType=VARCHAR} And food_id=
-		#{foodId,jdbcType=BIGINT} And
-		food_special =
-		#{foodSpecial,jdbcType=SMALLINT} and status=0
+		#{foodId,jdbcType=BIGINT} And status=0
 	</delete>
 
 	<!-- -->
@@ -640,19 +610,15 @@
 	<select id="getDeliverChildOrders" resultMap="DeliverChildOrderMap">
 		SELECT
 		food.name as
-		food_name,food.price,discount_price,is_discount,order_count,food_special.name
-		as special_name,
+		food_name,food.price,discount_price,is_discount,order_count,
 		orders.status
 		FROM
 		orders,
 		food,
-		food_special
 		WHERE
 		orders.food_id=food.food_id and
-		orders.food_id=food_special.food_id and
 		orders.status !=0 and
-		orders.status != 3 and food_special.special_id
-		=orders.food_special and orders.tag=1
+		orders.status != 3 and  orders.tag=1
 		and
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>

@@ -25,6 +25,7 @@
 		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
 		<result column="sale_number" property="saleNumber" jdbcType="BIGINT" />
+		<result column="food_count" property="foodCount" jdbcType="INTEGER"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -34,12 +35,12 @@
 		status,
 		food_flag, tag, is_discount,
 		category_id,
-		prime_cost, sale_number
+		prime_cost, sale_number,food_count
 	</sql>
 
 	<sql id="Small_Column_List">
 		food_id, campus_id,name, price, discount_price, img_url,
-		is_discount,
+		is_discount,food_count,
 		sale_number
 	</sql>
 
@@ -71,7 +72,7 @@
 		food_flag, tag,
 		is_discount, category_id,
 		prime_cost,
-		sale_number)
+		sale_number,food_count)
 		values (#{foodId,jdbcType=BIGINT},
 		#{campusId,jdbcType=INTEGER},
 		#{name,jdbcType=VARCHAR},
@@ -87,7 +88,8 @@
 		#{isDiscount,jdbcType=SMALLINT},
 		#{categoryId,jdbcType=INTEGER},
 		#{primeCost,jdbcType=REAL},
-		#{saleNumber,jdbcType=BIGINT})
+		#{saleNumber,jdbcType=BIGINT},
+		#{foodCount,jdbcType=INTEGER})
 	</insert>
 	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Food">
 		insert into food
@@ -141,6 +143,9 @@
 			<if test="saleNumber != null">
 				sale_number,
 			</if>
+			<if test="foodCount != null">
+			    food_count,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="foodId != null">
@@ -191,6 +196,9 @@
 			<if test="saleNumber != null">
 				#{saleNumber,jdbcType=BIGINT},
 			</if>
+			<if test="foodCount != null">
+			    #{foodCount,jdbcType=INTEGER},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Food">
@@ -238,6 +246,9 @@
 			<if test="saleNumber != null">
 				sale_number = #{saleNumber,jdbcType=BIGINT},
 			</if>
+			<if test="foodCount != null">
+				food_count=#{foodCount,jdbcType=INTEGER},
+			</if>
 		</set>
 		where food_id = #{foodId,jdbcType=BIGINT} and
 		campus_id=#{campusId,jdbcType=INTEGER}
@@ -245,6 +256,7 @@
 	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Food">
 		update food
 		set
+		food_count=#{foodCount,jdbcType=INTEGER},
 		name = #{name,jdbcType=VARCHAR},
 		price = #{price,jdbcType=REAL},
 		discount_price = #{discountPrice,jdbcType=REAL},
@@ -345,11 +357,12 @@
 	</select>
 
 	<!-- 更新销量 ，只做增操作 -->
-	<update id="changeFoodSaleNumber">
+	<update id="changeFoodNumber">
 		update food
 		set
 		sale_number =
-		sale_number+#{orderCount,jdbcType=INTEGER}
+		sale_number+#{orderCount,jdbcType=INTEGER},
+		food_count=food_count-#{orderCount,jdbcType=INTEGER}
 		where food_id =
 		#{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</update>

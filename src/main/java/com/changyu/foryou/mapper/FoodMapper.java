@@ -29,10 +29,11 @@ public interface FoodMapper {
 
 	List<ShortFood> getFoodListWelcome(Map<String, Object> paramMap);   //获取受欢迎商品
 
-	int changeFoodSaleNumber(Map<String, Object> paramMap);  //更新销量
 
 	List<ShortFood> selectFoods(Map<String, Object> paramMap);
 
 	List<ShortFood> selectFoodsByTwoTags(Map<String, Object> paramMap);
+
+	int changeFoodNumber(Map<String, Object> paramMap);   //更新销量和减少库存
 
 }
