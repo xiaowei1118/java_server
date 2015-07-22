@@ -8,6 +8,7 @@ import com.changyu.foryou.model.FoodCategory;
 import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.VeryShortFood;
 
 public interface FoodService {
 	int deleteCategoryByPrimaryKey(Map<String, Object> paramMap);
@@ -80,6 +81,8 @@ public interface FoodService {
 	Object getAllComments(Map<String, Object> paramMap);
 
 	Integer deleteFoodCommentById(Map<String, Object> paramMap);
+
+	List<VeryShortFood> selectHomeFood(Integer campusId);
 
 	//void deleteFoodByParentCategory(String categoryId);
 }

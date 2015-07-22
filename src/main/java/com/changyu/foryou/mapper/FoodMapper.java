@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.changyu.foryou.model.Food;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.VeryShortFood;
 
 public interface FoodMapper {
     int deleteByPrimaryKey(Map<String, Object> paramMap);
@@ -35,5 +36,7 @@ public interface FoodMapper {
 	List<ShortFood> selectFoodsByTwoTags(Map<String, Object> paramMap);
 
 	int changeFoodNumber(Map<String, Object> paramMap);   //更新销量和减少库存
+
+	List<VeryShortFood> selectHomeFood(Integer campusId);
 
 }

@@ -16,6 +16,7 @@ import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.FoodSpecialKey;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.VeryShortFood;
 import com.changyu.foryou.service.FoodService;
 
 /**
@@ -217,6 +218,11 @@ public class FoodServiceImpl implements FoodService{
 
 	public Integer getFoodCommentCount(Map<String, Object> paramMap) {
 		return foodCommentMapper.getFoodCommentCount(paramMap);
+	}
+	
+	public List<VeryShortFood> selectHomeFood(Integer campusId)
+	{
+		return foodMapper.selectHomeFood(campusId);
 	}
 
 	

@@ -30,6 +30,7 @@ import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.VeryShortFood;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.tools.Constants;
@@ -1004,6 +1005,31 @@ public class FoodController {
 			e.printStackTrace();
 			map.put(Constants.STATUS, Constants.FAILURE);
 			map.put(Constants.MESSAGE, "更新口味失败");
+		}
+
+		return map;
+	}
+	
+	/**
+	 * 查询要推到主页的商品
+	 * @param campusId
+	 * @return
+	 */
+	@RequestMapping("/getHomeFood")
+	public @ResponseBody Map<String, Object> getHomeFood(
+			@RequestParam Integer campusId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<VeryShortFood> shortFood = foodService
+					.selectHomeFood(campusId);
+
+			map.put("food", shortFood);
+			map.put(Constants.STATUS, Constants.SUCCESS);
+			map.put(Constants.MESSAGE, "查找成功");
+
+		} catch (Exception e) {
+			map.put(Constants.STATUS, Constants.FAILURE);
+			map.put(Constants.MESSAGE, "查找失败");
 		}
 
 		return map;
