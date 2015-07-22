@@ -27,6 +27,11 @@
 		<result column="sale_number" property="saleNumber" jdbcType="BIGINT" />
 		<result column="food_count" property="foodCount" jdbcType="INTEGER"/>
 	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.VeryShortFood" id="VerySmallResultMap">
+		<id column="food_id" property="foodId" jdbcType="BIGINT" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+	</resultMap>
 
 	<sql id="Base_Column_List">
 		food_id,campus_id, name, price, discount_price, grade,
@@ -43,6 +48,10 @@
 		is_discount,food_count,
 		sale_number
 	</sql>
+	
+	<sql id="Very_Small_Column_List">
+	    food_id,img_url
+    </sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
@@ -417,6 +426,13 @@
 			LIMIT #{limit,jdbcType=INTEGER} OFFSET
 			#{offset,jdbcType=INTEGER}
 		</if>
+	</select>
+	
+	<select id="selectHomeFood" resultMap="VerySmallResultMap">
+	   select
+	   <include refid="Very_Small_Column_List" />
+	   from food
+	   where to_home=1 and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
 
