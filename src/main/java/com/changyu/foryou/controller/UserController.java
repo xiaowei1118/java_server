@@ -136,7 +136,7 @@ public class UserController {
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value="/toLogin",method=RequestMethod.POST)
+	@RequestMapping(value="/toLogin")
 	public @ResponseBody
 	Map<String, Object> toLogin(@RequestParam String phone,@RequestParam String password,HttpServletRequest request) {
 
@@ -172,7 +172,7 @@ public class UserController {
 	 * @param phone
 	 * @return
 	 */
-	@RequestMapping(value="/checkUserIsExist",method=RequestMethod.POST)
+	@RequestMapping(value="/checkUserIsExist")
 	public @ResponseBody
 	Map<String, Object> checkUserIsExist(@RequestParam String phone) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -193,7 +193,7 @@ public class UserController {
 	 * @param nickname
 	 * @return
 	 */
-	@RequestMapping(value="/registerIn",method=RequestMethod.POST)
+	@RequestMapping(value="/registerIn")
 	public @ResponseBody
 	Map<String, Object> registerIn(@RequestParam String phone,
 			@RequestParam String password, @RequestParam String nickname) {
@@ -228,7 +228,7 @@ public class UserController {
 	 * @param newPassword
 	 * @return
 	 */
-	@RequestMapping(value = "/resetPassword",method=RequestMethod.POST)
+	@RequestMapping(value = "/resetPassword")
 	public @ResponseBody
 	Map<String, Object> resetPassword(@RequestParam String phone,
 			@RequestParam String newPassword) {

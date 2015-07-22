@@ -285,7 +285,9 @@
 
 	<!-- 根据分类id，一个商品标签，做模糊查询 -->
 	<select id="selectFoods" resultMap="SmallResultMap">
-		<bind name="tagPattern" value="'%' + foodTag + '%'" />
+	   <if test="foodTag!=null">
+	   		<bind name="tagPattern" value="'%' + foodTag + '%'" />
+	   </if>
 		select
 		<include refid="Small_Column_List" />
 		from food
