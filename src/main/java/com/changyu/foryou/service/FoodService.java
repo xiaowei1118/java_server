@@ -82,7 +82,7 @@ public interface FoodService {
 
 	Integer deleteFoodCommentById(Map<String, Object> paramMap);
 
-	List<VeryShortFood> selectHomeFood(Integer campusId);
+	List<VeryShortFood> selectHomeFood(Map<String, Object> paramMap);
 
 	//void deleteFoodByParentCategory(String categoryId);
 }

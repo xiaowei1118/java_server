@@ -36,5 +36,9 @@ public class SellerServiceImpl implements SellerService {
 		
 	}
 	
+	public void addASeller(Sellers seller)
+	{
+		sellerMapper.insertSellective(seller);
+	}
 
 }

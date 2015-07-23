@@ -126,5 +126,10 @@ public class UserServiceImpl implements UserService {
 	public Integer getCountsByDevice(Map<String, Object> paramMap) {
 		return usersMapper.getCountsByDevice(paramMap);
 	}
+	
+	public List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap)
+	{
+		return usersMapper.selectByPhoneAndPassword(paramMap);
+	}
 
 }

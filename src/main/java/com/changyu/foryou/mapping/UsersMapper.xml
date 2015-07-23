@@ -14,10 +14,14 @@
 		<result column="default_address" property="defaultAddress"
 			jdbcType="DATE" />
 		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="SMALLINT" />
+		<result column="academy" property="academy" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="INTEGER" />
+		<result column="weixin" property="weiXin" jdbcType="VARCHAR" />  
 	</resultMap>
 	<sql id="Base_Column_List">
 		phone, password, type, nickname, img_url,
-		last_login_date,create_time
+		last_login_date,create_time,sex,academy,qq,weixin
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
@@ -284,6 +288,15 @@
 		  <if test="device==1">
 		    and  token is null
 		 </if>
+	</select>
+	
+	<select id="selectByPhoneAndPassword" resultMap="BaseResultMap"
+	parameterType="map">
+	select 
+	<include refid="Base_Column_List"></include>
+	from users
+	where phone=#{phone,jdbcType=VARCHAR}
+	and password=#{password,jdbcType=VARCHAR}	
 	</select>
 	
 </mapper>

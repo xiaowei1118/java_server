@@ -11,4 +11,6 @@ public interface SellerService {
 	public Sellers selectByCampusAdmin(String campusAdmin);
 
 	public void updateLastLoginTime(Date date, String campusAdmin);
+
+	public void addASeller(Sellers seller);
 }

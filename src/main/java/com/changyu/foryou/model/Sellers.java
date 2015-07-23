@@ -9,7 +9,7 @@ public class Sellers {
 	
 	private Short type;
 	
-	private String campusId;
+	private Integer campusId;
 	
 	private Date lastLoginDate;
 
@@ -37,11 +37,11 @@ public class Sellers {
 		this.type = type;
 	}
 
-	public String getCampusId() {
+	public Integer getCampusId() {
 		return campusId;
 	}
 
-	public void setCampusId(String campusId) {
+	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
 	}
 

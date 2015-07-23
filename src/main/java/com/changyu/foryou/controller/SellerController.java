@@ -117,7 +117,37 @@ public class SellerController {
 		return map;	
 	}
 	
+	@RequestMapping("/registerIn")
+	public @ResponseBody Map<String, Object> registerIn(
+			@RequestParam String campusAdmin, @RequestParam String password,@RequestParam Integer campusId)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if (!campusAdmin.equals("")	&& !password.equals("")) 
+			{
+				String passwordMd5 = Md5.GetMD5Code(password);
+				Sellers seller = new Sellers();
+				seller.setCampusAdmin(campusAdmin);
+				seller.setPassword(passwordMd5);
+				seller.setCampusId(campusId);
+				sellerService.addASeller(seller);	
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "注册成功");
+			    }				
+				else
+				{
+					map.put(Constants.STATUS, Constants.FAILURE);
+					map.put(Constants.MESSAGE, "注册失败2");
+				}
+			}
+		    catch (Exception e) {
+			e.printStackTrace();
+			map.put(Constants.STATUS, Constants.FAILURE);
+			map.put(Constants.MESSAGE, "注册失败");
 
-	
+		}
+
+		return map;
+	}	
 	
 }

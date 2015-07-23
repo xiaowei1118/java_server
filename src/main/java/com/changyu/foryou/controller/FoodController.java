@@ -1017,11 +1017,18 @@ public class FoodController {
 	 */
 	@RequestMapping("/getHomeFood")
 	public @ResponseBody Map<String, Object> getHomeFood(
-			@RequestParam Integer campusId) {
+			@RequestParam Integer campusId,Integer limit,Integer page ) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			if(limit!=null&page!=null)
+			{
+				paramMap.put("limit", limit);
+				paramMap.put("offset", (page-1)*limit);
+			}
+			paramMap.put("campusId", campusId);
 			List<VeryShortFood> shortFood = foodService
-					.selectHomeFood(campusId);
+					.selectHomeFood(paramMap);
 
 			map.put("food", shortFood);
 			map.put(Constants.STATUS, Constants.SUCCESS);
