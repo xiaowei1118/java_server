@@ -432,7 +432,7 @@
 	   select
 	   <include refid="Very_Small_Column_List" />
 	   from food
-	   where to_home=1 and campus_id=#{campusId,jdbcType=INTEGER}
+	   where to_home=1 and campus_id=#{campusId,jdbcType=INTEGER} and tag=1
 	</select>
 
 
