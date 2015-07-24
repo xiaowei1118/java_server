@@ -137,4 +137,11 @@
     from food_category
     where parent_id!=0 and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
   </select>
+  
+  <select id="getAllFoodCategories" resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List" />
+    from food_category
+    where tag!=0 and category_id != 0  
+  </select>
 </mapper>

@@ -27,4 +27,6 @@ public interface FoodCategoryMapper {
 	List<FoodCategory> getAllFoodSecondCategories();
 
 	List<FoodCategory> getAllFoodFirstCategories();
+
+	List<FoodCategory> getAllFoodCategories();
 }

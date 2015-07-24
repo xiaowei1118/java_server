@@ -1041,4 +1041,21 @@ public class FoodController {
 
 		return map;
 	}
+	
+	@RequestMapping("/getAllFoodCategories")
+	public @ResponseBody Map<String, Object> getAllFoodCategories()
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
+			foodCategories=foodService.getAllFoodCategories();
+			JSONArray  json=JSONArray.parseArray(JSON.toJSONString(foodCategories));
+			map.put("total",foodCategories.size() );
+			map.put("rows", json);			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 }

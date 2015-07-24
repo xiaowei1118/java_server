@@ -84,5 +84,7 @@ public interface FoodService {
 
 	List<VeryShortFood> selectHomeFood(Map<String, Object> paramMap);
 
+	List<FoodCategory> getAllFoodCategories();
+
 	//void deleteFoodByParentCategory(String categoryId);
 }

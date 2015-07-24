@@ -224,6 +224,11 @@ public class FoodServiceImpl implements FoodService{
 	{
 		return foodMapper.selectHomeFood(paramMap);
 	}
+	
+	public List<FoodCategory> getAllFoodCategories()
+	{
+		return foodCategoryMapper.getAllFoodCategories();
+	}
 
 	
 	
