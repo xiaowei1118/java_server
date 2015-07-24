@@ -96,26 +96,38 @@
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Users">
-		update users
-		<set>
-			<if test="password != null">
-				password = #{password,jdbcType=VARCHAR},
-			</if>
-			<if test="type != null">
-				type = #{type,jdbcType=SMALLINT},
-			</if>
-			<if test="nickname != null">
-				nickname = #{nickname,jdbcType=VARCHAR},
-			</if>
-			<if test="imgUrl != null">
-				img_url = #{imgUrl,jdbcType=VARCHAR},
-			</if>
-			<if test="lastLoginDate != null">
-				last_login_date = #{lastLoginDate,jdbcType=DATE},
-			</if>
-		</set>
-		where phone = #{phone,jdbcType=VARCHAR}
-	</update>
+	update users
+	<set>
+		<if test="sex!=null">
+			sex=#{sex,jdbcType=SMALLINT},
+		</if>
+		<if test="qq!=null">
+			qq=#{qq,jdbcType=INTEGER},
+		</if>
+		<if test="weiXin!=null">
+			weixin=#{weiXin,jdbcType=VARCHAR},
+		</if>
+		<if test="academy!=null">
+			academy=#{academy,jdbcType=VARCHAR},
+		</if>
+		<if test="password != null">
+			password = #{password,jdbcType=VARCHAR},
+		</if>
+		<if test="type != null">
+			type = #{type,jdbcType=SMALLINT},
+		</if>
+		<if test="nickname != null">
+			nickname = #{nickname,jdbcType=VARCHAR},
+		</if>
+		<if test="imgUrl != null">
+			img_url = #{imgUrl,jdbcType=VARCHAR},
+		</if>
+		<if test="lastLoginDate != null">
+			last_login_date = #{lastLoginDate,jdbcType=DATE},
+		</if>
+	</set>
+	where phone = #{phone,jdbcType=VARCHAR}
+</update>
 	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Users">
 		update users
 		set

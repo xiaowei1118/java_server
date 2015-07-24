@@ -260,12 +260,32 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="/updateUserInfo")
-	public @ResponseBody Map<String,Object> updateUserInfo(@RequestParam String phone,String nickname,String type){
+	public @ResponseBody Map<String,Object> updateUserInfo(@RequestParam String phone,
+			String nickname,String type,String sex,String academy,String qq,String weiXin){
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
 			Users users=new Users();
 			users.setPhone(phone);
+			if(weiXin!=null)
+			{
+				users.setWeiXin(weiXin);
+			}
+			
+			if(qq!=null)
+			{
+				users.setQq(Integer.parseInt(qq));
+			}
+			
+			if(academy!=null)
+			{
+				users.setAcademy(academy);
+			}
+			
+			if(sex!=null){
+				users.setSex((short)Integer.parseInt(sex));
+			}
+			
 			if(nickname!=null){
 				users.setNickname(nickname);
 			}

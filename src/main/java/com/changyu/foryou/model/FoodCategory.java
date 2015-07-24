@@ -2,8 +2,6 @@ package com.changyu.foryou.model;
 
 import java.util.List;
 
-
-
 public class FoodCategory {
     private Integer categoryId;
     private Integer campusId;
