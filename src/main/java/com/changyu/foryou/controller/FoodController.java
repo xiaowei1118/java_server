@@ -1049,9 +1049,8 @@ public class FoodController {
 		try {
 			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
 			foodCategories=foodService.getAllFoodCategories();
-			JSONArray  json=JSONArray.parseArray(JSON.toJSONString(foodCategories));
 			map.put("total",foodCategories.size() );
-			map.put("rows", json);			
+			map.put("rows", foodCategories);			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
