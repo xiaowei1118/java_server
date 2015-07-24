@@ -98,6 +98,12 @@ public class SellerController {
 		return map;
 	}
 	
+	/**
+	 * 检查该账号是否注册过
+	 * @param campusAdmin
+	 * @return
+	 */
+	
 	@RequestMapping("/checkSellerIsExist")
 	public @ResponseBody Map<String, Object> checkSellerIsExist(String campusAdmin)
 	{
@@ -116,6 +122,14 @@ public class SellerController {
 		
 		return map;	
 	}
+	
+	/**
+	 * 商家注册
+	 * @param campusAdmin
+	 * @param password
+	 * @param campusId
+	 * @return
+	 */
 	
 	@RequestMapping("/registerIn")
 	public @ResponseBody Map<String, Object> registerIn(

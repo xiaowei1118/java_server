@@ -1049,7 +1049,7 @@ public class FoodController {
 		try {
 			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
 			foodCategories=foodService.getAllFoodCategories();
-			map.put("total",foodCategories.size() );
+			map.put("total",foodCategories.size());
 			map.put("rows", foodCategories);			
 			
 		} catch (Exception e) {
