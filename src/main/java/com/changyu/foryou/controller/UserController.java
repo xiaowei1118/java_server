@@ -600,4 +600,42 @@ public class UserController {
 		}
 		return resultMap;
 	}
+	
+	/**
+	 * 用户更改密码(用老密码更改）
+	 * @param phone
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 */
+	@RequestMapping("/changePassword")
+	public @ResponseBody Map<String,Object> changePassword(@RequestParam String phone
+			,@RequestParam String oldPassword,@RequestParam String newPassword)
+			{
+				Map<String, Object> map=new HashMap<String, Object>();
+				try {
+					Map<String, Object> paramMap=new HashMap<String, Object>();
+					paramMap.put("phone",phone);
+					String passwordMd5=Md5.GetMD5Code(oldPassword);
+					paramMap.put("password",passwordMd5);
+					List<Users> users=userService.selectByPhoneAndPassword(paramMap);
+					if(users.size()==0)
+					{
+						map.put(Constants.STATUS, Constants.FAILURE);
+						map.put(Constants.MESSAGE, "更改失败，原密码错误");
+					}
+					else
+					{
+						userService.updatePassword(phone,Md5.GetMD5Code(newPassword));  //对密码做md5加密
+						map.put(Constants.STATUS, Constants.SUCCESS);
+						map.put(Constants.MESSAGE, "修改密码成功");
+					}	
+					
+				} catch (Exception e) {
+					e.printStackTrace();	
+					map.put(Constants.STATUS, Constants.FAILURE);
+					map.put(Constants.MESSAGE, "修改密码失败");					
+				}				
+				return map;	
+	}
 }

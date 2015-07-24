@@ -1018,11 +1018,18 @@ public class FoodController {
 	 */
 	@RequestMapping("/getHomeFood")
 	public @ResponseBody Map<String, Object> getHomeFood(
-			@RequestParam Integer campusId) {
+			@RequestParam Integer campusId,Integer limit,Integer page ) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			if(limit!=null&page!=null)
+			{
+				paramMap.put("limit", limit);
+				paramMap.put("offset", (page-1)*limit);
+			}
+			paramMap.put("campusId", campusId);
 			List<VeryShortFood> shortFood = foodService
-					.selectHomeFood(campusId);
+					.selectHomeFood(paramMap);
 
 			map.put("food", shortFood);
 			map.put(Constants.STATUS, Constants.SUCCESS);
@@ -1036,6 +1043,11 @@ public class FoodController {
 		return map;
 	}
 	
+	/**
+	 * 获取主页的八个模块信息
+	 * @param campusId
+	 * @return
+	 */
 	@RequestMapping("/getHomeCategoryInfo")
 	public @ResponseBody Map<String,Object> getHomeCategoryInfo(Integer campusId){
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -1052,7 +1064,22 @@ public class FoodController {
 			map.put(Constants.STATUS, Constants.FAILURE);
 			map.put(Constants.MESSAGE, "获取主页分类失败");
 		}
+		return map;
+	}
 		
+	@RequestMapping("/getAllFoodCategories")
+	public @ResponseBody Map<String, Object> getAllFoodCategories()
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
+			foodCategories=foodService.getAllFoodCategories();
+			map.put("total",foodCategories.size() );
+			map.put("rows", foodCategories);	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return map;
 	}
 }

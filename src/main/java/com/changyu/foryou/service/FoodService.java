@@ -83,7 +83,9 @@ public interface FoodService {
 
 	Integer deleteFoodCommentById(Map<String, Object> paramMap);
 
-	List<VeryShortFood> selectHomeFood(Integer campusId);
+	List<VeryShortFood> selectHomeFood(Map<String, Object> paramMap);
+
+	List<FoodCategory> getAllFoodCategories();
 
 	List<HomeCategory> getHomeCategoryInfo(Map<String, Object> paramMap);
 

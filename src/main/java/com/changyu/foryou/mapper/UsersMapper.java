@@ -56,4 +56,6 @@ public interface UsersMapper {
 	String getUserTokenByPhone(Map<String, Object> paramterMap);      //获取用户token
 
 	Integer getCountsByDevice(Map<String, Object> paramMap);   //获取不同设备用户的个数
+
+	List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap);
 }

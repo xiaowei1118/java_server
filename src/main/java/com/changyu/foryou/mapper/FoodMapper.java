@@ -37,6 +37,6 @@ public interface FoodMapper {
 
 	int changeFoodNumber(Map<String, Object> paramMap);   //更新销量和减少库存
 
-	List<VeryShortFood> selectHomeFood(Integer campusId);
+	List<VeryShortFood> selectHomeFood(Map<String, Object> paramMap);
 
 }

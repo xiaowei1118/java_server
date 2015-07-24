@@ -52,4 +52,6 @@ public interface UserService {
 	String getUserTokenByPhone(Map<String, Object> paramterMap);
 
 	Integer getCountsByDevice(Map<String, Object> paramMap);
+
+	List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap);
 }

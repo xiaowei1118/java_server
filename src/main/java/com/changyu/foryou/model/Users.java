@@ -21,6 +21,14 @@ public class Users {
     
     private String token;
     
+    private Short sex;
+    
+    private String academy;
+    
+    private Integer qq;
+    
+    private String weiXin;
+    
     public Users(String phone2, String password2, String nickname2) {
 		phone=phone2;
 		password=password2;
@@ -104,5 +112,37 @@ public class Users {
 
 	public void setDefaultAddress(String defaultAddress) {
 		this.defaultAddress = defaultAddress;
+	}
+
+	public Short getSex() {
+		return sex;
+	}
+
+	public void setSex(Short sex) {
+		this.sex = sex;
+	}
+
+	public String getAcademy() {
+		return academy;
+	}
+
+	public void setAcademy(String academy) {
+		this.academy = academy;
+	}
+
+	public Integer getQq() {
+		return qq;
+	}
+
+	public void setQq(Integer qq) {
+		this.qq = qq;
+	}
+
+	public String getWeiXin() {
+		return weiXin;
+	}
+
+	public void setWeiXin(String weiXin) {
+		this.weiXin = weiXin;
 	}
 }
