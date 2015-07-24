@@ -32,13 +32,16 @@
 				$("#message").html("Phone or password is empty,Please theck it again");
 				return;
 			};
-
-			$.post("../../foryou/user/toLogin.do",
-				{phone:phone,password:password},
+			//待修改
+			$.post("../../foryou/seller/toLogin.do",
+				{campusAdmin:phone,password:password},
 				function(text){
 					var json=eval('('+text+')');
 					if (json.status=="success") {
 						if(json.type!=2){
+							//将用户名和密码存到cookie
+							document.cookie = "campusAdmin="+phone;
+							document.cookie = "password="+password;
 							window.location.href="index.html?backurl="+window.location.href;
 						}else{
                             $("#message").html("对不起，你没有登陆权限！");

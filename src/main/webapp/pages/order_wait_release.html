@@ -33,6 +33,7 @@
     <![endif]-->
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="../js/util.js"></script>
 <body>
 <div class="container">
 		<div class="page-header">
@@ -42,8 +43,6 @@
 		</div>
 		<table id="table" 
 		       data-id-field="phone"
-	           data-toggle="table"
-		       data-url="../../foryou/order/getPCSimpleOrder.do?status=1"
 		       data-pagination="true"
 		       data-side-pagination="server"
 		       data-search="true"
@@ -76,5 +75,16 @@
 		</table>
 </div>
 </body>
-
+<script>
+$(function(){
+	jQuery.getJSON("../seller/getSellerById.do?campusAdmin="+getCookie("campusAdmin"),function(data){
+		//alert(data.seller.campusId);
+		var campusId = data.seller.campusId;
+		//alert(campusId);
+		$("#table").bootstrapTable({
+			url:"../../foryou/order/getPCSimpleOrder.do?status=1&campusId="+campusId
+		});
+	});
+});
+</script>
 </html>
