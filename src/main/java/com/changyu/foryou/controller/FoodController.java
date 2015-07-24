@@ -28,6 +28,7 @@ import com.changyu.foryou.model.Food;
 import com.changyu.foryou.model.FoodCategory;
 import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
+import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.ShortFood;
 import com.changyu.foryou.model.VeryShortFood;
@@ -1042,6 +1043,30 @@ public class FoodController {
 		return map;
 	}
 	
+	/**
+	 * 获取主页的八个模块信息
+	 * @param campusId
+	 * @return
+	 */
+	@RequestMapping("/getHomeCategoryInfo")
+	public @ResponseBody Map<String,Object> getHomeCategoryInfo(Integer campusId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			Map<String,Object> paramMap=new HashMap<>();
+			paramMap.put("campusId", campusId);
+			List<HomeCategory>homeCategory=foodService.getHomeCategoryInfo(paramMap);
+			map.put("homeCategory", homeCategory);
+			map.put(Constants.STATUS, Constants.SUCCESS);
+			map.put(Constants.MESSAGE, "获取主页分类成功");
+		} catch (Exception e) {
+			e.getStackTrace();
+			map.put(Constants.STATUS, Constants.FAILURE);
+			map.put(Constants.MESSAGE, "获取主页分类失败");
+		}
+		return map;
+	}
+		
 	@RequestMapping("/getAllFoodCategories")
 	public @ResponseBody Map<String, Object> getAllFoodCategories()
 	{
@@ -1049,12 +1074,12 @@ public class FoodController {
 		try {
 			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
 			foodCategories=foodService.getAllFoodCategories();
-			map.put("total",foodCategories.size());
-			map.put("rows", foodCategories);			
-			
+			map.put("total",foodCategories.size() );
+			map.put("rows", foodCategories);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return map;
 	}
 }

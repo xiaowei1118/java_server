@@ -10,6 +10,13 @@
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="tag" property="tag" jdbcType="SMALLINT" />
   </resultMap>
+  
+  <resultMap id="HomeCategoryMap" type="com.changyu.foryou.model.HomeCategory">
+  	<id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="serial" property="serial" jdbcType="SMALLINT" />
+    <result column="is_open" property="isOpen" jdbcType="SMALLINT" />
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     category_id, campus_id,category, img_url, parent_id, tag
   </sql>
@@ -138,6 +145,13 @@
     where parent_id!=0 and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
   </select>
   
+  <select id="getHomeCategoryInfo" resultMap="HomeCategoryMap">
+    select 
+       category_id,serial,is_open
+    from food_category
+    where serial is not null and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
+    order by serial
+  </select>
   <select id="getAllFoodCategories" resultMap="BaseResultMap">
    select 
     <include refid="Base_Column_List" />

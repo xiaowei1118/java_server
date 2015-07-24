@@ -15,6 +15,7 @@ import com.changyu.foryou.model.FoodCategory;
 import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.FoodSpecialKey;
+import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.ShortFood;
 import com.changyu.foryou.model.VeryShortFood;
 import com.changyu.foryou.service.FoodService;
@@ -228,6 +229,11 @@ public class FoodServiceImpl implements FoodService{
 	public List<FoodCategory> getAllFoodCategories()
 	{
 		return foodCategoryMapper.getAllFoodCategories();
+	}
+
+	@Override
+	public List<HomeCategory> getHomeCategoryInfo(Map<String, Object> paramMap) {
+		return foodCategoryMapper.getHomeCategoryInfo(paramMap);
 	}
 
 	
