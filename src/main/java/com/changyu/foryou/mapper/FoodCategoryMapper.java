@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.changyu.foryou.model.FoodCategory;
+import com.changyu.foryou.model.HomeCategory;
 
 public interface FoodCategoryMapper {
     int deleteByPrimaryKey(Map<String, Object> paramMap);
@@ -27,4 +28,6 @@ public interface FoodCategoryMapper {
 	List<FoodCategory> getAllFoodSecondCategories();
 
 	List<FoodCategory> getAllFoodFirstCategories();
+
+	List<HomeCategory> getHomeCategoryInfo(Map<String, Object> paramMap);
 }
