@@ -29,6 +29,11 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.getCampusWithCity(paramMap);
 	}
 
+	@Override
+	public Integer getIdByName(Map<String, Object> paramMap) {
+		return campusMapper.getIdByName(paramMap);
+	}
+
 	
 
 }

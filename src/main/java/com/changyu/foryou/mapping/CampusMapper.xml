@@ -119,4 +119,11 @@
 		from city
         left outer join campus on campus.city_id =city.city_id
 	</select>
+	
+	<select id="getIdByName" resultType="java.lang.Integer">
+		select 
+		campus_id
+		from campus
+		where campus_name=#{campusName,jdbcType=VARCHAR}
+	</select>
 </mapper>

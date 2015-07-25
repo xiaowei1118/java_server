@@ -85,7 +85,7 @@ public interface FoodService {
 
 	List<VeryShortFood> selectHomeFood(Map<String, Object> paramMap);
 
-	List<FoodCategory> getAllFoodCategories();
+	List<FoodCategory> getAllFoodCategories(Map<String,Object> paramMap);
 
 	List<HomeCategory> getHomeCategoryInfo(Map<String, Object> paramMap);
 

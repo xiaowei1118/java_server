@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.changyu.foryou.model.Campus;
@@ -80,10 +81,35 @@ public class CampusController {
 		   
 		} catch (Exception e) {
 			e.getStackTrace();
-			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
 	    	resultMap.put(Constants.MESSAGE, "获取校区失败！");
 		}
 		return resultMap;
 	}
+	
+	/**
+	 * 根据校区名获取校区Id
+	 */
+	
+	@RequestMapping("/getIdByName")
+	public @ResponseBody Map<String,Object> getIdByName(@RequestParam String campusName){
+		Map<String,Object> map=new HashMap<String,Object>();
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();	
+			paramMap.put("campusName", campusName.trim());
+			Integer campusId=campusService.getIdByName(paramMap);
+			map.put(Constants.STATUS, Constants.SUCCESS);
+	    	map.put(Constants.MESSAGE, "获取校区Id成功！");
+			map.put("campusId", campusId);	
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+			map.put(Constants.STATUS, Constants.FAILURE);
+	    	map.put(Constants.MESSAGE, "获取校区Id失败！");
+		}
+		
+		return map;
+	}
+	
 
 }

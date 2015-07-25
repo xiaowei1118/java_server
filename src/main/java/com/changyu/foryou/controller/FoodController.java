@@ -733,7 +733,7 @@ public class FoodController {
 	}*/
 
 	/**
-	 * 
+	 * 删除食品分类
 	 * @param categoryIds
 	 * @return
 	 */
@@ -1067,13 +1067,20 @@ public class FoodController {
 		return map;
 	}
 		
+	
+	/**
+	 * 获取所有的分类
+	 * @return
+	 */
 	@RequestMapping("/getAllFoodCategories")
-	public @ResponseBody Map<String, Object> getAllFoodCategories()
+	public @ResponseBody Map<String, Object> getAllFoodCategories(String campusId)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+			Map<String,Object> paramMap=new HashMap<>();
+			paramMap.put("campusId", campusId);
 			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
-			foodCategories=foodService.getAllFoodCategories();
+			foodCategories=foodService.getAllFoodCategories(paramMap);
 			map.put("total",foodCategories.size() );
 			map.put("rows", foodCategories);	
 		} catch (Exception e) {

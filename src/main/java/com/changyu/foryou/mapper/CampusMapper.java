@@ -22,4 +22,6 @@ public interface CampusMapper {
     List<Campus> selectAllCampus(Map<String, Object> paramMap);
 
 	List<CityWithCampus> getCampusWithCity(Map<String, Object> paramMap);
+
+	Integer getIdByName(Map<String, Object> paramMap);
 }

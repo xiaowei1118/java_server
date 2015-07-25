@@ -226,9 +226,9 @@ public class FoodServiceImpl implements FoodService{
 		return foodMapper.selectHomeFood(paramMap);
 	}
 	
-	public List<FoodCategory> getAllFoodCategories()
+	public List<FoodCategory> getAllFoodCategories(Map<String, Object> paramMap)
 	{
-		return foodCategoryMapper.getAllFoodCategories();
+		return foodCategoryMapper.getAllFoodCategories(paramMap);
 	}
 
 	@Override

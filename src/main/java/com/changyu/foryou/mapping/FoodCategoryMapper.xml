@@ -156,6 +156,11 @@
    select 
     <include refid="Base_Column_List" />
     from food_category
-    where tag!=0 and category_id != 0  
+    <where>
+   		 tag!=0 and category_id != 0  
+   		 <if test="campusId!=null">
+   		 and campus_id=#{campusId,jdbcType=INTEGER}
+   		 </if>
+    </where> 
   </select>
 </mapper>

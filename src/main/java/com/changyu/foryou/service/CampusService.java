@@ -12,4 +12,6 @@ public interface CampusService {
 
 	List<CityWithCampus> getCampusWithCity(Map<String, Object> paramMap);
 
+	Integer getIdByName(Map<String, Object> paramMap);
+
 }
