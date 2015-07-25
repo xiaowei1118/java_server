@@ -88,6 +88,7 @@ public class CampusController {
 	}
 	
 	/**
+	 * @param campusName
 	 * 根据校区名获取校区Id
 	 */
 	
