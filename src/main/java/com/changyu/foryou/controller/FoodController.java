@@ -1073,11 +1073,16 @@ public class FoodController {
 	 * @return
 	 */
 	@RequestMapping("/getAllFoodCategories")
-	public @ResponseBody Map<String, Object> getAllFoodCategories(String campusId,Integer limit,Integer page )
+	public @ResponseBody Map<String, Object> getAllFoodCategories(String campusId,Integer limit,Integer page,Integer offset)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			Map<String,Object> paramMap=new HashMap<>();
+			if(limit!=null&offset!=null)
+			{
+				paramMap.put("limit", offset);
+				paramMap.put("offset", offset);
+			}
 			if(limit!=null&page!=null)
 			{
 				paramMap.put("limit", limit);
