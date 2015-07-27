@@ -96,8 +96,8 @@ public class UserServiceImpl implements UserService {
 		return usersMapper.setUserToken(phoneId,token);
 	}
 
-	public List<Feedback> getFeedbacks() {
-		return feedbackMapper.getFeedbacks();
+	public List<Feedback> getFeedbacks(Map<String, Object> paramMap) {
+		return feedbackMapper.getFeedbacks(paramMap);
 	}
 
 	public String getUserToken(String togetherId) {
