@@ -591,46 +591,46 @@ public class OrderController {
 	}
 
 	
-	
-	/**========================================================
-	 * 超级管理员获取待发货单信息
-	 * @param isSelected
-	 * @return
-	 */
-	@RequestMapping("/superAdminGetOrder")
-	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected){
-		Map<String, Object> map=new HashMap<String, Object>();
-		try {
-			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(isSelected);
-
-			for(SuperAdminOrder superAdminOrder:orders){
-				String togetherId=superAdminOrder.getTogetherId();
-
-				List<DeliverChildOrder> deliverChildOrders=orderService.getDeliverChildOrders(togetherId);
-				Float priceFloat=0f;
-
-				//获取该笔订单总价
-				for(DeliverChildOrder deliverChildOrder:deliverChildOrders){				
-					if(deliverChildOrder.getIsDiscount()==0){
-						priceFloat+=deliverChildOrder.getPrice()*deliverChildOrder.getOrderCount();						
-					}else{
-						priceFloat+=deliverChildOrder.getDiscountPrice()*deliverChildOrder.getOrderCount();
-					}
-				}
-				superAdminOrder.setPrice(priceFloat);
-			}
-			map.put(Constants.STATUS, Constants.SUCCESS);
-			map.put(Constants.MESSAGE, "获取订单成功！");
-			map.put("orderList",JSONArray.parse(JSON.toJSONStringWithDateFormat(orders, "yyyy-MM-dd")));
-		} catch (Exception e) {
-			map.put(Constants.STATUS, Constants.FAILURE);
-			map.put(Constants.MESSAGE, "获取订单失败！");
-		}
-
-		return map;
-	}
-
-	
+//	
+//	/**========================================================
+//	 * 超级管理员获取待发货单信息
+//	 * @param isSelected
+//	 * @return
+//	 */
+//	@RequestMapping("/superAdminGetOrder")
+//	public @ResponseBody Map<String, Object>  superAdminGetOrder(@RequestParam Integer isSelected){
+//		Map<String, Object> map=new HashMap<String, Object>();
+//		try {
+//			List<SuperAdminOrder> orders=orderService.superAdminGetOrder(isSelected);
+//
+//			for(SuperAdminOrder superAdminOrder:orders){
+//				String togetherId=superAdminOrder.getTogetherId();
+//
+//				List<DeliverChildOrder> deliverChildOrders=orderService.getDeliverChildOrders(togetherId);
+//				Float priceFloat=0f;
+//
+//				//获取该笔订单总价
+//				for(DeliverChildOrder deliverChildOrder:deliverChildOrders){				
+//					if(deliverChildOrder.getIsDiscount()==0){
+//						priceFloat+=deliverChildOrder.getPrice()*deliverChildOrder.getOrderCount();						
+//					}else{
+//						priceFloat+=deliverChildOrder.getDiscountPrice()*deliverChildOrder.getOrderCount();
+//					}
+//				}
+//				superAdminOrder.setPrice(priceFloat);
+//			}
+//			map.put(Constants.STATUS, Constants.SUCCESS);
+//			map.put(Constants.MESSAGE, "获取订单成功！");
+//			map.put("orderList",JSONArray.parse(JSON.toJSONStringWithDateFormat(orders, "yyyy-MM-dd")));
+//		} catch (Exception e) {
+//			map.put(Constants.STATUS, Constants.FAILURE);
+//			map.put(Constants.MESSAGE, "获取订单失败！");
+//		}
+//
+//		return map;
+//	}
+//
+//	
 
 
 	/**

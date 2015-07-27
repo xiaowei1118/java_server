@@ -502,6 +502,7 @@
 		create_time DESC
 	</select>
 
+<!--    待测试 -->
 	<delete id="deleteCartGood" parameterType="com.changyu.foryou.model.Order">
 		delete from orders
 		where phone=
@@ -536,7 +537,7 @@
 	<select id="superAdminGetOrder" resultMap="SuperAdminOrderMap">
 		SELECT
 		together_id,users.nickname as admin_name,
-		together_date,message,reserve_time,
+		together_date,orders.message,reserve_time,
 		address
 		FROM
 		orders,
