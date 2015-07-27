@@ -236,6 +236,12 @@ public class FoodServiceImpl implements FoodService{
 		return foodCategoryMapper.getHomeCategoryInfo(paramMap);
 	}
 
+	@Override
+	public Integer getAllCategoryCount() {
+		
+		return foodCategoryMapper.getAllCategoryCount();
+	}
+
 	
 	
 }

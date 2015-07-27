@@ -5,13 +5,14 @@
 	<title>无标题文档</title>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
+	<link rel="stylesheet" href="../css/bootstrap-editable.css">
 	<link rel="shortcut icon" href="img/icon.png">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap-table-editable.js"></script>
+	<script src="../js/bootstrap-editable.js"></script>
+	<script src="../js/util.js"></script>
 </head>
-
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/util.js"></script>
-
 <!-- <script src="../js/bootstrap-table.min.js"></script>
 	<script src="../js/bootstrap-table-zh-CN.min.js"></script> -->
 
@@ -22,33 +23,33 @@
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
 
 	<body>
-		<div class="container">
-			<div class="row-fluid">
-				<div class="page-header">
-					<h1>零食分类管理</h1>
-				</div>
-
-				<div id="toolbar" class="btn-group">
-					<button id="plus" type="button" class="btn btn-default">
-						<i class="icon-plus"></i>
-					</button>
-					<button id="edit" type="button" class="btn btn-default">
-						<i class="icon-edit"></i>
-					</button>
-					<button id="delete" type="button" class="btn btn-default">
-						<i class="icon-trash"></i>
-					</button>
-				</div>
-				<div>
+		<div>
+			<div class="container">
+				<div class="row-fluid">
+					<div class="page-header">
+						<h1>零食分类管理</h1>
+					</div>
+					<div id="toolbar" class="btn-group">
+						<button id="plus" type="button" class="btn btn-default">
+							<i class="icon-plus"></i>
+						</button>
+						<button id="edit" type="button" class="btn btn-default">
+							<i class="icon-edit"></i>
+						</button>
+						<button id="delete" type="button" class="btn btn-default">
+							<i class="icon-trash"></i>
+						</button>
+					</div>
 					<table id="table" 
 					data-id-field="categoryId"         
 					data-toolbar="#toolbar"
 					data-pagination="true"
-    				data-side-pagination="server"
+					data-side-pagination="server"
 					data-search="true"
 					data-show-refresh="true"
 					data-show-toggle="true"
 					data-show-columns="true" 
+					data-show-export="true"
 					data-height="80%"
 					data-click-to-select="true">
 					<thead>
@@ -56,11 +57,12 @@
 							<th data-field="state" data-checkbox="true"></th>
 							<th data-align="center" data-field="categoryId">食品分类Id</th>
 							<th data-align="center" data-field="category">分类名称</th>
+							<th data-align="center" data-field="isOpen" data-formatter="isOpenFormatter">是否开通</th>
+							<th data-align="center" data-field="dasd" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
 						</tr>
 					</thead>
 				</table>
 			</div>
-
 		</div>
 	</div>
 
@@ -95,26 +97,106 @@
 					<button type="button" onclick="submitData();" class="btn btn-primary">提交更改</button>
 				</div>
 			</form>
-
-
 		</div>
 		<!-- /.modal-content -->
 	</div>
 </div>
 <!-- /.modal -->
-</body>
+
+
 <script>
 //表格数据初始化
 	$(function() {
-		jQuery.getJSON("../seller/getSellerById.do?campusAdmin="
-				+ getCookie("campusAdmin"), function(data) {
-			//alert(data.seller.campusId);
-			var campusId = data.seller.campusId;
-			$("#table").bootstrapTable({
-				url : "../service/getAllFoodCategories.do"
-			});
+		var campusId = getCookie("campusId");
+		//alert(campusId);
+		$("#table").bootstrapTable({
+			url : "../service/getAllFoodCategories.do?campusId="+campusId
 		});
+		/*$("#table").ajaxComplete(function(){
+			$("#table>tbody>tr>td:odd:odd").text("fdsdfgd");
+		});*/
 	});
+	
+	function isOpenFormatter(value, row){
+		if(value==1){
+			return "是";
+			//<a href="javascript:void(0)" data-name="name" data-pk="undefined" 
+			//data-value="Item 0" class="editable editable-click" 
+			//data-original-title="" title="">Item 0</a>
+		}
+		else{
+			return "否";
+		}
+	}
+	
+	function operateFormatter(value, row, index) {
+        return [
+            '<a class="like" href="javascript:void(0)" title="Like">',
+                '开通',
+            '</a>',
+            '<a class="edit ml10" href="javascript:void(0)" title="Edit">',
+                '关闭',
+            '</a>',
+            '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
+                '',
+            '</a>'
+        ].join('');
+    }
+
+    window.operateEvents = {
+        'click .like': function (e, value, row, index) {
+            //alert('You click like icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+            if(confirm("确认开通此分类吗？")){
+            	$("#table").bootstrapTable('updateRow', {index: index, row: {
+            			isOpen: 1
+            		}
+            	});
+            	var campusId = getCookie("campusId");
+            	//alert(campusId);
+            	$.post("../service/updateFoodCategory.do",{
+            		categoryId : row.categoryId,
+            		categoryName : row.category,
+            		campusId : campusId,
+					isOpen : 1,
+            		status : 1//0是添加，1是更新
+            	},function(data){
+            		alert(data.message);
+            	}, "json");
+            }
+            //alert(row.isOpen);
+        },
+        'click .edit': function (e, value, row, index) {
+            //alert('You click edit icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+        	if(confirm("确认关闭此分类吗？")){
+            	$("#table").bootstrapTable('updateRow', {index: index, row: {
+            			isOpen: 0
+            		}
+            	});
+            	var campusId = getCookie("campusId");
+            	//alert(campusId);
+            	$.post("../service/updateFoodCategory.do",{
+            		categoryId : row.categoryId,
+            		categoryName : row.category,
+            		campusId : campusId,
+					isOpen : 0,
+            		status : 1//0是添加，1是更新
+            	},function(data){
+            		alert(data.message);
+            	}, "json");
+            }
+        },
+        'click .remove': function (e, value, row, index) {
+            //alert('You click remove icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+        }
+    };
+	/*$(function(){
+		$("#table>tbody>tr>td:odd:odd").click(function(){
+			alert("checked");
+		});
+	});*/
 </script>
 <Script>
 	var $table = $("#table");
@@ -150,9 +232,8 @@
 				for (var i = array.length - 1; i >= 0; i--) {
 					categoryIds+=array[i].categoryId+",";
 				};
-				jQuery.getJSON("../seller/getSellerById.do?campusAdmin="+getCookie("campusAdmin"),function(data){
 					//alert(data.seller.campusId);
-					var campusId = data.seller.campusId;
+					var campusId = getCookie("campusId");
 					$.post("../service/deleteFoodCategory.do", {categoryIds:categoryIds, campusId:campusId}, function(json){
 						json = eval('(' + json + ')');
 						if (json.status=="success") {
@@ -163,7 +244,6 @@
 							alert(json.message);
 						}
 					});
-				});
 			}
 		});
 	});
@@ -192,31 +272,30 @@
 			$("#category_id").focus();
 			return;
 		};
-	
+
 		$(function(){
-    		jQuery.getJSON("../seller/getSellerById.do?campusAdmin="+getCookie("campusAdmin"),function(data){
-    			var campusId = data.seller.campusId;
-    			$.post("../service/updateFoodCategory.do", {
-    				campusId : campusId,
-    				categoryId : categoryId,
-    				categoryName : categoryName,
-    				status : flag
-    			}, function(text) {
-    				var json = eval('(' + text + ')');
-    				if (json.status == "success") {
-    					$("#myModal").modal('hide');
-    					$('#table').bootstrapTable('refresh', {
-    						silent : true,
-    						query : {
-    							foo : 'bar'
-    						}
-    					});
-    				} else {
-    					alert(json.message);
-    				}
-    			});
-        	});
-    	});
+				var campusId = getCookie("campusId");
+				$.post("../service/updateFoodCategory.do", {
+					campusId : campusId,
+					categoryId : categoryId,
+					categoryName : categoryName,
+					status : flag
+				}, function(text) {
+					var json = eval('(' + text + ')');
+					if (json.status == "success") {
+						$("#myModal").modal('hide');
+						$('#table').bootstrapTable('refresh', {
+							silent : true,
+							query : {
+								foo : 'bar'
+							}
+						});
+					} else {
+						alert(json.message);
+					}
+				});
+		});
 	}
 </Script>
+</body>
 </html>

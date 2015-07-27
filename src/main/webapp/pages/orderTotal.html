@@ -85,28 +85,25 @@
     });
   });
 
-  //需要校区ID
+  
+	//需要校区ID
 	function getTotalDate(datetime) {
-		
-	jQuery.getJSON("../seller/getSellerById.do?campusAdmin="
-				+ getCookie("campusAdmin"), function(data) {
-			//alert(data.seller.campusId);
-			var campusId = data.seller.campusId;
-			//alert(campusId);
-			$.post("../order/getOrdersByDate.do", {
-				date : datetime,
-				campusId : campusId
-			}, function(text) {
-				var data = eval('(' + text + ')');
-				$("h2[name='counts']").text("订单列表(" + data.counts + ")");
-				$("span[name='counts']").text(data.counts);
-				$("span[name='total_price']").text(data.total_price);
 
-				for (var i = data.orderList.length - 1; i >= 0; i--) {
-					formatList(data.orderList[i], i + 1);
-				}
+		var campusId = getCookie("campusId");
+		//alert(campusId);
+		$.post("../order/getOrdersByDate.do", {
+			date : datetime,
+			campusId : campusId
+		}, function(text) {
+			var data = eval('(' + text + ')');
+			$("h2[name='counts']").text("订单列表(" + data.counts + ")");
+			$("span[name='counts']").text(data.counts);
+			$("span[name='total_price']").text(data.total_price);
 
-			});
+			for (var i = data.orderList.length - 1; i >= 0; i--) {
+				formatList(data.orderList[i], i + 1);
+			}
+
 		});
 
 	}

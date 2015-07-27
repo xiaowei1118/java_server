@@ -63,13 +63,10 @@ src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstr
     	};
     	
     	$(function(){
-    		jQuery.getJSON("../seller/getSellerById.do?campusAdmin="+getCookie("campusAdmin"),function(data){
-        		//alert(data.seller.campusId);
-        		var campusId = data.seller.campusId;
+    		var campusId = getCookie("campusId");
         		//alert(campusId);
-        		$("#table").bootstrapTable({
-        			url:"../service/getAllComments.do?campusId=1"
-        		});
+        	$("#table").bootstrapTable({
+        		url:"../service/getAllComments.do?campusId="+campusId
         	});
     	});
     	

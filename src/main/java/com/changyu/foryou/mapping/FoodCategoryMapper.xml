@@ -9,6 +9,8 @@
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="tag" property="tag" jdbcType="SMALLINT" />
+    <result column="serial" property="serial" jdbcType="SMALLINT"/>
+    <result column="is_open" property="isOpen" jdbcType="SMALLINT"/>
   </resultMap>
   
   <resultMap id="HomeCategoryMap" type="com.changyu.foryou.model.HomeCategory">
@@ -18,7 +20,7 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-    category_id, campus_id,category, img_url, parent_id, tag
+    category_id, campus_id,category, img_url, parent_id, tag, serial, is_open
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -97,6 +99,9 @@
       <if test="tag != null" >
         tag = #{tag,jdbcType=SMALLINT},
       </if>
+      <if test="isOpen != null">
+      	is_open = #{isOpen,jdbcType=SMALLINT}
+      </if>
     </set>
     where category_id = #{categoryId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
   </update>
@@ -152,6 +157,7 @@
     where serial is not null and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
     order by serial
   </select>
+  
   <select id="getAllFoodCategories" resultMap="BaseResultMap">
    select 
     <include refid="Base_Column_List" />
@@ -166,5 +172,9 @@
         LIMIT #{limit,jdbcType=INTEGER} OFFSET #{offset,jdbcType=INTEGER}
     </if>
     
+  </select>
+  
+  <select id="getAllCategoryCount" resultType="Integer">
+  select COUNT(*) from food_category where tag!=0
   </select>
 </mapper>

@@ -90,4 +90,6 @@ public interface FoodService {
 	List<HomeCategory> getHomeCategoryInfo(Map<String, Object> paramMap);
 
 	//void deleteFoodByParentCategory(String categoryId);
+	
+	Integer getAllCategoryCount();
 }

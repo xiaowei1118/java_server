@@ -61,7 +61,8 @@ public class SellerController {
 				&& !password.trim().equals("")) {
 			Sellers sellers = sellerService.selectByCampusAdmin(campusAdmin);
 			if (sellers != null) {
-				if (sellers.getPassword().equals(Md5.GetMD5Code(password))) {
+				//if (sellers.getPassword().equals(Md5.GetMD5Code(password))) {
+				if (sellers.getPassword().equals(password)) {
 					map.put(Constants.STATUS, Constants.SUCCESS);
 					map.put(Constants.MESSAGE, "登陆成功");
 					map.put("type", sellers.getType());
