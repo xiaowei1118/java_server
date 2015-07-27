@@ -558,9 +558,17 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="/getFeedbacks")
-	public @ResponseBody JSONArray getFeedbacks(){
+	public @ResponseBody JSONArray getFeedbacks(Integer campusId,Integer limit,Integer page){
 		try {
-			List<Feedback> feedbacks=userService.getFeedbacks();
+			Map<String, Object>paramMap=new HashMap<String, Object>();
+			paramMap.put("campusId", campusId);
+			if(limit!=null&&page!=null)
+			{
+				paramMap.put("limit",limit);
+				paramMap.put("offset", (page-1)*limit);
+			}
+			
+			List<Feedback> feedbacks=userService.getFeedbacks(paramMap);
 			return JSONArray.parseArray(JSON.toJSONStringWithDateFormat(feedbacks, "yyyy-MM-dd"));
 		} catch (Exception e) {
 			e.printStackTrace();
