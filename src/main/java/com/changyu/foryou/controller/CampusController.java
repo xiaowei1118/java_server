@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
@@ -147,4 +148,29 @@ public class CampusController {
 		return responseMap;
 	}
 
+	//selectByPrimaryKey
+	/**
+	 * @param campusName
+	 * 根据校区id获取校区
+	 */
+	
+	@RequestMapping("/getCampusById")
+	public @ResponseBody Map<String,Object> getCampusById(@RequestParam Integer campusId){
+		Map<String,Object> map=new HashMap<String,Object>();
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();	
+			paramMap.put("campusId", campusId);
+			Campus campus=campusService.getCampusById(paramMap);
+			map.put(Constants.STATUS, Constants.SUCCESS);
+	    	map.put(Constants.MESSAGE, "获取校区成功！");
+			map.put("campus", JSON.toJSON(campus));	
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+			map.put(Constants.STATUS, Constants.FAILURE);
+	    	map.put(Constants.MESSAGE, "获取校区失败！");
+		}
+		
+		return map;
+	}
 }

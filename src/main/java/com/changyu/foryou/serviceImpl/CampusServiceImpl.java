@@ -40,6 +40,12 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.closeCampus(requestMap);
 	}
 
+	@Override
+	public Campus getCampusById(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.selectCampusById(paramMap);
+	}
+
 	
 
 }

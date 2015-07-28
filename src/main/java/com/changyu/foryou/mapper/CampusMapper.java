@@ -26,4 +26,6 @@ public interface CampusMapper {
 	Integer getIdByName(Map<String, Object> paramMap);
 	
 	Integer closeCampus(Map<String, Object> requestMap);
+	
+	Campus selectCampusById(Map<String, Object> paramMap);
 }

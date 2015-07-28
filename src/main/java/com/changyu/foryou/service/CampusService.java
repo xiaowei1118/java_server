@@ -15,4 +15,6 @@ public interface CampusService {
 	Integer getIdByName(Map<String, Object> paramMap);
 
 	public Integer closeCampus(Map<String, Object> requestMap);
+	
+	public Campus getCampusById(Map<String, Object> paramMap);
 }

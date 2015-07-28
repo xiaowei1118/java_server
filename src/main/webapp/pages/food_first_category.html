@@ -232,10 +232,16 @@
 
 	$(function() {
 		$deleteButton.click(function() {
+			
 			if(confirm("是否确定删除？")){
 				var array = $table.bootstrapTable('getSelections');
 				var categoryIds="";
 				for (var i = array.length - 1; i >= 0; i--) {
+					//判断序列是否是1-8，是的话，不能删除
+					if(array[i].serial>0||array[i].serial<9){
+						alert("主要分类不能删除！");
+						return;
+					}
 					categoryIds+=array[i].categoryId+",";
 				};
 					//alert(data.seller.campusId);
@@ -285,7 +291,8 @@
 					campusId : campusId,
 					categoryId : categoryId,
 					categoryName : categoryName,
-					status : flag
+					status : flag,
+					isOpen : 1
 				}, function(text) {
 					var json = eval('(' + text + ')');
 					if (json.status == "success") {
@@ -296,6 +303,7 @@
 								foo : 'bar'
 							}
 						});
+						alert(json.message);
 					} else {
 						alert(json.message);
 					}

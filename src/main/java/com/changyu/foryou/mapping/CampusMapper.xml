@@ -145,4 +145,9 @@
 		</if>
 		</where>
 	</update>
+	
+	<select id="selectCampusById" resultMap="BaseResultMap">
+		select * from campus where campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+	
 </mapper>
