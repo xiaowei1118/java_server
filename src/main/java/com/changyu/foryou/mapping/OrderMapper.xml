@@ -545,6 +545,9 @@
 		receiver,
 		users
 		WHERE
+		<if test="campusId!=null">
+		orders.campus_id = #{campusId,jdbcType=INTEGER} and 
+		</if>
 		orders.food_id = food.food_id and
 		orders.tag=1
 		and
@@ -558,6 +561,9 @@
 		<if test="isSelected == 1">
 			and users.phone=orders.admin_phone and orders.status = 1
 			and admin_phone is not null
+		</if>
+		<if test="offset!=null and limit!=null">
+		limit #{limit} offset #{offset}
 		</if>
 		group by together_id
 		order by together_date DESC

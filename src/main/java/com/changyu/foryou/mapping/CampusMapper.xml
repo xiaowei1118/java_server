@@ -5,6 +5,10 @@
 		<id column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="open_time" property="openTime" jdbcType="TIME"/>
+		<result column="close_time" property="closeTime" jdbcType="TIME"/>
+		<result column="close_reason" property="closeReason" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="SMALLINT"/>
 		<!--<result column="location_x" property="locationX" jdbcType="DOUBLE" />
 		<result column="location_y" property="locationY" jdbcType="DOUBLE" /> -->
 	</resultMap>
@@ -126,4 +130,24 @@
 		from campus
 		where campus_name=#{campusName,jdbcType=VARCHAR}
 	</select>
+	
+	<update id="closeCampus">
+		update campus set 
+		<if test="status != null">
+		status=#{status, jdbcType=SMALLINT}
+		</if>
+		<if test="closeReason != null">
+		,close_reason=#{closeReason, jdbcType=VARCHAR}
+		</if>
+		<where>
+		<if test="campusId != null">
+			campus_id=#{campusId, jdbcType=INTEGER}
+		</if>
+		</where>
+	</update>
+	
+	<select id="selectCampusById" resultMap="BaseResultMap">
+		select * from campus where campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+	
 </mapper>

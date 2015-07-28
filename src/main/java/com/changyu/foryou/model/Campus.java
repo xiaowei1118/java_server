@@ -1,11 +1,21 @@
 package com.changyu.foryou.model;
 
+import java.util.Date;
+
 public class Campus {
     private Integer campusId;
 
     private String campusName;
 
     private Integer cityId;
+    
+    private Date openTime;
+    
+    private Date closeTime;
+    
+    private Short status;
+    
+    private String closeReason;
 
    /* private Double locationX;
 
@@ -30,6 +40,42 @@ public class Campus {
    public Integer getCityId() {
         return cityId;
     }
+
+public Date getOpenTime() {
+	return openTime;
+}
+
+public void setOpenTime(Date openTime) {
+	this.openTime = openTime;
+}
+
+public Date getCloseTime() {
+	return closeTime;
+}
+
+public void setCloseTime(Date closeTime) {
+	this.closeTime = closeTime;
+}
+
+public Short getStatus() {
+	return status;
+}
+
+public void setStatus(Short status) {
+	this.status = status;
+}
+
+public String getCloseReason() {
+	return closeReason;
+}
+
+public void setCloseReason(String closeReason) {
+	this.closeReason = closeReason;
+}
+
+public void setCityId(Integer cityId) {
+	this.cityId = cityId;
+}
 
    /* public void setCityId(Integer cityId) {
         this.cityId = cityId;

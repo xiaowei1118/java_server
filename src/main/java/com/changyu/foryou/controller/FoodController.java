@@ -609,7 +609,7 @@ public class FoodController {
 	 * @return
 	 */
 	@RequestMapping(value="updateFoodCategory")
-	public @ResponseBody Map<String, Object> updateFoodFristCategory(@RequestParam Integer campusId,Integer categoryId,@RequestParam String categoryName, Short isOpen,Integer status){
+	public @ResponseBody Map<String, Object> updateFoodFristCategory(@RequestParam Integer campusId,Integer categoryId,@RequestParam String categoryName,@RequestParam Short isOpen,Integer status){
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		try {

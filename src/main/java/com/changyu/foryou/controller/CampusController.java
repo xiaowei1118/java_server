@@ -1,5 +1,7 @@
 package com.changyu.foryou.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
@@ -112,5 +115,62 @@ public class CampusController {
 		return map;
 	}
 	
+	//一键关店
+	/**
+	 * 
+	 * @param campusId
+	 * @param closeTime
+	 * @param reason 关店原因
+	 * @param status 关店传0，开店传1。
+	 * @return
+	 */
+	@RequestMapping("/closeCampus")
+	public @ResponseBody Map<String, Object> closeCampus(@RequestParam Integer campusId, @RequestParam String closeReason, @RequestParam Short status){
+		Map<String, Object> requestMap = new HashMap<String, Object>();
+		Map<String, Object> responseMap = new HashMap<String,Object>();
+		try{
+			//Calendar calendar=Calendar.getInstance();
+			//Date date=calendar.getTime();   //设置反馈时的日期
+			requestMap.put("campusId", campusId);
+			//requestMap.put("closeTime", date);
+			requestMap.put("closeReason", closeReason);
+			requestMap.put("status", status);
+			Integer isClosed = campusService.closeCampus(requestMap);
+			
+			responseMap.put("isClosed", isClosed);
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "关店成功！");
+		}catch(Exception e){
+			e.getStackTrace();
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "关店失败！");
+		}
+		return responseMap;
+	}
 
+	//selectByPrimaryKey
+	/**
+	 * @param campusName
+	 * 根据校区id获取校区
+	 */
+	
+	@RequestMapping("/getCampusById")
+	public @ResponseBody Map<String,Object> getCampusById(@RequestParam Integer campusId){
+		Map<String,Object> map=new HashMap<String,Object>();
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();	
+			paramMap.put("campusId", campusId);
+			Campus campus=campusService.getCampusById(paramMap);
+			map.put(Constants.STATUS, Constants.SUCCESS);
+	    	map.put(Constants.MESSAGE, "获取校区成功！");
+			map.put("campus", JSON.toJSON(campus));	
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+			map.put(Constants.STATUS, Constants.FAILURE);
+	    	map.put(Constants.MESSAGE, "获取校区失败！");
+		}
+		
+		return map;
+	}
 }

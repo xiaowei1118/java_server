@@ -145,6 +145,7 @@
 
     window.operateEvents = {
         'click .like': function (e, value, row, index) {
+        	
             //alert('You click like icon, row: ' + JSON.stringify(row));
             //console.log(value, row, index);
             if(confirm("确认开通此分类吗？")){
@@ -167,7 +168,12 @@
             //alert(row.isOpen);
         },
         'click .edit': function (e, value, row, index) {
-            //alert('You click edit icon, row: ' + JSON.stringify(row));
+        	//alert('You click like icon, row: ' + JSON.stringify(row));
+        	if(row.serial>0&&row.serial<9){
+        		//这些分类不能删，不能关
+        		alert("抱歉，此分类为主要分类，无法关闭");
+        		return;
+        	}
             //console.log(value, row, index);
         	if(confirm("确认关闭此分类吗？")){
             	$("#table").bootstrapTable('updateRow', {index: index, row: {
@@ -226,10 +232,16 @@
 
 	$(function() {
 		$deleteButton.click(function() {
+			
 			if(confirm("是否确定删除？")){
 				var array = $table.bootstrapTable('getSelections');
 				var categoryIds="";
 				for (var i = array.length - 1; i >= 0; i--) {
+					//判断序列是否是1-8，是的话，不能删除
+					if(array[i].serial>0||array[i].serial<9){
+						alert("主要分类不能删除！");
+						return;
+					}
 					categoryIds+=array[i].categoryId+",";
 				};
 					//alert(data.seller.campusId);
@@ -279,7 +291,8 @@
 					campusId : campusId,
 					categoryId : categoryId,
 					categoryName : categoryName,
-					status : flag
+					status : flag,
+					isOpen : 1
 				}, function(text) {
 					var json = eval('(' + text + ')');
 					if (json.status == "success") {
@@ -290,6 +303,7 @@
 								foo : 'bar'
 							}
 						});
+						alert(json.message);
 					} else {
 						alert(json.message);
 					}
