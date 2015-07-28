@@ -145,6 +145,7 @@
 
     window.operateEvents = {
         'click .like': function (e, value, row, index) {
+        	
             //alert('You click like icon, row: ' + JSON.stringify(row));
             //console.log(value, row, index);
             if(confirm("确认开通此分类吗？")){
@@ -167,7 +168,12 @@
             //alert(row.isOpen);
         },
         'click .edit': function (e, value, row, index) {
-            //alert('You click edit icon, row: ' + JSON.stringify(row));
+        	//alert('You click like icon, row: ' + JSON.stringify(row));
+        	if(row.serial>0&&row.serial<9){
+        		//这些分类不能删，不能关
+        		alert("抱歉，此分类为主要分类，无法关闭");
+        		return;
+        	}
             //console.log(value, row, index);
         	if(confirm("确认关闭此分类吗？")){
             	$("#table").bootstrapTable('updateRow', {index: index, row: {

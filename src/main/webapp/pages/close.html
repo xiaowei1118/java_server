@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta charset='utf-8'>
+<head>
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="../js/util.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2" id="closeShop">
+			<form class="form">
+				<div class="form-group">
+					<br/><br/><br/>
+					<textarea id="reason" class="form-control" rows="8" placeholder="关店原因"></textarea>
+				</div>
+			</form>
+			<button class="btn btn-lg btn-primary btn-block" onclick="toClose()">关闭</button>
+		</div>
+	</div>
+</body>
+<script>
+	function toClose(){
+		var closeReason = $("#reason").val();
+		if(!closeReason){
+			alert("对不起，关店原因不能为空！");
+		}
+		else{
+			$.post("../campus/closeCampus.do",{
+				campusId : getCookie("campusId"),
+				closeReason : closeReason,
+				status : 0//关店传0，开店传1。
+			},function(data){
+				alert(data.message);
+			},"json");
+		}
+		
+	}
+</script>
+</html>

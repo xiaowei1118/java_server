@@ -1,5 +1,7 @@
 package com.changyu.foryou.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +114,37 @@ public class CampusController {
 		return map;
 	}
 	
+	//一键关店
+	/**
+	 * 
+	 * @param campusId
+	 * @param closeTime
+	 * @param reason 关店原因
+	 * @param status 关店传0，开店传1。
+	 * @return
+	 */
+	@RequestMapping("/closeCampus")
+	public @ResponseBody Map<String, Object> closeCampus(@RequestParam Integer campusId, @RequestParam String closeReason, @RequestParam Short status){
+		Map<String, Object> requestMap = new HashMap<String, Object>();
+		Map<String, Object> responseMap = new HashMap<String,Object>();
+		try{
+			//Calendar calendar=Calendar.getInstance();
+			//Date date=calendar.getTime();   //设置反馈时的日期
+			requestMap.put("campusId", campusId);
+			//requestMap.put("closeTime", date);
+			requestMap.put("closeReason", closeReason);
+			requestMap.put("status", status);
+			Integer isClosed = campusService.closeCampus(requestMap);
+			
+			responseMap.put("isClosed", isClosed);
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "关店成功！");
+		}catch(Exception e){
+			e.getStackTrace();
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "关店失败！");
+		}
+		return responseMap;
+	}
 
 }

@@ -32,7 +32,7 @@
 				$("#message").html("Phone or password is empty,Please theck it again");
 				return;
 			};
-			//待修改
+			
 			$.post("../../foryou/seller/toLogin.do",
 				{campusAdmin:phone,password:password},
 				function(text){
@@ -42,7 +42,13 @@
 							//将用户名和密码存到cookie
 							document.cookie = "campusAdmin="+phone;
 							document.cookie = "password="+password;
-							window.location.href="index.html?backurl="+window.location.href;
+							//将当前管理员管理的校区id存到cookie
+							$.post("seller/getSellerById.do",{
+								campusAdmin : phone
+							},function(data){
+								//alert(data);
+								window.location.href="index.html?backurl="+window.location.href;
+							},"json");
 						}else{
                             $("#message").html("对不起，你没有登陆权限！");
 						}
