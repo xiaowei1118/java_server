@@ -43,6 +43,15 @@
      select phone_id,suggestion,date
      from 
      feedback
+     <where>
+     <if test="campusId!=null">
+      campus_id=#{campusId,jdbcType=INTEGER}
+     </if>
+     </where>
      order by date DESC
+     <if test="limit!=null and offset!=null">
+     LIMIT #{limit,jdbcType=INTEGER} OFFSET
+			#{offset,jdbcType=INTEGER}
+     </if>
   </select>
 </mapper>

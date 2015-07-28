@@ -39,7 +39,7 @@ public interface UserService {
 
 	int setUserToken(String phoneId, String token);
 
-	List<Feedback> getFeedbacks();
+	List<Feedback> getFeedbacks(Map<String, Object> paramMap);
 
 	String getUserToken(String togetherId);
 

@@ -8,16 +8,19 @@ public class Receiver extends ReceiverKey {
     private String address;
 
     private Short tag;
+    
+    private Integer campusId;
 
     public Receiver(){
     	
     }
     
-    public Receiver(String phoneId,String phone, String name, String address) {
+    public Receiver(String phoneId,String phone, String name, String address,Integer campusId) {
 		super.setPhoneId(phoneId);
 		this.phone = phone;
 		this.name = name;
 		this.address = address;
+		this.campusId=campusId;
 	}
 
 
@@ -52,4 +55,12 @@ public class Receiver extends ReceiverKey {
     public void setTag(Short tag) {
         this.tag = tag;
     }
+
+	public Integer getCampusId() {
+		return campusId;
+	}
+
+	public void setCampusId(Integer campusId) {
+		this.campusId = campusId;
+	}
 }
