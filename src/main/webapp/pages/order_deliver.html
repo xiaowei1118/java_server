@@ -75,13 +75,10 @@
 </body>
 <script>
 $(function(){
-	jQuery.getJSON("../seller/getSellerById.do?campusAdmin="+getCookie("campusAdmin"),function(data){
-		//alert(data.seller.campusId);
-		var campusId = data.seller.campusId;
+	var campusId = getCookie("campusId");
 		//alert(campusId);
-		$("#table").bootstrapTable({
-			url:"../../foryou/order/getPCSimpleOrder.do?status=2&campusId="+campusId
-		});
+	$("#table").bootstrapTable({
+		url:"../../foryou/order/getPCSimpleOrder.do?status=2&campusId="+campusId
 	});
 });
 </script>

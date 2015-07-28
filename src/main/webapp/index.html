@@ -9,6 +9,7 @@
 <script type='text/javascript' src="js/jquery-1.7.2.min.js"></script>
 <script type='text/javascript' src="js/bootstrap.min.js"></script>
 <script type='text/javascript' src="js/main.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
 <style>
 a:hover {
 	text-decoration: none
@@ -41,6 +42,18 @@ a:hover {
 			<div class='container-fluid'>
 				<a class='brand pull-left'><img class='icon-white icon-leaf'></i>米奇零点</a>
 				<ul class='nav pull-right'>
+				<li>
+				<!-- 添加校区下拉菜单 -->
+		<div class="dropdown">
+			<button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+				校区
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="dropdown-campus">
+				
+			</ul>
+		</div>
+				</li>
 					<li><a href="../foryou/user/logout.do" rel='tooltip'
 						title='退出'><i class='icon-white icon-off'></i></a></li>
 				</ul>
@@ -153,6 +166,26 @@ a:hover {
 
 		</section>
 	</section>
-
+<script>
+$(function(){
+	$("#dropdown-campus").empty();//移除子元素
+	$.getJSON("campus/getAllCampus.do", function(data){
+		//alert(data.campus[0].campusName);
+		for(var i=0; i < data.campus.length; i++){
+			$("#dropdown-campus").append("<li role='presentation'><a class='campus-item' role='menuitem' tabindex='-1' href='#'>"+data.campus[i].campusName+"</a></li>");
+		}
+		$(".campus-item").on("click", function(event){
+			//alert($(this).text());
+			var campusName = $(this).text();
+			$.getJSON("campus/getIdByName.do?campusName="+campusName,function(data){
+				document.cookie="campusId="+data.campusId;
+				//alert(getCookie("campusId"));
+			});
+			
+		});
+	});
+	
+});
+</script>
 </body>
 </html>

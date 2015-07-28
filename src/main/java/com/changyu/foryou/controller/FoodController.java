@@ -603,12 +603,13 @@ public class FoodController {
 	 * 添加分类
 	 * @param categoryId
 	 * @param categoryName
+	 * @param isOpen是否开通
 	 * @param status 0添加，1更新
 	 * @param campusId 校区id
 	 * @return
 	 */
 	@RequestMapping(value="updateFoodCategory")
-	public @ResponseBody Map<String, Object> updateFoodFristCategory(@RequestParam Integer campusId,Integer categoryId,@RequestParam String categoryName,Integer status){
+	public @ResponseBody Map<String, Object> updateFoodFristCategory(@RequestParam Integer campusId,Integer categoryId,@RequestParam String categoryName, Short isOpen,Integer status){
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		try {
@@ -618,6 +619,7 @@ public class FoodController {
 			foodCategory.setTag((short)1);
 			foodCategory.setParentId(0);
 			foodCategory.setCampusId(campusId);
+			foodCategory.setIsOpen((short)isOpen);
 
 			Map<String,Object> paramMap=new HashMap<String,Object>();
 			paramMap.put("categoryId",categoryId);
@@ -1080,7 +1082,7 @@ public class FoodController {
 			Map<String,Object> paramMap=new HashMap<>();
 			if(limit!=null&offset!=null)
 			{
-				paramMap.put("limit", offset);
+				paramMap.put("limit", limit);
 				paramMap.put("offset", offset);
 			}
 			if(limit!=null&page!=null)
@@ -1091,7 +1093,7 @@ public class FoodController {
 			paramMap.put("campusId", campusId);
 			List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
 			foodCategories=foodService.getAllFoodCategories(paramMap);
-			map.put("total",foodCategories.size() );
+			map.put("total",foodService.getAllCategoryCount());
 			map.put("rows", foodCategories);	
 		} catch (Exception e) {
 			e.printStackTrace();

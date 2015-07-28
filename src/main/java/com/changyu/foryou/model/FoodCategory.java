@@ -13,6 +13,10 @@ public class FoodCategory {
     private Integer parentId;
 
     private Short tag;
+    
+    private Short serial;
+    
+    private Short isOpen;
 
     private List<FoodCategory> child;
     
@@ -70,5 +74,21 @@ public class FoodCategory {
 
 	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
+	}
+
+	public Short getSerial() {
+		return serial;
+	}
+
+	public void setSerial(Short serial) {
+		this.serial = serial;
+	}
+
+	public Short getIsOpen() {
+		return isOpen;
+	}
+
+	public void setIsOpen(Short isOpen) {
+		this.isOpen = isOpen;
 	}
 }
