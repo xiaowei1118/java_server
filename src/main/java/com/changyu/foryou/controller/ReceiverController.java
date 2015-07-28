@@ -54,12 +54,14 @@ public class ReceiverController {
 	 * @param phone  收货人手机号
 	 * @param name   收货人名字
 	 * @param address  收货人地址
+	 * @param campusId 校区号
 	 * @return
 	 */
 	@RequestMapping("/addReceiver")
-	public @ResponseBody Map<String, Object>addReceiver(@RequestParam String phoneId,@RequestParam String phone,@RequestParam String name,@RequestParam String address){
+	public @ResponseBody Map<String, Object>addReceiver(@RequestParam String phoneId,@RequestParam String phone,
+			@RequestParam String name,@RequestParam String address,@RequestParam Integer campusId){
 		Map<String, Object> map=new HashMap<String ,Object>();
-		Receiver receiver=new Receiver(phoneId,phone,name,address);
+		Receiver receiver=new Receiver(phoneId,phone,name,address,campusId);
 
 		try {
 
@@ -121,13 +123,15 @@ public class ReceiverController {
 	 * @param address  收货人地址
 	 * @param name    收货人姓名
 	 * @param phone   收货人手机号
+	 * @param campusId 校区
 	 * @return
 	 */
 	@RequestMapping("/updateReceiver")
-	public @ResponseBody Map<String, Object> updateReceiver(@RequestParam String phoneId,@RequestParam String rank,String address,String name,String phone){
+	public @ResponseBody Map<String, Object> updateReceiver(@RequestParam String phoneId,@RequestParam String rank,
+			String address,String name,String phone,Integer campusId){
 		Map<String, Object> map=new HashMap<String ,Object>();
 		try {
-			Receiver receiver=new Receiver(phoneId,phone,name,address);
+			Receiver receiver=new Receiver(phoneId,phone,name,address,campusId);
 			receiver.setRank(rank);
 			if(receiverService.updateByPrimaryKeySelective(receiver)!=-1){
 				map.put(Constants.STATUS, Constants.SUCCESS);

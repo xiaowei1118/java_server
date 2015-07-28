@@ -8,9 +8,10 @@
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		rank, phone_id, phone, name, address, tag
+		rank, phone_id, phone, name, address, tag,campus_id
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="com.changyu.foryou.model.ReceiverKey">
@@ -29,11 +30,12 @@
 	</update>
 	<insert id="insert" parameterType="com.changyu.foryou.model.Receiver">
 		insert into receiver (rank, phone_id, phone,
-		name, address, tag,is_out
+		name, address, tag,is_out,campus_id
 		)
 		values (#{rank,jdbcType=VARCHAR}, #{phoneId,jdbcType=VARCHAR},
 		#{phone,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{tag,jdbcType=SMALLINT},0
+		#{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{tag,jdbcType=SMALLINT},0,
+		#{campusId,jdbcType=VARCHAR}
 		)
 	</insert>
 	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Receiver">
@@ -100,6 +102,9 @@
 			</if>
 			<if test="tag != null">
 				tag = #{tag,jdbcType=SMALLINT},
+			</if>
+			<if test="campusId!=null">
+			    campus_id=#{campusId,jdbcType=INTEGER},
 			</if>
 		</set>
 		where rank = #{rank,jdbcType=VARCHAR}
