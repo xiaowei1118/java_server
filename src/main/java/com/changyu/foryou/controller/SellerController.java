@@ -33,17 +33,7 @@ public class SellerController {
 	}
 	
 	
-	/**
-	 * 测试
-	 * */
-	@RequestMapping("/hello")
-	public @ResponseBody Map<String,Object> sayHello()
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		int flag=sellerService.test();
-		map.put("flag",flag);
-		return map;
-	}
+
 	
 	
 	/**

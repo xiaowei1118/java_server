@@ -1,15 +1,16 @@
 package com.changyu.foryou.model;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class CityWithCampus extends City{
-	private Set<Campus> campuses;
+	private ArrayList<Campus> campuses;
 
-	public Set<Campus> getCampuses() {
+	public ArrayList<Campus> getCampuses() {
 		return campuses;
 	}
 
-	public void setCampuses(Set<Campus> campuses) {
+	public void setCampuses(ArrayList<Campus> campuses) {
 		this.campuses = campuses;
 	}
 	

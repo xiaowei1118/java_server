@@ -9,6 +9,7 @@
 		<result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		rank, phone_id, phone, name, address, tag,campus_id
@@ -141,10 +142,11 @@
 
 	<select id="selectByPhoneId" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from receiver
+		rank, phone_id, phone, name, address, tag,campus.campus_id,campus_name
+		from receiver,campus
 		where phone_id = #{phoneId,jdbcType=VARCHAR}
 		and is_out =0
+		and receiver.campus_id=campus.campus_id
 		order by rank ASC
 	</select>
 

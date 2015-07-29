@@ -8,7 +8,6 @@ import com.changyu.foryou.model.Sellers;
 
 public interface SellerMapper {
 
-	int test();
 
 	Sellers selectByCampusAdmin(String campusAdmin);
 

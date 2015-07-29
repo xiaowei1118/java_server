@@ -10,6 +10,8 @@ public class Receiver extends ReceiverKey {
     private Short tag;
     
     private Integer campusId;
+    
+    private String campusName;
 
     public Receiver(){
     	
@@ -62,5 +64,13 @@ public class Receiver extends ReceiverKey {
 
 	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
+	}
+
+	public String getCampusName() {
+		return campusName;
+	}
+
+	public void setCampusName(String campusName) {
+		this.campusName = campusName;
 	}
 }

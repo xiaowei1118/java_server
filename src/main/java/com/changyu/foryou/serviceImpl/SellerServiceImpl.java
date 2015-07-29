@@ -20,10 +20,6 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 
-	public int test() {		
-		return sellerMapper.test();
-	}
-
 
 	
 	public Sellers selectByCampusAdmin(String campusAdmin) {

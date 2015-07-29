@@ -391,7 +391,7 @@ public class UserController {
 		image=image.replaceAll(" ", "+");
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
-		realPath=realPath.replace("SJFood", "MickeyImage");
+		realPath=realPath.replace("foryou", "ForyouImage");
 		realPath=realPath.concat("/users/");
 		String fileNameString=new Random().nextLong()+""+new Date().getTime()+".jpg";
 
@@ -462,7 +462,7 @@ public class UserController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
-		realPath=realPath.replace("SJFood", "MickeyImage");
+		realPath=realPath.replace("foryou", "ForyouImage");
 		realPath=realPath.concat("/android/");
 		String fileNameString=new Random().nextInt(100)+""+new Date().getTime()+"log.log";
 
