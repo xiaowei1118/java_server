@@ -44,8 +44,9 @@ src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstr
 
     	window.actionEvents = {
     		'click .delete': function (e, value, row, index) {
-    			$.post("../../foryou/food/deleteFoodCommentById.do",
+    			$.post("../../foryou/service/deleteFoodCommentById.do",
     			{
+    				campusId : getCookie("campusId"),
     				foodId:row.foodId,
     				date:row.date,
     				grade:row.grade

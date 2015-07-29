@@ -10,7 +10,7 @@
 
 <script src="../js/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
-
+<script src="../js/util.js"></script>
 
 <!-- <script src="../js/bootstrap-table.min.js"></script>
 	<script src="../js/bootstrap-table-zh-CN.min.js"></script> -->
@@ -47,8 +47,7 @@
                 	<i class="icon-trash"></i>
                 </button>
             </div>
-            <table id="table" data-id-field="newsId" data-toggle="table"
-            data-url="../../foryou/news/getPCAllNews.do" data-pagination="true"
+            <table id="table" data-id-field="newsId" data-pagination="true"
             data-toolbar="#toolbar" data-height="80%" data-show-refresh="true"
             data-show-columns="true" data-show-toggle="true"
             data-toolbar-align="right" data-click-to-select="true">
@@ -82,6 +81,12 @@
     		action="../../foryou/news/uploadNewsImage.do">
     		<div class="modal-body">
     			<div class="control-group">
+    				<label class="control-label" for="campus-id">校区Id</label>
+    				<div class="controls">
+    					<input type="text" name="campusId" id="campus-id" readonly>
+    				</div>
+    			</div>
+    			<div class="control-group">
     				<label class="control-label" for="titleId">新闻标题</label>
     				<div class="controls">
     					<input type="text" name="title" id="titleId" placeholder="title">
@@ -114,11 +119,14 @@
 </div>
 </body>
 <script>
+	$("#campus-id").val(getCookie("campusId"));
 	var $table = $("#table");
 	var $plusButton = $("#plus");
 	var $deleteButton = $("#delete");
 	var $title = $("#titleId");
-
+	$table.bootstrapTable({
+		url : "../news/getPCAllNews.do?campusId="+getCookie("campusId")
+	});
     //隐藏的时候清除数据
     $("#myModal").on("hidden.bs.modal", function() {  
     	$("#titleId").val("");
@@ -150,6 +158,7 @@
 				if (confirm("是否确定要执行删除操作！")) {
 					//做删除的访问请求
 					$.post("../../foryou/news/deleteNews.do", {
+						campusId : getCookie("campusId"),
 						newsId : newsIdString
 					}, function(text) {
 						var json = eval('(' + text + ')');

@@ -20,6 +20,7 @@
 
 	<script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script src="../js/util.js"></script>
 	<style>
 		.ml10 {
 			margin-left: 10px;
@@ -48,8 +49,8 @@
 					</button>
 				</div>
 				<div>
-					<table id="table" data-toggle="table" data-id-field="foodId"
-					data-toolbar="#toolbar" data-url="../../foryou/food/getAllFoods.do"
+					<table id="table" data-id-field="foodId"
+					data-toolbar="#toolbar"
 					data-search="true" data-show-refresh="true" data-show-toggle="true"
 					data-pagination="true" data-show-columns="true" data-height="80%"
 					data-click-to-select="true">
@@ -69,8 +70,9 @@
 							data-sortable="true">食品标签</th>
 							<th data-align="left" data-field="categoryId"
 							data-sortable="true">所属分类</th>
-							<th data-align="left" data-field="action"
+							<!-- <th data-align="left" data-field="action"
 							data-formatter="actionFormatter" data-events="actionEvents">修改口味及数量</th>
+							 -->
 						</tr>
 					</thead>
 				</table>
@@ -80,134 +82,143 @@
 	</div>
 
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">&times;</button>
-				<h3 class="modal-title" id="myModalLabel">添加食品</h3>
-			</div>
-			<form id="dataCommit" class="form-horizontal" method="post" enctype="multipart/form-data"
-			action="../food/updateFoods.do">
-			<div class="modal-body">
-				<div class="control-group">
-					<label class="control-label" for="foodId2">食品Id</label>
-					<div class="controls">
-						<input type="text" id="foodId2" name="foodId"
-						placeholder="Food Id">
-					</div>
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title" id="myModalLabel">添加食品</h3>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="categoryId2">食品分类Id</label>
-					<div class="controls">
-						<input type="text" id="categoryId2" name="categoyId"
-						placeholder="Category Id">
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="foodName2">食品名称</label>
-					<div class="controls">
-						<input type="text" id="foodName2" name="foodName"
-						placeholder="Food Name">
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="price2">食品价格</label>
-					<div class="controls">
-						<input type="text" id="price2" name="price"
-						placeholder="Present Price"> <span class="add-on">￥</span>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="discountPrice2">折扣价</label>
-					<div class="controls">
-						<input type="text" id="discountPrice2" name="discountPrice"
-						placeholder="Discount Price"> <span class="add-on">￥</span>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="primeCost2">成本价</label>
-					<div class="controls">
-						<input type="text" id="primeCost2" name="primeCost"
-						placeholder="Prime Cost"> <span class="add-on">￥</span>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="foodTag2">食品标签</label>
-					<div class="controls">
-						<input type="text" id="foodTag2" name="foodTag"
-						placeholder="食品标签之间请以逗号隔开">
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="imgUrl2">食品主图片</label>
-					<div class="controls">
-						<input type="file" id="imgUrl2" name="myfile"
-						placeholder="Choose Picture">
-					</div>
-				</div>
+				<form id="dataCommit" class="form-horizontal" method="post"
+					enctype="multipart/form-data" action="../service/updateFoods.do">
+					<div class="modal-body">
+						<div class="control-group">
+							<label class="control-label" for="campusId2">校区Id</label>
+							<div class="controls">
+								<input type="text" id="campusId2" name="campusId" readonly="readonly">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="foodId2">食品Id</label>
+							<div class="controls">
+								<input type="text" id="foodId2" name="foodId"
+									placeholder="Food Id">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="categoryId2">食品分类Id</label>
+							<div class="controls">
+								<input type="text" id="categoryId2" name="categoyId"
+									placeholder="Category Id">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="foodName2">食品名称</label>
+							<div class="controls">
+								<input type="text" id="foodName2" name="foodName"
+									placeholder="Food Name">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="price2">食品价格</label>
+							<div class="controls">
+								<input type="text" id="price2" name="price"
+									placeholder="Present Price"> <span class="add-on">￥</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="discountPrice2">折扣价</label>
+							<div class="controls">
+								<input type="text" id="discountPrice2" name="discountPrice"
+									placeholder="Discount Price"> <span class="add-on">￥</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="primeCost2">成本价</label>
+							<div class="controls">
+								<input type="text" id="primeCost2" name="primeCost"
+									placeholder="Prime Cost"> <span class="add-on">￥</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="foodTag2">食品标签</label>
+							<div class="controls">
+								<input type="text" id="foodTag2" name="foodTag"
+									placeholder="食品标签之间请以逗号隔开">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="imgUrl2">食品主图片</label>
+							<div class="controls">
+								<input type="file" id="imgUrl2" name="myfile"
+									placeholder="Choose Picture">
+							</div>
+						</div>
 
-				<div class="control-group">
-					<label class="control-label" for="imgUrl3">食品详情图片</label>
-					<div class="controls">
-						<input type="file" id="imgUrl3" name="myfile"
-						placeholder="Choose Picture">
+						<div class="control-group">
+							<label class="control-label" for="imgUrl3">食品详情图片</label>
+							<div class="controls">
+								<input type="file" id="imgUrl3" name="myfile"
+									placeholder="Choose Picture">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="status">食品状态</label>
+							<div class="controls">
+								<label class="radio inline"> <input type="radio"
+									name="status" id="status" value="1" checked> 上架
+								</label> <label class="radio inline"> <input type="radio"
+									name="status" id="status2" value="0"> 下架
+								</label>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="is_discount">是否打折</label>
+							<div class="controls">
+								<label class="radio inline"> <input type="radio"
+									name="is_discount" id="is_discount" value="0" checked>
+									不打折
+								</label> <label class="radio inline"> <input type="radio"
+									name="is_discount" id="is_discount2" value="1"> 打折
+								</label>
+							</div>
+						</div>
+
+						<!-- <div class="control-group" id="is_default">
+							<label class="control-label" for="default_special">是否使用默认口味</label>
+							<div class="controls" id="default_special">
+								<label class="radio inline"> <input type="radio"
+									id="default_special1" name="default_special" value="1" checked>
+									是
+								</label> <label class="radio inline"> <input type="radio"
+									id="default_special2" name="default_special" value="0">
+									否
+								</label>
+							</div>
+						</div>
+						<div class="control-group" id="foodCounts">
+							<label class="control-label" for="foodCount">默认口味数量</label>
+							<div class="controls">
+								<input type="text" id="foodCount" name="foodCount"
+									placeholder="Food Count">
+							</div>
+						</div>
+						 -->
 					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="status">食品状态</label>
-					<div class="controls">
-						<label class="radio inline"> <input type="radio"
-							name="status" id="status" value="1" checked> 上架
-						</label> <label class="radio inline"> <input type="radio"
-						name="status" id="status2" value="0"> 下架
-					</label>
-				</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" id="commitFoodDataButton"
+							class="btn btn-primary">提交更改</button>
+					</div>
+				</form>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="is_discount">是否打折</label>
-				<div class="controls">
-					<label class="radio inline"> <input type="radio"
-						name="is_discount" id="is_discount" value="0" checked>
-						不打折
-					</label> <label class="radio inline"> <input type="radio"
-					name="is_discount" id="is_discount2" value="1"> 打折
-				</label>
-			</div>
-		</div>
-
-		<div class="control-group" id="is_default">
-			<label class="control-label" for="default_special">是否使用默认口味</label>
-			<div class="controls" id="default_special">
-				<label class="radio inline"> <input type="radio" id="default_special1"
-					name="default_special"  value="1" checked>
-					是
-				</label> <label class="radio inline"> <input type="radio" id="default_special2" 
-				name="default_special"  value="0">
-				否
-			</label>
+			<!-- /.modal-content -->
 		</div>
 	</div>
-	<div class="control-group" id="foodCounts">
-		<label class="control-label" for="foodCount">默认口味数量</label>
-		<div class="controls">
-			<input type="text" id="foodCount" name="foodCount"
-			placeholder="Food Count">
-		</div>
-	</div>
-</div>
-<div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	<button type="button" id="commitFoodDataButton" class="btn btn-primary">提交更改</button>
-</div>
-</form>
-</div>
-<!-- /.modal-content -->
-</div>
-</div>
-<!-- /.modal -->
+	<!-- /.modal -->
+<!-- 
 <div class="modal fade" id="addSpecialModal" tabindex="-1"
 role="dialog" aria-labelledby="addSpecialModalLabel"
 aria-hidden="true">
@@ -251,11 +262,12 @@ aria-hidden="true">
 			onclick="addSpecialCommit();">确定添加</button>
 		</div>
 	</div>
-	<!-- /.modal-content -->
-</div>
-<!-- modal -->
 
 </div>
+
+
+</div>
+
 <div class="modal fade" id="editSpecialModal" tabindex="-1"
 role="dialog" aria-labelledby="editSpecialModalLabel"
 aria-hidden="true">
@@ -313,26 +325,33 @@ aria-hidden="true">
 	<button type="button" id="submitUpdateSpecial" class="btn btn-primary">提交修改</button>
 </div>
 </div>
-<!-- /.modal-content -->
-</div>
-<!-- modal -->
+
 </div>
 
+</div>
+ -->
 </body>
-
+<script>
+	$("#campusId2").val(getCookie("campusId"));
+</script>
 <Script>
 	var $table = $("#table");
 	var $plusButton = $("#plus");
 	var $editButton = $("#edit");
 	var $deleteButton = $("#delete");
-	var $specialName = $("#specialName");
-	var $specialCount = $("#specialCount");
+	//var $specialName = $("#specialName");
+	//var $specialCount = $("#specialCount");
 	var foodId = "";
 	var tag=0;
 	var rowId;
+	
+	//初始化表格数据
+	$table.bootstrapTable({
+		url : "../service/getAllFoods.do?campusId="+getCookie("campusId")
+	});
 
 	$(function() {
-		$("input[name='default_special']").on("change",function(){
+		/*$("input[name='default_special']").on("change",function(){
 			var value = $("input[name='default_special']:checked").val();
 			if(value==0){
 				alert("请务必添加该食品后为其添加口味。");
@@ -344,7 +363,7 @@ aria-hidden="true">
 				// var div = document.getElementById("myModal");
 				// div.scrollTop = div.scrollHeight;
 			}
-		});
+		});*/
 
 		$editButton.click(function() {
 			var array = $table.bootstrapTable('getSelections');
@@ -401,8 +420,8 @@ aria-hidden="true">
 
 			var is_discount=document.getElementsByName("is_discount");
 			is_discount[0].checked=true;
-			var default_special=document.getElementsByName("default_special");
-			default_special[0].checked=true;
+			//var default_special=document.getElementsByName("default_special");
+			//default_special[0].checked=true;
 		});
 
 		$deleteButton.click(function() {
@@ -422,8 +441,9 @@ aria-hidden="true">
 
 				if (confirm("是否确定要执行删除操作！")) {
 					//做删除的访问请求
-					$.post("../../foryou/food/deleteFood.do", {
-						foodId : foodIdString
+					$.post("../../foryou/service/deleteFood.do", {
+						foodId : foodIdString,
+						campusId : getCookie("campusId")
 					}, function(text) {
 						var json = eval('(' + text + ')');
 						if (json.status == "success") {
@@ -453,7 +473,7 @@ function actionFormatter(value, row, index) {
 	'<i class="icon-edit"></i>', '</a>' ].join('');
 }
 
-function addSpecialCommit() {
+/*function addSpecialCommit() {
 	specialName = $specialName.val();
 	specialCount = $specialCount.val();
 
@@ -482,15 +502,15 @@ function addSpecialCommit() {
 		alert("口味名称和口味数量不能为空！");
 	}
 
-}
+}*/
 
-window.actionEvents = {
+/*window.actionEvents = {
 	'click .addSpecial' : function(e, value, row, index) {
 		foodId = row.foodId;
 		$("#addSpecialModal").modal("show");
 
-		$specialName.val(""); //清空数据
-		$specialCount.val("");
+		//$specialName.val(""); //清空数据
+		//$specialCount.val("");
 		$("#food_name").val("");
 		$("#food_name").text(row.name);
 	},
@@ -522,9 +542,9 @@ window.actionEvents = {
 
 		});
 	},
-};
+};*/
 
-$(function(){
+/*$(function(){
 	$("#editSpecialModal").on("hidden.bs.modal", function() {
 		$("#special1").show();
 		$("#special2").show();
@@ -593,7 +613,7 @@ $(function(){
 				alert(json.message);
 			};
 		});
-	});
+	});*/
 
 $("#commitFoodDataButton").on("click",function(){
         //对表单的数据进行验证
@@ -629,11 +649,12 @@ $("#commitFoodDataButton").on("click",function(){
         	alert("食品名称不能为空!");
         	return;
         }
-        var value = $("input[name='default_special']:checked").val();
+        /*var value = $("input[name='default_special']:checked").val();
         if(tag==0&&value==1&&(foodCount==null||foodCount=="")){
         	alert("若使用默认口味，口味数量不能为空。");
         	return;
         }
+        */
         if(foodCount!=null&&foodCount!=""&&!(/\d+$/.test(foodCount))){
         	alert("食品数量格式有问题，请检查后重新输入");
         	return;
@@ -641,7 +662,7 @@ $("#commitFoodDataButton").on("click",function(){
 
         $foodCommitDataForm.submit();
     });
-});
+//});
 function statusFormatter(value, row, index) {
 	if (value == "0")
 		return "下架";
