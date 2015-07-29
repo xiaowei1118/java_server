@@ -807,7 +807,7 @@ public class FoodController {
 
 			Short isDefault=Short.valueOf(request.getParameter("default_special"));
 			String realPath = request.getSession().getServletContext().getRealPath("/"); 
-			realPath=realPath.replace("SJFood", "MickeyImage");
+			realPath=realPath.replace("foryou", "ForyouImage");
 			realPath=realPath.concat("\\food\\");
 			System.out.println(realPath);               //打印出服务器路径
 

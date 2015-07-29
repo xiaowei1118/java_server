@@ -152,7 +152,7 @@ public class NewsController {
 			if(contentType.startsWith("image")){
 				String realPath = request.getSession().getServletContext().getRealPath("/"); 
 
-				realPath=realPath.replace("foryou", "foryouImage");
+				realPath=realPath.replace("foryou", "ForyouImage");
 				realPath=realPath.concat("/news");
 
 				System.out.println(realPath);

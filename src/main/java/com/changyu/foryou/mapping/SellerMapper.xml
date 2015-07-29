@@ -17,11 +17,6 @@
 
 
 
-	<update id="test">
-		update campus_admin
-		set
-		password=2
-	</update>
 
 	<select id="selectByCampusAdmin" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
