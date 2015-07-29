@@ -145,7 +145,8 @@
 		from receiver
 		where phone_id = #{phoneId,jdbcType=VARCHAR}
 		and is_out =0
-		order by rank ASC
+		order by tag ASC,rank ASC
+		
 	</select>
 
 	<update id="setReceiverTag">
