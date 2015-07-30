@@ -440,10 +440,12 @@ public class FoodController {
 	 * @param grade
 	 * @param comment
 	 * @param foodId
+	 * @param isHidden
 	 * @return
 	 */
 	@RequestMapping(value="/creatOrderComment")
-	public @ResponseBody Map<String,Object> createOrderComment(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam Long orderId,@RequestParam Short grade,String comment,@RequestParam Long foodId){
+	public @ResponseBody Map<String,Object> createOrderComment(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam Long orderId,
+			@RequestParam Short grade,String comment,@RequestParam Long foodId,@RequestParam Short isHidden){
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		try {
@@ -460,6 +462,7 @@ public class FoodController {
 				foodComment.setPhone(phoneId);
 				foodComment.setTag((short)1);
 				foodComment.setCampusId(campusId);
+				foodComment.setIsHidden(isHidden);
 
 				Integer flag=foodService.insertFoodComment(foodComment);
 				if(flag==1){
