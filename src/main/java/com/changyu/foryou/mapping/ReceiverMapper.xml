@@ -147,7 +147,7 @@
 		where phone_id = #{phoneId,jdbcType=VARCHAR}
 		and is_out =0
 		and receiver.campus_id=campus.campus_id
-		order by rank ASC
+		order by  tag ASC,rank ASC
 	</select>
 
 	<update id="setReceiverTag">

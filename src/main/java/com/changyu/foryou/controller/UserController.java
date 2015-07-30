@@ -274,7 +274,7 @@ public class UserController {
 			
 			if(qq!=null)
 			{
-				users.setQq(Integer.parseInt(qq));
+				users.setQq(qq);
 			}
 			
 			if(academy!=null)
