@@ -13,6 +13,7 @@
 		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
+		<result column="is_hidden" property="isHidden" jdbcType="SMALLINT" />
 	</resultMap>
 	<insert id="insert" parameterType="com.changyu.foryou.model.FoodComment">
 		insert into food_comment (food_id, campus_id,comment, date,
@@ -26,6 +27,9 @@
 	<insert id="insertSelective" parameterType="com.changyu.foryou.model.FoodComment">
 		insert into food_comment
 		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="isHidden!=null">
+				is_hidden,
+			</if>
 			<if test="foodId != null">
 				food_id,
 			</if>
@@ -49,6 +53,9 @@
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="isHidden!=null">
+				#{isHidden,jdbcType=SMALLINT},
+			</if>
 			<if test="foodId != null">
 				#{foodId,jdbcType=BIGINT},
 			</if>
@@ -85,11 +92,11 @@
 
 	<select id="getCommentsById" resultMap="BaseResultMap">
 		SELECT
-		food_id, campus_id,comment, date,
-		grade, food_comment.phone,nickname,users.img_url
+		food_id, food_comment.campus_id,comment, date,
+		grade, food_comment.phone,nickname,users.img_url,is_hidden
 		FROM food_comment,users
 		WHERE
-		food_comment.phone = users.phone AND food_id=#{foodId,jdbcType=BIGINT} 	and campus_id=#{campusId,jdbcType=INTEGER}
+		food_comment.phone = users.phone AND food_id=#{foodId,jdbcType=BIGINT} 	and food_comment.campus_id=#{campusId,jdbcType=INTEGER}
 		AND tag=1 and comment is not null and comment !="" 
 		<if test="limit!=null and offset !=null">
 			LIMIT #{limit} OFFSET #{offset,jdbcType=INTEGER}
@@ -103,7 +110,8 @@
 		COMMENT,
 		date,
 		food_comment.grade,
-		nickname
+		nickname,
+		is_hidden
 		FROM
 		food_comment,
 		users,
