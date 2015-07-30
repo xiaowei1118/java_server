@@ -143,7 +143,6 @@ public class NewsController {
 		String title=request.getParameter("title");
 		String content=request.getParameter("content");
 		Integer campusId = Integer.parseInt(request.getParameter("campusId"));
-        
 		if(myfile.isEmpty()){  
 			System.out.println("文件未上传");  
 		}else{  			

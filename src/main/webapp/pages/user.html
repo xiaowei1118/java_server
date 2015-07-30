@@ -26,8 +26,6 @@
 
 		<table id="table" 
        data-id-field="phone"
-       data-toggle="table"
-       data-url="../../foryou/user/getAllUser.do"
        data-pagination="true"
        data-side-pagination="server"
        data-search="true"
@@ -68,7 +66,13 @@ src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.
     <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
     <![endif]-->
-
+<script>
+	$(function(){
+		$("#table").bootstrapTable({
+			url : "../user/getAllUser.do"
+		});
+	});
+</script>
    <script>
        function formatter(value, row, index) {
           if (value == "0")
@@ -104,12 +108,14 @@ src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.
 
     window.actionEvents = {
         'click .admin': function (e, value, row, index) {
+        	//alert("admin");
             $.post("../../foryou/user/setUserAdmin.do",
                {phone:row.phone},
                function(text){
                   if(text!=1){
                      alert("设置管理员失败。");
                  }else{
+                	 alert("设置管理员成功。");
                      $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
                  }
 
@@ -117,12 +123,14 @@ src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.
              );
         },
         'click .common': function (e, value, row, index) {
+        	//alert("common");
             $.post("../../foryou/user/setUserCommon.do",
                {phone:row.phone},
                function(text){
                   if(text!=1){
                      alert("设置为普通用户失败。");
                  }else{
+                	 alert("设置为普通用户成功。");
                      $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
                  }
 
@@ -130,12 +138,14 @@ src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.
              );
         },
         'click .superAdmin': function (e, value, row, index) {
+        	//alert("superAdmin");
             $.post("../../foryou/user/setUserSuperAdmin.do",
                {phone:row.phone},
                function(text){
                   if(text!=1){
                      alert("设置超级管理员失败。");
                  }else{
+                	 alert("设置超级管理员成功。");
                      $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
                  }
 

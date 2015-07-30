@@ -29,9 +29,9 @@
     where news_id = #{newsId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.changyu.foryou.model.News" >
-    insert into news (news_id, create_time, title, 
+    insert into news (news_id, campus_id, create_time, title, 
       img_url, content)
-    values (#{newsId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+    values (#{newsId,jdbcType=BIGINT}, #{campusId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
       #{imgUrl,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.changyu.foryou.model.News" >
@@ -111,7 +111,7 @@
   <select id="getPcAllNews" parameterType="java.util.Map" resultMap="BaseResultMap">
     select 
       <include refid="Base_Column_List" />
-    from news where campus_id=#{campusId}
+    from news where campus_id=#{campusId,jdbcType=INTEGER}
   </select>
   
 </mapper>

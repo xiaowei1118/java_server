@@ -805,7 +805,7 @@ public class FoodController {
 				foodCount=Integer.valueOf(request.getParameter("foodCount"));
 			}
 
-			Short isDefault=Short.valueOf(request.getParameter("default_special"));
+			//Short isDefault=Short.valueOf(request.getParameter("default_special"));
 			String realPath = request.getSession().getServletContext().getRealPath("/"); 
 			realPath=realPath.replace("foryou", "ForyouImage");
 			realPath=realPath.concat("\\food\\");
@@ -837,7 +837,7 @@ public class FoodController {
 				//不存在即添加
 				flag=foodService.insertFoodSelective(food);
 				//只有在增加食品的时候添加默认口味才有效
-				if (flag!=-1&&flag!=0) {
+				/*if (flag!=-1&&flag!=0) {
 					if(isDefault==1&&foodCount!=null){
 						//添加默认口味
 						FoodSpecial foodSpecial=new FoodSpecial(campusId,foodId, "默认口味", foodCount);
@@ -847,7 +847,7 @@ public class FoodController {
 							return "redirect:/pages/food.html";
 						}
 					}
-				}
+				}*/
 			}else{
 				//存在即更新
 				flag=foodService.updateFoodByPrimaryKeySelective(food);
