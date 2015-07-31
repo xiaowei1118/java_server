@@ -61,9 +61,10 @@ public class NewsController {
 		}
 		try {
 			List<SmallNews> news=newsService.getSmallNews(requestMap);
-			if(news.size()<=0){
-				map.put(Constants.STATUS, Constants.FAILURE);
-				map.put(Constants.MESSAGE, "获取图片失败！");
+			if(news.size()==0){
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "没有图片！");
+				map.put("newsList", news);
 			}else{
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取图片成功！");
