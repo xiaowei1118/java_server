@@ -440,6 +440,7 @@ public class UserController {
 			String imageUrl=Constants.localIp+"/users/"+fileNameString;
 			Integer flag=userService.updateImageUrl(imageUrl, phone);
 			if(flag==1){
+				map.put("imageUrl", imageUrl);
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "头像更新成功!");
 			}else{

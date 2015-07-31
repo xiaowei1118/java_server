@@ -1037,8 +1037,16 @@ public class FoodController {
 					.selectHomeFood(paramMap);
 
 			map.put("food", shortFood);
-			map.put(Constants.STATUS, Constants.SUCCESS);
-			map.put(Constants.MESSAGE, "查找成功");
+			if(shortFood.size()==0)
+			{
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "查找成功,没有要推到主页的图片");
+			}
+			else
+			{
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "查找成功");
+			}
 
 		} catch (Exception e) {
 			map.put(Constants.STATUS, Constants.FAILURE);
