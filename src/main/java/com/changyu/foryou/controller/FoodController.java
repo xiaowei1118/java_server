@@ -463,6 +463,8 @@ public class FoodController {
 				foodComment.setTag((short)1);
 				foodComment.setCampusId(campusId);
 				foodComment.setIsHidden(isHidden);
+				foodComment.setOrderId(orderId);
+				
 
 				Integer flag=foodService.insertFoodComment(foodComment);
 				if(flag==1){
