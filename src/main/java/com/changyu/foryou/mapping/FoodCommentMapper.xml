@@ -14,6 +14,8 @@
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="is_hidden" property="isHidden" jdbcType="SMALLINT" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="order_id" property="orderId" jdbcType="BIGINT" />
 	</resultMap>
 	<insert id="insert" parameterType="com.changyu.foryou.model.FoodComment">
 		insert into food_comment (food_id, campus_id,comment, date,
@@ -51,6 +53,9 @@
 			<if test="tag != null">
 				tag,
 			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="isHidden!=null">
@@ -77,6 +82,9 @@
 			<if test="tag != null">
 				#{tag,jdbcType=SMALLINT},
 			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=BIGINT},
+			</if>
 		</trim>
 	</insert>
 
@@ -92,12 +100,12 @@
 
 	<select id="getCommentsById" resultMap="BaseResultMap">
 		SELECT
-		food_id, food_comment.campus_id,comment, date,
-		grade, food_comment.phone,nickname,users.img_url,is_hidden
-		FROM food_comment,users
+		food_comment.food_id, food_comment.campus_id,comment, date,
+		grade, food_comment.phone,nickname,users.img_url,is_hidden,order_count
+		FROM food_comment,users,orders
 		WHERE
-		food_comment.phone = users.phone AND food_id=#{foodId,jdbcType=BIGINT} 	and food_comment.campus_id=#{campusId,jdbcType=INTEGER}
-		AND tag=1 and comment is not null and comment !="" 
+		food_comment.phone = users.phone and  food_comment.order_id =orders.order_id AND food_comment.food_id=#{foodId,jdbcType=BIGINT} 	and food_comment.campus_id=#{campusId,jdbcType=INTEGER}
+		AND food_comment.tag=1 and comment is not null and comment !="" 
 		<if test="limit!=null and offset !=null">
 			LIMIT #{limit} OFFSET #{offset,jdbcType=INTEGER}
 		</if>
