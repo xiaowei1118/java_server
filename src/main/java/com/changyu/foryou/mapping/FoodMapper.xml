@@ -330,6 +330,7 @@
 				#{tagPattern})
 			</if>
 		</where>
+		group by food.food_id
 		<choose>
 			<when test="sortId==1">
 				ORDER BY sale_number DESC
@@ -373,6 +374,7 @@
 				) )
 			</if>
 		</where>
+		group by food.food_id
 		<choose>
 			<when test="sortId==1">
 				ORDER BY sale_number DESC
