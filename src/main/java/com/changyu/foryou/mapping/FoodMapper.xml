@@ -14,6 +14,12 @@
 		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
 		<result column="prime_cost" property="primeCost" jdbcType="REAL" />
 	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.ShortFoodWithIm" id="SmallWithImResultMap"
+	extends="SmallResultMap">
+	<result column="info" property="info" jdbcType="VARCHAR" />
+	<result column="message" property="message" jdbcType="VARCHAR" />
+	</resultMap>
 
 	<resultMap id="SmallResultMap" type="com.changyu.foryou.model.ShortFood">
 		<id column="food_id" property="foodId" jdbcType="BIGINT" />
@@ -30,7 +36,7 @@
 	
 	<resultMap type="com.changyu.foryou.model.VeryShortFood" id="VerySmallResultMap">
 		<id column="food_id" property="foodId" jdbcType="BIGINT" />
-		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="home_image" property="homeImgUrl" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -49,8 +55,14 @@
 		sale_number
 	</sql>
 	
+	<sql id="Small_With_Im_Column_List">
+		food_id, campus_id,name, price, discount_price, img_url,
+		is_discount,food_count,
+		sale_number,info,message
+	</sql>
+	
 	<sql id="Very_Small_Column_List">
-	    food_id,img_url
+	    food_id,home_image
     </sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
@@ -293,12 +305,12 @@
 	</update>
 
 	<!-- 根据分类id，一个商品标签，做模糊查询 -->
-	<select id="selectFoods" resultMap="SmallResultMap">
+	<select id="selectFoods" resultMap="SmallWithImResultMap">
 	   <if test="foodTag!=null">
 	   		<bind name="tagPattern" value="'%' + foodTag + '%'" />
 	   </if>
 		select
-		<include refid="Small_Column_List" />
+		<include refid="Small_With_Im_Column_List" />
 		from food
 		<where>
 			tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
@@ -330,11 +342,11 @@
 	</select>
 
 	<!-- 根据分类id，一个商品标签，做模糊查询 -->
-	<select id="selectFoodsByTwoTags" resultMap="SmallResultMap">
+	<select id="selectFoodsByTwoTags" resultMap="SmallWithImResultMap">
 		<bind name="oneFlagPattern" value="'%' + oneFlag + '%'" />
 		<bind name="twoFlagPattern" value="'%' + twoFlag + '%'" />
 		select
-		<include refid="Small_Column_List" />
+		<include refid="Small_With_Im_Column_List" />
 		from food
 		<where>
 			tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
@@ -432,7 +444,7 @@
 	   select
 	   <include refid="Very_Small_Column_List" />
 	   from food
-	   where to_home=1 and campus_id=#{campusId,jdbcType=INTEGER} and tag=1
+	   where to_home=1 and campus_id=#{campusId,jdbcType=INTEGER} and tag=1 and home_image is not null
 	   <if test="limit !=null and offset !=null">
 			LIMIT #{limit,jdbcType=INTEGER} OFFSET
 			#{offset,jdbcType=INTEGER}

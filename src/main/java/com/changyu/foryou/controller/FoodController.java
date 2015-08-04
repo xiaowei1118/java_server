@@ -31,6 +31,7 @@ import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.ShortFoodWithIm;
 import com.changyu.foryou.model.VeryShortFood;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
@@ -106,7 +107,7 @@ public class FoodController {
 		Map<String, Object> map=new HashMap<String, Object>();
 		try{
 			List<String> foodFlags=new ArrayList<String>();
-			List<ShortFood> foods=new ArrayList<ShortFood>();
+			List<ShortFoodWithIm> foods=new ArrayList<ShortFoodWithIm>();
 			Map<String,Object> paramMap=new HashMap<>();
 			paramMap.put("campusId",campusId);
 
@@ -131,7 +132,7 @@ public class FoodController {
 			}
 			else{
 
-				foodTag=foodTag.replace(","," ").replace(".", " ").replace(">", " ").replace("'", " ").trim();
+				foodTag=foodTag.replace(","," ").replace(".", " ").replace(">", " ").replace("'", " ").replace("，", " ").trim();
 				String[] Flags=foodTag.split(" ");
 				for (int i = 0; i < Flags.length; i++) {
 					if(!Flags[i].equals("")){
@@ -440,10 +441,12 @@ public class FoodController {
 	 * @param grade
 	 * @param comment
 	 * @param foodId
+	 * @param isHidden
 	 * @return
 	 */
 	@RequestMapping(value="/creatOrderComment")
-	public @ResponseBody Map<String,Object> createOrderComment(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam Long orderId,@RequestParam Short grade,String comment,@RequestParam Long foodId){
+	public @ResponseBody Map<String,Object> createOrderComment(@RequestParam Integer campusId,@RequestParam String phoneId,@RequestParam Long orderId,
+			@RequestParam Short grade,String comment,@RequestParam Long foodId,@RequestParam Short isHidden){
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		try {
@@ -460,6 +463,9 @@ public class FoodController {
 				foodComment.setPhone(phoneId);
 				foodComment.setTag((short)1);
 				foodComment.setCampusId(campusId);
+				foodComment.setIsHidden(isHidden);
+				foodComment.setOrderId(orderId);
+				
 
 				Integer flag=foodService.insertFoodComment(foodComment);
 				if(flag==1){
@@ -1034,8 +1040,16 @@ public class FoodController {
 					.selectHomeFood(paramMap);
 
 			map.put("food", shortFood);
-			map.put(Constants.STATUS, Constants.SUCCESS);
-			map.put(Constants.MESSAGE, "查找成功");
+			if(shortFood.size()==0)
+			{
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "查找成功,没有要推到主页的图片");
+			}
+			else
+			{
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "查找成功");
+			}
 
 		} catch (Exception e) {
 			map.put(Constants.STATUS, Constants.FAILURE);
