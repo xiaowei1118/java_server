@@ -326,9 +326,9 @@ public class UserController {
 			if(users!=null){		
 				users.setPassword(null);
 				map.put("userInfo", users);
-				map.put("waitDeliveryOrder", counts.get("wait"));
-				map.put("waitReceiveOrder",counts.get("deliver"));
-				map.put("waitCommentOrder", counts.get("comment"));
+				//map.put("waitDeliveryOrder", counts.get("wait"));
+				//map.put("waitReceiveOrder",counts.get("deliver"));
+				//map.put("waitCommentOrder", counts.get("comment"));
 				map.put(Constants.STATUS,Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取数据成功");
 			}	
