@@ -113,6 +113,17 @@
 		<result column="together_date" property="togetherDate"
 			jdbcType="TIMESTAMP" />
 	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.Receiver" id="ReceiverMap">
+		<id column="rank" property="rank" jdbcType="VARCHAR" />
+			<id column="phone_id" property="phoneId" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			<result column="address" property="address" jdbcType="VARCHAR" />
+			<result column="tag" property="tag" jdbcType="SMALLINT" />
+			<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+			<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+	</resultMap>
 
 	<sql id="Base_Column_List">
 		order_id, phone, create_time, status, price,
@@ -121,6 +132,7 @@
 		tag,
 		food_id,rank
 	</sql>
+	
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
@@ -748,4 +760,43 @@
 		where 
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="getTogetherDate" resultType="java.util.Date">
+		select
+		distinct together_date
+		from orders
+		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
+	</select>
+	
+	
+	<select id="getOrdersById"  resultMap="BaseResultMap">
+		select
+		order_id, phone, create_time, status, price,
+		order_count,together_id,
+		is_remarked,
+		tag,campus_id,
+		food_id,rank
+		from orders
+		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
+	</select>
+	
+	<select id="getReceiver" resultMap="ReceiverMap">
+		select
+		distinct
+		receiver.rank, receiver.phone_id, receiver.phone, receiver.name, 
+		receiver.address, receiver.tag,receiver.campus_id
+		from orders,receiver
+		where together_id=#{togetherId,jdbcType=VARCHAR}and orders.tag=1
+		and receiver.rank=orders.rank  and receiver.tag=1
+	</select>
+	
+	<select id="calTotalCost" resultType="java.lang.Double">
+		select 
+		sum(food.price*order_count)as totalCost
+		from food,orders
+		where orders.tag=1 and  together_id=#{togetherId,jdbcType=VARCHAR}
+		and food.food_id=orders.food_id
+	</select>
+	
+
 </mapper>
