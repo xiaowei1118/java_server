@@ -42,6 +42,11 @@ public class Food {
 	
 	private Integer campusId;
 	
+	private Short toHome;
+	
+	private String homeImage;
+	
+	
 	public Food(){
 		
 	}
@@ -266,5 +271,17 @@ public class Food {
 	}
 	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
+	}
+	public Short getToHome() {
+		return toHome;
+	}
+	public void setToHome(Short toHome) {
+		this.toHome = toHome;
+	}
+	public String getHomeImage() {
+		return homeImage;
+	}
+	public void setHomeImage(String homeImage) {
+		this.homeImage = homeImage;
 	}
 }

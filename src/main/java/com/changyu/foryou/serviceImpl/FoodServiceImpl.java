@@ -242,6 +242,16 @@ public class FoodServiceImpl implements FoodService{
 		return foodCategoryMapper.getAllCategoryCount();
 	}
 
-	
+	@Override
+	public Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodMapper.uploadHomeFoodByFoodId(paramMap);
+	}
+
+	@Override
+	public Integer updateInfoByFoodId(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodMapper.updateInfoByFoodId(paramMap);
+	}
 	
 }

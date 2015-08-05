@@ -13,6 +13,8 @@
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
 		<result column="prime_cost" property="primeCost" jdbcType="REAL" />
+		<result column="to_home" property="toHome" jdbcType="SMALLINT"/>
+		<result column="home_image" property="homeImage" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="SmallResultMap" type="com.changyu.foryou.model.ShortFood">
@@ -40,7 +42,7 @@
 		status,
 		food_flag, tag, is_discount,
 		category_id,
-		prime_cost, sale_number,food_count
+		prime_cost, sale_number,food_count, to_home, home_image
 	</sql>
 
 	<sql id="Small_Column_List">
@@ -52,7 +54,7 @@
 	<sql id="Very_Small_Column_List">
 	    food_id,home_image
     </sql>
-
+	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
@@ -440,5 +442,30 @@
 	   
 	</select>
 
+	<update id="uploadHomeFoodByFoodId">
+		update food set
+		<if test="toHome != null">
+		to_home=#{toHome, jdbcType=SMALLINT}
+		</if>
+		<if test="homeImage != null">
+		, home_image=#{homeImage, jdbcType=VARCHAR}
+		</if>
+		<where>
+			<if test="foodId != null">
+				food_id=#{foodId, jdbcType=BIGINT}
+			</if>
+		</where>
+	</update>
 
+	<update id="updateInfoByFoodId">
+		update food set 
+		<if test="info != null">
+			info=#{info, jdbcType=VARCHAR}
+		</if>
+		<where>
+			<if test="foodId != null">
+				food_id=#{foodId, jdbcType=BIGINT}
+			</if>
+		</where>
+	</update>
 </mapper>

@@ -92,4 +92,8 @@ public interface FoodService {
 	//void deleteFoodByParentCategory(String categoryId);
 	
 	Integer getAllCategoryCount();
+	
+	Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap);
+	
+	Integer updateInfoByFoodId(Map<String, Object> paramMap);
 }

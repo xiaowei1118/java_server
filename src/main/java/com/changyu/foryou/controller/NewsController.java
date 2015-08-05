@@ -140,7 +140,7 @@ public class NewsController {
 	@RequestMapping("/uploadNewsImage")
 	public String uploadNewsImage(@RequestParam MultipartFile myfile, HttpServletRequest request)throws IOException{
 		News news=new News();
-
+		
 		String title=request.getParameter("title");
 		String content=request.getParameter("content");
 		Integer campusId = Integer.parseInt(request.getParameter("campusId"));

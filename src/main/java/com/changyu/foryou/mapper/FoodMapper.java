@@ -38,5 +38,9 @@ public interface FoodMapper {
 	int changeFoodNumber(Map<String, Object> paramMap);   //更新销量和减少库存
 
 	List<VeryShortFood> selectHomeFood(Map<String, Object> paramMap);
+	
+	Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap);//上传推送到首页的食品大图
+	
+	Integer updateInfoByFoodId(Map<String, Object> paramMap);//更新食品详情图片
 
 }

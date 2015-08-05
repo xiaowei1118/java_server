@@ -70,14 +70,17 @@
 							data-sortable="true">食品标签</th>
 							<th data-align="left" data-field="categoryId"
 							data-sortable="true">所属分类</th>
-							<!-- <th data-align="left" data-field="action"
-							data-formatter="actionFormatter" data-events="actionEvents">修改口味及数量</th>
-							 -->
+							<th data-align="left" data-field="toHome"
+							data-sortable="true" data-formatter="toHomeFormatter">推到首页</th>
+							<th data-align="left" data-field="nothing"
+							 data-formatter="toHomeOperateFormatter" data-events="homeImageEvents">推到首页操作</th>
+							<th data-align="center" data-field="homeImage" data-formatter="homeImageFormatter">首页食品</th>
+							<th data-align="left" data-field="homeImageManage"
+							 data-sortable="true" data-formatter="detailImageManageFormatter" data-events="detailImageOperateEvents">详情管理</th>
 						</tr>
 					</thead>
 				</table>
 			</div>
-
 		</div>
 	</div>
 
@@ -218,6 +221,88 @@
 		</div>
 	</div>
 	<!-- /.modal -->
+	
+	<!-- 推送图片到主页 -->
+	<div class="modal fade" id="pushToHomeModal" tabindex="-1" roal="dialog"
+	aria-labelledby="pushToHomeModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="pushToHomeModalLabel">
+					推送到主页
+				</h4>
+			</div>
+			<form class="form-horizontal" method="post"
+			enctype="multipart/form-data"
+			action="../service/uploadHomeImage.do">
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="food-id">食品ID</label>
+						<div class="controls">
+							<input type="text" id="food-id"
+							name="foodId" readonly>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="homeImg">推送图片</label>
+						<div class="controls">
+							<input type="file" id="homeImageFile" 
+							name="homeImageFile" placeholder="Choose Picture">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-primary">提交更改</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	
+	<!-- 详情图片管理 -->
+	<div class="modal fade" id="manageDetailImageModal" tabindex="-1" role="dialog"
+	aria-labelledby="manageDetailImageModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="manageDetailImageModalLabel">
+					详情图片管理
+				</h4>
+			</div>
+			<form class="form-horizontal" method="post"
+			enctype="multipart/form-data"
+			action="../service/uploadDetailImage.do">
+				<div class="modal-body">
+					<div class="editImage">
+						<img alt="正在加载中" width="100" height="50">
+						<input type="file" id="detailImg1" name="detailImageFiles"
+									placeholder="Choose Picture">
+					</div>
+					<br/>
+					<div class="editImage">
+						<img alt="正在加载中"  width="100" height="50">
+						<input type="file" id="detailImg2" name="detailImageFiles"
+									placeholder="Choose Picture">
+					</div>
+					<br/>
+					<div class="editImage">
+						<img alt="正在加载中"  width="100" height="50">
+						<input type="file" id="detailImg3" name="detailImageFiles"
+									placeholder="Choose Picture">
+					</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="submit" class="btn btn-primary">提交修改</button>
+					</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
 <!-- 
 <div class="modal fade" id="addSpecialModal" tabindex="-1"
 role="dialog" aria-labelledby="addSpecialModalLabel"
@@ -678,5 +763,53 @@ function discountFormatter(value, row, index) {
 		return "是";
 	}
 }
+
+function toHomeFormatter(value, row, index){
+	if(value == "0"){
+		return "否";
+	}else if(value == "1"){
+		return "是";
+	}
+}
+
+function homeImageFormatter(value, row, index){
+	if(value==""||!value){
+		return "暂无图片";
+	}
+	return "<img height='50' width='100' alt='图片加载中' src="+value+">";
+}
+
+function detailImageManageFormatter(value, row, index){
+	return [
+		'<a class="edit" href="javascript:void(0)" data-target="#manageDetailImageModal" data-toggle="modal" title="edit">',
+		'管理',
+		'</a>'
+	].join('');
+}
+
+window.detailImageOperateEvents={
+	'click .edit' : function(e, value, row, index){
+		$("detailImg1").val("");
+		$("detailImg2").val("");
+		$("detailImg3").val("");
+	}	
+};
+
+function toHomeOperateFormatter(value, row, index){
+	return [
+	       '<a class="open" herf="javascript:void(0)" data-target="#pushToHomeModal" data-toggle="modal" title="open">',
+	       '推送',
+	       '</a>'
+	].join('');
+}
+
+window.homeImageEvents = {
+	'click .open' : function(e, value, row, index){
+		//alert(row);
+		$("#food-id").val(row.foodId);
+		$("#homeImageFile").val("");
+		//$(this).modal('show');
+	}
+};
 </Script>
 </html>

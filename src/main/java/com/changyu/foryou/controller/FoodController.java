@@ -1,6 +1,7 @@
 package com.changyu.foryou.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1111,5 +1112,83 @@ public class FoodController {
 		}
 
 		return map;
+	}
+	
+	/**
+	 * 上传首页推荐食品图片（大图）
+	 * @param foodId
+	 * @param homeImage
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping("/uploadHomeImage")
+	public String updateHomeImageByFoodId(@RequestParam MultipartFile homeImageFile, HttpServletRequest request) throws IOException{
+		String foodId = request.getParameter("foodId");
+		if(homeImageFile.isEmpty()){
+			System.out.println("文件未上传");
+		}else{
+			String contentType = homeImageFile.getContentType();
+			if(contentType.startsWith("image")){
+				String realPath = request.getSession().getServletContext().getRealPath("/");
+				realPath = realPath.replace("foryou", "ForyouImage");
+				realPath.concat("food");
+				String newFileName = new Date().getTime() + "" + new Random().nextInt() + ".jpg";
+				FileUtils.copyInputStreamToFile(homeImageFile.getInputStream(), new File(realPath, newFileName));
+				String imageUrl = Constants.localIp+"/food/"+newFileName;
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("foodId", foodId);
+				//这个toHome值在后台修改
+				paramMap.put("toHome", 1);
+				paramMap.put("homeImage", imageUrl);
+				int flag = foodService.uploadHomeFoodByFoodId(paramMap);
+				if(flag!=0&&flag!=-1){
+					return "redirect:/pages/food.html";
+				}
+			}
+		}
+		return "redirect:/pages/uploadError.html";
+	}
+	
+	/**
+	 * 更新食品详情图片
+	 * @param detailImageFile1
+	 * @param detailImageFile2
+	 * @param detailImageFile3
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/uploadDetailImage")
+	public String uploadDetailImageByFoodId(@RequestParam MultipartFile[] detailImageFiles, HttpServletRequest request) throws IOException{
+		StringBuffer bufferInfo = new StringBuffer();
+		
+		String foodId = request.getParameter("foodId");
+		
+		for (MultipartFile detailImageFile : detailImageFiles) {
+			if(detailImageFile.isEmpty()){
+				System.out.println("文件2未上传");
+			}else{
+				String contentType = detailImageFile.getContentType();
+				if(contentType.startsWith("image")){
+					String realPath = request.getSession().getServletContext().getRealPath("/");
+					realPath = realPath.replace("foryou", "ForyouImage");
+					realPath.concat("food");
+					String newFileName = new Date().getTime()+""+new Random().nextInt()+".jpg";
+					FileUtils.copyInputStreamToFile(detailImageFile.getInputStream(), new File(realPath, newFileName));
+					String imageUrl = Constants.localIp+"/food/info/"+newFileName;
+					bufferInfo.append(imageUrl);
+				}
+			}
+		}
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("foodId", foodId);
+		paramMap.put("info", bufferInfo.toString());
+		int flag = foodService.updateInfoByFoodId(paramMap);
+		if(flag!=0&&flag!=-1){
+			return "redirect:/pages/food.html";
+		}
+		
+		return "redirect:/pages/uploadError.html";
 	}
 }
