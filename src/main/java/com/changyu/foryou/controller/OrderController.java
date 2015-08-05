@@ -273,7 +273,7 @@ public class OrderController {
 			
 			if(limit != null && page != null){
 				paramMap.put("limit",limit);
-				paramMap.put("page", page);
+				paramMap.put("offset", (page-1)*limit);
 			}
 			List<CartGood> orderList=orderService.getOrderList(paramMap);
 			if(orderList!=null&&orderList.size()!=0){

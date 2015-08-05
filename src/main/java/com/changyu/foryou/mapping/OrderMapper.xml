@@ -407,7 +407,7 @@
 		</if>
 		and
 		orders.tag=1
-		order by together_date DESC,create_time DESC
+		order by together_date DESC,create_time DESC		
 	</select>
 
     <!-- 弃用 -->
@@ -426,6 +426,7 @@
 		and orders.status = 1 and orders.tag=1
 		order by create_time
 		DESC
+		
 	</select>
 
     <!-- 弃用 -->
