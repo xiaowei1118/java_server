@@ -4,6 +4,10 @@ public class ShortFoodWithIm extends ShortFood {
 	private String info;
 	
 	private String message;
+	
+	private Short grade;
+	
+	private Integer commentCount;
 
 	public String getInfo() {
 		return info;
@@ -20,6 +24,24 @@ public class ShortFoodWithIm extends ShortFood {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public Short getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Short grade) {
+		this.grade = grade;
+	}
+
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+	
+	
 	
 
 }

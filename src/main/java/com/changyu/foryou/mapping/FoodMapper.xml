@@ -19,6 +19,8 @@
 	extends="SmallResultMap">
 	<result column="info" property="info" jdbcType="VARCHAR" />
 	<result column="message" property="message" jdbcType="VARCHAR" />
+	<result column="grade" property="grade" jdbcType="SMALLINT" />
+	<result column="comment_count" property="commentCount" jdbcType="INTEGER" />
 	</resultMap>
 
 	<resultMap id="SmallResultMap" type="com.changyu.foryou.model.ShortFood">
@@ -58,7 +60,7 @@
 	<sql id="Small_With_Im_Column_List">
 		food_id, campus_id,name, price, discount_price, img_url,
 		is_discount,food_count,
-		sale_number,info,message
+		sale_number,info,message,grade
 	</sql>
 	
 	<sql id="Very_Small_Column_List">
@@ -310,10 +312,14 @@
 	   		<bind name="tagPattern" value="'%' + foodTag + '%'" />
 	   </if>
 		select
-		<include refid="Small_With_Im_Column_List" />
-		from food
+	    food.food_id, food.campus_id,name, price, discount_price, img_url,
+		is_discount,food_count,
+		sale_number,info,message,food.grade,count(comment) as comment_count
+		from food,food_comment
 		<where>
-			tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}
+			and food.food_id=food_comment.food_id 
+			and food.campus_id=food_comment.campus_id
 			<if test="categoryId!=null">
 				and category_id = #{categoryId,jdbcType=BIGINT}
 			</if>
@@ -324,6 +330,7 @@
 				#{tagPattern})
 			</if>
 		</where>
+		group by food.food_id
 		<choose>
 			<when test="sortId==1">
 				ORDER BY sale_number DESC
@@ -341,15 +348,19 @@
 
 	</select>
 
-	<!-- 根据分类id，一个商品标签，做模糊查询 -->
+	<!-- 根据分类id，两个商品标签，做模糊查询 -->
 	<select id="selectFoodsByTwoTags" resultMap="SmallWithImResultMap">
 		<bind name="oneFlagPattern" value="'%' + oneFlag + '%'" />
 		<bind name="twoFlagPattern" value="'%' + twoFlag + '%'" />
 		select
-		<include refid="Small_With_Im_Column_List" />
-		from food
+	    food.food_id, food.campus_id,name, price, discount_price, img_url,
+		is_discount,food_count,
+		sale_number,info,message,food.grade,count(comment) as comment_count
+		from food,food_comment
 		<where>
-			tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}
+			and food.food_id=food_comment.food_id 
+			and food.campus_id=food_comment.campus_id
 			<if test="categoryId!=null">
 				and category_id = #{categoryId,jdbcType=BIGINT}
 			</if>
@@ -363,6 +374,7 @@
 				) )
 			</if>
 		</where>
+		group by food.food_id
 		<choose>
 			<when test="sortId==1">
 				ORDER BY sale_number DESC
