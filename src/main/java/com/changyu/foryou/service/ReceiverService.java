@@ -2,6 +2,7 @@ package com.changyu.foryou.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.changyu.foryou.model.Receiver;
 
@@ -24,4 +25,6 @@ public interface ReceiverService {
 	int insert(Receiver receiver);
 
 	int setRecevierTag(String phoneId);
+
+	Receiver getReceiver(Map<String, Object> paramMap);
 }

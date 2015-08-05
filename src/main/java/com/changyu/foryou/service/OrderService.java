@@ -84,8 +84,6 @@ public interface OrderService {
 
 	List<Order> getOrdersById(Map<String, Object> paramMap);
 
-	Receiver getReceiver(Map<String, Object> paramMap);
-
 	Double calTotalCost(Map<String, Object> paramMap);
 
 	

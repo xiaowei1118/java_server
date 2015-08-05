@@ -202,12 +202,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Receiver getReceiver(Map<String, Object> paramMap) {
-		
-		return orderMapper.getReceiver(paramMap);
-	}
-
-	@Override
 	public Double calTotalCost(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return orderMapper.calTotalCost(paramMap);

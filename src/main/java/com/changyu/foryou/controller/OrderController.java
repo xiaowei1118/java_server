@@ -35,6 +35,7 @@ import com.changyu.foryou.model.TogetherOrder;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.PushService;
+import com.changyu.foryou.service.ReceiverService;
 import com.changyu.foryou.service.UserService;
 import com.changyu.foryou.tools.Constants;
 
@@ -50,8 +51,14 @@ public class OrderController {
 	private OrderService orderService;
 	private UserService userService;
 	private FoodService foodService;
+	private ReceiverService receiverService;
 
 	private PushService pushService;
+
+	@Autowired
+	public void setReceiverService(ReceiverService receiverService) {
+		this.receiverService = receiverService;
+	}
 
 	public PushService getPushService() {
 		return pushService;
@@ -1000,7 +1007,7 @@ public class OrderController {
 		List<Order> orders = orderService.getOrdersById(paramMap);
 		if(orders.size()>0)
 		{
-			Receiver receiver=orderService.getReceiver(paramMap);
+			Receiver receiver=receiverService.getReceiver(paramMap);
 			Date date = orderService.getTogetherDate(paramMap);
 			bigOrder.setDate(date);
 			// 若order表里的price有信息

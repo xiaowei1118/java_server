@@ -114,16 +114,6 @@
 			jdbcType="TIMESTAMP" />
 	</resultMap>
 	
-	<resultMap type="com.changyu.foryou.model.Receiver" id="ReceiverMap">
-		<id column="rank" property="rank" jdbcType="VARCHAR" />
-			<id column="phone_id" property="phoneId" jdbcType="VARCHAR" />
-			<result column="phone" property="phone" jdbcType="VARCHAR" />
-			<result column="name" property="name" jdbcType="VARCHAR" />
-			<result column="address" property="address" jdbcType="VARCHAR" />
-			<result column="tag" property="tag" jdbcType="SMALLINT" />
-			<result column="campus_id" property="campusId" jdbcType="INTEGER" />
-			<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
-	</resultMap>
 
 	<sql id="Base_Column_List">
 		order_id, phone, create_time, status, price,
@@ -778,16 +768,6 @@
 		food_id,rank
 		from orders
 		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
-	</select>
-	
-	<select id="getReceiver" resultMap="ReceiverMap">
-		select
-		distinct
-		receiver.rank, receiver.phone_id, receiver.phone, receiver.name, 
-		receiver.address, receiver.tag,receiver.campus_id
-		from orders,receiver
-		where together_id=#{togetherId,jdbcType=VARCHAR}and orders.tag=1
-		and receiver.rank=orders.rank  and receiver.tag=1
 	</select>
 	
 	<select id="calTotalCost" resultType="java.lang.Double">
