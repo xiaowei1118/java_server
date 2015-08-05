@@ -1,2 +1,15 @@
 /target
 target/*
+*.classpath
+.settings/org.eclipse.ltk.core.refactoring.prefs
+*.component
+.classpath
+.classpath
+.settings/org.eclipse.wst.common.component
+.settings/org.eclipse.wst.common.component
+*.classpath
+.classpath
+*.classpath
+.settings/org.eclipse.wst.common.component
+.settings/org.eclipse.wst.common.component
+*.classpath

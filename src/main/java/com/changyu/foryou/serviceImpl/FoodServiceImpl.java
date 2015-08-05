@@ -17,6 +17,7 @@ import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.FoodSpecialKey;
 import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.ShortFoodWithIm;
 import com.changyu.foryou.model.VeryShortFood;
 import com.changyu.foryou.service.FoodService;
 
@@ -111,7 +112,7 @@ public class FoodServiceImpl implements FoodService{
 //	}
 
 	//根据食品分类，和食品标签查询食品
-	public List<ShortFood> selectFoods(Map<String,Object> paramMap) {
+	public List<ShortFoodWithIm> selectFoods(Map<String,Object> paramMap) {
 
 		return foodMapper.selectFoods(paramMap);
 	}
@@ -121,7 +122,7 @@ public class FoodServiceImpl implements FoodService{
 	}
 
 	//通过两个标签模糊查询（两个标签以空格隔开）
-	public List<ShortFood> selectFoodsByTwoTags(Map<String,Object> paramMap) {
+	public List<ShortFoodWithIm> selectFoodsByTwoTags(Map<String,Object> paramMap) {
 		
 		return foodMapper.selectFoodsByTwoTags(paramMap);
 		
@@ -255,3 +256,4 @@ public class FoodServiceImpl implements FoodService{
 	}
 	
 }
+
