@@ -77,6 +77,7 @@
 			jdbcType="VARCHAR" />
 		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="message" property="message" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 超级管理员管理派单model -->
@@ -759,15 +760,25 @@
 	</select>
 	
 	
-	<select id="getOrdersById"  resultMap="BaseResultMap">
+	<select id="getOrdersById"  resultMap="SmallOrderMap">
 		select
-		order_id, phone, create_time, status, price,
-		order_count,together_id,
-		is_remarked,
-		tag,campus_id,
-		food_id,rank
-		from orders
-		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
+		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,
+		orders.order_count as
+		order_count ,
+		food.is_discount as
+		is_discount,
+		food.price as
+		price,food.name as name,
+		discount_price,food.message as message
+		from
+		orders,food
+		where
+		orders.food_id=food.food_id
+		And
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		and
+		orders.tag=1
+		order by together_date DESC,create_time DESC		
 	</select>
 	
 	<select id="calTotalCost" resultType="java.lang.Double">

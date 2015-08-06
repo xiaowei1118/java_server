@@ -196,7 +196,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Order> getOrdersById(Map<String, Object> paramMap) {
+	public List<SmallOrder> getOrdersById(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return orderMapper.getOrdersById(paramMap);
 	}

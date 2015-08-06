@@ -38,6 +38,16 @@ public class SmallOrder {
 	
 	private Date togetherDate;
 	
+	private String message;
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public Long getOrderId() {
 		return orderId;
 	}

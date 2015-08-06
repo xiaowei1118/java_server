@@ -12,9 +12,9 @@ public class BigOrder {
 	
 	private Receiver receiver;
 	
-	private List<Order> orders;
-
-
+	private List<SmallOrder> orders;
+	
+	private Short status;
 
 	public Double getTotalPrice() {
 		return totalPrice;
@@ -40,11 +40,11 @@ public class BigOrder {
 		this.receiver = receiver;
 	}
 
-	public List<Order> getOrders() {
+	public List<SmallOrder> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(List<Order> orders) {
+	public void setOrders(List<SmallOrder> orders) {
 		this.orders = orders;
 	}
 
@@ -54,6 +54,14 @@ public class BigOrder {
 
 	public void setTogetherId(String togetherId) {
 		this.togetherId = togetherId;
+	}
+
+	public Short getStatus() {
+		return status;
+	}
+
+	public void setStatus(Short status) {
+		this.status = status;
 	}
 
 }
