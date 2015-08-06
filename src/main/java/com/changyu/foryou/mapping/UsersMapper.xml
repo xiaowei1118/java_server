@@ -16,7 +16,7 @@
 		<result column="token" property="token" jdbcType="VARCHAR" />
 		<result column="sex" property="sex" jdbcType="SMALLINT" />
 		<result column="academy" property="academy" jdbcType="VARCHAR" />
-		<result column="qq" property="qq" jdbcType="INTEGER" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
 		<result column="weixin" property="weiXin" jdbcType="VARCHAR" />  
 	</resultMap>
 	<sql id="Base_Column_List">
@@ -102,7 +102,7 @@
 			sex=#{sex,jdbcType=SMALLINT},
 		</if>
 		<if test="qq!=null">
-			qq=#{qq,jdbcType=INTEGER},
+			qq=#{qq,jdbcType=VARCHAR},
 		</if>
 		<if test="weiXin!=null">
 			weixin=#{weiXin,jdbcType=VARCHAR},

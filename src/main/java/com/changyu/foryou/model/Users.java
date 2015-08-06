@@ -25,7 +25,7 @@ public class Users {
     
     private String academy;
     
-    private Integer qq;
+    private String qq;
     
     private String weiXin;
     
@@ -130,11 +130,11 @@ public class Users {
 		this.academy = academy;
 	}
 
-	public Integer getQq() {
+	public String getQq() {
 		return qq;
 	}
 
-	public void setQq(Integer qq) {
+	public void setQq(String qq) {
 		this.qq = qq;
 	}
 

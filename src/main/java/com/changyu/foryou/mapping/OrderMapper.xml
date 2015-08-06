@@ -113,6 +113,7 @@
 		<result column="together_date" property="togetherDate"
 			jdbcType="TIMESTAMP" />
 	</resultMap>
+	
 
 	<sql id="Base_Column_List">
 		order_id, phone, create_time, status, price,
@@ -121,6 +122,7 @@
 		tag,
 		food_id,rank
 	</sql>
+	
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
@@ -407,7 +409,7 @@
 		</if>
 		and
 		orders.tag=1
-		order by together_date DESC,create_time DESC
+		order by together_date DESC,create_time DESC		
 	</select>
 
     <!-- 弃用 -->
@@ -426,6 +428,7 @@
 		and orders.status = 1 and orders.tag=1
 		order by create_time
 		DESC
+		
 	</select>
 
     <!-- 弃用 -->
@@ -747,4 +750,33 @@
 		where 
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="getTogetherDate" resultType="java.util.Date">
+		select
+		distinct together_date
+		from orders
+		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
+	</select>
+	
+	
+	<select id="getOrdersById"  resultMap="BaseResultMap">
+		select
+		order_id, phone, create_time, status, price,
+		order_count,together_id,
+		is_remarked,
+		tag,campus_id,
+		food_id,rank
+		from orders
+		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
+	</select>
+	
+	<select id="calTotalCost" resultType="java.lang.Double">
+		select 
+		sum(food.price*order_count)as totalCost
+		from food,orders
+		where orders.tag=1 and  together_id=#{togetherId,jdbcType=VARCHAR}
+		and food.food_id=orders.food_id
+	</select>
+	
+
 </mapper>

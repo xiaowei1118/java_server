@@ -274,7 +274,7 @@ public class UserController {
 			
 			if(qq!=null)
 			{
-				users.setQq(Integer.parseInt(qq));
+				users.setQq(qq);
 			}
 			
 			if(academy!=null)
@@ -326,9 +326,9 @@ public class UserController {
 			if(users!=null){		
 				users.setPassword(null);
 				map.put("userInfo", users);
-				map.put("waitDeliveryOrder", counts.get("wait"));
-				map.put("waitReceiveOrder",counts.get("deliver"));
-				map.put("waitCommentOrder", counts.get("comment"));
+				//map.put("waitDeliveryOrder", counts.get("wait"));
+				//map.put("waitReceiveOrder",counts.get("deliver"));
+				//map.put("waitCommentOrder", counts.get("comment"));
 				map.put(Constants.STATUS,Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取数据成功");
 			}	
@@ -391,7 +391,7 @@ public class UserController {
 		image=image.replaceAll(" ", "+");
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
-		realPath=realPath.replace("SJFood", "MickeyImage");
+		realPath=realPath.replace("foryou", "ForyouImage");
 		realPath=realPath.concat("/users/");
 		String fileNameString=new Random().nextLong()+""+new Date().getTime()+".jpg";
 
@@ -440,6 +440,7 @@ public class UserController {
 			String imageUrl=Constants.localIp+"/users/"+fileNameString;
 			Integer flag=userService.updateImageUrl(imageUrl, phone);
 			if(flag==1){
+				map.put("imageUrl", imageUrl);
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "头像更新成功!");
 			}else{
@@ -462,7 +463,7 @@ public class UserController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
-		realPath=realPath.replace("SJFood", "MickeyImage");
+		realPath=realPath.replace("foryou", "ForyouImage");
 		realPath=realPath.concat("/android/");
 		String fileNameString=new Random().nextInt(100)+""+new Date().getTime()+"log.log";
 

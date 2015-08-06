@@ -21,6 +21,12 @@ public class FoodComment {
     private String phone;
 
     private Short tag;
+    
+    private Short isHidden;
+    
+    private Integer orderCount;
+    
+    private Long orderId;
 
     public Long getFoodId() {
         return foodId;
@@ -100,5 +106,29 @@ public class FoodComment {
 
 	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
+	}
+
+	public Short getIsHidden() {
+		return isHidden;
+	}
+
+	public void setIsHidden(Short isHidden) {
+		this.isHidden = isHidden;
+	}
+
+	public Integer getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(Integer orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 }

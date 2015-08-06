@@ -9,6 +9,7 @@
 		<result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		rank, phone_id, phone, name, address, tag,campus_id
@@ -141,11 +142,12 @@
 
 	<select id="selectByPhoneId" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from receiver
+		rank, phone_id, phone, name, address, tag,campus.campus_id,campus_name
+		from receiver,campus
 		where phone_id = #{phoneId,jdbcType=VARCHAR}
 		and is_out =0
-		order by rank ASC
+		and receiver.campus_id=campus.campus_id
+		order by  tag ASC,rank ASC
 	</select>
 
 	<update id="setReceiverTag">
@@ -155,5 +157,15 @@
 		where phone_id =
 		#{phoneId,jdbcType=VARCHAR}
 	</update>
+	
+	<select id="getReceiver" resultMap="BaseResultMap">
+		select
+		distinct
+		receiver.rank, receiver.phone_id, receiver.phone, receiver.name, 
+		receiver.address, receiver.tag,receiver.campus_id
+		from orders,receiver
+		where together_id=#{togetherId,jdbcType=VARCHAR}and orders.tag=1
+		and receiver.rank=orders.rank  and receiver.tag=1
+	</select>
 
 </mapper>

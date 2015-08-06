@@ -1,6 +1,7 @@
 package com.changyu.foryou.serviceImpl;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.changyu.foryou.mapper.OrderMapper;
+import com.changyu.foryou.model.BigOrder;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 import com.changyu.foryou.service.OrderService;
@@ -186,6 +189,28 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.getAllChildOrder(paramMap);
 	}
 
+	@Override
+	public Date getTogetherDate(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getTogetherDate(paramMap);
+	}
+
+	@Override
+	public List<Order> getOrdersById(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getOrdersById(paramMap);
+	}
+
+	@Override
+	public Double calTotalCost(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.calTotalCost(paramMap);
+	}
+
+
+
+
+	
 
 
 	

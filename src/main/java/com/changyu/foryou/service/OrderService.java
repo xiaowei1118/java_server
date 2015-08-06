@@ -1,13 +1,16 @@
 package com.changyu.foryou.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.changyu.foryou.model.BigOrder;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 
@@ -76,4 +79,19 @@ public interface OrderService {
 	List<String> getTogetherId(Map<String, Object> paramMap);
 
 	List<SmallOrder> getOrderListInMine(Map<String, Object> paramMap);
+
+	Date getTogetherDate(Map<String, Object> paramMap);
+
+	List<Order> getOrdersById(Map<String, Object> paramMap);
+
+	Double calTotalCost(Map<String, Object> paramMap);
+
+	
+
+	
+
+
+	
+
+	
 }

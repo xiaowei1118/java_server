@@ -9,6 +9,7 @@ import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.ShortFood;
+import com.changyu.foryou.model.ShortFoodWithIm;
 import com.changyu.foryou.model.VeryShortFood;
 
 public interface FoodService {
@@ -73,9 +74,9 @@ public interface FoodService {
 
 	void updateFoodSpecial(FoodSpecial foodSpecial);
 
-	List<ShortFood> selectFoods(Map<String, Object> paramMap);
+	List<ShortFoodWithIm> selectFoods(Map<String, Object> paramMap);
 
-	List<ShortFood> selectFoodsByTwoTags(Map<String, Object> paramMap);
+	List<ShortFoodWithIm> selectFoodsByTwoTags(Map<String, Object> paramMap);
 
 	List<FoodComment> getCommentInfoById(Map<String, Object> paramMap);
 
@@ -92,4 +93,8 @@ public interface FoodService {
 	//void deleteFoodByParentCategory(String categoryId);
 	
 	Integer getAllCategoryCount();
+	
+	Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap);
+	
+	Integer updateInfoByFoodId(Map<String, Object> paramMap);
 }

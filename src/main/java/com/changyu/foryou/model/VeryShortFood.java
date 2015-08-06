@@ -3,7 +3,7 @@ package com.changyu.foryou.model;
 public class VeryShortFood {
 	private Long foodId;
 	
-	private String imgUrl;
+	private String homeImgUrl;
 
 	public Long getFoodId() {
 		return foodId;
@@ -13,12 +13,14 @@ public class VeryShortFood {
 		this.foodId = foodId;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
+	public String getHomeImage() {
+		return homeImgUrl;
 	}
 
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
+	public void setHomeImage(String homeImage) {
+		this.homeImgUrl = homeImage;
 	}
+
+
 
 }

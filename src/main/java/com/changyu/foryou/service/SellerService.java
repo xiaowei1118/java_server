@@ -6,7 +6,6 @@ import com.changyu.foryou.model.Sellers;
 
 
 public interface SellerService {
-	public int test();
 
 	public Sellers selectByCampusAdmin(String campusAdmin);
 

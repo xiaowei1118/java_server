@@ -61,9 +61,10 @@ public class NewsController {
 		}
 		try {
 			List<SmallNews> news=newsService.getSmallNews(requestMap);
-			if(news.size()<=0){
-				map.put(Constants.STATUS, Constants.FAILURE);
-				map.put(Constants.MESSAGE, "获取图片失败！");
+			if(news.size()==0){
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "没有图片！");
+				map.put("newsList", news);
 			}else{
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取图片成功！");
@@ -139,7 +140,7 @@ public class NewsController {
 	@RequestMapping("/uploadNewsImage")
 	public String uploadNewsImage(@RequestParam MultipartFile myfile, HttpServletRequest request)throws IOException{
 		News news=new News();
-
+		
 		String title=request.getParameter("title");
 		String content=request.getParameter("content");
 		Integer campusId = Integer.parseInt(request.getParameter("campusId"));
@@ -151,7 +152,7 @@ public class NewsController {
 			if(contentType.startsWith("image")){
 				String realPath = request.getSession().getServletContext().getRealPath("/"); 
 
-				realPath=realPath.replace("foryou", "foryouImage");
+				realPath=realPath.replace("foryou", "ForyouImage");
 				realPath=realPath.concat("/news");
 
 				System.out.println(realPath);

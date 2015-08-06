@@ -1,6 +1,7 @@
 package com.changyu.foryou.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,12 @@ public class ReceiverServiceImpl implements ReceiverService {
 
 	public int setRecevierTag(String phoneId) {
 		return receiverMapper.setReceiverTag(phoneId);
+	}
+
+	@Override
+	public Receiver getReceiver(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return receiverMapper.getReceiver(paramMap);
 	}
 
 

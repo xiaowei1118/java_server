@@ -1,6 +1,7 @@
 package com.changyu.foryou.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,6 @@ public interface ReceiverMapper {
 
 	//将原来默认地址设为非默认
 	int setReceiverTag(@Param(value="phoneId")String phoneId);
+
+	Receiver getReceiver(Map<String, Object> paramMap);
 }

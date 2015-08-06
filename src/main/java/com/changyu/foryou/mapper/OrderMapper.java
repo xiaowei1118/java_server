@@ -6,11 +6,13 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.changyu.foryou.model.BigOrder;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 
@@ -85,5 +87,15 @@ public interface OrderMapper {
 	List<String> getTogetherId(Map<String, Object> map);
 
 	List<SmallOrder> getOrderListInMine(Map<String, Object> map);
+
+	Date getTogetherDate(Map<String, Object> paramMap);
+
+	List<Order> getOrdersById(Map<String, Object> paramMap);
+
+	Double calTotalCost(Map<String, Object> paramMap);
+
+
+
+	
 
 }
