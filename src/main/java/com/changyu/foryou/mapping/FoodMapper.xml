@@ -472,11 +472,7 @@
 		<if test="homeImage != null">
 		, home_image=#{homeImage, jdbcType=VARCHAR}
 		</if>
-		<where>
-			<if test="foodId != null">
-				food_id=#{foodId, jdbcType=BIGINT}
-			</if>
-		</where>
+		where food_id=#{foodId, jdbcType=BIGINT}
 	</update>
 
 	<update id="updateInfoByFoodId">
@@ -484,11 +480,7 @@
 		<if test="info != null">
 			info=#{info, jdbcType=VARCHAR}
 		</if>
-		<where>
-			<if test="foodId != null">
-				food_id=#{foodId, jdbcType=BIGINT}
-			</if>
-		</where>
+		where food_id=#{foodId, jdbcType=BIGINT}
 	</update>
 </mapper>
 
