@@ -7,7 +7,7 @@ public class ShortFoodWithIm extends ShortFood {
 	
 	private Short grade;
 	
-	private Integer commentCount;
+	private Integer commentNumber;
 
 	public String getInfo() {
 		return info;
@@ -33,12 +33,12 @@ public class ShortFoodWithIm extends ShortFood {
 		this.grade = grade;
 	}
 
-	public Integer getCommentCount() {
-		return commentCount;
+	public Integer getCommentNumber() {
+		return commentNumber;
 	}
 
-	public void setCommentCount(Integer commentCount) {
-		this.commentCount = commentCount;
+	public void setCommentCount(Integer commentNumber) {
+		this.commentNumber = commentNumber;
 	}
 	
 	

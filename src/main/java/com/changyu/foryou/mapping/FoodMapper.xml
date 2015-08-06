@@ -20,7 +20,7 @@
 	<result column="info" property="info" jdbcType="VARCHAR" />
 	<result column="message" property="message" jdbcType="VARCHAR" />
 	<result column="grade" property="grade" jdbcType="SMALLINT" />
-	<result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+	<result column="comment_count" property="commentNumber" jdbcType="INTEGER" />
 	</resultMap>
 
 	<resultMap id="SmallResultMap" type="com.changyu.foryou.model.ShortFood">

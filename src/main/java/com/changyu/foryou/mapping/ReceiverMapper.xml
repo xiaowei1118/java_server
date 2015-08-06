@@ -165,7 +165,7 @@
 		receiver.address, receiver.tag,receiver.campus_id
 		from orders,receiver
 		where together_id=#{togetherId,jdbcType=VARCHAR}and orders.tag=1
-		and receiver.rank=orders.rank  and receiver.tag=1
+		and receiver.rank=orders.rank  and is_out=0
 	</select>
 
 </mapper>

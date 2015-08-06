@@ -992,6 +992,7 @@ public class OrderController {
 
 	/*
 	 * 根据togetherId获取大订单信息
+	 * 
 	 * @param togetherId
 	 */
 	@RequestMapping("getBigOrderById")
@@ -1001,13 +1002,25 @@ public class OrderController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
 		Double sum = 0.0;
+		Short status = 0;
 		paramMap.put("togetherId", togetherId);
 		BigOrder bigOrder = new BigOrder();
 		bigOrder.setTogetherId(togetherId);
-		List<Order> orders = orderService.getOrdersById(paramMap);
-		if(orders.size()>0)
-		{
-			Receiver receiver=receiverService.getReceiver(paramMap);
+		List<SmallOrder> orders = orderService.getOrdersById(paramMap);
+		if (orders.size() > 0 && orders != null) {
+			if (orders.get(0).getStatus() != 4) {
+				status = orders.get(0).getStatus();
+			} else {
+				status = 4;
+				if (orders.size() > 1) {
+					for (int i = 1; i < orders.size(); i++) {
+						if (orders.get(i).getIsRemarked() == 1) {
+							status = 5;
+						}
+					}
+				}
+			}
+			Receiver receiver = receiverService.getReceiver(paramMap);
 			Date date = orderService.getTogetherDate(paramMap);
 			bigOrder.setDate(date);
 			// 若order表里的price有信息
@@ -1019,15 +1032,13 @@ public class OrderController {
 			bigOrder.setTotalPrice(sum);
 			bigOrder.setOrders(orders);
 			bigOrder.setReceiver(receiver);
-
+			bigOrder.setStatus(status);
 			resultMap.put("BigOrder",
 					JSONArray.parse(JSON.toJSONStringWithDateFormat(bigOrder,
 							"yyyy-MM-dd HH:mm:ss")));
 			resultMap.put(Constants.STATUS, Constants.SUCCESS);
 			resultMap.put(Constants.MESSAGE, "获取大订单信息成功");
-		}
-		else
-		{
+		} else {
 			resultMap.put(Constants.STATUS, Constants.FAILURE);
 			resultMap.put(Constants.MESSAGE, "没有这个大订单");
 		}

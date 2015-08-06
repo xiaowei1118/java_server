@@ -28,8 +28,9 @@ public class Order {
     private String togetherId;
     
     private String rank;
-    
-    public Order(){
+   
+
+	public Order(){
     	
     }
     

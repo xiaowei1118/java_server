@@ -90,7 +90,7 @@ public interface OrderMapper {
 
 	Date getTogetherDate(Map<String, Object> paramMap);
 
-	List<Order> getOrdersById(Map<String, Object> paramMap);
+	List<SmallOrder> getOrdersById(Map<String, Object> paramMap);
 
 	Double calTotalCost(Map<String, Object> paramMap);
 
