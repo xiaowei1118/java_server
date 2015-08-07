@@ -992,7 +992,7 @@ public class OrderController {
 		return resultMap;
 	}
 
-	/*
+	/**
 	 * 根据togetherId获取大订单信息
 	 * 
 	 * @param togetherId
@@ -1014,13 +1014,12 @@ public class OrderController {
 				status = orders.get(0).getStatus();
 			} else {
 				status = 4;
-				if (orders.size() > 1) {
-					for (int i = 1; i < orders.size(); i++) {
+					for (int i = 0; i < orders.size(); i++) {
 						if (orders.get(i).getIsRemarked() == 1) {
 							status = 5;
 						}
 					}
-				}
+				
 			}
 			Receiver receiver = receiverService.getReceiver(paramMap);
 			Date date = orderService.getTogetherDate(paramMap);
@@ -1056,7 +1055,7 @@ public class OrderController {
 	 */
 	@RequestMapping("modifyOrderStatus")
 	public @ResponseBody Map<String, Object> modifyOrderStatus(@RequestParam String adminPhone,
-			@RequestParam final String togetherId, @RequestParam Short status, Integer orderId){
+			@RequestParam final String togetherId, @RequestParam Short status, Long orderId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		requestMap.put("adminPhone", adminPhone);
@@ -1091,8 +1090,41 @@ public class OrderController {
 			requestMap.put("status", 4);
 			flag = orderService.modifyOrderStatus(requestMap);
 			break;
+		default:
+			break;
 		}
+		resultMap.put(Constants.STATUS, Constants.SUCCESS);
+		resultMap.put(Constants.MESSAGE, "更改状态成功");
 		resultMap.put("flag", flag);
 		return resultMap;
 	}
+	
+	
+	/**
+	 * 删除订单（status=4）
+	 *@param togetherId
+	 */
+	@RequestMapping("/deleteOrder")
+	public @ResponseBody Map<String, Object> deleteOrder(@RequestParam String togetherId)
+	{
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("togetherId", togetherId);
+		List<SmallOrder> orders=orderService.getOrdersById(paramMap);
+		if(orders.size()>0&&orders!=null)
+		{
+			orderService.deleteOrder(paramMap);
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "删除订单成功");
+		}
+		else
+		{
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "订单不存在,删除订单失败");
+		}
+		
+		return resultMap;
+	}
+	
+	
 }

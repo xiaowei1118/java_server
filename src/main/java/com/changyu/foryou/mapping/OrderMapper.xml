@@ -785,7 +785,7 @@
 	
 	<select id="calTotalCost" resultType="java.lang.Double">
 		select 
-		sum(food.price*order_count)as totalCost
+		sum(food.discount_price*order_count)as totalCost
 		from food,orders
 		where orders.tag=1 and  together_id=#{togetherId,jdbcType=VARCHAR}
 		and food.food_id=orders.food_id
@@ -798,9 +798,16 @@
 	</if>
 	where together_id=#{togetherId, jdbcType=VARCHAR}
 	and admin_phone=#{adminPhone, jdbcType=VARCHAR}
+	and tag=1
 	<if test="orderId != null">
-	and order_id=#{oederId, jdbcType=}
+	and order_id=#{orderId, jdbcType=BIGINT}
 	</if>
 	</update>
+	
+	<delete id="deleteOrder">
+	delete from orders
+	where together_id=#{togetherId,jdbcType=VARCHAR}
+	and status=4	
+	</delete>
 
 </mapper>

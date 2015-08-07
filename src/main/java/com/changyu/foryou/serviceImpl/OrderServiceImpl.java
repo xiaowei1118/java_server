@@ -213,6 +213,12 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.modifyOrderStatus(paramMap);
 	}
 
+	@Override
+	public void deleteOrder(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		orderMapper.deleteOrder(paramMap);
+	}
+
 
 
 
