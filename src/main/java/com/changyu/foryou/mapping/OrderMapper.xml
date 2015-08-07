@@ -393,7 +393,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price
+		discount_price,food.message as message
 		from
 		orders,food
 		where
