@@ -796,12 +796,16 @@
 	<if test="status != null">
 		status=#{status, jdbcType=SMALLINT}
 	</if>
-	where together_id=#{togetherId, jdbcType=VARCHAR}
-	and admin_phone=#{adminPhone, jdbcType=VARCHAR}
+	<where>
+	together_id=#{togetherId, jdbcType=VARCHAR}
 	and tag=1
 	<if test="orderId != null">
 	and order_id=#{orderId, jdbcType=BIGINT}
 	</if>
+	<if test="status==3">
+	and admin_phone is not null
+	</if>
+	</where>
 	</update>
 	
 	<delete id="deleteOrder">

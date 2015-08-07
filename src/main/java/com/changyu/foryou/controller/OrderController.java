@@ -1054,11 +1054,9 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("modifyOrderStatus")
-	public @ResponseBody Map<String, Object> modifyOrderStatus(@RequestParam String adminPhone,
-			@RequestParam final String togetherId, @RequestParam Short status, Long orderId){
+	public @ResponseBody Map<String, Object> modifyOrderStatus(	@RequestParam final String togetherId, @RequestParam Short status, Long orderId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
-		requestMap.put("adminPhone", adminPhone);
 		requestMap.put("togetherId", togetherId);
 		requestMap.put("status", status);
 		Integer flag = null;
