@@ -798,6 +798,9 @@
 	</if>
 	where together_id=#{togetherId, jdbcType=VARCHAR}
 	and admin_phone=#{adminPhone, jdbcType=VARCHAR}
+	<if test="orderId != null">
+	and order_id=#{oederId, jdbcType=}
+	</if>
 	</update>
 
 </mapper>

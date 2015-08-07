@@ -1056,7 +1056,7 @@ public class OrderController {
 	 */
 	@RequestMapping("modifyOrderStatus")
 	public @ResponseBody Map<String, Object> modifyOrderStatus(@RequestParam String adminPhone,
-			@RequestParam final String togetherId, @RequestParam Short status){
+			@RequestParam final String togetherId, @RequestParam Short status, Integer orderId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		requestMap.put("adminPhone", adminPhone);
@@ -1066,11 +1066,11 @@ public class OrderController {
 		switch(status){
 		case 0:
 			//购物车
-			flag = orderService.modifyOrderStatus(requestMap);
+			//flag = orderService.modifyOrderStatus(requestMap);
 			break;
 		case 1:
 			//待付款
-			flag = orderService.modifyOrderStatus(requestMap);
+			//flag = orderService.modifyOrderStatus(requestMap);
 			break;
 		case 2:
 			//待确认
@@ -1086,6 +1086,9 @@ public class OrderController {
 			break;
 		case 5:
 			//已完成
+			requestMap.put("orderId", orderId);
+			requestMap.put("isRemarked", 1);
+			requestMap.put("status", 4);
 			flag = orderService.modifyOrderStatus(requestMap);
 			break;
 		}
