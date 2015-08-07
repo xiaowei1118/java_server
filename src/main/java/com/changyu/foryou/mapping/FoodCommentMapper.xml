@@ -94,7 +94,7 @@
 		FROM food_comment
 		WHERE
 		food_id=#{foodId,jdbcType=BIGINT} 
-		AND tag=1 and comment is not null and comment !="" 
+		AND tag=1 
 		and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
