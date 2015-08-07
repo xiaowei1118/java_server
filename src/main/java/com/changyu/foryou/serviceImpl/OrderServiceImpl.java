@@ -207,6 +207,12 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.calTotalCost(paramMap);
 	}
 
+	@Override
+	public Integer modifyOrderStatus(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.modifyOrderStatus(paramMap);
+	}
+
 
 
 

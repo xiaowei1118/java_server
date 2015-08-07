@@ -86,7 +86,7 @@ public interface OrderService {
 
 	Double calTotalCost(Map<String, Object> paramMap);
 
-	
+	Integer modifyOrderStatus(Map<String, Object> paramMap);
 
 	
 

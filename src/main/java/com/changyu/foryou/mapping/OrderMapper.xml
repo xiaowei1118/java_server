@@ -350,6 +350,7 @@
 		phone=#{phoneId,jdbcType=VARCHAR}
 	</update>
 
+	<!-- 弃用 -->
 	<!-- 配送员更改订单至配送状态 -->
 	<update id="changeOrderStatus2Deliver">
 		update
@@ -362,6 +363,7 @@
 		admin_phone=#{phoneId,jdbcType=VARCHAR}    <!-- 配送员号码 -->
 	</update>
 
+	<!-- 弃用 -->
 	<!-- 配送员更改订单至完成状态 -->
 	<update id="changeOrderStatus2Finish">
 		update
@@ -789,5 +791,13 @@
 		and food.food_id=orders.food_id
 	</select>
 	
+	<update id="modifyOrderStatus">
+	update orders set 
+	<if test="status != null">
+		status=#{status, jdbcType=SMALLINT}
+	</if>
+	where together_id=#{togetherId, jdbcType=VARCHAR}
+	and admin_phone=#{adminPhone, jdbcType=VARCHAR}
+	</update>
 
 </mapper>

@@ -563,6 +563,7 @@ public class OrderController {
 	 * @param orderId
 	 * @return
 	 */
+	@Deprecated
 	@RequestMapping("/orderToDeliver")
 	public @ResponseBody Map<String, Object> changeOrderStatus2Deliver(
 			@RequestParam String adminPhone,
@@ -610,6 +611,7 @@ public class OrderController {
 	 * @param togetherId
 	 * @return
 	 */
+	@Deprecated
 	@RequestMapping("/orderToFinish")
 	public @ResponseBody Map<String, Object> changeOrderStatus2Finish(
 			@RequestParam String adminPhone, @RequestParam String togetherId) {
@@ -1046,4 +1048,48 @@ public class OrderController {
 		return resultMap;
 	}
 
+	/**
+	 * 修改订单状态
+	 * @param adminPhone
+	 * @param togetherId
+	 * @return
+	 */
+	@RequestMapping("modifyOrderStatus")
+	public @ResponseBody Map<String, Object> modifyOrderStatus(@RequestParam String adminPhone,
+			@RequestParam final String togetherId, @RequestParam Short status){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> requestMap = new HashMap<String, Object>();
+		requestMap.put("adminPhone", adminPhone);
+		requestMap.put("togetherId", togetherId);
+		requestMap.put("status", status);
+		Integer flag = null;
+		switch(status){
+		case 0:
+			//购物车
+			flag = orderService.modifyOrderStatus(requestMap);
+			break;
+		case 1:
+			//待付款
+			flag = orderService.modifyOrderStatus(requestMap);
+			break;
+		case 2:
+			//待确认
+			flag = orderService.modifyOrderStatus(requestMap);
+			break;
+		case 3:
+			//配送中
+			flag = orderService.modifyOrderStatus(requestMap);
+			break;
+		case 4:
+			//待评价
+			flag = orderService.modifyOrderStatus(requestMap);
+			break;
+		case 5:
+			//已完成
+			flag = orderService.modifyOrderStatus(requestMap);
+			break;
+		}
+		resultMap.put("flag", flag);
+		return resultMap;
+	}
 }
