@@ -401,15 +401,15 @@
 		and phone =
 		#{phoneId,jdbcType=VARCHAR} And
 		together_id=#{togetherId,jdbcType=VARCHAR}
-		<if test="status!=null">
+		<!-- <if test="status!=null">
 			and orders.status = #{status,jdbcType=SMALLINT}
 			<if test="status==3">
 				and is_remarked = 0
-			</if>
+			</if
 		</if>
-		<if test="status==null">
+		<if test="status==null"> -->
 			and orders.status !=0
-		</if>
+		<!-- </if> -->
 		and
 		orders.tag=1
 		order by together_date DESC,create_time DESC		
@@ -478,17 +478,27 @@
 		<where>
 			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
 			orders.tag=1
-			<if test="status!=null">
+			<if test="status!=null and status!=4 and status!=5">			
 				and status = #{status,jdbcType=SMALLINT}
-				<if test="status==3">
-					and is_remarked = 0
-				</if>
+			</if>
+			<if test="status==4">
+			    and status=4
+			</if>
+			<if test="status==5">
+				and status=4
 			</if>
 			<if test="status==null">
 				and status !=0
 			</if>
 		</where>
-		order by together_date DESC
+		group by together_id
+			<if test="status==4">
+			    having count(order_id)!=sum(is_remarked)
+			</if>
+			<if test="status==5">
+				having count(order_id)=sum(is_remarked)
+			</if>
+		order by together_date DESC		 
 		<if test="limit !=null and offset !=null">
 			LIMIT #{limit,jdbcType=INTEGER} OFFSET
 			#{offset,jdbcType=INTEGER}
@@ -795,6 +805,9 @@
 	update orders set 
 	<if test="status != null">
 		status=#{status, jdbcType=SMALLINT}
+	</if>
+	<if test="isRemarked != null">
+		,is_remarked=#{isRemarked, jdbcType=SMALLINT}
 	</if>
 	<where>
 	together_id=#{togetherId, jdbcType=VARCHAR}

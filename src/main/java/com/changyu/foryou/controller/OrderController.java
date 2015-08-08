@@ -148,7 +148,6 @@ public class OrderController {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("phoneId", phoneId);
 			paramMap.put("status", status);
-
 			if (limit != null && page != null) {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page - 1) * limit);
@@ -166,7 +165,21 @@ public class OrderController {
 					List<SmallOrder> orderList = orderService
 							.getOrderListInMine(paramMap); // 一单里面的小订单
 					togetherOrder.setSmallOrders(orderList);
-					togetherOrder.setStatus(orderList.get(0).getStatus());
+					Short totalStatus=0;
+					if(orderList.get(0).getStatus()!=4)
+					{
+						totalStatus=orderList.get(0).getStatus();
+					}
+					else
+					{
+						totalStatus=5;
+						for (int i = 0; i < orderList.size(); i++) {
+							if (orderList.get(i).getIsRemarked() == 0) {
+								totalStatus = 4;
+							}
+						}
+					}
+					togetherOrder.setStatus(totalStatus);
 					togetherOrder.setTogetherDate(orderList.get(0)
 							.getTogetherDate());
 					togetherOrdersList.add(togetherOrder);
@@ -1013,10 +1026,10 @@ public class OrderController {
 			if (orders.get(0).getStatus() != 4) {
 				status = orders.get(0).getStatus();
 			} else {
-				status = 4;
+				status = 5;
 					for (int i = 0; i < orders.size(); i++) {
-						if (orders.get(i).getIsRemarked() == 1) {
-							status = 5;
+						if (orders.get(i).getIsRemarked() == 0) {
+							status = 4;
 						}
 					}
 				
@@ -1084,7 +1097,7 @@ public class OrderController {
 		case 5:
 			//已完成
 			requestMap.put("orderId", orderId);
-			requestMap.put("isRemarked", 1);
+			requestMap.put("isRemarked", Integer.valueOf(1));
 			requestMap.put("status", 4);
 			flag = orderService.modifyOrderStatus(requestMap);
 			break;
