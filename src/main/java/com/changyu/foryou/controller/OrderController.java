@@ -1095,7 +1095,7 @@ public class OrderController {
 			flag = orderService.modifyOrderStatus(requestMap);
 			break;
 		case 5:
-			//已完成
+			//小订单已完成
 			requestMap.put("orderId", orderId);
 			requestMap.put("isRemarked", Integer.valueOf(1));
 			requestMap.put("status", 4);

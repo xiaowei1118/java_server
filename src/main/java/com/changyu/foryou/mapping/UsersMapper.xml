@@ -26,7 +26,8 @@
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
 		select
-		<include refid="Base_Column_List" />
+		users.phone as phone, password, type, nickname, img_url,
+		last_login_date,create_time,sex,academy,qq,weixin
 		, receiver.address as default_address
 		from users,receiver
 		where users.phone = #{phone,jdbcType=VARCHAR}
