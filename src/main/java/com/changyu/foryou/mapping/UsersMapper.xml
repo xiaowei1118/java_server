@@ -27,8 +27,11 @@
 		parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
-		from users
-		where phone = #{phone,jdbcType=VARCHAR}
+		, receiver.address as default_address
+		from users,receiver
+		where users.phone = #{phone,jdbcType=VARCHAR}
+		and receiver.phone_id=users.phone
+		AND receiver.tag=0
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from users
