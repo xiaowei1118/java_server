@@ -96,6 +96,8 @@ public interface OrderMapper {
 	
 	Integer modifyOrderStatus(Map<String, Object> paramMap);
 
+	void deleteOrder(Map<String, Object> paramMap);
+
 	
 
 }

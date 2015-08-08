@@ -393,7 +393,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price
+		discount_price,food.message as message
 		from
 		orders,food
 		where
@@ -401,15 +401,15 @@
 		and phone =
 		#{phoneId,jdbcType=VARCHAR} And
 		together_id=#{togetherId,jdbcType=VARCHAR}
-		<if test="status!=null">
+		<!-- <if test="status!=null">
 			and orders.status = #{status,jdbcType=SMALLINT}
 			<if test="status==3">
 				and is_remarked = 0
-			</if>
+			</if
 		</if>
-		<if test="status==null">
+		<if test="status==null"> -->
 			and orders.status !=0
-		</if>
+		<!-- </if> -->
 		and
 		orders.tag=1
 		order by together_date DESC,create_time DESC		
@@ -478,17 +478,27 @@
 		<where>
 			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
 			orders.tag=1
-			<if test="status!=null">
+			<if test="status!=null and status!=4 and status!=5">			
 				and status = #{status,jdbcType=SMALLINT}
-				<if test="status==3">
-					and is_remarked = 0
-				</if>
+			</if>
+			<if test="status==4">
+			    and status=4
+			</if>
+			<if test="status==5">
+				and status=4
 			</if>
 			<if test="status==null">
 				and status !=0
 			</if>
 		</where>
-		order by together_date DESC
+		group by together_id
+			<if test="status==4">
+			    having count(order_id)!=sum(is_remarked)
+			</if>
+			<if test="status==5">
+				having count(order_id)=sum(is_remarked)
+			</if>
+		order by together_date DESC		 
 		<if test="limit !=null and offset !=null">
 			LIMIT #{limit,jdbcType=INTEGER} OFFSET
 			#{offset,jdbcType=INTEGER}
@@ -785,7 +795,7 @@
 	
 	<select id="calTotalCost" resultType="java.lang.Double">
 		select 
-		sum(food.price*order_count)as totalCost
+		sum(food.discount_price*order_count)as totalCost
 		from food,orders
 		where orders.tag=1 and  together_id=#{togetherId,jdbcType=VARCHAR}
 		and food.food_id=orders.food_id
@@ -796,11 +806,25 @@
 	<if test="status != null">
 		status=#{status, jdbcType=SMALLINT}
 	</if>
-	where together_id=#{togetherId, jdbcType=VARCHAR}
-	and admin_phone=#{adminPhone, jdbcType=VARCHAR}
-	<if test="orderId != null">
-	and order_id=#{oederId, jdbcType=}
+	<if test="isRemarked != null">
+		,is_remarked=#{isRemarked, jdbcType=SMALLINT}
 	</if>
+	<where>
+	together_id=#{togetherId, jdbcType=VARCHAR}
+	and tag=1
+	<if test="orderId != null">
+	and order_id=#{orderId, jdbcType=BIGINT}
+	</if>
+	<if test="status==3">
+	and admin_phone is not null
+	</if>
+	</where>
 	</update>
+	
+	<delete id="deleteOrder">
+	delete from orders
+	where together_id=#{togetherId,jdbcType=VARCHAR}
+	and status=4	
+	</delete>
 
 </mapper>

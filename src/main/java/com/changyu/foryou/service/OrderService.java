@@ -88,6 +88,8 @@ public interface OrderService {
 
 	Integer modifyOrderStatus(Map<String, Object> paramMap);
 
+	void deleteOrder(Map<String, Object> paramMap);
+
 	
 
 

@@ -148,7 +148,6 @@ public class OrderController {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("phoneId", phoneId);
 			paramMap.put("status", status);
-
 			if (limit != null && page != null) {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page - 1) * limit);
@@ -166,7 +165,21 @@ public class OrderController {
 					List<SmallOrder> orderList = orderService
 							.getOrderListInMine(paramMap); // 一单里面的小订单
 					togetherOrder.setSmallOrders(orderList);
-					togetherOrder.setStatus(orderList.get(0).getStatus());
+					Short totalStatus=0;
+					if(orderList.get(0).getStatus()!=4)
+					{
+						totalStatus=orderList.get(0).getStatus();
+					}
+					else
+					{
+						totalStatus=5;
+						for (int i = 0; i < orderList.size(); i++) {
+							if (orderList.get(i).getIsRemarked() == 0) {
+								totalStatus = 4;
+							}
+						}
+					}
+					togetherOrder.setStatus(totalStatus);
 					togetherOrder.setTogetherDate(orderList.get(0)
 							.getTogetherDate());
 					togetherOrdersList.add(togetherOrder);
@@ -992,7 +1005,7 @@ public class OrderController {
 		return resultMap;
 	}
 
-	/*
+	/**
 	 * 根据togetherId获取大订单信息
 	 * 
 	 * @param togetherId
@@ -1013,14 +1026,13 @@ public class OrderController {
 			if (orders.get(0).getStatus() != 4) {
 				status = orders.get(0).getStatus();
 			} else {
-				status = 4;
-				if (orders.size() > 1) {
-					for (int i = 1; i < orders.size(); i++) {
-						if (orders.get(i).getIsRemarked() == 1) {
-							status = 5;
+				status = 5;
+					for (int i = 0; i < orders.size(); i++) {
+						if (orders.get(i).getIsRemarked() == 0) {
+							status = 4;
 						}
 					}
-				}
+				
 			}
 			Receiver receiver = receiverService.getReceiver(paramMap);
 			Date date = orderService.getTogetherDate(paramMap);
@@ -1055,11 +1067,9 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("modifyOrderStatus")
-	public @ResponseBody Map<String, Object> modifyOrderStatus(@RequestParam String adminPhone,
-			@RequestParam final String togetherId, @RequestParam Short status, Integer orderId){
+	public @ResponseBody Map<String, Object> modifyOrderStatus(	@RequestParam final String togetherId, @RequestParam Short status, Long orderId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
-		requestMap.put("adminPhone", adminPhone);
 		requestMap.put("togetherId", togetherId);
 		requestMap.put("status", status);
 		Integer flag = null;
@@ -1087,12 +1097,45 @@ public class OrderController {
 		case 5:
 			//已完成
 			requestMap.put("orderId", orderId);
-			requestMap.put("isRemarked", 1);
+			requestMap.put("isRemarked", Integer.valueOf(1));
 			requestMap.put("status", 4);
 			flag = orderService.modifyOrderStatus(requestMap);
 			break;
+		default:
+			break;
 		}
+		resultMap.put(Constants.STATUS, Constants.SUCCESS);
+		resultMap.put(Constants.MESSAGE, "更改状态成功");
 		resultMap.put("flag", flag);
 		return resultMap;
 	}
+	
+	
+	/**
+	 * 删除订单（status=4）
+	 *@param togetherId
+	 */
+	@RequestMapping("/deleteOrder")
+	public @ResponseBody Map<String, Object> deleteOrder(@RequestParam String togetherId)
+	{
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("togetherId", togetherId);
+		List<SmallOrder> orders=orderService.getOrdersById(paramMap);
+		if(orders.size()>0&&orders!=null)
+		{
+			orderService.deleteOrder(paramMap);
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "删除订单成功");
+		}
+		else
+		{
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "订单不存在,删除订单失败");
+		}
+		
+		return resultMap;
+	}
+	
+	
 }
