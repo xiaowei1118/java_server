@@ -99,11 +99,12 @@ public class OrderController {
 	@RequestMapping("/createOrder")
 	public @ResponseBody Map<String, Object> createOrder(
 			@RequestParam Integer campusId, @RequestParam String phoneId,
-			@RequestParam Long foodId, @RequestParam Integer foodCount) {
+			@RequestParam Long foodId, @RequestParam Integer foodCount){
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
 			Order order = new Order(campusId, phoneId, foodId, foodCount);
+			Long orderId=order.getOrderId();
 			List<Order> oldOrders = orderService.selectOrder(order);
 
 			// 待优化。。。。。。。将delete和insert改为一次操作
@@ -115,6 +116,7 @@ public class OrderController {
 			int flag = orderService.insertSelectiveOrder(order);
 
 			if (flag != -1 && flag != 0) {
+				map.put("orderId", orderId);
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "生成订单成功");
 			} else {
@@ -1135,6 +1137,47 @@ public class OrderController {
 		}
 		
 		return resultMap;
+	}
+	
+	/**
+	 * 商品详情处立即购买
+	 * @param campusId
+	 * @param phoneId
+	 * @param foodId
+	 * @param foodCount
+	 * @return
+	 */
+	
+	@RequestMapping("/purchaseImmediately")
+	public @ResponseBody Map<String, Object> purchaseImmediately(
+			@RequestParam Integer campusId, @RequestParam String phoneId,
+			@RequestParam Long foodId, @RequestParam Integer foodCount)
+	{
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		try {
+			Order order = new Order(campusId, phoneId, foodId, foodCount);
+			paramMap.put("orderId",order.getOrderId());
+			int flag = orderService.insertSelectiveOrder(order);
+			
+			if (flag == -1 && flag == 0) {			
+				resultMap.put(Constants.STATUS, Constants.FAILURE);
+				resultMap.put(Constants.MESSAGE, "生成订单失败");
+			}
+			
+			SmallOrder smallOrder=orderService.getOrderById(paramMap);
+			resultMap.put("order", smallOrder);
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "订单详情：");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "生成订单失败");			
+		}
+		return resultMap;
+	
+		
 	}
 	
 	

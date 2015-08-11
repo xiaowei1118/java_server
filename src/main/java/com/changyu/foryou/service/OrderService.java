@@ -90,6 +90,12 @@ public interface OrderService {
 
 	void deleteOrder(Map<String, Object> paramMap);
 
+	SmallOrder getOrderById(Map<String, Object> paramMap);
+
+	
+
+	
+
 	
 
 

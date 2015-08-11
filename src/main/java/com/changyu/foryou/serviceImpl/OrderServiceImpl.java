@@ -219,6 +219,14 @@ public class OrderServiceImpl implements OrderService {
 		orderMapper.deleteOrder(paramMap);
 	}
 
+	@Override
+	public SmallOrder getOrderById(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getOrderById(paramMap);
+	}
+
+
+
 
 
 
