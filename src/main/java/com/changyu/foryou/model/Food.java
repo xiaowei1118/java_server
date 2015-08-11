@@ -46,6 +46,8 @@ public class Food {
 	
 	private String homeImage;
 	
+	private String message;
+	
 	
 	public Food(){
 		
@@ -283,5 +285,11 @@ public class Food {
 	}
 	public void setHomeImage(String homeImage) {
 		this.homeImage = homeImage;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

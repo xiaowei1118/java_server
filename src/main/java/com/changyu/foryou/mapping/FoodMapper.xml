@@ -12,7 +12,7 @@
 		<result column="food_flag" property="foodFlag" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
-		<result column="prime_cost" property="primeCost" jdbcType="REAL" />
+		<result column="prime_cost" property="primeCost" jdbcType="REAL" />		
 	</resultMap>
 	
 	<resultMap type="com.changyu.foryou.model.ShortFoodWithIm" id="SmallWithImResultMap"
@@ -48,7 +48,7 @@
 		status,
 		food_flag, tag, is_discount,
 		category_id,
-		prime_cost, sale_number,food_count
+		prime_cost, sale_number,food_count,food.message as message
 	</sql>
 
 	<sql id="Small_Column_List">
