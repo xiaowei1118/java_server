@@ -6,7 +6,7 @@ import java.util.List;
 public class BigOrder {
 	private String togetherId;
 	
-	private Double totalPrice;
+	private String totalPrice;
 	
 	private Date date;
 	
@@ -16,11 +16,11 @@ public class BigOrder {
 	
 	private Short status;
 
-	public Double getTotalPrice() {
+	public String getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(Double totalPrice) {
+	public void setTotalPrice(String totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
