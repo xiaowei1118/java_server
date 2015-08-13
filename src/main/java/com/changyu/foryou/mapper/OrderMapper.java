@@ -91,8 +91,6 @@ public interface OrderMapper {
 	Date getTogetherDate(Map<String, Object> paramMap);
 
 	List<SmallOrder> getOrdersById(Map<String, Object> paramMap);
-
-	Double calTotalCost(Map<String, Object> paramMap);
 	
 	Integer modifyOrderStatus(Map<String, Object> paramMap);
 

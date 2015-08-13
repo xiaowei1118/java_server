@@ -1044,7 +1044,22 @@ public class OrderController {
 			 * if (orders!=null&&orders.size() > 0) { for (int i = 0; i <
 			 * orders.size(); i++) { sum += orders.get(i).getPrice(); } }
 			 */
-			sum = orderService.calTotalCost(paramMap);
+			
+			if (orders.size() > 0 && orders != null) 
+			{
+				for(SmallOrder i:orders)
+				{
+					if(i.getIsDiscount()==1)
+					{
+						sum += i.getDiscountPrice()*i.getOrderCount();
+					}
+					else
+					{
+						sum += i.getPrice()*i.getOrderCount();
+					}
+				}
+			}
+			
 			bigOrder.setTotalPrice(sum);
 			bigOrder.setOrders(orders);
 			bigOrder.setReceiver(receiver);

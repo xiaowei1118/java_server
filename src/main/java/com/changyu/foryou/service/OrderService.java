@@ -84,8 +84,6 @@ public interface OrderService {
 
 	List<SmallOrder> getOrdersById(Map<String, Object> paramMap);
 
-	Double calTotalCost(Map<String, Object> paramMap);
-
 	Integer modifyOrderStatus(Map<String, Object> paramMap);
 
 	void deleteOrder(Map<String, Object> paramMap);
