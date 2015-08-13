@@ -813,11 +813,12 @@
 	</where>
 	</update>
 	
-	<delete id="deleteOrder">
-	delete from orders
+	<update id="deleteOrder">
+	update orders
+	set tag = 0 
 	where together_id=#{togetherId,jdbcType=VARCHAR}
 	and status=4	
-	</delete>
+	</update>
 	
 	<select id="getOrderById" resultMap="SmallOrderMap">
 	select

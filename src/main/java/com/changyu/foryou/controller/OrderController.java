@@ -1059,8 +1059,8 @@ public class OrderController {
 					}
 				}
 			}
-			
-			bigOrder.setTotalPrice(sum);
+			DecimalFormat df = new DecimalFormat("0.0");
+			bigOrder.setTotalPrice(df.format(sum));
 			bigOrder.setOrders(orders);
 			bigOrder.setReceiver(receiver);
 			bigOrder.setStatus(status);
