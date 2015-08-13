@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.changyu.foryou.mapper.CampusMapper;
 import com.changyu.foryou.model.Campus;
+import com.changyu.foryou.model.CampusAdmin;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
 
@@ -44,6 +45,12 @@ public class CampusServiceImpl implements CampusService {
 	public Campus getCampusById(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.selectCampusById(paramMap);
+	}
+
+	@Override
+	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.getCampusIdByAdmin(paramMap);
 	}
 
 	

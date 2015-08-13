@@ -185,6 +185,7 @@ $(function(){
 		$(".campus-item").on("click", function(event){
 			//alert($(this).text());
 			var campusName = $(this).text();
+			$("#dropdownMenu1").text(campusName);
 			$.getJSON("campus/getIdByName.do?campusName="+campusName,function(data){
 				document.cookie="campusId="+data.campusId;
 				//alert(getCookie("campusId"));

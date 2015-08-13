@@ -21,6 +21,15 @@
 			<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.CampusAdmin" id="CampusAdminMap">
+		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR"/>
+		<result column="password" property="password" jdbcType="VARCHAR"/>
+		<result column="type" property="type" jdbcType="SMALLINT"/>
+		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR"/>
+		<result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
 
 	<sql id="Base_Column_List">
 		campus_id, campus_name, city_id
@@ -150,4 +159,11 @@
 		select * from campus where campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 	
+	<select id="getCampusIdByAdmin" resultMap="CampusAdminMap">
+		select campus_admin,password,type,campus_admin.campus_id,campus.campus_name as campus_name,last_login_date
+		 from campus_admin,campus
+		  where campus_admin=#{campusAdmin, jdbcType=VARCHAR}
+		   and 
+		   campus_admin.campus_id=campus.campus_id
+	</select>
 </mapper>

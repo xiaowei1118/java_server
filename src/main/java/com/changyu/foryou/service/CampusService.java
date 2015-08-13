@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.changyu.foryou.model.Campus;
+import com.changyu.foryou.model.CampusAdmin;
 import com.changyu.foryou.model.CityWithCampus;
 
 public interface CampusService {
@@ -17,4 +18,6 @@ public interface CampusService {
 	public Integer closeCampus(Map<String, Object> requestMap);
 	
 	public Campus getCampusById(Map<String, Object> paramMap);
+	
+	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
 }

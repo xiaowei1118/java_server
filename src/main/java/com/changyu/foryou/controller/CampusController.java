@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.changyu.foryou.model.Campus;
+import com.changyu.foryou.model.CampusAdmin;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.tools.Constants;
@@ -172,5 +174,19 @@ public class CampusController {
 		}
 		
 		return map;
+	}
+	
+	@RequestMapping("getCampusIdByAdmin")
+	public @ResponseBody Map<String, Object> getCampusIdByAdmin(@RequestParam String campusAdminName){
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		Map<String,Object> requestMap = new HashMap<String,Object>();
+
+		requestMap.put("campusAdmin", campusAdminName);
+		
+		CampusAdmin campusAdminInfo = campusService.getCampusIdByAdmin(requestMap);
+		
+		responseMap.put("CampusAdmin", campusAdminInfo);
+		
+		return responseMap;
 	}
 }
