@@ -793,14 +793,6 @@
 		order by together_date DESC,create_time DESC		
 	</select>
 	
-	<select id="calTotalCost" resultType="java.lang.Double">
-		select 
-		sum(food.discount_price*order_count)as totalCost
-		from food,orders
-		where orders.tag=1 and  together_id=#{togetherId,jdbcType=VARCHAR}
-		and food.food_id=orders.food_id
-	</select>
-	
 	<update id="modifyOrderStatus">
 	update orders set 
 	<if test="status != null">
@@ -826,5 +818,23 @@
 	where together_id=#{togetherId,jdbcType=VARCHAR}
 	and status=4	
 	</delete>
+	
+	<select id="getOrderById" resultMap="SmallOrderMap">
+	select
+		order_id,img_url,orders.food_id,
+		orders.order_count as
+		order_count ,
+		food.is_discount as
+		is_discount,
+		food.price as
+		price,food.name as name,
+		discount_price,food.message as message
+		from
+		orders,food
+		where
+		orders.food_id=food.food_id
+		And 
+		order_id=#{orderId,jdbcType=BIGINT}
+	</select>
 
 </mapper>

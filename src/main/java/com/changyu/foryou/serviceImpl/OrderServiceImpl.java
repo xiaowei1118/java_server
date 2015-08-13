@@ -201,11 +201,6 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.getOrdersById(paramMap);
 	}
 
-	@Override
-	public Double calTotalCost(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return orderMapper.calTotalCost(paramMap);
-	}
 
 	@Override
 	public Integer modifyOrderStatus(Map<String, Object> paramMap) {
@@ -218,6 +213,14 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		orderMapper.deleteOrder(paramMap);
 	}
+
+	@Override
+	public SmallOrder getOrderById(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getOrderById(paramMap);
+	}
+
+
 
 
 

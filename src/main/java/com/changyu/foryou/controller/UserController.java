@@ -320,17 +320,35 @@ public class UserController {
 	public @ResponseBody Map<String, Object> getMineInfo(@RequestParam String phone){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
 			Users users=userService.selectByUsername(phone);
 			Map<String, Object> counts=orderService.getOrderSummaryCount(phone);
-
+			paramMap.put("phoneId", phone);
+			paramMap.put("status", 1);
+			List<String> togetherId1=orderService.getTogetherId(paramMap);
+			paramMap.put("status", 2);
+			List<String> togetherId2=orderService.getTogetherId(paramMap);
+			paramMap.put("status", 3);
+			List<String> togetherId3=orderService.getTogetherId(paramMap);
+			paramMap.put("status", 4);
+			List<String> togetherId4=orderService.getTogetherId(paramMap);
+			paramMap.put("status", 5);
+			List<String> togetherId5=orderService.getTogetherId(paramMap);
 			if(users!=null){		
 				users.setPassword(null);
 				map.put("userInfo", users);
 				//map.put("waitDeliveryOrder", counts.get("wait"));
 				//map.put("waitReceiveOrder",counts.get("deliver"));
 				//map.put("waitCommentOrder", counts.get("comment"));
+							
 				map.put(Constants.STATUS,Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取数据成功");
+				map.put("waitPayOrder", togetherId1.size());
+				map.put("waitMakeSureOrder", togetherId2.size());
+				map.put("distribution", togetherId3.size());
+				map.put("waitCommentOrder", togetherId4.size());
+				map.put("doneOrder", togetherId5.size());
+			
 			}	
 		} catch (Exception e) {
 			e.printStackTrace();
