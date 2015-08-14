@@ -37,8 +37,10 @@ public class SmallOrder {
 	private String rank;
 	
 	private Date togetherDate;
-	
+
 	private String message;
+	
+	private Short payWay;
 	
 	public String getMessage() {
 		return message;
@@ -193,6 +195,13 @@ public class SmallOrder {
 
 	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
+	}
+	public Short getPayWay() {
+		return payWay;
+	}
+
+	public void setPayWay(Short payWay) {
+		this.payWay = payWay;
 	}
   
 }

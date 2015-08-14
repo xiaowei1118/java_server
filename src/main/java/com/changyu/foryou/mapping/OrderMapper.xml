@@ -14,6 +14,7 @@
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="food_id" property="foodId" jdbcType="BIGINT" />
 		<result column="rank" property="rank" jdbcType="VARCHAR" />
+		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
 	</resultMap>
 
 	<!-- 对应购物车model -->
@@ -78,6 +79,7 @@
 		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="message" property="message" jdbcType="VARCHAR"/>
+		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
 	</resultMap>
 
 	<!-- 超级管理员管理派单model -->
@@ -344,8 +346,10 @@
 		orders
 		set
 		status=1,message=#{message,jdbcType=VARCHAR},reserve_time=#{reserveTime,jdbcType=VARCHAR},
-		together_id=#{togetherId,jdbcType=VARCHAR},rank=#{rank,jdbcType=VARCHAR},together_date=Now()
+		together_id=#{togetherId,jdbcType=VARCHAR},rank=#{rank,jdbcType=VARCHAR},together_date=Now(),
+		pay_way=#{payWay,jdbcType=SMALLINT}
 		where
+	
 		order_id=#{orderId,jdbcType=BIGINT} And
 		phone=#{phoneId,jdbcType=VARCHAR}
 	</update>
@@ -393,7 +397,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message
+		discount_price,food.message as message,pay_way
 		from
 		orders,food
 		where
@@ -781,7 +785,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message
+		discount_price,food.message as message,pay_way
 		from
 		orders,food
 		where

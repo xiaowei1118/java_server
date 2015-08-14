@@ -28,6 +28,8 @@ public class Order {
     private String togetherId;
     
     private String rank;
+    
+    private Short payWay;
    
 
 	public Order(){
@@ -140,5 +142,13 @@ public class Order {
 
 	public void setCampusId(Integer campusId) {
 		this.campusId = campusId;
+	}
+
+	public Short getPayWay() {
+		return payWay;
+	}
+
+	public void setPayWay(Short payWay) {
+		this.payWay = payWay;
 	}
 }

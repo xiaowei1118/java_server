@@ -26,7 +26,7 @@ public interface OrderService {
 
 	int insertSelectiveOrder(Order order);
 
-	int changeOrderStatus2Buy(String phoneId, String orderId,String togetherId,String rank, String reserveTime, String message);
+	int changeOrderStatus2Buy(String phoneId, String orderId,String togetherId,String rank, String reserveTime, String message,Short payWay);
 
 	int changeOrderStatus2Deliver(String phoneId, String togetherId);
 
