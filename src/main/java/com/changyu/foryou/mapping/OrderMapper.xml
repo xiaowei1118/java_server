@@ -537,7 +537,7 @@
 		from orders
 		where phone=
 		#{phoneId,jdbcType=VARCHAR} And order_id=
-		#{orderId,jdbcType=BIGINT} and status=3 and orders.tag=1
+		#{orderId,jdbcType=BIGINT} and status=4 and orders.tag=1
 	</select>
 
 
@@ -550,7 +550,7 @@
 		where phone=
 		#{phone,jdbcType=VARCHAR} And order_id=
 		#{orderId,jdbcType=BIGINT} and
-		status=3 and tag=1
+		status=4 and tag=1
 	</update>
 
 	<!-- 超级管理员获取订单 -->
@@ -622,7 +622,7 @@
 		receiver
 		WHERE
 		orders.rank=receiver.rank and
-		orders.status !=0 and orders.status !=3
+		orders.status !=0 and orders.status !=4
 		and DATE_SUB(CURDATE(),
 		INTERVAL 10 DAY) &lt;= date(together_date) and
 		orders.phone=receiver.phone_id and orders.admin_phone =
@@ -645,7 +645,7 @@
 		WHERE
 		orders.food_id=food.food_id and
 		orders.status !=0 and
-		orders.status != 3 and  orders.tag=1
+		orders.status != 4 and  orders.tag=1
 		and
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
