@@ -1194,4 +1194,39 @@ public class FoodController {
 		
 		return "redirect:/pages/uploadError.html";
 	}
+	
+	/**
+	 * 返回JSON数组类型的食品分类，用于客户端分页
+	 * @param campusId
+	 * @return
+	 */
+	@RequestMapping("getAllFoodCategories4Client")
+	public @ResponseBody JSONArray getAllFoodCategories4Client(@RequestParam Long campusId){
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("campusId", campusId);
+		
+		List<FoodCategory> foodCategories = foodService.getAllFoodCategories(paramMap);
+		
+		return (JSONArray) JSON.toJSON(foodCategories);
+	}
+	
+	@RequestMapping("cancelRecommend")
+	public @ResponseBody Map<String, Object> cancelRecommend(@RequestParam Long foodId){
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("foodId", foodId);
+		paramMap.put("toHome", 0);
+		
+		Integer cancel = foodService.cancelRecommend(paramMap);
+		if(cancel==-1||cancel==0){
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "取消推荐失败！");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "取消推荐成功！");
+		}
+		return responseMap;
+	}
+
 }

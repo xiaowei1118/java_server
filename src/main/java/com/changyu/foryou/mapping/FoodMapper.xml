@@ -12,7 +12,9 @@
 		<result column="food_flag" property="foodFlag" jdbcType="VARCHAR" />
 		<result column="tag" property="tag" jdbcType="SMALLINT" />
 		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
-		<result column="prime_cost" property="primeCost" jdbcType="REAL" />		
+		<result column="prime_cost" property="primeCost" jdbcType="REAL" />	
+		<result column="to_home" property="toHome" jdbcType="SMALLINT"/>
+		<result column="home_image" property="homeImage" jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<resultMap type="com.changyu.foryou.model.ShortFoodWithIm" id="SmallWithImResultMap"
@@ -48,7 +50,7 @@
 		status,
 		food_flag, tag, is_discount,
 		category_id,
-		prime_cost, sale_number,food_count,food.message as message
+		prime_cost, sale_number,food_count,food.message as message,to_home,home_image
 	</sql>
 
 	<sql id="Small_Column_List">
@@ -479,6 +481,14 @@
 		update food set 
 		<if test="info != null">
 			info=#{info, jdbcType=VARCHAR}
+		</if>
+		where food_id=#{foodId, jdbcType=BIGINT}
+	</update>
+	
+	<update id="cancelRecommend">
+		update food set
+		<if test="toHome != null">
+			to_home=#{toHome, jdbcType=SMALLINT}
 		</if>
 		where food_id=#{foodId, jdbcType=BIGINT}
 	</update>

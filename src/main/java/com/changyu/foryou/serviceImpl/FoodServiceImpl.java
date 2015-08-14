@@ -254,6 +254,12 @@ public class FoodServiceImpl implements FoodService{
 		// TODO Auto-generated method stub
 		return foodMapper.updateInfoByFoodId(paramMap);
 	}
+
+	@Override
+	public Integer cancelRecommend(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodMapper.cancelRecommend(paramMap);
+	}
 	
 }
 

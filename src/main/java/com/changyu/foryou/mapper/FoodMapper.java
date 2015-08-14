@@ -43,4 +43,6 @@ public interface FoodMapper {
 	Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap);//上传推送到首页的食品大图
 	
 	Integer updateInfoByFoodId(Map<String, Object> paramMap);//更新食品详情图片
+	
+	Integer cancelRecommend(Map<String, Object> paramMap);//取消推荐
 }

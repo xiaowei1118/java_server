@@ -25,6 +25,13 @@
 		.ml10 {
 			margin-left: 10px;
 		}
+		#operate-success{
+			padding:10px;
+			font-size:16px;
+			background-color:#8AC007;
+			color:#FBFBFB;
+			visibility:hidden
+		}
 	</style>
 	<body>
 		<div class="container">
@@ -36,6 +43,12 @@
 						</div>
 					</div>
 				</div>
+				
+				<div style="text-align:center;">
+						<span id="operate-success">
+    						设置成功
+    					</span>
+					</div>
 
 				<div id="toolbar" class="btn-group">
 					<button id="plus" type="button" class="btn btn-default">
@@ -71,9 +84,7 @@
 							<th data-align="left" data-field="categoryId"
 							data-sortable="true">所属分类</th>
 							<th data-align="left" data-field="toHome"
-							data-sortable="true" data-formatter="toHomeFormatter">推到首页</th>
-							<th data-align="left" data-field="nothing"
-							 data-formatter="toHomeOperateFormatter" data-events="homeImageEvents">推到首页操作</th>
+							 data-formatter="toHomeOperateFormatter" data-events="homeImageEvents">推到首页</th>
 							<th data-align="center" data-field="homeImage" data-formatter="homeImageFormatter">首页食品</th>
 							<th data-align="left" data-field="homeImageManage"
 							 data-sortable="true" data-formatter="detailImageManageFormatter" data-events="detailImageOperateEvents">详情管理</th>
@@ -416,6 +427,21 @@ aria-hidden="true">
 </div>
  -->
 </body>
+<script>
+function setSuccess(message){
+    if(!message){
+        $("#operate-success").text("设置成功！");
+    }else{
+    	$("#operate-success").text(message);
+    }
+	//$("#operate-success").show();
+	$("#operate-success").css("visibility", "visible");
+	window.setTimeout(function(){
+		//$("#operate-success").hide();
+		$("#operate-success").css("visibility", "hidden");
+	}, 2000);
+}
+</script>
 <script>
 	$("#campusId2").val(getCookie("campusId"));
 </script>
@@ -796,20 +822,37 @@ window.detailImageOperateEvents={
 };
 
 function toHomeOperateFormatter(value, row, index){
-	return [
-	       '<a class="open" herf="javascript:void(0)" data-target="#pushToHomeModal" data-toggle="modal" title="open">',
-	       '推送',
-	       '</a>'
-	].join('');
+	if(row.toHome==1){
+		return [
+			       '<a class="cancelRecommendOperate" herf="javascript:void(0)" title="open">',
+			       '取消推荐',
+			       '</a>'
+			].join('');
+	}else if(row.toHome==0){
+		return [
+			       '<a class="toHomeOperate" herf="javascript:void(0)" data-target="#pushToHomeModal" data-toggle="modal" title="open">',
+			       '推到首页',
+			       '</a>'
+			].join('');
+	}
 }
 
 window.homeImageEvents = {
-	'click .open' : function(e, value, row, index){
+	'click .toHomeOperate' : function(e, value, row, index){
 		//alert(row);
 		$("#food-id").val(row.foodId);
 		$("#homeImageFile").val("");
 		//$(this).modal('show');
+	},
+	'click .cancelRecommendOperate':function(e, value, row, index){
+		$.post("../service/cancelRecommend.do",{
+			foodId : row.foodId
+		},function(data){
+			setSuccess(data.message);
+			$table.bootstrapTable('refresh');
+		},"json");
 	}
+	
 };
 </Script>
 </html>

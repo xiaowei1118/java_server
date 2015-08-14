@@ -97,4 +97,6 @@ public interface FoodService {
 	Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap);
 	
 	Integer updateInfoByFoodId(Map<String, Object> paramMap);
+	
+	Integer cancelRecommend(Map<String, Object> paramMap);
 }
