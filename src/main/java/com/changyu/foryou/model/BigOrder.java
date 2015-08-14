@@ -15,6 +15,8 @@ public class BigOrder {
 	private List<SmallOrder> orders;
 	
 	private Short status;
+	
+	private Short payWay;
 
 	public String getTotalPrice() {
 		return totalPrice;
@@ -62,6 +64,14 @@ public class BigOrder {
 
 	public void setStatus(Short status) {
 		this.status = status;
+	}
+
+	public Short getPayWay() {
+		return payWay;
+	}
+
+	public void setPayWay(Short payWay) {
+		this.payWay = payWay;
 	}
 
 }

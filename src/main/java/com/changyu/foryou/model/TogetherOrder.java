@@ -13,6 +13,14 @@ public class TogetherOrder {
     
     private List<SmallOrder> smallOrders;
     
+    private Short payWay;
+    
+	public Short getPayWay() {
+		return payWay;
+	}
+	public void setPayWay(Short payWay) {
+		this.payWay = payWay;
+	}
 	public String getTogetherId() {
 		return togetherId;
 	}

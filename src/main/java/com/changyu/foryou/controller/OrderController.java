@@ -167,6 +167,7 @@ public class OrderController {
 					List<SmallOrder> orderList = orderService
 							.getOrderListInMine(paramMap); // 一单里面的小订单
 					togetherOrder.setSmallOrders(orderList);
+					togetherOrder.setPayWay(orderList.get(0).getPayWay());
 					Short totalStatus=0;
 					if(orderList.get(0).getStatus()!=4)
 					{
@@ -493,7 +494,7 @@ public class OrderController {
 	@RequestMapping("/orderToBuy")
 	public @ResponseBody Map<String, Object> changeOrderStatus2Buy(
 			@RequestParam String phoneId, @RequestParam String orderId,
-			@RequestParam String rank, String reserveTime, String message) {
+			@RequestParam String rank, String reserveTime, String message,@RequestParam Short payWay) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
@@ -522,7 +523,7 @@ public class OrderController {
 				// 这里做写入单价操作，还没有写！！！
 
 				flag = orderService.changeOrderStatus2Buy(phoneId, id,
-						togetherId, rank, reserveTime, message);
+						togetherId, rank, reserveTime, message,payWay);
 
 				// 更新库存和销量
 				Order order = orderService.selectOneOrder(phoneId, id); // 获取该笔订单的消息
@@ -1039,6 +1040,8 @@ public class OrderController {
 			Receiver receiver = receiverService.getReceiver(paramMap);
 			Date date = orderService.getTogetherDate(paramMap);
 			bigOrder.setDate(date);
+			System.out.println(orders.get(0).getPayWay());
+			bigOrder.setPayWay(orders.get(0).getPayWay());
 			// 若order表里的price有信息
 			/*
 			 * if (orders!=null&&orders.size() > 0) { for (int i = 0; i <
