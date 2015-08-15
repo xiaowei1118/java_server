@@ -43,18 +43,14 @@
 							document.cookie = "campusAdmin="+phone;
 							document.cookie = "password="+password;
 							//将当前管理员管理的校区id存到cookie
-							
+							//getSellerById获取校区管理员信息
 							$.post("seller/getSellerById.do",{
 								campusAdmin : phone
 							},function(data){
 								//alert(data);
-								$.post("campus/getCampusIdByAdmin.do", {
-									campusAdminName : phone
-								},function(data){
-									document.cookie = "campusId="+data.CampusAdmin.campusId;
-									window.location.href="index.html?backurl="+window.location.href;
-								},"json");
-								
+								document.cookie = "campusId="+data.seller.campusId;
+								document.cookie = "type="+data.seller.type;
+								window.location.href="index.html?backurl="+window.location.href;
 							},"json");
 						}else{
                             $("#message").html("对不起，你没有登陆权限！");

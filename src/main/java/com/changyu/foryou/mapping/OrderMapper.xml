@@ -655,7 +655,7 @@
 		SELECT
 		together_id,
 		orders.phone,
-		food. NAME AS NAME,
+		food.name as name,
 		order_count,
 		address,
 		orders.admin_phone,

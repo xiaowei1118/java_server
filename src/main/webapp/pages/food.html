@@ -443,6 +443,12 @@ function setSuccess(message){
 }
 </script>
 <script>
+var adminType = getCookie("type");
+if(adminType==1){
+	$("#toolbar").hide();
+}else if(adminType==0){
+	$("#toolbar").show();
+}
 	$("#campusId2").val(getCookie("campusId"));
 </script>
 <Script>
@@ -806,11 +812,15 @@ function homeImageFormatter(value, row, index){
 }
 
 function detailImageManageFormatter(value, row, index){
-	return [
-		'<a class="edit" href="javascript:void(0)" data-target="#manageDetailImageModal" data-toggle="modal" title="edit">',
-		'管理',
-		'</a>'
-	].join('');
+	if(adminType==0){
+		return [
+				'<a class="edit" href="javascript:void(0)" data-target="#manageDetailImageModal" data-toggle="modal" title="edit">',
+				'管理',
+				'</a>'
+			].join('');
+	}else if(adminType==1){
+		return "无操作权限";
+	}
 }
 
 window.detailImageOperateEvents={
@@ -822,18 +832,22 @@ window.detailImageOperateEvents={
 };
 
 function toHomeOperateFormatter(value, row, index){
-	if(row.toHome==1){
-		return [
-			       '<a class="cancelRecommendOperate" herf="javascript:void(0)" title="open">',
-			       '取消推荐',
-			       '</a>'
-			].join('');
-	}else if(row.toHome==0){
-		return [
-			       '<a class="toHomeOperate" herf="javascript:void(0)" data-target="#pushToHomeModal" data-toggle="modal" title="open">',
-			       '推到首页',
-			       '</a>'
-			].join('');
+	if(adminType==0){
+		if(row.toHome==1){
+			return [
+				       '<a class="cancelRecommendOperate" herf="javascript:void(0)" title="open">',
+				       '取消推荐',
+				       '</a>'
+				].join('');
+		}else if(row.toHome==0){
+			return [
+				       '<a class="toHomeOperate" herf="javascript:void(0)" data-target="#pushToHomeModal" data-toggle="modal" title="open">',
+				       '推到首页',
+				       '</a>'
+				].join('');
+		}
+	}else if(adminType==1){
+		return "无操作权限";
 	}
 }
 

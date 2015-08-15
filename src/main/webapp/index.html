@@ -24,6 +24,9 @@ a:hover {
    width:91%;
    margin:10px auto;
 }
+#campusDropdown{
+	visibility:hidden
+}
 </style>
 <script type="text/javascript">
 		$(function(){
@@ -44,7 +47,7 @@ a:hover {
 				<ul class='nav pull-right'>
 				<li>
 				<!-- 添加校区下拉菜单 -->
-		<div class="dropdown">
+		<div class="dropdown" id="campusDropdown">
 			<button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
 				校区
 				<span class="caret"></span>
@@ -68,17 +71,16 @@ a:hover {
 				<ul>
 					<li><figure>
 							<i class='icon-home'></i>
-							<a href="pages/main.html" target="content"> 首页 </a>
-						</figure></li>
-					<hr />
-					<li id="user-link"><figure>
+							<a href="pages/main.html" target="content">首页&nbsp;&nbsp;</a>
+						</figure><hr /></li>
+					
+					<li><figure>
 							<a href="pages/user.html" target="content"> <i
 								class='icon-user'></i> 用戶&nbsp;&nbsp;
-
 							</a>
-						</figure>
+						</figure><hr />
 						</li>
-					<hr />
+					
 					<li>
 						<figure>
 						<a href="pages/food_first_category.html" target="content">
@@ -103,22 +105,22 @@ a:hover {
 								class='icon-eject'></i> 食品&nbsp;&nbsp;
 
 							</a>
-						</figure></li>
-					<hr/>
+						</figure><hr/></li>
+					
 					<li><figure>
 							<a href="pages/food_comment.html" target="content"> <i
 								class='icon-thumbs-up'></i> 食品评价&nbsp;&nbsp;
 
 							</a>
-						</figure></li>
+						</figure><hr /></li>
 
-					<hr />
+					
 					<li><figure>
 							<a href="pages/orderTotal.html" target="content"> <i
 								class='icon-fire'></i>订单汇总&nbsp;&nbsp;
 							</a>
-						</figure></li>
-					<hr/>
+						</figure><hr/></li>
+					
 					<li class='dropper'>
 						<figure>
 							<i class='icon-circle-arrow-down'></i>
@@ -127,11 +129,11 @@ a:hover {
 						<hr/>
 						<ul class='subSide'>
 							<li><a href="pages/order_success.html" target="content"><i
-									class='icon-fire'></i>已成功</a></li><hr/>
+									class='icon-fire'></i>已成功</a><hr/></li>
 							<li><a href="pages/order_wait_release.html" target="content"><i
-									class='icon-fire'></i>待发货</a></li><hr/>
+									class='icon-fire'></i>待发货</a><hr/></li>
 							<li><a href="pages/order_deliver.html" target="content"><i
-									class='icon-fire'></i>配送中</a></li><hr/>
+									class='icon-fire'></i>配送中</a><hr/></li>
 						</ul>
 					</li>
 					
@@ -139,30 +141,30 @@ a:hover {
 							<a href="pages/news.html" target="content"> <i
 								class='icon-th-large'></i> 主页图片&nbsp;&nbsp;
 							</a>
-						</figure></li><hr/>
+						</figure><hr/></li>
 					<li><figure>
 							<a href="pages/push.html" target="content"> <i
 								class='icon-arrow-right'></i> 消息推送&nbsp;&nbsp;
 							</a>
-						</figure></li>
-					<hr />
+						</figure><hr /></li>
+					
 
 					<li><figure>
 							<a href="pages/feedback.html" target="content"><i
 								class='icon-eye-open'></i> 用户反馈 </a>
-						</figure></li><hr/>
+						</figure><hr/></li>
 					<li><figure>
 							<a href="pages/help.html" target="content"><i
 								class='icon-question-sign'></i> 帮助 </a>
-						</figure></li><hr/>
+						</figure><hr/></li>
 					<li>
 						<figure>
 							<a href="pages/close.html" target="content">
 								<i class="icon-off"></i>一键关店
 							</a>
-						</figure>
+						</figure><hr/>
 					</li>
-					<hr/>
+					
 				</ul>
 
 			</div>
@@ -176,6 +178,13 @@ a:hover {
 	</section>
 <script>
 $(function(){
+	//根据管理员类型判断是否显示校区下拉菜单
+	if(getCookie("type")==1){
+		$("#campusDropdown").css("visibility", "visible");
+	}else{
+		$("#campusDropdown").css("visibility", "hidden");
+	}
+	
 	$("#dropdown-campus").empty();//移除子元素
 	$.getJSON("campus/getAllCampus.do", function(data){
 		//alert(data.campus[0].campusName);

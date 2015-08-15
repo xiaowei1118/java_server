@@ -66,6 +66,10 @@ src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.
     <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
     <![endif]-->
+<script src="../js/util.js"></script>
+<script>
+var adminType = getCookie("type");
+</script>
 <script>
 	$(function(){
 		$("#table").bootstrapTable({
@@ -93,17 +97,22 @@ src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.
 
 
      function actionFormatter(value, row, index) {
-        return [
-        '<a class="admin" href="javascript:void(0)" title="设为管理员">',
-        '<i class="icon-briefcase"></i>',
-        '</a>',
-        '<a class="common ml10" href="javascript:void(0)" title="取消管理员">',
-        '<i class="icon-hdd"></i>',
-        '</a>',
-        '<a class="superAdmin ml10" href="javascript:void(0)" title="设置超级管理员">',
-        '<i class="icon-heart"></i>',
-        '</a>'
-        ].join('');
+    	if(adminType==0){
+    		return [
+    		        '<a class="admin" href="javascript:void(0)" title="设为管理员">',
+    		        '<i class="icon-briefcase"></i>',
+    		        '</a>',
+    		        '<a class="common ml10" href="javascript:void(0)" title="取消管理员">',
+    		        '<i class="icon-hdd"></i>',
+    		        '</a>',
+    		        '<a class="superAdmin ml10" href="javascript:void(0)" title="设置超级管理员">',
+    		        '<i class="icon-heart"></i>',
+    		        '</a>'
+    		        ].join('');
+    	}else if(adminType==1){
+    		return "无操作权限";
+    	}
+        
     }
 
     window.actionEvents = {

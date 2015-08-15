@@ -3,12 +3,20 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>无标题文档</title>
+	<title>首页</title>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
 	<link rel="shortcut icon" href="img/icon.png">
 </head>
-
+<style>
+#operate-success{
+    padding:10px;
+    font-size:16px;
+    background-color:#8AC007;
+    color:#FBFBFB;
+    visibility:hidden
+}
+</style>
 <body>
 	<div class="container">
 		<div class="row-fluid">
@@ -17,6 +25,12 @@
 					首页
 				</h1>
 			</div>
+			<div style="text-align:center;">
+    			<span id="operate-success">
+        			设置成功
+    			</span>
+			</div>
+			
 			<div>
 				<ul id="myTab" class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#devicePercent" role="tab" data-toggle="tab">用户设备占比</a></li>
@@ -39,8 +53,25 @@
 	<script src="../js/jquery.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/highcharts.js"></script>
+	<script src="../js/util.js"></script>
 	<script type="text/javascript">
+	function setSuccess(message){
+	    if(!message){
+	        $("#operate-success").text("Well, it works!");
+	    }else{
+	        $("#operate-success").text(message);
+	    }
+	    //$("#operate-success").show();
+	    $("#operate-success").css("visibility", "visible");
+	    window.setTimeout(function(){
+	        //$("#operate-success").hide();
+	        $("#operate-success").css("visibility", "hidden");
+	    }, 2000);
+	}
 		$(function () {
+			if(!getCookie("campusId")){
+				setSuccess("请在右上角选择校区！");
+			}
 			$.get("../user/getUserDevicePercent.do",function(text){
 				var json = eval('(' + text + ')');
 

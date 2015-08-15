@@ -33,13 +33,17 @@ src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstr
     <script
     src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
     <script>
-
+		var adminType = getCookie("type");
     	function actionFormatter(value, row, index) {
-    		return [
-    		'<a class="delete" href="javascript:void(0)" title="删除该评价">',
-    		'<i class="icon-trash"></i>',
-    		'</a>'
-    		].join('');
+    		if(adminType==0){
+    			return [
+    		    		'<a class="delete" href="javascript:void(0)" title="删除该评价">',
+    		    		'<i class="icon-trash"></i>',
+    		    		'</a>'
+    		    		].join('');
+    		}else if(adminType==1){
+    			return "无操作权限";
+    		}
     	}
 
     	window.actionEvents = {

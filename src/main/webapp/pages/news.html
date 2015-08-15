@@ -119,6 +119,13 @@
 </div>
 </body>
 <script>
+var adminType = getCookie("type");
+if(adminType==0){
+	$("#toolbar").show();
+}else if(adminType==1){
+	$("#toolbar").hide();
+}
+
 	$("#campus-id").val(getCookie("campusId"));
 	var $table = $("#table");
 	var $plusButton = $("#plus");

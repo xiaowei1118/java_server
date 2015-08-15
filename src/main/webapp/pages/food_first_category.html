@@ -134,6 +134,13 @@ function setSuccess(message){
 }
 </script>
 <script>
+var adminType = getCookie("type");
+var $table = $("#table");
+if(adminType==1){
+	$("#toolbar").hide();
+}else if(adminType==0){
+	$("#toolbar").show();
+}
 //表格数据初始化
 	$(function() {
 		var campusId = getCookie("campusId");
@@ -159,28 +166,26 @@ function setSuccess(message){
 	}
 	
 	function operateFormatter(value, row, index) {
-		if(row.isOpen==1){
-			return [
-		            '</a>',
-		            '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
-		                '关闭',
-		            '</a>'
-		        ].join('');
-		}else if(row.isOpen==0){
-			return [
-		            '<a class="like" href="javascript:void(0)" title="Like">',
-		                '开通',
-		            '</a>'
-		        ].join('');
+		if(adminType==1){
+			return "无操作权限";
+		}else if(adminType==0){
+			if(row.isOpen==1){
+				return [
+			            '</a>',
+			            '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
+			                '关闭',
+			            '</a>'
+			        ].join('');
+			}else if(row.isOpen==0){
+				return [
+			            '<a class="like" href="javascript:void(0)" title="Like">',
+			                '开通',
+			            '</a>'
+			        ].join('');
+			}
+	        return "无操作权限";
 		}
-        return [
-            '<a class="like" href="javascript:void(0)" title="Like">',
-                '开通',
-            '</a>',
-            '<a class="edit ml10" href="javascript:void(0)" title="Edit">',
-                '关闭',
-            '</a>'
-        ].join('');
+		
     }
 
     window.operateEvents = {
@@ -241,7 +246,7 @@ function setSuccess(message){
 	});*/
 </script>
 <Script>
-	var $table = $("#table");
+	
 	var $plusButton = $("#plus");
 	var $editButton = $("#edit");
 	var $deleteButton = $("#delete");
