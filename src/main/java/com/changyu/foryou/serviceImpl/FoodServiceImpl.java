@@ -260,6 +260,12 @@ public class FoodServiceImpl implements FoodService{
 		// TODO Auto-generated method stub
 		return foodMapper.cancelRecommend(paramMap);
 	}
+
+	@Override
+	public Integer calCommentCount(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodCommentMapper.calCommentCount(paramMap);
+	}
 	
 }
 

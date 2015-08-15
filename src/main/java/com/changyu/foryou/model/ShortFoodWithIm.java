@@ -37,7 +37,7 @@ public class ShortFoodWithIm extends ShortFood {
 		return commentNumber;
 	}
 
-	public void setCommentCount(Integer commentNumber) {
+	public void setCommentNumber(Integer commentNumber) {
 		this.commentNumber = commentNumber;
 	}
 	

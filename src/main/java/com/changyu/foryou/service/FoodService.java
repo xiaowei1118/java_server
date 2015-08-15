@@ -99,4 +99,6 @@ public interface FoodService {
 	Integer updateInfoByFoodId(Map<String, Object> paramMap);
 	
 	Integer cancelRecommend(Map<String, Object> paramMap);
+
+	Integer calCommentCount(Map<String, Object> paramMap);
 }
