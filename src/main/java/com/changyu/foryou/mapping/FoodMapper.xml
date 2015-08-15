@@ -316,7 +316,7 @@
 		select
 	    food.food_id, food.campus_id,name, price, discount_price, img_url,
 		is_discount,food_count,
-		sale_number,info,message,food.grade,count(food_comment.grade) as comment_count
+		sale_number,info,message,food.grade
 		from food,food_comment
 		<where>
 			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}
@@ -357,7 +357,7 @@
 		select
 	    food.food_id, food.campus_id,name, price, discount_price, img_url,
 		is_discount,food_count,
-		sale_number,info,message,food.grade,count(food_comment.grade) as comment_count
+		sale_number,info,message,food.grade
 		from food,food_comment
 		<where>
 			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}

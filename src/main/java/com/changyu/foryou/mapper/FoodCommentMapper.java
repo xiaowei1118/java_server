@@ -21,4 +21,6 @@ public interface FoodCommentMapper {
 	List<FoodComment> getAllComments(Map<String, Object> paramMap);
 
 	Integer deleteFoodComment(Map<String, Object> paramMap);
+
+	Integer calCommentCount(Map<String, Object> paramMap);
 }
