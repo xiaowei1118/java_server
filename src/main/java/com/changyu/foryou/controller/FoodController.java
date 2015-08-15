@@ -130,6 +130,15 @@ public class FoodController {
 				foodTag=null;     //foodTag为空	
 				paramMap.put("foodTag", foodTag);	
 				foods= foodService.selectFoods(paramMap);
+				if(foods.size()>0)
+				{
+					for(ShortFoodWithIm i:foods)
+					{
+						paramMap.put("foodId", i.getFoodId());
+						Integer commentNumber = foodService.calCommentCount(paramMap);
+						i.setCommentNumber(commentNumber);
+					}
+				}
 			}
 			else{
 
