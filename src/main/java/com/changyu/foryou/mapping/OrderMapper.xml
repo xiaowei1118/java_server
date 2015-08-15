@@ -80,6 +80,7 @@
 		<result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="message" property="message" jdbcType="VARCHAR"/>
 		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 	</resultMap>
 
 	<!-- 超级管理员管理派单model -->
@@ -390,7 +391,7 @@
 	<select id="getOrderListInMine" resultMap="SmallOrderMap"
 		parameterType="String">
 		select
-		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,
+		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,orders.campus_id as campus_id,
 		orders.order_count as
 		order_count ,
 		food.is_discount as
