@@ -53,6 +53,12 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.getCampusIdByAdmin(paramMap);
 	}
 
+	@Override
+	public List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.getAllCampusAdmin(paramMap);
+	}
+
 	
 
 }

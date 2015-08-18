@@ -20,4 +20,6 @@ public interface CampusService {
 	public Campus getCampusById(Map<String, Object> paramMap);
 	
 	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
+	
+	public List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
 }

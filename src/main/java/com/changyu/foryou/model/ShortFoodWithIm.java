@@ -5,7 +5,7 @@ public class ShortFoodWithIm extends ShortFood {
 	
 	private String message;
 	
-	private Short grade;
+	private Float grade;
 	
 	private Integer commentNumber;
 
@@ -25,19 +25,23 @@ public class ShortFoodWithIm extends ShortFood {
 		this.message = message;
 	}
 
-	public Short getGrade() {
-		return grade;
-	}
-
-	public void setGrade(Short grade) {
-		this.grade = grade;
-	}
-
 	public Integer getCommentNumber() {
 		return commentNumber;
 	}
 
 	public void setCommentCount(Integer commentNumber) {
+		this.commentNumber = commentNumber;
+	}
+
+	public Float getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Float grade) {
+		this.grade = grade;
+	}
+
+	public void setCommentNumber(Integer commentNumber) {
 		this.commentNumber = commentNumber;
 	}
 	

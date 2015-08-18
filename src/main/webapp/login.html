@@ -65,6 +65,9 @@
 		.message{
 			color: red
 		}
+		#dropdownMenu1{
+			width:220px;
+		}
 	</style>
 </head>
 <body>
@@ -92,6 +95,24 @@
 									placeholder="Please Input Password">
 								</div>
 							</div>
+							<div class="control-group" style="height:60px">
+								<label class="control-label" for="dropdownMenu1">角色</label>
+								<div class="controls">
+								<div class="dropdown">
+								<button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1" data-toggle="dropdown">
+								角色<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0)">校区管理员</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0)">总校区管理员</a>
+									</li>
+								</ul>
+							</div>
+								</div>
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -103,5 +124,10 @@
 			</div>
 		</div>
 	</div>
+	<script>
+	$("#dropdownMenu1").next().children().children().click(function(){
+		$('#dropdownMenu1').text($(this).text());
+	});
+	</script>
 </body>
 </html>
