@@ -316,12 +316,10 @@
 		select
 	    food.food_id, food.campus_id,name, price, discount_price, img_url,
 		is_discount,food_count,
-		sale_number,info,message,food.grade,count(food_comment.grade) as comment_count
-		from food,food_comment
+		sale_number,info,message,food.grade
+		from food
 		<where>
 			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}
-			and food.food_id=food_comment.food_id 
-			and food.campus_id=food_comment.campus_id
 			<if test="categoryId!=null">
 				and category_id = #{categoryId,jdbcType=BIGINT}
 			</if>
@@ -357,7 +355,7 @@
 		select
 	    food.food_id, food.campus_id,name, price, discount_price, img_url,
 		is_discount,food_count,
-		sale_number,info,message,food.grade,count(food_comment.grade) as comment_count
+		sale_number,info,message,food.grade
 		from food,food_comment
 		<where>
 			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}

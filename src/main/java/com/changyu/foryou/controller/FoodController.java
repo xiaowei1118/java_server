@@ -131,6 +131,15 @@ public class FoodController {
 				foodTag=null;     //foodTag为空	
 				paramMap.put("foodTag", foodTag);	
 				foods= foodService.selectFoods(paramMap);
+				if(foods.size()>0)
+				{
+					for(ShortFoodWithIm i:foods)
+					{
+						paramMap.put("foodId", i.getFoodId());
+						Integer commentNumber = foodService.calCommentCount(paramMap);
+						i.setCommentNumber(commentNumber);
+					}
+				}
 			}
 			else{
 
@@ -145,10 +154,28 @@ public class FoodController {
 				if(foodFlags.size()==1){
 					paramMap.put("foodTag", foodFlags.get(0));
 					foods= foodService.selectFoods(paramMap);
+					if(foods.size()>0)
+					{
+						for(ShortFoodWithIm i:foods)
+						{
+							paramMap.put("foodId", i.getFoodId());
+							Integer commentNumber = foodService.calCommentCount(paramMap);
+							i.setCommentNumber(commentNumber);
+						}
+					}
 				}else{
 					paramMap.put("oneFlag",foodFlags.get(0));
 					paramMap.put("twoFlag",foodFlags.get(1));
 					foods= foodService.selectFoodsByTwoTags(paramMap);
+					if(foods.size()>0)
+					{
+						for(ShortFoodWithIm i:foods)
+						{
+							paramMap.put("foodId", i.getFoodId());
+							Integer commentNumber = foodService.calCommentCount(paramMap);
+							i.setCommentNumber(commentNumber);
+						}
+					}
 				}
 			}
 			if(foods.size()!=0){

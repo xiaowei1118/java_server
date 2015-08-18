@@ -118,7 +118,7 @@
     select 
     <include refid="Base_Column_List" />
     from food_category
-    where parent_id=0 and tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+    where parent_id=0 and tag=1 and serial is not null and is_open=1 and campus_id=#{campusId,jdbcType=INTEGER}
     order by category_id
      <if test="limit != null">
         LIMIT #{limit,jdbcType=INTEGER} OFFSET #{offset,jdbcType=INTEGER}
