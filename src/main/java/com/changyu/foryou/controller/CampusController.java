@@ -186,4 +186,19 @@ public class CampusController {
 		
 		return responseMap;
 	}
+	
+	/**
+	 * 返回校区管理员
+	 * @return
+	 */
+	@RequestMapping("getAllCampusAdmin")
+	public @ResponseBody JSONArray getAllCampusAdmin(){
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("type", 0);
+		
+		List<CampusAdmin> campusAdmins = campusService.getAllCampusAdmin(paramMap);
+		JSONArray array = JSON.parseArray(JSON.toJSONStringWithDateFormat(campusAdmins, "yyyy-MM-dd"));
+		
+		return array;
+	}
 }

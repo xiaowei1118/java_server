@@ -30,6 +30,13 @@
 		<result column="campus_name" property="campusName" jdbcType="VARCHAR"/>
 		<result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP"/>
 	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.CampusAdmin" id="SmallCampusAdminMap">
+		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR"/>
+		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR"/>
+		<result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
 
 	<sql id="Base_Column_List">
 		campus_id, campus_name, city_id
@@ -165,5 +172,19 @@
 		  where campus_admin=#{campusAdmin, jdbcType=VARCHAR}
 		   and 
 		   campus_admin.campus_id=campus.campus_id
+	</select>
+	
+	<select id="getAllCampusAdmin" resultMap="SmallCampusAdminMap">
+		SELECT
+			campus_admin,
+			campus_admin.campus_id,
+			campus.campus_name AS campus_name,
+			last_login_date
+		FROM
+			campus_admin,
+			campus
+		WHERE
+			campus_admin.campus_id = campus.campus_id
+			and type=#{type,jdbcType=SMALLINT}
 	</select>
 </mapper>

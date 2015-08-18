@@ -3,16 +3,35 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>用户管理</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/bootstrap-table.min.css">
-    <link rel="shortcut icon" href="img/icon.png">
-    <link rel="stylesheet"
-    href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <link rel="shortcut icon" href="../img/icon.png">
+    <link href="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/bootstrap-table.css" rel="stylesheet">
+    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/jquery.min.js"></script>
+    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/bootstrap-table.js"></script>
+    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+	<script src="../js/util.js"></script>
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+    <![endif]-->
+
 </head> 
 <style>
     .ml10 {
         margin-left: 10px;
     }
+    #operate-success{
+		padding:10px;
+		font-size:16px;
+		background-color:#8AC007;
+		color:#FBFBFB;
+		visibility:hidden
+	}
 </style>
 
 
@@ -23,7 +42,18 @@
 				用户管理&nbsp;&nbsp;
 			</h1>
 		</div>
-
+		<div style="text-align:center;">
+			<span id="operate-success">
+    			设置成功
+    		</span>
+		</div>
+		<div id="export-toolbar">
+			<select class="form-control">
+				<option value="">基本导出</option>
+				<option value="all">导出全部</option>
+				<option value="selected">导出选中</option>		
+			</select>
+		</div>
 		<table id="table" 
        data-id-field="phone"
        data-pagination="true"
@@ -33,10 +63,13 @@
        data-show-refresh="true" 
        data-show-columns="true"   
        data-show-toggle="true" 
-       data-toolbar-align="right" 
+       data-toolbar-align="left"
+       data-toolbar="#export-toolbar"
+       data-show-export="true"
        >
        <thead>
         <tr>
+           <th data-field="state" data-checkbox="true"></th>
            <th data-align="left" data-field="phone">手机号</th>
            <th data-align="left" data-field="nickname">昵称</th>
            <th data-align="left" data-field="type" data-sortable="true"
@@ -54,19 +87,22 @@
    </thead>
 </table>
 </div>
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
-<script
-src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
-    <![endif]-->
-<script src="../js/util.js"></script>
+
+<script>
+function setSuccess(message){
+    if(!message){
+        $("#operate-success").text("Well, it works!");
+    }else{
+    	$("#operate-success").text(message);
+    }
+	//$("#operate-success").show();
+	$("#operate-success").css("visibility", "visible");
+	window.setTimeout(function(){
+		//$("#operate-success").hide();
+		$("#operate-success").css("visibility", "hidden");
+	}, 2000);
+}
+</script>
 <script>
 var adminType = getCookie("type");
 </script>
@@ -83,7 +119,7 @@ var adminType = getCookie("type");
              return "超级管理员";
          else if (value == "1") {
              return "管理员";
-         } else {
+         } else if(value == "2"){
              return "普通用户";
          }
      }
@@ -99,14 +135,14 @@ var adminType = getCookie("type");
      function actionFormatter(value, row, index) {
     	if(adminType==0){
     		return [
-    		        '<a class="admin" href="javascript:void(0)" title="设为管理员">',
-    		        '<i class="icon-briefcase"></i>',
+    		        '<a class="admin ml8" href="javascript:void(0)" title="设为管理员">',
+    		        '<span class="glyphicon glyphicon-heart-empty"></span>',
     		        '</a>',
-    		        '<a class="common ml10" href="javascript:void(0)" title="取消管理员">',
-    		        '<i class="icon-hdd"></i>',
+    		        '<a class="common ml8" href="javascript:void(0)" title="取消管理员">',
+    		        '<span class="glyphicon glyphicon-user"></span>',
     		        '</a>',
-    		        '<a class="superAdmin ml10" href="javascript:void(0)" title="设置超级管理员">',
-    		        '<i class="icon-heart"></i>',
+    		        '<a class="superAdmin ml8" href="javascript:void(0)" title="设置超级管理员">',
+    		        '<span class="glyphicon glyphicon-heart"></span>',
     		        '</a>'
     		        ].join('');
     	}else if(adminType==1){
@@ -121,11 +157,14 @@ var adminType = getCookie("type");
             $.post("../../foryou/user/setUserAdmin.do",
                {phone:row.phone},
                function(text){
-                  if(text!=1){
-                     alert("设置管理员失败。");
+                  if(text==-1||text==0){
+                     setSuccess("设置管理员失败。");
                  }else{
-                	 alert("设置管理员成功。");
-                     $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+                	 setSuccess("设置管理员成功。");
+                	 $('#table').bootstrapTable('updateRow', {index: index,row: {
+                		 type : 1
+                	 }});
+                     //$('#table').bootstrapTable('refresh', {silent: true});
                  }
 
              }
@@ -136,11 +175,14 @@ var adminType = getCookie("type");
             $.post("../../foryou/user/setUserCommon.do",
                {phone:row.phone},
                function(text){
-                  if(text!=1){
-                     alert("设置为普通用户失败。");
+                  if(text==-1||text==0){
+                     setSuccess("设置为普通用户失败。");
                  }else{
-                	 alert("设置为普通用户成功。");
-                     $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+                	 setSuccess("设置为普通用户成功。");
+                	 $('#table').bootstrapTable('updateRow', {index: index,row:{
+                		 type : 2
+                	 }});
+                     //$('#table').bootstrapTable('refresh', {silent: true});
                  }
 
              }
@@ -151,11 +193,14 @@ var adminType = getCookie("type");
             $.post("../../foryou/user/setUserSuperAdmin.do",
                {phone:row.phone},
                function(text){
-                  if(text!=1){
-                     alert("设置超级管理员失败。");
+                  if(text==-1||text==0){
+                     setSuccess("设置超级管理员失败。");
                  }else{
-                	 alert("设置超级管理员成功。");
-                     $('#table').bootstrapTable('refresh', {silent: true,query: {foo:'bar'}});
+                	 setSuccess("设置超级管理员成功。");
+                	 $('#table').bootstrapTable('updateRow', {index: index,row:{
+                		 type : 0
+                	 }});
+                     //$('#table').bootstrapTable('refresh', {silent: true});
                  }
 
              }
@@ -163,6 +208,16 @@ var adminType = getCookie("type");
         }
     };
 
+</script>
+<script>
+//表格导出
+$(function(){
+	$('#export-toolbar').find('select').change(function(){
+		$('#table').bootstrapTable('refreshOptions',{
+			exportDataType: $(this).val()
+		});
+	});
+});
 </script>
 </body>
 

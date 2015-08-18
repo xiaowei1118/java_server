@@ -106,6 +106,7 @@ public class FoodController {
 	@RequestMapping("/selectFoods")
 	public @ResponseBody Map<String, Object>selectFoods(@RequestParam Integer campusId,String categoryId,String foodTag,Integer page,Integer limit,Integer sortId){
 		Map<String, Object> map=new HashMap<String, Object>();
+		DecimalFormat df = new DecimalFormat("#.0");
 		try{
 			List<String> foodFlags=new ArrayList<String>();
 			List<ShortFoodWithIm> foods=new ArrayList<ShortFoodWithIm>();
@@ -177,7 +178,18 @@ public class FoodController {
 					}
 				}
 			}
-
+			if(foods.size()!=0){
+				//评星级
+				for(ShortFoodWithIm food : foods){
+					paramMap.put("foodId", food.getFoodId());
+					Float gradeFloat=foodService.getAvageGrade(paramMap);
+					if(gradeFloat==null){
+						food.setGrade(0f);
+					}else{
+						food.setGrade(Float.parseFloat(df.format(gradeFloat)));
+					}
+				}
+			}
 			if(foods.size()!=0){
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取食品成功");

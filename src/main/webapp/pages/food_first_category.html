@@ -5,12 +5,9 @@
 	<title>无标题文档</title>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
-	<link rel="stylesheet" href="../css/bootstrap-editable.css">
 	<link rel="shortcut icon" href="img/icon.png">
 	<script src="../js/jquery.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/bootstrap-table-editable.js"></script>
-	<script src="../js/bootstrap-editable.js"></script>
 	<script src="../js/util.js"></script>
 </head>
 <style>
@@ -141,6 +138,7 @@ if(adminType==1){
 }else if(adminType==0){
 	$("#toolbar").show();
 }
+var campusId = getCookie("campusId");
 //表格数据初始化
 	$(function() {
 		var campusId = getCookie("campusId");
@@ -198,7 +196,7 @@ if(adminType==1){
             			isOpen: 1
             		}
             	});
-            	var campusId = getCookie("campusId");
+            	
             	//alert(campusId);
             	$.post("../service/updateFoodCategory.do",{
             		categoryId : row.categoryId,
@@ -216,8 +214,8 @@ if(adminType==1){
         	//alert('You click like icon, row: ' + JSON.stringify(row));
         	if(row.serial>0&&row.serial<9){
         		//这些分类不能删，不能关
-        		alert("抱歉，此分类为主要分类，无法关闭");
-        		return;
+        		//alert("抱歉，此分类为主要分类，无法关闭");
+        		//return;
         	}
             //console.log(value, row, index);
         	if(confirm("确认关闭此分类吗？")){
