@@ -20,8 +20,8 @@ import com.changyu.foryou.tools.JpushInterface;
 @RequestMapping("/push")
 public class PushController {
 	protected static final Logger log = LoggerFactory.getLogger(PushController.class);
-	private static final String appKey = "e9e04345a608f9fb23a3b61b";
-	private static final String masterSecret = "70a4b68027698fe532d95436";
+	private static final String appKey = "6b618bf4a73419c8e351240e";
+	private static final String masterSecret = "a80ba2c3934895be10ae9a75";
 
 	@RequestMapping(value="pushPlatForm")
 	private @ResponseBody String pushPlatForm(@RequestParam String push_data,String pushDeviceAndroid,String pushDeviceIos,String alert, String phone) {

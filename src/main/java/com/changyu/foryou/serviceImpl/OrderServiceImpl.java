@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.changyu.foryou.mapper.OrderMapper;
 import com.changyu.foryou.model.BigOrder;
+import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
@@ -191,34 +192,31 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Date getTogetherDate(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.getTogetherDate(paramMap);
 	}
 
 	@Override
 	public List<SmallOrder> getOrdersById(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.getOrdersById(paramMap);
 	}
 
 
 	@Override
 	public Integer modifyOrderStatus(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.modifyOrderStatus(paramMap);
 	}
 
 	@Override
 	public void deleteOrder(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		orderMapper.deleteOrder(paramMap);
 	}
 
 	@Override
 	public SmallOrder getOrderById(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.getOrderById(paramMap);
 	}
+
+	
 
 
 

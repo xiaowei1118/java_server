@@ -5,8 +5,8 @@
 		<id column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		<result column="city_id" property="cityId" jdbcType="INTEGER" />
-		<result column="open_time" property="openTime" jdbcType="TIME"/>
-		<result column="close_time" property="closeTime" jdbcType="TIME"/>
+		<result column="open_time" property="openTime" jdbcType="TIMESTAMP"/>
+		<result column="close_time" property="closeTime" jdbcType="TIMESTAMP"/>
 		<result column="close_reason" property="closeReason" jdbcType="VARCHAR"/>
 		<result column="status" property="status" jdbcType="SMALLINT"/>
 		<!--<result column="location_x" property="locationX" jdbcType="DOUBLE" />
@@ -186,5 +186,18 @@
 		WHERE
 			campus_admin.campus_id = campus.campus_id
 			and type=#{type,jdbcType=SMALLINT}
+	</select>
+	
+	<select id="getCampusByOrder" resultMap="BaseResultMap">
+	  select
+		campus_id,campus_name,open_time,close_time,close_reason,status
+		from
+		campus
+		where
+		campus_id = (
+		   select campus_id
+		   from orders
+		   where order_id=#{orderId,jdbcType=BIGINT} and phone = #{phoneId,jdbcType=VARCHAR} limit 1
+		)
 	</select>
 </mapper>

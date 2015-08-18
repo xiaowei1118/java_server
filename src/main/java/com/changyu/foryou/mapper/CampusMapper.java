@@ -33,4 +33,6 @@ public interface CampusMapper {
 	CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
 	
 	List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
+
+	Campus getCampusByOrder(Map<String, Object> paramMap);
 }

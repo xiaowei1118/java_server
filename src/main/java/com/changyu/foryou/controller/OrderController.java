@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.changyu.foryou.model.BigOrder;
+import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
@@ -32,6 +33,7 @@ import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 import com.changyu.foryou.model.TogetherOrder;
+import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.PushService;
@@ -52,12 +54,17 @@ public class OrderController {
 	private UserService userService;
 	private FoodService foodService;
 	private ReceiverService receiverService;
-
+	private CampusService  campusService;
 	private PushService pushService;
 
 	@Autowired
 	public void setReceiverService(ReceiverService receiverService) {
 		this.receiverService = receiverService;
+	}
+
+	@Autowired
+	public void setCampusService(CampusService campusService) {
+		this.campusService = campusService;
 	}
 
 	public PushService getPushService() {
@@ -498,27 +505,61 @@ public class OrderController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-		/*
-		 * map.put(Constants.STATUS, Constants.FAILURE);
-		 * map.put(Constants.MESSAGE, "暑期间米奇暂停运营，非常抱歉，亲，下学期再见喽。");
-		 */
+
 		try {
 			Calendar calendar = Calendar.getInstance();
-			// 判断是否超出营业时间，营业时间为9：00--21：30
-			/*
-			 * if(calendar.get(Calendar.HOUR_OF_DAY)>22||(calendar.get(Calendar.
-			 * HOUR_OF_DAY
-			 * )>=21&&calendar.get(Calendar.MINUTE)>30)||calendar.get(
-			 * Calendar.HOUR_OF_DAY)<9){ map.put(Constants.STATUS,
-			 * Constants.FAILURE); map.put(Constants.MESSAGE,
-			 * "米奇的营业时间为9：00--21：30，欢迎下次光顾。"); return map; }
-			 */
 
 			String[] orderString = orderId.split(",");
 			int flag = 0;
 			String togetherId = phoneId + String.valueOf(new Date().getTime());
 
-			// boolean tag=true;
+			paramMap.put("orderId",orderString[0]);
+			paramMap.put("phoneId",phoneId);
+			Campus campus=campusService.getCampus(paramMap);
+
+			//判断该校区是否正在营业
+			if(campus.getStatus()==0){
+				map.put(Constants.STATUS, Constants.FAILURE);
+				map.put(Constants.MESSAGE, "该校区这段时间暂停营业哦");
+				return map;
+			}
+
+			Calendar runOpenTime=Calendar.getInstance();
+			runOpenTime.setTime(campus.getOpenTime());
+			Calendar runCloseTime=Calendar.getInstance();
+			runCloseTime.setTime(campus.getCloseTime());
+			//判断是否超出校区营业时间
+
+			int openHour=runOpenTime.get(Calendar.HOUR_OF_DAY);     
+			int openMinute=runOpenTime.get(Calendar.MINUTE);
+			int closeHour=runCloseTime.get(Calendar.HOUR_OF_DAY);
+			int closeMinute=runCloseTime.get(Calendar.MINUTE);
+
+			if(calendar.get(Calendar.HOUR_OF_DAY)>closeHour
+					||(calendar.get(Calendar.HOUR_OF_DAY)==closeHour&&calendar.get(Calendar.MINUTE)>closeMinute)
+					||calendar.get(Calendar.HOUR_OF_DAY)<openHour
+					||(calendar.get(Calendar.HOUR_OF_DAY)==openHour&&calendar.get(Calendar.MINUTE)<runOpenTime.get(openMinute))
+					){ 
+				StringBuffer message2=new StringBuffer();
+				message2.append("fou优的营业时间为"+openHour+":");
+
+				if(openMinute<10){
+					message2.append("0"+openMinute);
+				}else{
+					message2.append(openMinute);
+				}
+				message2.append("--"+closeHour+":");
+				if(openMinute<10){
+					message2.append("0"+closeMinute);
+				}else{
+					message2.append(closeMinute);
+				}
+
+				map.put(Constants.STATUS,Constants.FAILURE); 
+				map.put(Constants.MESSAGE,message2.toString()); 
+				return map; 
+			}
+
 			for (String id : orderString) {
 				// 这里做写入单价操作，还没有写！！！
 
@@ -530,6 +571,7 @@ public class OrderController {
 
 				paramMap.put("foodId", order.getFoodId());
 				paramMap.put("orderCount", order.getOrderCount());
+				paramMap.put("campusId",campus.getCampusId());
 				foodService.changeFoodCount(paramMap); // 增加销量，减少存货
 
 				if (flag == 0 || flag == -1) {
@@ -542,33 +584,36 @@ public class OrderController {
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
 
 				// 开启线程去访问极光推送
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { //向超级管理员推送，让其分发订单
-				 * 
-				 * //推送 //pushService.sendPushByTag("0",
-				 * "一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
-				 * 
-				 * Map<String, Object> paramterMap=new HashMap<String,Object>();
-				 * List<String>
-				 * superPhones=userService.getAllSuperAdminPhone(paramterMap);
-				 * for(String phone:superPhones){
-				 * 
-				 * //推送 pushService.sendPush(phone,
-				 * "一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1); } } }).start();
-				 */
+
+				new Thread(new Runnable() {
+
+					@Override public void run() { //向超级管理员推送，让其分发订单
+
+						//推送 
+						pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
+
+						Map<String, Object> paramterMap=new HashMap<String,Object>();
+						List<String>
+						superPhones=userService.getAllSuperAdminPhone(paramterMap);
+						for(String phone:superPhones){
+
+							//推送
+							pushService.sendPush(phone,"一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
+						}
+					} 
+				}).start();
+
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
 				map.put(Constants.MESSAGE, "下单失败，请重新开始下单");
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getStackTrace();
 			map.put(Constants.STATUS, Constants.FAILURE);
 			map.put(Constants.MESSAGE, "下单失败，请重新开始下单");
 		}
+
 		return map;
 	}
 
@@ -956,7 +1001,7 @@ public class OrderController {
 				date = null;
 			else
 				date = date.replace("年", "-").replace("月", "-")
-						.replace("日", "");
+				.replace("日", "");
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("date", date);
 			paramMap.put("campusId", campusId);
@@ -1030,12 +1075,12 @@ public class OrderController {
 				status = orders.get(0).getStatus();
 			} else {
 				status = 5;
-					for (int i = 0; i < orders.size(); i++) {
-						if (orders.get(i).getIsRemarked() == 0) {
-							status = 4;
-						}
+				for (int i = 0; i < orders.size(); i++) {
+					if (orders.get(i).getIsRemarked() == 0) {
+						status = 4;
 					}
-				
+				}
+
 			}
 			Receiver receiver = receiverService.getReceiver(paramMap);
 			Date date = orderService.getTogetherDate(paramMap);
@@ -1047,7 +1092,7 @@ public class OrderController {
 			 * if (orders!=null&&orders.size() > 0) { for (int i = 0; i <
 			 * orders.size(); i++) { sum += orders.get(i).getPrice(); } }
 			 */
-			
+
 			if (orders.size() > 0 && orders != null) 
 			{
 				for(SmallOrder i:orders)
@@ -1082,7 +1127,7 @@ public class OrderController {
 
 	/**
 	 * 修改订单状态
-	 * @param adminPhone
+	 * @param adminPhone    ?????????????????????????????
 	 * @param togetherId
 	 * @return
 	 */
@@ -1129,8 +1174,8 @@ public class OrderController {
 		resultMap.put("flag", flag);
 		return resultMap;
 	}
-	
-	
+
+
 	/**
 	 * 删除订单（status=4）
 	 *@param togetherId
@@ -1153,10 +1198,10 @@ public class OrderController {
 			resultMap.put(Constants.STATUS, Constants.FAILURE);
 			resultMap.put(Constants.MESSAGE, "订单不存在,删除订单失败");
 		}
-		
+
 		return resultMap;
 	}
-	
+
 	/**
 	 * 商品详情处立即购买
 	 * @param campusId
@@ -1165,38 +1210,37 @@ public class OrderController {
 	 * @param foodCount
 	 * @return
 	 */
-	
+
 	@RequestMapping("/purchaseImmediately")
 	public @ResponseBody Map<String, Object> purchaseImmediately(
 			@RequestParam Integer campusId, @RequestParam String phoneId,
 			@RequestParam Long foodId, @RequestParam Integer foodCount)
-	{
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Map<String, Object> paramMap = new HashMap<String, Object>();
+			{
+				Map<String, Object> resultMap = new HashMap<String, Object>();
+				Map<String, Object> paramMap = new HashMap<String, Object>();
 		
-		try {
-			Order order = new Order(campusId, phoneId, foodId, foodCount);
-			paramMap.put("orderId",order.getOrderId());
-			int flag = orderService.insertSelectiveOrder(order);
-			
-			if (flag == -1 && flag == 0) {			
-				resultMap.put(Constants.STATUS, Constants.FAILURE);
-				resultMap.put(Constants.MESSAGE, "生成订单失败");
-			}
-			
-			SmallOrder smallOrder=orderService.getOrderById(paramMap);
-			resultMap.put("order", smallOrder);
-			resultMap.put(Constants.STATUS, Constants.SUCCESS);
-			resultMap.put(Constants.MESSAGE, "订单详情：");
-		} catch (Exception e) {
-			e.printStackTrace();
-			resultMap.put(Constants.STATUS, Constants.FAILURE);
-			resultMap.put(Constants.MESSAGE, "生成订单失败");			
-		}
-		return resultMap;
-	
+				try {
+					Order order = new Order(campusId, phoneId, foodId, foodCount);
+					paramMap.put("orderId",order.getOrderId());
+					int flag = orderService.insertSelectiveOrder(order);
 		
+					if (flag == -1 && flag == 0) {			
+						resultMap.put(Constants.STATUS, Constants.FAILURE);
+						resultMap.put(Constants.MESSAGE, "生成订单失败");
+					}
+		
+					SmallOrder smallOrder=orderService.getOrderById(paramMap);
+					resultMap.put("order", smallOrder);
+					resultMap.put(Constants.STATUS, Constants.SUCCESS);
+					resultMap.put(Constants.MESSAGE, "订单详情：");
+				} catch (Exception e) {
+					e.printStackTrace();
+					resultMap.put(Constants.STATUS, Constants.FAILURE);
+					resultMap.put(Constants.MESSAGE, "生成订单失败");			
+				}
+				return resultMap;
+
 	}
-	
-	
+
+
 }

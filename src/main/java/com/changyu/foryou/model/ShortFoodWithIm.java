@@ -39,13 +39,6 @@ public class ShortFoodWithIm extends ShortFood {
 
 	public void setGrade(Float grade) {
 		this.grade = grade;
-	}
-
-	public void setCommentNumber(Integer commentNumber) {
-		this.commentNumber = commentNumber;
-	}
-	
-	
-	
+	}	
 
 }

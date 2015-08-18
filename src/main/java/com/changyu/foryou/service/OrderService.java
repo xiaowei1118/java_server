@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.changyu.foryou.model.BigOrder;
+import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
@@ -90,11 +91,6 @@ public interface OrderService {
 
 	SmallOrder getOrderById(Map<String, Object> paramMap);
 
-	
-
-	
-
-	
 
 
 	

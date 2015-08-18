@@ -1,6 +1,7 @@
 package com.changyu.foryou.model;
 
-import java.util.Date;
+import java.sql.Time;
+
 
 public class Campus {
     private Integer campusId;
@@ -9,9 +10,9 @@ public class Campus {
 
     private Integer cityId;
     
-    private Date openTime;
+    private Time openTime;
     
-    private Date closeTime;
+    private Time closeTime;
     
     private Short status;
     
@@ -41,19 +42,19 @@ public class Campus {
         return cityId;
     }
 
-public Date getOpenTime() {
+public Time getOpenTime() {
 	return openTime;
 }
 
-public void setOpenTime(Date openTime) {
+public void setOpenTime(Time openTime) {
 	this.openTime = openTime;
 }
 
-public Date getCloseTime() {
+public Time getCloseTime() {
 	return closeTime;
 }
 
-public void setCloseTime(Date closeTime) {
+public void setCloseTime(Time closeTime) {
 	this.closeTime = closeTime;
 }
 

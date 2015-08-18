@@ -22,4 +22,6 @@ public interface CampusService {
 	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
 	
 	public List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
+
+	Campus getCampus(Map<String, Object> paramMap);      //从订单信息里面获取校区信息
 }

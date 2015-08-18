@@ -59,6 +59,11 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.getAllCampusAdmin(paramMap);
 	}
 
+	@Override
+	public Campus getCampus(Map<String, Object> paramMap) {
+		return campusMapper.getCampusByOrder(paramMap);
+	}
+
 	
 
 }
