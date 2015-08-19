@@ -254,22 +254,22 @@ public class orderTest {
 			map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
 
 			// 开启线程去访问极光推送
-
+			pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
 			new Thread(new Runnable() {
 
 				@Override public void run() { //向超级管理员推送，让其分发订单
 
 					//推送 
-					pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
+					//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
 
-					Map<String, Object> paramterMap=new HashMap<String,Object>();
-					List<String>
-					superPhones=userService.getAllSuperAdminPhone(paramterMap);
-					for(String phone:superPhones){
+					//Map<String, Object> paramterMap=new HashMap<String,Object>();
+					//List<String>
+					//superPhones=userService.getAllSuperAdminPhone(paramterMap);
+					//for(String phone:superPhones){
 
 						//推送
-						pushService.sendPush(phone,"一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
-					}
+				//pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
+					//}
 				} 
 			}).start();
 

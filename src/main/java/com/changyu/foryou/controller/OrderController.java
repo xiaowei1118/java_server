@@ -505,7 +505,6 @@ public class OrderController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-
 		try {
 			Calendar calendar = Calendar.getInstance();
 
@@ -520,7 +519,7 @@ public class OrderController {
 			//判断该校区是否正在营业
 			if(campus.getStatus()==0){
 				map.put(Constants.STATUS, Constants.FAILURE);
-				map.put(Constants.MESSAGE, "该校区这段时间暂停营业哦");
+				map.put(Constants.MESSAGE, campus.getCloseReason());
 				return map;
 			}
 
@@ -590,7 +589,7 @@ public class OrderController {
 					@Override public void run() { //向超级管理员推送，让其分发订单
 
 						//推送 
-						pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
+						//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
 
 						Map<String, Object> paramterMap=new HashMap<String,Object>();
 						List<String>
