@@ -515,7 +515,7 @@ public class OrderController {
 
 			paramMap.put("orderId",orderString[0]);
 			paramMap.put("phoneId",phoneId);
-			Campus campus=campusService.getCampus(paramMap);
+			Campus campus=campusService.getCampus(paramMap);   //根据订单获取该校区的详细情况
 
 			//判断该校区是否正在营业
 			if(campus.getStatus()==0){
@@ -590,7 +590,7 @@ public class OrderController {
 					@Override public void run() { //向超级管理员推送，让其分发订单
 
 						//推送 
-						pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
+						pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
 
 						Map<String, Object> paramterMap=new HashMap<String,Object>();
 						List<String>
@@ -641,17 +641,17 @@ public class OrderController {
 				map.put(Constants.MESSAGE, "正在配送中！");
 
 				// 开启线程访问服务器进行推送
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { //推送 String
-				 * userPhone=userService.getUserPhone(togetherId);
-				 * System.out.println(userPhone);
-				 * pushService.sendPush(userPhone,
-				 * "您有一笔订单正在配送中,请稍候。感谢您对米奇零点的支持", 1);
-				 * 
-				 * } }).start();
-				 */
+
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						String userPhone=userService.getUserPhone(togetherId);
+						System.out.println(userPhone);
+						pushService.sendPush(userPhone,
+								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
+
+					} }).start();
+
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -686,15 +686,15 @@ public class OrderController {
 
 				final String userPhone = userService.getUserPhone(togetherId);
 
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { //推送
-				 * pushService.sendPush(userPhone,
-				 * "您有一笔订单已完成交易,赶快去评价吧！米奇零点欢迎您下次惠顾", 1);
-				 * 
-				 * } }).start();
-				 */
+
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						pushService.sendPush(userPhone,
+								"您有一笔订单已完成交易,赶快去评价吧！For优欢迎您下次惠顾", 1);
+
+					} }).start();
+
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -833,7 +833,7 @@ public class OrderController {
 					public void run() {
 						// 推送
 						pushService.sendPush(adminPhone,
-								"米奇零点提醒您，一笔新订单已达到，请及时配送，辛苦您了。", 1);
+								"For优提醒您，一笔新订单已达到，请及时配送，辛苦您了。", 1);
 
 					}
 				}).start();
@@ -1135,43 +1135,68 @@ public class OrderController {
 	public @ResponseBody Map<String, Object> modifyOrderStatus(	@RequestParam final String togetherId, @RequestParam Short status, Long orderId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
-		requestMap.put("togetherId", togetherId);
-		requestMap.put("status", status);
-		Integer flag = null;
-		switch(status){
-		case 0:
-			//购物车
-			//flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 1:
-			//待付款
-			//flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 2:
-			//待确认
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 3:
-			//配送中
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 4:
-			//待评价
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 5:
-			//小订单已完成
-			requestMap.put("orderId", orderId);
-			requestMap.put("isRemarked", Integer.valueOf(1));
-			requestMap.put("status", 4);
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		default:
-			break;
+		
+		try {		
+			requestMap.put("togetherId", togetherId);
+			requestMap.put("status", status);	
+			final String userPhone=orderService.getUserPhone(requestMap);          //获取用户手机号
+			//final String adminPhone=orderService.getAdminPhone(requestMap);        //获取配送员手机号
+			Integer flag = null;
+			switch(status){
+			case 0:
+				//购物车
+				//flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			case 1:
+				//待付款
+				//flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			case 2:
+				//待确认
+				flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			case 3:
+				//配送中
+				flag = orderService.modifyOrderStatus(requestMap);
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						
+						pushService.sendPush(userPhone,
+								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
+
+					} }).start();
+				break;
+			case 4:
+				//待评价
+				flag = orderService.modifyOrderStatus(requestMap);
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						
+						pushService.sendPush(userPhone,
+								"您有一笔订单已经完成,赶快去评价吧。感谢您对For优的支持", 1);
+
+					} }).start();
+				break;
+			case 5:
+				//小订单已完成
+				requestMap.put("orderId", orderId);
+				requestMap.put("isRemarked", Integer.valueOf(1));
+				requestMap.put("status", 4);
+				flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			default:
+				break;
+			}
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "更改状态成功");
+			resultMap.put("flag", flag);
+		} catch (Exception e) {
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "更改状态失败");
 		}
-		resultMap.put(Constants.STATUS, Constants.SUCCESS);
-		resultMap.put(Constants.MESSAGE, "更改状态成功");
-		resultMap.put("flag", flag);
+		
 		return resultMap;
 	}
 
@@ -1216,31 +1241,31 @@ public class OrderController {
 			@RequestParam Integer campusId, @RequestParam String phoneId,
 			@RequestParam Long foodId, @RequestParam Integer foodCount)
 			{
-				Map<String, Object> resultMap = new HashMap<String, Object>();
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-				try {
-					Order order = new Order(campusId, phoneId, foodId, foodCount);
-					paramMap.put("orderId",order.getOrderId());
-					int flag = orderService.insertSelectiveOrder(order);
-		
-					if (flag == -1 && flag == 0) {			
-						resultMap.put(Constants.STATUS, Constants.FAILURE);
-						resultMap.put(Constants.MESSAGE, "生成订单失败");
-					}
-		
-					SmallOrder smallOrder=orderService.getOrderById(paramMap);
-					resultMap.put("order", smallOrder);
-					resultMap.put(Constants.STATUS, Constants.SUCCESS);
-					resultMap.put(Constants.MESSAGE, "订单详情：");
-				} catch (Exception e) {
-					e.printStackTrace();
-					resultMap.put(Constants.STATUS, Constants.FAILURE);
-					resultMap.put(Constants.MESSAGE, "生成订单失败");			
-				}
-				return resultMap;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-	}
+		try {
+			Order order = new Order(campusId, phoneId, foodId, foodCount);
+			paramMap.put("orderId",order.getOrderId());
+			int flag = orderService.insertSelectiveOrder(order);
+
+			if (flag == -1 && flag == 0) {			
+				resultMap.put(Constants.STATUS, Constants.FAILURE);
+				resultMap.put(Constants.MESSAGE, "生成订单失败");
+			}
+
+			SmallOrder smallOrder=orderService.getOrderById(paramMap);
+			resultMap.put("order", smallOrder);
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "订单详情：");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "生成订单失败");			
+		}
+		return resultMap;
+
+			}
 
 
 }

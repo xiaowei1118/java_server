@@ -91,6 +91,10 @@ public interface OrderService {
 
 	SmallOrder getOrderById(Map<String, Object> paramMap);
 
+	String getUserPhone(Map<String, Object> requestMap);
+
+	String getAdminPhone(Map<String, Object> requestMap);
+
 
 
 	

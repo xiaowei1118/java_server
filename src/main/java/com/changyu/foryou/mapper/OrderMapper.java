@@ -97,6 +97,10 @@ public interface OrderMapper {
 	void deleteOrder(Map<String, Object> paramMap);
 
 	SmallOrder getOrderById(Map<String, Object> paramMap);
+ 
+	String getUserPhone(Map<String, Object> requestMap);              //获取用户手机号
+
+	String getAdminPhone(Map<String, Object> requestMap);             //获取配送员手机号
 
 	
 

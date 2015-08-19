@@ -216,6 +216,16 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.getOrderById(paramMap);
 	}
 
+	@Override
+	public String getUserPhone(Map<String, Object> requestMap) {
+		return orderMapper.getUserPhone(requestMap);
+	}
+
+	@Override
+	public String getAdminPhone(Map<String, Object> requestMap) {
+		return orderMapper.getAdminPhone(requestMap);
+	}
+
 	
 
 

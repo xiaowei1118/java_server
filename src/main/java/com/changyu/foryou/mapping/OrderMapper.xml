@@ -843,4 +843,21 @@
 		order_id=#{orderId,jdbcType=BIGINT}
 	</select>
  
+    <select id="getUserPhone" resultType="String">
+        select 
+            phone
+        from orders
+        where
+            together_id=#{togetherId,jdbcType=VARCHAR}
+        limit 1
+    </select>
+    
+    <select id="getAdminPhone" resultType="String">
+        select 
+            admin_phone
+        from orders
+        where
+            together_id=#{togetherId,jdbcType=VARCHAR}
+        limit 1
+    </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.changyu.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,6 +53,7 @@ public class orderTest {
 		return pushService;
 	}
 
+	@Autowired
 	public void setPushService(PushService pushService) {
 		this.pushService = pushService;
 	}
@@ -185,7 +188,7 @@ public class orderTest {
 		if(campus.getStatus()==0){
 			map.put(Constants.STATUS, Constants.FAILURE);
 			map.put(Constants.MESSAGE, "该校区这段时间暂停营业哦");
-			LOGGER.info(JSON.toJSONString(map));
+			LOGGER.info(JSON.toJSONStringWithDateFormat(map,"H:m:s"));
 			return ;
 		}
 
@@ -278,6 +281,21 @@ public class orderTest {
 
 		return;
 	}
+   
+	/**
+	 * 测试通过订单号获取用户手机号和配送员手机号
+	 */
+	@Test
+	 public void testGetUserPhoneAndAdminPhoneByTogetherId(){
+		 Map<String,Object> paramMap=new HashMap<String,Object>();
+		 
+		  paramMap.put("togetherId", "153651867351430139990413");
+		  String userPhone=orderService.getUserPhone(paramMap);
+		  String adminPhone=orderService.getAdminPhone(paramMap);
+		  
+		  assertEquals("18896554880",userPhone);
+		  assertEquals("18114706485", adminPhone);
+	 }
 
-
+	
 }
