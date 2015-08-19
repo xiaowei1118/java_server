@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.changyu.foryou.mapper.OrderMapper;
+import com.changyu.foryou.mapper.PreferentialMapper;
 import com.changyu.foryou.model.BigOrder;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
@@ -17,6 +18,7 @@ import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
@@ -25,6 +27,8 @@ import com.changyu.foryou.service.OrderService;
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
 	private OrderMapper orderMapper;
+	
+	private PreferentialMapper preferentialMapper;
 
 	public OrderMapper getOrderMapper() {
 		return orderMapper;
@@ -224,6 +228,39 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public String getAdminPhone(Map<String, Object> requestMap) {
 		return orderMapper.getAdminPhone(requestMap);
+	}
+
+	@Override
+	public Preferential getPreferentialById(Integer preferentialId) {
+		// TODO Auto-generated method stub
+		return preferentialMapper.selectByPrimaryKey(preferentialId);
+	}
+
+	public PreferentialMapper getPreferentialMapper() {
+		return preferentialMapper;
+	}
+
+	@Autowired
+	public void setPreferentialMapper(PreferentialMapper preferentialMapper) {
+		this.preferentialMapper = preferentialMapper;
+	}
+
+	@Override
+	public List<Preferential> getPreferential() {
+		// TODO Auto-generated method stub
+		return preferentialMapper.getPreferential();
+	}
+
+	@Override
+	public Integer updateOrderPrice(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.updateOrderPrice(paramMap);
+	}
+
+	@Override
+	public Integer updateOrder(Order order) {
+		// TODO Auto-generated method stub
+		return orderMapper.updateByPrimaryKeySelective(order);
 	}
 
 	

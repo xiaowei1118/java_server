@@ -271,7 +271,7 @@
 			</if>
 		</set>
 		where order_id = #{orderId,jdbcType=BIGINT} And
-		phone=#{phoneId,jdbcType=VARCHAR}
+		phone=#{phone,jdbcType=VARCHAR}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Order">
 		update orders
@@ -857,7 +857,14 @@
             admin_phone
         from orders
         where
-            together_id=#{togetherId,jdbcType=VARCHAR}
+            together_id=#{togetherId,jdbcType=VARCHAR} 
         limit 1
     </select>
+    
+    <update id="updateOrderPrice">
+    update orders 
+    set total_price=#{totalPrice}
+    where order_id=#{orderId}
+    </update>
+   
 </mapper>

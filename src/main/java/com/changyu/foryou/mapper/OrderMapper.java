@@ -102,6 +102,8 @@ public interface OrderMapper {
 
 	String getAdminPhone(Map<String, Object> requestMap);             //获取配送员手机号
 
+	Integer updateOrderPrice(Map<String, Object> paramMap);
+
 	
 
 }

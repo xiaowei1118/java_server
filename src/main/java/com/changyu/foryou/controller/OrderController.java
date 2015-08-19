@@ -29,6 +29,7 @@ import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
@@ -504,6 +505,7 @@ public class OrderController {
 			@RequestParam String rank, String reserveTime, String message,@RequestParam Short payWay) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap2 = new HashMap<String, Object>();
 
 		try {
 			Calendar calendar = Calendar.getInstance();
@@ -558,26 +560,52 @@ public class OrderController {
 				map.put(Constants.MESSAGE,message2.toString()); 
 				return map; 
 			}
-
+			Float totalPrice=(float) 0.0;
+					//写入单价操作
 			for (String id : orderString) {
-				// 这里做写入单价操作，还没有写！！！
-
 				flag = orderService.changeOrderStatus2Buy(phoneId, id,
 						togetherId, rank, reserveTime, message,payWay);
-
-				// 更新库存和销量
+				paramMap2.put("orderId",id);
+				SmallOrder smallOrder=orderService.getOrderById(paramMap2);
+				float price=(float) 0.0;
+				if(smallOrder.getIsDiscount()==1)
+				{
+					price = (smallOrder.getDiscountPrice()*smallOrder.getOrderCount());
+				}
+				else
+				{
+					price = smallOrder.getPrice()*smallOrder.getOrderCount();
+				}				
+				totalPrice +=price;
 				Order order = orderService.selectOneOrder(phoneId, id); // 获取该笔订单的消息
-
+				order.setPrice(price);
+				Integer flag2=orderService.updateOrder(order);				
 				paramMap.put("foodId", order.getFoodId());
 				paramMap.put("orderCount", order.getOrderCount());
 				paramMap.put("campusId",campus.getCampusId());
 				foodService.changeFoodCount(paramMap); // 增加销量，减少存货
-
 				if (flag == 0 || flag == -1) {
 					break;
 				}
 			}
-
+			//考虑满减
+			List<Preferential> preferentials=orderService.getPreferential();
+			if(preferentials!=null &&preferentials.size()>0)
+			for(Preferential i:preferentials)
+			{
+				if(totalPrice>=i.getNeedNumber())
+				{
+					totalPrice -=i.getDiscountNum();
+					break;
+				}
+			}
+			for (String id : orderString)
+			{
+				paramMap.put("orderId", id);
+				paramMap.put("totalPrice", totalPrice);
+				Integer flag3 =orderService.updateOrderPrice(paramMap);
+			}
+				map.put("payPrice", totalPrice);
 			if (flag != -1 && flag != 0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
@@ -1069,7 +1097,7 @@ public class OrderController {
 		BigOrder bigOrder = new BigOrder();
 		bigOrder.setTogetherId(togetherId);
 		List<SmallOrder> orders = orderService.getOrdersById(paramMap);
-		if (orders.size() > 0 && orders != null) {
+		if (orders.size() > 0 && orders!= null) {
 			if (orders.get(0).getStatus() != 4) {
 				status = orders.get(0).getStatus();
 			} else {
@@ -1265,6 +1293,17 @@ public class OrderController {
 		return resultMap;
 
 			}
+	
+	@RequestMapping("/getPreferentialById")
+	public @ResponseBody Map<String, Object> getPreferentialById(@RequestParam Integer preferentialId)
+	{
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Preferential preferential=orderService.getPreferentialById(preferentialId);
+		resultMap.put("preferential",preferential);
+		resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		resultMap.put(Constants.MESSAGE,"获取成功");
+		return resultMap;
+	}
 
 
 }
