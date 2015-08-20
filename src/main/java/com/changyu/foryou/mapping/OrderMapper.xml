@@ -31,6 +31,7 @@
 		<result column="food_id" property="foodId" jdbcType="BIGINT" />
 		<result column="img_url" property="imageUrl" jdbcType="VARCHAR" />
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
+		<result column="is_full_discount" property="isFullDiscount" jdbcType="TINYINT" />
 	</resultMap>
 
 	<!-- 配送员配送界面model -->
@@ -82,6 +83,7 @@
 		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
 		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="total_price" property="totalPrice" jdbcType="REAL" />
+		<result column="is_full_discount" property="isFullDiscount" jdbcType="TINYINT" />
 	</resultMap>
 
 	<!-- 超级管理员管理派单model -->
@@ -304,7 +306,7 @@
 		tag,img_url,food.status as status,
 		orders.order_count as order_count
 		,food.is_discount as is_discount,
-		food.price as price,food.name as name,discount_price
+		food.price as price,food.name as name,discount_price,is_full_discount
 		from orders,food
 		where
 		orders.food_id=food.food_id and orders.campus_id = food.campus_id and phone =
@@ -836,7 +838,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message
+		discount_price,food.message as message,is_full_discount
 		from
 		orders,food
 		where

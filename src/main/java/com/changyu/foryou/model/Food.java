@@ -48,7 +48,14 @@ public class Food {
 	
 	private String message;
 	
+	private Short isFullDiscount;	
 	
+	public Short getIsFullDiscount() {
+		return isFullDiscount;
+	}
+	public void setIsFullDiscount(Short isFullDiscount) {
+		this.isFullDiscount = isFullDiscount;
+	}
 	public Food(){
 		
 	}
