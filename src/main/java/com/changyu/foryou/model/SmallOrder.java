@@ -42,6 +42,16 @@ public class SmallOrder {
 	
 	private Short payWay;
 	
+	private Float totalPrice;
+	
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public String getMessage() {
 		return message;
 	}

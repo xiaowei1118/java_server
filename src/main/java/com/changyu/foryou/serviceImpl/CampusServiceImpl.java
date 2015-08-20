@@ -23,7 +23,7 @@ public class CampusServiceImpl implements CampusService {
 	private CampusMapper campusMapper;
 	@Resource(name="foodCategoryMapper")
 	private FoodCategoryMapper foodCategoryMapper;
-	
+
 	@Autowired
 	public void setCampusMapper(CampusMapper campusMapper) {
 		this.campusMapper = campusMapper;
@@ -68,6 +68,7 @@ public class CampusServiceImpl implements CampusService {
 	}
 
 	@Override
+
 	public Integer updateCampusAdmin(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.updateCampusAdmin(paramMap);
@@ -130,7 +131,7 @@ public class CampusServiceImpl implements CampusService {
 				categoryMap.put("tag", tag);
 				categoryMap.put("serial", serial);
 				categoryMap.put("isOpen", isOpen);
-				
+
 				count += foodCategoryMapper.addCategoryWhenAddCampus(categoryMap);
 			}
 			if(count<8){
@@ -148,6 +149,9 @@ public class CampusServiceImpl implements CampusService {
 			responseMap.put(Constants.MESSAGE, "添加校区失败");
 		}
 		return responseMap;
+	}
+	public Campus getCampus(Map<String, Object> paramMap) {
+		return campusMapper.getCampusByOrder(paramMap);
 	}
 
 }

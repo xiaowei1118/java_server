@@ -41,6 +41,4 @@ public class ShortFoodWithIm extends ShortFood {
 		this.grade = grade;
 	}
 
-	
-
 }

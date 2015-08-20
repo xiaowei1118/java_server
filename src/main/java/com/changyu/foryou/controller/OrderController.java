@@ -23,15 +23,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.changyu.foryou.model.BigOrder;
+import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 import com.changyu.foryou.model.TogetherOrder;
+import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.PushService;
@@ -52,12 +55,17 @@ public class OrderController {
 	private UserService userService;
 	private FoodService foodService;
 	private ReceiverService receiverService;
-
+	private CampusService  campusService;
 	private PushService pushService;
 
 	@Autowired
 	public void setReceiverService(ReceiverService receiverService) {
 		this.receiverService = receiverService;
+	}
+
+	@Autowired
+	public void setCampusService(CampusService campusService) {
+		this.campusService = campusService;
 	}
 
 	public PushService getPushService() {
@@ -494,81 +502,131 @@ public class OrderController {
 	@RequestMapping("/orderToBuy")
 	public @ResponseBody Map<String, Object> changeOrderStatus2Buy(
 			@RequestParam String phoneId, @RequestParam String orderId,
-			@RequestParam String rank, String reserveTime, String message,@RequestParam Short payWay) {
+			@RequestParam String rank, String reserveTime, String message,@RequestParam Short payWay,
+			@RequestParam Float totalPrice ,Integer preferentialsId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-		/*
-		 * map.put(Constants.STATUS, Constants.FAILURE);
-		 * map.put(Constants.MESSAGE, "暑期间米奇暂停运营，非常抱歉，亲，下学期再见喽。");
-		 */
 		try {
 			Calendar calendar = Calendar.getInstance();
-			// 判断是否超出营业时间，营业时间为9：00--21：30
-			/*
-			 * if(calendar.get(Calendar.HOUR_OF_DAY)>22||(calendar.get(Calendar.
-			 * HOUR_OF_DAY
-			 * )>=21&&calendar.get(Calendar.MINUTE)>30)||calendar.get(
-			 * Calendar.HOUR_OF_DAY)<9){ map.put(Constants.STATUS,
-			 * Constants.FAILURE); map.put(Constants.MESSAGE,
-			 * "米奇的营业时间为9：00--21：30，欢迎下次光顾。"); return map; }
-			 */
 
 			String[] orderString = orderId.split(",");
 			int flag = 0;
 			String togetherId = phoneId + String.valueOf(new Date().getTime());
 
-			// boolean tag=true;
+			paramMap.put("orderId",orderString[0]);
+			paramMap.put("phoneId",phoneId);
+			Campus campus=campusService.getCampus(paramMap);   //根据订单获取该校区的详细情况
+
+			//判断该校区是否正在营业
+			if(campus.getStatus()==0){
+				map.put(Constants.STATUS, Constants.FAILURE);
+				map.put(Constants.MESSAGE, campus.getCloseReason());
+				return map;
+			}
+
+			Calendar runOpenTime=Calendar.getInstance();
+			runOpenTime.setTime(campus.getOpenTime());
+			Calendar runCloseTime=Calendar.getInstance();
+			runCloseTime.setTime(campus.getCloseTime());
+			//判断是否超出校区营业时间
+
+			int openHour=runOpenTime.get(Calendar.HOUR_OF_DAY);     
+			int openMinute=runOpenTime.get(Calendar.MINUTE);
+			int closeHour=runCloseTime.get(Calendar.HOUR_OF_DAY);
+			int closeMinute=runCloseTime.get(Calendar.MINUTE);
+
+			if(calendar.get(Calendar.HOUR_OF_DAY)>closeHour
+					||(calendar.get(Calendar.HOUR_OF_DAY)==closeHour&&calendar.get(Calendar.MINUTE)>closeMinute)
+					||calendar.get(Calendar.HOUR_OF_DAY)<openHour
+					||(calendar.get(Calendar.HOUR_OF_DAY)==openHour&&calendar.get(Calendar.MINUTE)<runOpenTime.get(openMinute))
+					){ 
+				StringBuffer message2=new StringBuffer();
+				message2.append("fou优的营业时间为"+openHour+":");
+
+				if(openMinute<10){
+					message2.append("0"+openMinute);
+				}else{
+					message2.append(openMinute);
+				}
+				message2.append("--"+closeHour+":");
+				if(openMinute<10){
+					message2.append("0"+closeMinute);
+				}else{
+					message2.append(closeMinute);
+				}
+
+				map.put(Constants.STATUS,Constants.FAILURE); 
+				map.put(Constants.MESSAGE,message2.toString()); 
+				return map; 
+			}
+			if(preferentialsId!=null)
+			{
+				Preferential preferential=orderService.getPreferentialById(preferentialsId);
+				totalPrice -=preferential.getDiscountNum();
+			}
+					//写入单价操作
 			for (String id : orderString) {
-				// 这里做写入单价操作，还没有写！！！
-
+				float price=(float) 0.0;
+				paramMap.put("orderId",id);
+				SmallOrder smallOrder=orderService.getOrderById(paramMap);
+				if(smallOrder.getIsDiscount()==1)
+				{
+					price = (smallOrder.getDiscountPrice()*smallOrder.getOrderCount());
+				}
+				else
+				{
+					price = smallOrder.getPrice()*smallOrder.getOrderCount();
+				}		
 				flag = orderService.changeOrderStatus2Buy(phoneId, id,
-						togetherId, rank, reserveTime, message,payWay);
-
-				// 更新库存和销量
-				Order order = orderService.selectOneOrder(phoneId, id); // 获取该笔订单的消息
-
+						togetherId, rank, reserveTime, message,payWay,price,totalPrice);				
+				Order order = orderService.selectOneOrder(phoneId, id); // 获取该笔订单的消息				
 				paramMap.put("foodId", order.getFoodId());
 				paramMap.put("orderCount", order.getOrderCount());
+				paramMap.put("campusId",campus.getCampusId());
 				foodService.changeFoodCount(paramMap); // 增加销量，减少存货
-
 				if (flag == 0 || flag == -1) {
 					break;
 				}
 			}
 
+			DecimalFormat df = new DecimalFormat("0.0");
 			if (flag != -1 && flag != 0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
+				map.put("totalPrice",df.format(totalPrice));
 
 				// 开启线程去访问极光推送
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { //向超级管理员推送，让其分发订单
-				 * 
-				 * //推送 //pushService.sendPushByTag("0",
-				 * "一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
-				 * 
-				 * Map<String, Object> paramterMap=new HashMap<String,Object>();
-				 * List<String>
-				 * superPhones=userService.getAllSuperAdminPhone(paramterMap);
-				 * for(String phone:superPhones){
-				 * 
-				 * //推送 pushService.sendPush(phone,
-				 * "一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1); } } }).start();
-				 */
+
+				new Thread(new Runnable() {
+
+					@Override public void run() { //向超级管理员推送，让其分发订单
+
+						//推送 
+						//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
+
+						Map<String, Object> paramterMap=new HashMap<String,Object>();
+						List<String>
+						superPhones=userService.getAllSuperAdminPhone(paramterMap);
+						for(String phone:superPhones){
+
+							//推送
+							pushService.sendPush(phone,"一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
+						}
+					} 
+				}).start();
+
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
 				map.put(Constants.MESSAGE, "下单失败，请重新开始下单");
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getStackTrace();
 			map.put(Constants.STATUS, Constants.FAILURE);
 			map.put(Constants.MESSAGE, "下单失败，请重新开始下单");
 		}
+
 		return map;
 	}
 
@@ -596,17 +654,17 @@ public class OrderController {
 				map.put(Constants.MESSAGE, "正在配送中！");
 
 				// 开启线程访问服务器进行推送
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { //推送 String
-				 * userPhone=userService.getUserPhone(togetherId);
-				 * System.out.println(userPhone);
-				 * pushService.sendPush(userPhone,
-				 * "您有一笔订单正在配送中,请稍候。感谢您对米奇零点的支持", 1);
-				 * 
-				 * } }).start();
-				 */
+
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						String userPhone=userService.getUserPhone(togetherId);
+						System.out.println(userPhone);
+						pushService.sendPush(userPhone,
+								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
+
+					} }).start();
+
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -641,15 +699,15 @@ public class OrderController {
 
 				final String userPhone = userService.getUserPhone(togetherId);
 
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { //推送
-				 * pushService.sendPush(userPhone,
-				 * "您有一笔订单已完成交易,赶快去评价吧！米奇零点欢迎您下次惠顾", 1);
-				 * 
-				 * } }).start();
-				 */
+
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						pushService.sendPush(userPhone,
+								"您有一笔订单已完成交易,赶快去评价吧！For优欢迎您下次惠顾", 1);
+
+					} }).start();
+
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -788,7 +846,7 @@ public class OrderController {
 					public void run() {
 						// 推送
 						pushService.sendPush(adminPhone,
-								"米奇零点提醒您，一笔新订单已达到，请及时配送，辛苦您了。", 1);
+								"For优提醒您，一笔新订单已达到，请及时配送，辛苦您了。", 1);
 
 					}
 				}).start();
@@ -956,7 +1014,7 @@ public class OrderController {
 				date = null;
 			else
 				date = date.replace("年", "-").replace("月", "-")
-						.replace("日", "");
+				.replace("日", "");
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("date", date);
 			paramMap.put("campusId", campusId);
@@ -1019,26 +1077,26 @@ public class OrderController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-		Double sum = 0.0;
+		Float sum = (float) 0.0;
 		Short status = 0;
 		paramMap.put("togetherId", togetherId);
 		BigOrder bigOrder = new BigOrder();
 		bigOrder.setTogetherId(togetherId);
 		List<SmallOrder> orders = orderService.getOrdersById(paramMap);
-		if (orders.size() > 0 && orders != null) {
+		if (orders.size() > 0 && orders!= null) {
 			if (orders.get(0).getStatus() != 4) {
 				status = orders.get(0).getStatus();
 			} else {
 				status = 5;
-					for (int i = 0; i < orders.size(); i++) {
-						if (orders.get(i).getIsRemarked() == 0) {
-							status = 4;
-						}
+				for (int i = 0; i < orders.size(); i++) {
+					if (orders.get(i).getIsRemarked() == 0) {
+						status = 4;
 					}
-				
+				}
+
 			}
 			Receiver receiver = receiverService.getReceiver(paramMap);
-			Date date = orderService.getTogetherDate(paramMap);
+			Date date = orders.get(0).getTogetherDate();
 			bigOrder.setDate(date);
 			System.out.println(orders.get(0).getPayWay());
 			bigOrder.setPayWay(orders.get(0).getPayWay());
@@ -1047,23 +1105,27 @@ public class OrderController {
 			 * if (orders!=null&&orders.size() > 0) { for (int i = 0; i <
 			 * orders.size(); i++) { sum += orders.get(i).getPrice(); } }
 			 */
-			
-			if (orders.size() > 0 && orders != null) 
+
+//			if (orders.size() > 0 && orders != null) 
+//			{
+//				for(SmallOrder i:orders)
+//				{
+//					if(i.getIsDiscount()==1)
+//					{
+//						sum += i.getDiscountPrice()*i.getOrderCount();
+//					}
+//					else
+//					{
+//						sum += i.getPrice()*i.getOrderCount();
+//					}
+//				}
+//			}
+			sum=orders.get(0).getTotalPrice();
+			if(sum!=null)
 			{
-				for(SmallOrder i:orders)
-				{
-					if(i.getIsDiscount()==1)
-					{
-						sum += i.getDiscountPrice()*i.getOrderCount();
-					}
-					else
-					{
-						sum += i.getPrice()*i.getOrderCount();
-					}
-				}
+				DecimalFormat df = new DecimalFormat("0.0");
+				bigOrder.setTotalPrice(df.format(sum));
 			}
-			DecimalFormat df = new DecimalFormat("0.0");
-			bigOrder.setTotalPrice(df.format(sum));
 			bigOrder.setOrders(orders);
 			bigOrder.setReceiver(receiver);
 			bigOrder.setStatus(status);
@@ -1082,7 +1144,7 @@ public class OrderController {
 
 	/**
 	 * 修改订单状态
-	 * @param adminPhone
+	 * @param adminPhone    ?????????????????????????????
 	 * @param togetherId
 	 * @return
 	 */
@@ -1090,47 +1152,72 @@ public class OrderController {
 	public @ResponseBody Map<String, Object> modifyOrderStatus(	@RequestParam final String togetherId, @RequestParam Short status, Long orderId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
-		requestMap.put("togetherId", togetherId);
-		requestMap.put("status", status);
-		Integer flag = null;
-		switch(status){
-		case 0:
-			//购物车
-			//flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 1:
-			//待付款
-			//flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 2:
-			//待确认
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 3:
-			//配送中
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 4:
-			//待评价
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		case 5:
-			//小订单已完成
-			requestMap.put("orderId", orderId);
-			requestMap.put("isRemarked", Integer.valueOf(1));
-			requestMap.put("status", 4);
-			flag = orderService.modifyOrderStatus(requestMap);
-			break;
-		default:
-			break;
+		
+		try {		
+			requestMap.put("togetherId", togetherId);
+			requestMap.put("status", status);	
+			final String userPhone=orderService.getUserPhone(requestMap);          //获取用户手机号
+			//final String adminPhone=orderService.getAdminPhone(requestMap);        //获取配送员手机号
+			Integer flag = null;
+			switch(status){
+			case 0:
+				//购物车
+				//flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			case 1:
+				//待付款
+				//flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			case 2:
+				//待确认
+				flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			case 3:
+				//配送中
+				flag = orderService.modifyOrderStatus(requestMap);
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						
+						pushService.sendPush(userPhone,
+								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
+
+					} }).start();
+				break;
+			case 4:
+				//待评价
+				flag = orderService.modifyOrderStatus(requestMap);
+				new Thread(new Runnable() {
+
+					@Override public void run() { //推送
+						
+						pushService.sendPush(userPhone,
+								"您有一笔订单已经完成,赶快去评价吧。感谢您对For优的支持", 1);
+
+					} }).start();
+				break;
+			case 5:
+				//小订单已完成
+				requestMap.put("orderId", orderId);
+				requestMap.put("isRemarked", Integer.valueOf(1));
+				requestMap.put("status", 4);
+				flag = orderService.modifyOrderStatus(requestMap);
+				break;
+			default:
+				break;
+			}
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "更改状态成功");
+			resultMap.put("flag", flag);
+		} catch (Exception e) {
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "更改状态失败");
 		}
-		resultMap.put(Constants.STATUS, Constants.SUCCESS);
-		resultMap.put(Constants.MESSAGE, "更改状态成功");
-		resultMap.put("flag", flag);
+		
 		return resultMap;
 	}
-	
-	
+
+
 	/**
 	 * 删除订单（status=4）
 	 *@param togetherId
@@ -1153,10 +1240,10 @@ public class OrderController {
 			resultMap.put(Constants.STATUS, Constants.FAILURE);
 			resultMap.put(Constants.MESSAGE, "订单不存在,删除订单失败");
 		}
-		
+
 		return resultMap;
 	}
-	
+
 	/**
 	 * 商品详情处立即购买
 	 * @param campusId
@@ -1165,25 +1252,25 @@ public class OrderController {
 	 * @param foodCount
 	 * @return
 	 */
-	
+
 	@RequestMapping("/purchaseImmediately")
 	public @ResponseBody Map<String, Object> purchaseImmediately(
 			@RequestParam Integer campusId, @RequestParam String phoneId,
 			@RequestParam Long foodId, @RequestParam Integer foodCount)
-	{
+			{
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
+
 		try {
 			Order order = new Order(campusId, phoneId, foodId, foodCount);
 			paramMap.put("orderId",order.getOrderId());
 			int flag = orderService.insertSelectiveOrder(order);
-			
+
 			if (flag == -1 && flag == 0) {			
 				resultMap.put(Constants.STATUS, Constants.FAILURE);
 				resultMap.put(Constants.MESSAGE, "生成订单失败");
 			}
-			
+
 			SmallOrder smallOrder=orderService.getOrderById(paramMap);
 			resultMap.put("order", smallOrder);
 			resultMap.put(Constants.STATUS, Constants.SUCCESS);
@@ -1194,9 +1281,37 @@ public class OrderController {
 			resultMap.put(Constants.MESSAGE, "生成订单失败");			
 		}
 		return resultMap;
+
+			}
 	
-		
+	/**
+	 * 根据id获取满减信息
+	 * @param preferentialId
+	 * @return
+	 */
+	@RequestMapping("/getPreferentialById")
+	public @ResponseBody Map<String, Object> getPreferentialById(@RequestParam Integer preferentialId)
+	{
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Preferential preferential=orderService.getPreferentialById(preferentialId);
+		resultMap.put("preferential",preferential);
+		resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		resultMap.put(Constants.MESSAGE,"获取成功");
+		return resultMap;
 	}
 	
-	
+	/**
+	 * 获取满减信息
+	 * @return
+	 */
+	@RequestMapping("/getPreferentials")
+	public @ResponseBody Map<String, Object> getPreferentialById()
+	{
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<Preferential> preferentials=orderService.getPreferential();
+		resultMap.put("preferential",preferentials);
+		resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		resultMap.put(Constants.MESSAGE,"获取成功");
+		return resultMap;
+	}
 }

@@ -5,13 +5,14 @@
 		<id column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		<result column="city_id" property="cityId" jdbcType="INTEGER" />
-		<result column="open_time" property="openTime" jdbcType="TIME"/>
-		<result column="close_time" property="closeTime" jdbcType="TIME"/>
-		<result column="close_reason" property="closeReason" jdbcType="VARCHAR"/>
-		<result column="status" property="status" jdbcType="SMALLINT"/>
-		<result column="custom_service" property="customService" jdbcType="VARCHAR"/>
-		<!--<result column="location_x" property="locationX" jdbcType="DOUBLE" />
-		<result column="location_y" property="locationY" jdbcType="DOUBLE" /> -->
+		<result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+		<result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+		<result column="close_reason" property="closeReason" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="custom_service" property="customService"
+			jdbcType="VARCHAR" />
+		<!--<result column="location_x" property="locationX" jdbcType="DOUBLE" 
+			/> <result column="location_y" property="locationY" jdbcType="DOUBLE" /> -->
 	</resultMap>
 
 	<resultMap id="CampusWithCityMap" type="com.changyu.foryou.model.CityWithCampus">
@@ -22,21 +23,23 @@
 			<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
-	
+
 	<resultMap type="com.changyu.foryou.model.CampusAdmin" id="CampusAdminMap">
-		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR"/>
-		<result column="password" property="password" jdbcType="VARCHAR"/>
-		<result column="type" property="type" jdbcType="SMALLINT"/>
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
-		<result column="campus_name" property="campusName" jdbcType="VARCHAR"/>
-		<result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP"/>
+		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="SMALLINT" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		<result column="last_login_date" property="lastLoginDate"
+			jdbcType="TIMESTAMP" />
 	</resultMap>
-	
+
 	<resultMap type="com.changyu.foryou.model.CampusAdmin" id="SmallCampusAdminMap">
-		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR"/>
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
-		<result column="campus_name" property="campusName" jdbcType="VARCHAR"/>
-		<result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP"/>
+		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		<result column="last_login_date" property="lastLoginDate"
+			jdbcType="TIMESTAMP" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -54,11 +57,14 @@
 		where campus_id = #{campusId,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.changyu.foryou.model.Campus">
-		insert into campus (campus_id, campus_name, city_id,
+		insert into campus (campus_id,
+		campus_name, city_id,
 		location_x, location_y)
-		values (#{campusId,jdbcType=INTEGER}, #{campusName,jdbcType=VARCHAR},
+		values
+		(#{campusId,jdbcType=INTEGER}, #{campusName,jdbcType=VARCHAR},
 		#{cityId,jdbcType=INTEGER},
-		#{locationX,jdbcType=DOUBLE}, #{locationY,jdbcType=DOUBLE})
+		#{locationX,jdbcType=DOUBLE},
+		#{locationY,jdbcType=DOUBLE})
 	</insert>
 	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Campus">
 		insert into campus
@@ -117,11 +123,14 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Campus">
 		update campus
-		set campus_name = #{campusName,jdbcType=VARCHAR},
-		city_id = #{cityId,jdbcType=INTEGER},
+		set
+		campus_name = #{campusName,jdbcType=VARCHAR},
+		city_id =
+		#{cityId,jdbcType=INTEGER},
 		location_x = #{locationX,jdbcType=DOUBLE},
 		location_y = #{locationY,jdbcType=DOUBLE}
-		where campus_id = #{campusId,jdbcType=INTEGER}
+		where campus_id =
+		#{campusId,jdbcType=INTEGER}
 	</update>
 
 	<select id="selectAllCampus" resultMap="BaseResultMap">
@@ -138,71 +147,90 @@
 		select
 		city.city_id,city_name,campus_id,campus_name
 		from city
-        left outer join campus on campus.city_id =city.city_id
+		left outer join campus on campus.city_id =city.city_id
 	</select>
-	
+
 	<select id="getIdByName" resultType="java.lang.Integer">
-		select 
+		select
 		campus_id
 		from campus
 		where campus_name=#{campusName,jdbcType=VARCHAR}
 	</select>
-	
+
 	<update id="closeCampus">
-		update campus set 
+		update campus set
 		<if test="status != null">
-		status=#{status, jdbcType=SMALLINT}
+			status=#{status, jdbcType=SMALLINT}
 		</if>
 		<if test="closeReason != null">
-		,close_reason=#{closeReason, jdbcType=VARCHAR}
+			,close_reason=#{closeReason, jdbcType=VARCHAR}
 		</if>
 		<where>
-		<if test="campusId != null">
-			campus_id=#{campusId, jdbcType=INTEGER}
-		</if>
+			<if test="campusId != null">
+				campus_id=#{campusId, jdbcType=INTEGER}
+			</if>
 		</where>
 	</update>
-	
+
 	<select id="selectCampusById" resultMap="BaseResultMap">
-		select * from campus where campus_id=#{campusId,jdbcType=INTEGER}
+		select * from campus
+		where campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
-	
+
 	<select id="getCampusIdByAdmin" resultMap="CampusAdminMap">
-		select campus_admin,password,type,campus_admin.campus_id,campus.campus_name as campus_name,last_login_date
-		 from campus_admin,campus
-		  where campus_admin=#{campusAdmin, jdbcType=VARCHAR}
-		   and 
-		   campus_admin.campus_id=campus.campus_id
+		select
+		campus_admin,password,type,campus_admin.campus_id,campus.campus_name
+		as campus_name,last_login_date
+		from campus_admin,campus
+		where campus_admin=#{campusAdmin, jdbcType=VARCHAR}
+		and
+		campus_admin.campus_id=campus.campus_id
 	</select>
-	
+
 	<select id="getAllCampusAdmin" resultMap="SmallCampusAdminMap">
 		SELECT
-			campus_admin,
-			campus_admin.campus_id,
-			campus.campus_name AS campus_name,
-			last_login_date
+		campus_admin,
+		campus_admin.campus_id,
+		campus.campus_name AS campus_name,
+		last_login_date
 		FROM
-			campus_admin,
-			campus
+		campus_admin,
+		campus
 		WHERE
-			campus_admin.campus_id = campus.campus_id
-			and type=#{type,jdbcType=SMALLINT}
+		campus_admin.campus_id = campus.campus_id
+		and type=#{type,jdbcType=SMALLINT}
 	</select>
-	
+
+
 	<!-- 更新校区管理员管理的校区 -->
 	<update id="updateCampusAdmin">
-	UPDATE campus_admin SET campus_id=#{campusId, jdbcType=INTEGER}
-	WHERE campus_admin=#{campusAdmin, jdbcType=VARCHAR}
+		UPDATE campus_admin SET campus_id=#{campusId, jdbcType=INTEGER}
+		WHERE campus_admin=#{campusAdmin, jdbcType=VARCHAR}
 	</update>
-	
+
 	<insert id="addCampus">
-	INSERT INTO campus
-	(campus_id,campus_name,city_id,open_time,close_time,status) VALUES
-	(#{campusId,jdbcType=INTEGER},
-	#{campusName, jdbcType=VARCHAR},
-	#{cityId,jdbcType=INTEGER},
-	#{openTime,jdbcType=TIMESTAMP},
-	#{closeTime,jdbcType=TIMESTAMP},
-	#{status,jdbcType=SMALLINT})
-</insert>
+		INSERT INTO campus
+		(campus_id,campus_name,city_id,open_time,close_time,status) VALUES
+		(#{campusId,jdbcType=INTEGER},
+		#{campusName, jdbcType=VARCHAR},
+		#{cityId,jdbcType=INTEGER},
+		#{openTime,jdbcType=TIMESTAMP},
+		#{closeTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=SMALLINT})
+	</insert>
+
+	<select id="getCampusByOrder" resultMap="BaseResultMap">
+		select
+		campus_id,campus_name,open_time,close_time,close_reason,status
+		from
+		campus
+		where
+		campus_id = (
+		select campus_id
+		from orders
+		where order_id=#{orderId,jdbcType=BIGINT} and phone =
+		#{phoneId,jdbcType=VARCHAR} limit 1
+		)
+	</select>
+
 </mapper>
