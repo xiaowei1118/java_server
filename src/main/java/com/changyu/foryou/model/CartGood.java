@@ -18,6 +18,8 @@ public class CartGood {
     private Integer orderCount;
 
     private Short tag;
+    
+    private Short isFullDiscount;
 
     //private Integer foodSpecial;
 
@@ -27,8 +29,7 @@ public class CartGood {
     
     //private String specialName;
     
-    private Integer foodCount;
-    
+    private Integer foodCount;    
    
 	
 	public Long getOrderId() {
@@ -142,6 +143,14 @@ public class CartGood {
 
 	public void setFoodCount(Integer foodCount) {
 		this.foodCount = foodCount;
+	}
+
+	public Short getIsFullDiscount() {
+		return isFullDiscount;
+	}
+
+	public void setIsFullDiscount(Short isFullDiscount) {
+		this.isFullDiscount = isFullDiscount;
 	}
 
 	

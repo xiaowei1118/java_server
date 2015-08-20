@@ -15,6 +15,7 @@
 		<result column="prime_cost" property="primeCost" jdbcType="REAL" />	
 		<result column="to_home" property="toHome" jdbcType="SMALLINT"/>
 		<result column="home_image" property="homeImage" jdbcType="VARCHAR"/>	
+		<result column="is_full_discount" property="isFullDiscount" jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<resultMap type="com.changyu.foryou.model.ShortFoodWithIm" id="SmallWithImResultMap"
@@ -71,7 +72,13 @@
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
+			food_id,campus_id, name, price, discount_price, grade,
+		img_url, info,
+		modify_time,
+		status,
+		food_flag, tag, is_discount,
+		category_id,
+		prime_cost, sale_number,food_count,food.message as message,to_home,home_image,is_full_discount
 		from food
 		where food_id = #{foodId,jdbcType=BIGINT}
 		and

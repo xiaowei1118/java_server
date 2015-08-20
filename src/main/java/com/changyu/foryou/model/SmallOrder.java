@@ -44,6 +44,8 @@ public class SmallOrder {
 	
 	private Float totalPrice;
 	
+	private Short isFullDiscount;
+	
 	public Float getTotalPrice() {
 		return totalPrice;
 	}
@@ -212,6 +214,14 @@ public class SmallOrder {
 
 	public void setPayWay(Short payWay) {
 		this.payWay = payWay;
+	}
+
+	public Short getIsFullDiscount() {
+		return isFullDiscount;
+	}
+
+	public void setIsFullDiscount(Short isFullDiscount) {
+		this.isFullDiscount = isFullDiscount;
 	}
   
 }
