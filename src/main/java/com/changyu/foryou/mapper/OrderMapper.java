@@ -36,7 +36,7 @@ public interface OrderMapper {
 
 	int updateOrderCount(@Param(value="orderId")Long orderId, @Param(value="phoneId")String phoneId, @Param(value="orderCount")Integer orderCount);
 
-	int changeOrderStatus2Buy(@Param(value="orderId")Long orderId, @Param(value="phoneId")String phoneId, @Param(value="togetherId")String togetherId, @Param(value="rank")String rank, @Param(value="reserveTime")String reserveTime, @Param(value="message")String message,@Param(value="payWay")Short payWay);
+	int changeOrderStatus2Buy(@Param(value="orderId")Long orderId, @Param(value="phoneId")String phoneId, @Param(value="togetherId")String togetherId, @Param(value="rank")String rank, @Param(value="reserveTime")String reserveTime, @Param(value="message")String message,@Param(value="payWay")Short payWay,@Param(value="price")Float price,@Param(value="totalPrice")Float totalPrice);
 
 	int changeOrderStatus2Deliver(@Param(value="togetherId")String togetherId, @Param(value="phoneId")String phoneId);
 

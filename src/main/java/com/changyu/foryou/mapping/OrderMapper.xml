@@ -81,6 +81,7 @@
 		<result column="message" property="message" jdbcType="VARCHAR"/>
 		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
 		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="total_price" property="totalPrice" jdbcType="REAL" />
 	</resultMap>
 
 	<!-- 超级管理员管理派单model -->
@@ -348,9 +349,10 @@
 		set
 		status=1,message=#{message,jdbcType=VARCHAR},reserve_time=#{reserveTime,jdbcType=VARCHAR},
 		together_id=#{togetherId,jdbcType=VARCHAR},rank=#{rank,jdbcType=VARCHAR},together_date=Now(),
-		pay_way=#{payWay,jdbcType=SMALLINT}
-		where
-	
+		pay_way=#{payWay,jdbcType=SMALLINT},
+		price=#{price,jdbcType=REAL}
+		,total_price=#{totalPrice,jdbcType=REAL}
+		where	
 		order_id=#{orderId,jdbcType=BIGINT} And
 		phone=#{phoneId,jdbcType=VARCHAR}
 	</update>
@@ -786,7 +788,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message,pay_way
+		discount_price,food.message as message,pay_way,total_price
 		from
 		orders,food
 		where

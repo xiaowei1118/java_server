@@ -58,9 +58,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.insertSelective(order);
 	}
 
-	public int changeOrderStatus2Buy(String phoneId, String orderId,String togetherId,String rank,String reserveTime,String message,Short payWay) {
+	public int changeOrderStatus2Buy(String phoneId, String orderId,String togetherId,String rank,String reserveTime,String message,Short payWay,Float price,Float totalPrice) {
 
-		return orderMapper.changeOrderStatus2Buy(Long.valueOf(orderId),phoneId,togetherId,rank,reserveTime,message,payWay);
+		return orderMapper.changeOrderStatus2Buy(Long.valueOf(orderId),phoneId,togetherId,rank,reserveTime,message,payWay,price,totalPrice);
 	}
 
 	public int changeOrderStatus2Deliver(String phoneId, String togetherId) {
