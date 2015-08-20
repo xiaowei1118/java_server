@@ -1,5 +1,8 @@
 package com.changyu.foryou.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import com.changyu.foryou.model.Preferential;
 
 public interface PreferentialMapper {
@@ -14,4 +17,7 @@ public interface PreferentialMapper {
     int updateByPrimaryKeySelective(Preferential record);
 
     int updateByPrimaryKey(Preferential record);
+
+	List<Preferential> getPreferential();
+
 }
