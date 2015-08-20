@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.changyu.foryou.mapper.CampusMapper;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CampusAdmin;
 import com.changyu.foryou.model.CityWithCampus;
@@ -47,30 +48,12 @@ public class CampusController {
 	 * @return
 	 */
 	@RequestMapping("getAllCampus")
-	public @ResponseBody 
-	 Map<String,Object> getAllCampus(Integer limit,Integer page){
-		Map<String,Object> resultMap=new HashMap<String,Object>();
-
-		try {
-			Map<String,Object> paramMap=new HashMap<String,Object>();
-			if(page!=null&&limit!=null){
-			   paramMap.put("limit", limit);
-			   paramMap.put("offset", (page-1)*limit);
-			}
-		 
-		    
-		    List<Campus> campus=campusService.getAllCampus(paramMap);
-		    
-	    	resultMap.put(Constants.STATUS, Constants.SUCCESS);
-	    	resultMap.put(Constants.MESSAGE, "获取校区成功！");
-	    	resultMap.put("campus", campus);
-		   
-		} catch (Exception e) {
-			e.getStackTrace();
-			resultMap.put(Constants.STATUS, Constants.SUCCESS);
-	    	resultMap.put(Constants.MESSAGE, "获取校区失败！");
-		}
-		return resultMap;
+	public @ResponseBody JSONArray getAllCampus() {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		List<Campus> campus = campusService.getAllCampus(paramMap);
+		JSONArray array = JSON.parseArray(JSON.toJSONStringWithDateFormat(
+				campus, "yyyy-MM-dd"));
+		return array;
 	}
 	
 	/**
@@ -238,6 +221,31 @@ public class CampusController {
 		return responseMap;
 	}
 	
+	
+	/**
+	 * 删除校区的某校区管理员
+	 * @param campusId
+	 * @param campusAdminName
+	 * @return
+	 */
+	@RequestMapping("/deleteCampusAdmin")
+	public @ResponseBody Map<String, Object> deleteCampusAdmin(@RequestParam Integer campusId, @RequestParam String campusAdminName){
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("campusId", campusId);
+		paramMap.put("campusAdmin", campusAdminName);
+		
+		Integer result = campusService.deleteCampusAdmin(paramMap);
+		if(result!=0&&result!=-1){
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "删除成功");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "删除失败");
+		}
+		return responseMap;
+	}
 	/**
 	 * 添加校区，默认添加8个分类
 	 * @param campusId
@@ -265,6 +273,36 @@ public class CampusController {
 		paramMap.put("status", status);					//默认开启校区
 		
 		campusService.addCampus(paramMap);
+		return responseMap;
+	}
+	
+	/**
+	 * 添加校区管理员
+	 * @param campusId
+	 * @param campusName
+	 * @param campusAdminName
+	 * @return
+	 */
+	@RequestMapping("addCampusAdmin")
+	public @ResponseBody Map<String, Object> addCampusAdmin(@RequestParam Integer campusId, @RequestParam String campusName, @RequestParam String campusAdminName, @RequestParam String password){
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("campusId", campusId);
+		paramMap.put("campusName", campusName);
+		paramMap.put("campusAdmin", campusAdminName);
+		paramMap.put("password", password);
+		paramMap.put("type", 0);			//只能添加校区管理员，总校区管理员只能从数据库添加，更符合逻辑
+		
+		Integer result = campusService.addCampusAdmin(paramMap);
+		
+		if(result!=0&&result!=-1){
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "添加校区管理员成功，请及时将账户分派给相应人员并提醒他/她修改密码");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "添加校区管理员失败");
+		}
 		return responseMap;
 	}
 }

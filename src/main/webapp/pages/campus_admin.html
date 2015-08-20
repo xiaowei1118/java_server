@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>校区管理员管理</title>
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../assets/bootstrap-table/tableExport.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<script src="../js/util.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row-fluid">
+			<div class="page-header">
+				<h1>校区管理员管理</h1>
+			</div>
+			<div>
+				<div id="toolbar" class="btn-group">
+					<button id="plus" type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-plus"></i>
+					</button>
+					<button id="edit" type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-edit"></i>
+					</button>
+					<button id="delete" type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-minus"></i>
+					</button>
+				</div>
+				<table id="table" data-toolbar="#toolbar" data-pagination="true"
+					data-striped="true" data-search="true" data-show-refresh="true"
+					data-show-toggle="true" data-show-columns="true" data-height="80%"
+					data-click-to-select="true" data-toolbar-align="right">
+					<thead>
+						<tr>
+							<th data-field="state" data-checkbox="true"></th>
+							<th data-align="center" data-field="campusId" data-sortable="true">校区Id</th>
+							<th data-align="center" data-field="campusName">校区名称</th>
+							<th data-align="center" data-field="campusAdmin">校区管理员</th>
+							<th data-align="center" data-field="lastLoginDate">上次登录时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+		<!-- 添加校区管理员modal start -->
+		<div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="myPlusModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myPlusModalLabel">添加校区管理员</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label for="plus_campus_id" class="col-sm-2 control-label">校区ID</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_campus_id" placeholder="校区ID">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="plus_campus_name" class="col-sm-2 control-label">校区名称</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_campus_name" placeholder="校区名称">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="plus_campus_admin" class="col-sm-2 control-label">校区管理员名称</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_campus_admin" placeholder="校区管理员名称">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="plus_campus_admin_password" class="col-sm-2 control-label">密码</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_campus_admin_password" placeholder="校区管理员初始密码">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" onclick="addCampusAdminSubmit()">提交更改</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		<!-- 添加校区管理员modal end -->
+		
+		<!-- 删除校区管理员modal start -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myDeleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myDeleteModalLabel">删除校区管理员</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="delete_campus_id"></label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="delete_campus_id" placeholder="校区ID">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="delete_campus_name" class="col-sm-2 control-label">校区名称</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="delete_campus_name" placeholder="校区名称">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="delete_campus_admin" class="col-sm-2 control-label">校区管理员名称</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="delete_campus_admin" placeholder="校区管理员名称">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" onclick="deleteCampusAdminSubmit()">提交更改</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		<!-- 删除校区管理员modal end -->
+		
+		<!-- 更新校区管理员modal start -->
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h3 class="modal-title" id="myModalLabel">修改校区管理员</h3>
+					</div>
+
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="control-group">
+								<label class="control-label" for="campus-id">校区名称</label>
+								<div class="controls">
+									<input type="text" id="campus-id" placeholder="Campus ID">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="campus-admin">校区管理员</label>
+								<div class="controls">
+									<input type="text" id="campus-admin" placeholder="Campus Admin" readonly>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" onclick="submitUpdateCampusAdmin();"
+							class="btn btn-primary">提交更改</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div>
+		</div><!-- /.modal -->
+		<!-- 更新校区管理员modal end -->
+	</div>
+	<script>
+	//“添加校区管理员”的模态框的提交更改按钮的点击事件
+	function addCampusAdminSubmit(){
+		var campusId = $("#plus_campus_id").val();
+		var campusName = $("#plus_campus_name").val();
+		var campusAdminName = $("#plus_campus_admin").val();
+		var campusAdminPassword = $("#plus_campus_admin_password").val();
+		$.post("../campus/addCampusAdmin.do",{
+			campusId : campusId,
+			campusName : campusName,
+			campusAdminName : campusAdminName,
+			password : campusAdminPassword
+		},function(data){
+			alert(data.message);
+			if(data.status='success'){
+				$("#plusModal").modal('hide');
+				$("#table").bootstrapTable('refresh',{silent:true});
+			}
+		},"json");
+	}
+	//“更新校区管理员”的模态框的提交更改按钮的点击事件
+	function submitUpdateCampusAdmin(){
+		var campusId = $("#campus-id").val();
+		var campusAdminName = $("#campus-admin").val();
+		$.post("../campus/updateCampusAdmin.do",{
+			campusId : campusId,
+			campusAdminName : campusAdminName
+		},function(data){
+			//alert(data.status);
+			if(data.status='success'){
+				alert(data.message);
+				$("#editModal").modal('hide');
+				$("#table").bootstrapTable('refresh', {silent: true});
+			}else{
+				alert("修改失败");
+			}
+		},"json");
+	}
+	//“删除校区管理员”的模态框的提交更改按钮的点击事件
+	function deleteCampusAdminSubmit(){
+		var campusId = $("#delete_campus_id").val();
+		var campusName = $("#delete_campus_name").val();
+		var campusAdmin = $("#delete_campus_admin").val();
+		$.post("../campus/deleteCampusAdmin.do",{
+			campusId : campusId,
+			campusAdminName : campusAdmin 
+		},function(data){
+			alert(data.message);
+			if(data.status=='success'{
+				$("#deleteModal").modal('hide');
+				$("table").bootstrapTable('refresh',{silent: true});
+			})
+		},"json");
+	}
+	</script>
+	<script>
+		var flag;		//萌萌哒flag
+		var $table = $("#table");
+		$("#table").bootstrapTable({
+			url : '../campus/getAllCampusAdmin.do'
+		});
+		
+		//下面3个button是表格的toobar的东西
+		var $plusButton = $("#plus");
+		var $editButton = $("#edit");
+		var $deleteButton = $("#delete");
+		
+		$(function() {
+			$plusButton.click(function(){
+				$("#plusModal").modal('show');
+			});
+			
+			$editButton.click(function() {
+				var array = $table.bootstrapTable('getSelections');
+				flag = 1;
+				if (array.length > 1) {
+					alert("编辑操作不能同时选中多条记录！");
+				} else if (array.length == 0) {
+					alert("请先选中某条记录！");
+				} else {
+					$("#myModalLabel").text("编辑校区管理员");
+					$("#editModal").modal('show');
+					$("#campus-id").val(array[0].campusId);
+					$("#campus-admin").val(array[0].campusAdmin);
+				}
+			});
+			
+			$deleteButton.click(function(){
+				var array = $table.bootstrapTable('getSelections');
+				flag = 1;
+				if (array.length > 1) {
+					alert("编辑操作不能同时选中多条记录！");
+				} else if (array.length == 0) {
+					alert("请先选中某条记录！");
+				} else {
+					$("#deleteModal").modal('show');
+					$("#delete_campus_id").val(array[0].campusId);
+					$("#delete_campus_name").val(array[0].campusName);
+					$("#delete_campus_admin").val(array[0].campusAdmin);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

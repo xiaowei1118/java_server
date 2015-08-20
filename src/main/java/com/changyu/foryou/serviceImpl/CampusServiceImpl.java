@@ -154,4 +154,16 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.getCampusByOrder(paramMap);
 	}
 
+	@Override
+	public Integer deleteCampusAdmin(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.deleteCampusAdmin(paramMap);
+	}
+
+	@Override
+	public Integer addCampusAdmin(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.insertCampusAdmin(paramMap);
+	}
+
 }

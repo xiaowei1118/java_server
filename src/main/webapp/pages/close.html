@@ -43,6 +43,8 @@
 		</div>
 </body>
 <script>
+	//提醒关店原因会被推送
+	alert("提醒：您的关店原因会被直接推送给相关用户，请认真填写！！！");
 	$(function(){
 		$.post("../campus/getCampusById.do",{
 			campusId : getCookie("campusId")
@@ -63,6 +65,7 @@
 			},function(data){
 				alert(data.message);
 			},"json");
+			
 		}
 		
 	}

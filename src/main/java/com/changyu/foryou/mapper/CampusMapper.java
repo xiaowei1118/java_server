@@ -39,4 +39,8 @@ public interface CampusMapper {
 	Integer addCampus(Map<String, Object> paramMap);
 
 	Campus getCampusByOrder(Map<String, Object> paramMap);
+	
+	Integer deleteCampusAdmin(Map<String, Object> paramMap);
+	
+	Integer insertCampusAdmin(Map<String, Object> paramMap);
 }

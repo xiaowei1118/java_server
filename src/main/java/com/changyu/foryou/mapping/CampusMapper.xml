@@ -134,13 +134,7 @@
 	</update>
 
 	<select id="selectAllCampus" resultMap="BaseResultMap">
-		select
-		campus_id,campus_name
-		from campus
-		<if test="limit !=null and offset !=null">
-			LIMIT #{limit,jdbcType=INTEGER} OFFSET
-			#{offset,jdbcType=INTEGER}
-		</if>
+		select * from campus
 	</select>
 
 	<select id="getCampusWithCity" resultMap="CampusWithCityMap">
@@ -208,6 +202,7 @@
 		WHERE campus_admin=#{campusAdmin, jdbcType=VARCHAR}
 	</update>
 
+	<!-- 添加校区 -->
 	<insert id="addCampus">
 		INSERT INTO campus
 		(campus_id,campus_name,city_id,open_time,close_time,status) VALUES
@@ -232,5 +227,15 @@
 		#{phoneId,jdbcType=VARCHAR} limit 1
 		)
 	</select>
+	
+	<!-- 删除某校区的某个管理员 -->
+	<delete id="deleteCampusAdmin">
+	DELETE FROM campus_admin WHERE campus_id=#{campusId} AND campus_admin=#{campusAdmin}
+	</delete>
+	
+	<!-- 添加某个校区的一个管理员 -->
+	<insert id="insertCampusAdmin">
+	INSERT INTO campus_admin (campus_admin, password, type, campus_id) VALUES (#{campusAdmin},#{password}, #{type}, #{campusId})
+	</insert>
 
 </mapper>

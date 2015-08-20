@@ -28,4 +28,8 @@ public interface CampusService {
 	public Map<String,Object> addCampus(Map<String, Object> paramMap);
 
 	Campus getCampus(Map<String, Object> paramMap);      //从订单信息里面获取校区信息
+	
+	Integer deleteCampusAdmin(Map<String,Object> paramMap);		//删除某校区的某管理员
+	
+	Integer addCampusAdmin(Map<String, Object> paramMap);	//添加校区管理员
 }

@@ -148,7 +148,6 @@ a:hover {
 							</a>
 						</figure><hr /></li>
 					
-
 					<li><figure>
 							<a href="pages/feedback.html" target="content"><i
 								class='icon-filter'></i> 用户反馈 </a>
@@ -164,15 +163,22 @@ a:hover {
 							</a>
 						</figure><hr/>
 					</li>
-					<li>
+					<li id="li-campus-admin">
+						<figure>
+							<a href="pages/campus_admin.html" target="content">
+								<i class="icon-wrench"></i>
+								管理员管理
+							</a>
+						</figure><hr/>
+					</li>
+					<li id="li-campus">
 						<figure>
 							<a href="pages/campus.html" target="content">
-								<i class="icon-wrench"></i>
+								<i class="icon-globe"></i>
 								校区管理&nbsp;&nbsp;
 							</a>
 						</figure>
 					</li>
-					
 				</ul>
 
 			</div>
@@ -187,10 +193,13 @@ a:hover {
 <script>
 $(function(){
 	//根据管理员类型判断是否显示校区下拉菜单
-	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单
+	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单，且隐藏校区管理和校区管理员管理
 	if(getCookie("type")==1){
 		$("#campusDropdown").css("visibility", "visible");
 	}else{
+		//隐藏校区管理和校区管理员管理
+		$("#li-campus-admin").hide();
+		$("#li-campus").hide();
 		//$("#campusDropdown").css("visibility", "hidden");
 		//根据校区id获取校区名称
 		$.post('campus/getCampusById.do', {
