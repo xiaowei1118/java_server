@@ -560,11 +560,7 @@ public class OrderController {
 				map.put(Constants.MESSAGE,message2.toString()); 
 				return map; 
 			}
-			if(preferentialsId!=null)
-			{
-				Preferential preferential=orderService.getPreferentialById(preferentialsId);
-				totalPrice -=preferential.getDiscountNum();
-			}
+			
 					//写入单价操作
 			for (String id : orderString) {
 				float price=(float) 0.0;
@@ -1077,7 +1073,6 @@ public class OrderController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-		Float sum = (float) 0.0;
 		Short status = 0;
 		paramMap.put("togetherId", togetherId);
 		BigOrder bigOrder = new BigOrder();
@@ -1120,7 +1115,7 @@ public class OrderController {
 //					}
 //				}
 //			}
-			sum=orders.get(0).getTotalPrice();
+			Float sum=orders.get(0).getTotalPrice();
 			if(sum!=null)
 			{
 				DecimalFormat df = new DecimalFormat("0.0");
