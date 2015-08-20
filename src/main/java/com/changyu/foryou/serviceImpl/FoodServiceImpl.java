@@ -266,6 +266,12 @@ public class FoodServiceImpl implements FoodService{
 		// TODO Auto-generated method stub
 		return foodCommentMapper.calCommentCount(paramMap);
 	}
+
+	@Override
+	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodCategoryMapper.addCategoryWhenAddCampus(paramMap);
+	}
 	
 }
 

@@ -9,6 +9,7 @@
 		<result column="close_time" property="closeTime" jdbcType="TIME"/>
 		<result column="close_reason" property="closeReason" jdbcType="VARCHAR"/>
 		<result column="status" property="status" jdbcType="SMALLINT"/>
+		<result column="custom_service" property="customService" jdbcType="VARCHAR"/>
 		<!--<result column="location_x" property="locationX" jdbcType="DOUBLE" />
 		<result column="location_y" property="locationY" jdbcType="DOUBLE" /> -->
 	</resultMap>
@@ -187,4 +188,21 @@
 			campus_admin.campus_id = campus.campus_id
 			and type=#{type,jdbcType=SMALLINT}
 	</select>
+	
+	<!-- 更新校区管理员管理的校区 -->
+	<update id="updateCampusAdmin">
+	UPDATE campus_admin SET campus_id=#{campusId, jdbcType=INTEGER}
+	WHERE campus_admin=#{campusAdmin, jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="addCampus">
+	INSERT INTO campus
+	(campus_id,campus_name,city_id,open_time,close_time,status) VALUES
+	(#{campusId,jdbcType=INTEGER},
+	#{campusName, jdbcType=VARCHAR},
+	#{cityId,jdbcType=INTEGER},
+	#{openTime,jdbcType=TIMESTAMP},
+	#{closeTime,jdbcType=TIMESTAMP},
+	#{status,jdbcType=SMALLINT})
+</insert>
 </mapper>

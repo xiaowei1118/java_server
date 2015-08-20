@@ -3,19 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <title>校区管理</title>
-<link rel="stylesheet" href="../css/bootstrap.min.css">
-<link rel="stylesheet" href="../css/bootstrap-editable.css">
-<link rel="stylesheet" href="../css/bootstrap-table.min.css">
-<link rel="shortcut icon" href="img/icon.png">
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/bootstrap-table-editable.js"></script>
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../assets/bootstrap-table/tableExport.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
 <script src="../js/util.js"></script>
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.js"></script>
-
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -26,24 +35,23 @@
 			<div>
 				<div id="toolbar" class="btn-group">
 					<button id="plus" type="button" class="btn btn-default">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 					</button>
 					<button id="edit" type="button" class="btn btn-default">
-						<i class="icon-edit"></i>
+						<i class="glyphicon glyphicon-edit"></i>
 					</button>
 					<button id="delete" type="button" class="btn btn-default">
-						<i class="icon-trash"></i>
+						<i class="glyphicon glyphicon-minus"></i>
 					</button>
 				</div>
 				<table id="table" data-toolbar="#toolbar" data-pagination="true"
 					data-striped="true" data-search="true" data-show-refresh="true"
-					data-show-toggle="true" data-show-columns="true"
-					data-show-export="true" data-height="80%"
-					data-click-to-select="true">
+					data-show-toggle="true" data-show-columns="true" data-height="80%"
+					data-click-to-select="true" data-toolbar-align="right">
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-align="center" data-field="campusId">校区Id</th>
+							<th data-align="center" data-field="campusId" data-sortable="true">校区Id</th>
 							<th data-align="center" data-field="campusName">校区名称</th>
 							<th data-align="center" data-field="campusAdmin">校区管理员</th>
 							<th data-align="center" data-field="lastLoginDate">上次登录时间</th>
@@ -60,38 +68,55 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
-						<h3 class="modal-title" id="myModalLabel">添加食品</h3>
+						<h3 class="modal-title" id="myModalLabel">修改校区管理员</h3>
 					</div>
 
-					<form class="form-horizontal">
-						<div class="modal-body">
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
 							<div class="control-group">
-								<label class="control-label" for="category_id">食品分类Id</label>
+								<label class="control-label" for="campus-id">校区名称</label>
 								<div class="controls">
-									<input type="text" id="category_id" placeholder="Category Id">
+									<input type="text" id="campus-id" placeholder="Campus ID">
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label" for="category_name">分类名称</label>
+								<label class="control-label" for="campus-admin">校区管理员</label>
 								<div class="controls">
-									<input type="text" id="category_name"
-										placeholder="Category Name">
+									<input type="text" id="campus-admin" placeholder="Campus Admin" readonly>
 								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal">关闭</button>
-							<button type="button" onclick="submitData();"
-								class="btn btn-primary">提交更改</button>
-						</div>
-					</form>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" onclick="submitUpdateCampusAdmin();"
+							class="btn btn-primary">提交更改</button>
+					</div>
+
 				</div>
 				<!-- /.modal-content -->
 			</div>
 		</div>
 		<!-- /.modal -->
 	</div>
+	<script>
+	function submitUpdateCampusAdmin(){
+		var campusId = $("#campus-id").val();
+		var campusAdminName = $("#campus-admin").val();
+		$.post("../campus/updateCampusAdmin.do",{
+			campusId : campusId,
+			campusAdminName : campusAdminName
+		},function(data){
+			//alert(data.status);
+			if(data.status='success'){
+				$("#editModal").modal('hide');
+				$("#table").bootstrapTable('refresh', {silent: true});
+			}else{
+				alert("修改失败");
+			}
+		},"json");
+	}
+	</script>
 	<script>
 		var flag;
 		var $table = $("#table");
@@ -102,7 +127,7 @@
 		var $plusButton = $("#plus");
 		var $editButton = $("#edit");
 		var $deleteButton = $("#delete");
-
+		
 		$(function() {
 			$editButton.click(function() {
 				var array = $table.bootstrapTable('getSelections');
@@ -114,9 +139,8 @@
 				} else {
 					$("#myModalLabel").text("编辑校区管理员");
 					$("#editModal").modal('show');
-					$("#category_id").val(array[0].campusId);
-					$("#category_name").val(array[0].campusName);
-					$("#category_id").attr("disabled",true);
+					$("#campus-id").val(array[0].campusId);
+					$("#campus-admin").val(array[0].campusAdmin);
 				}
 			});
 		});

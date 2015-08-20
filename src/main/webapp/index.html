@@ -151,7 +151,7 @@ a:hover {
 
 					<li><figure>
 							<a href="pages/feedback.html" target="content"><i
-								class='icon-eye-open'></i> 用户反馈 </a>
+								class='icon-filter'></i> 用户反馈 </a>
 						</figure><hr/></li>
 					<li><figure>
 							<a href="pages/help.html" target="content"><i
@@ -187,10 +187,29 @@ a:hover {
 <script>
 $(function(){
 	//根据管理员类型判断是否显示校区下拉菜单
+	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单
 	if(getCookie("type")==1){
 		$("#campusDropdown").css("visibility", "visible");
 	}else{
-		$("#campusDropdown").css("visibility", "hidden");
+		//$("#campusDropdown").css("visibility", "hidden");
+		//根据校区id获取校区名称
+		$.post('campus/getCampusById.do', {
+			campusId : getCookie("campusId")
+		},function(data){
+			//根据校区是否开通显示不同的eye
+			if(data.campus.status==1){
+				$("#campusDropdown").replaceWith(
+						'<Button class="btn btn-default">'+
+						'<i class="icon-eye-open"></i>'+
+						data.campus.campusName + '</Button>');
+			}
+			else if(data.campus.status==0){
+				$("#campusDropdown").replaceWith(
+						'<Button class="btn btn-default">'+
+						'<i class="icon-eye-close"></i>'+
+						data.campus.campusName + '</Button>');
+			}
+		},"json");
 	}
 	
 	$("#dropdown-campus").empty();//移除子元素
@@ -202,10 +221,25 @@ $(function(){
 		$(".campus-item").on("click", function(event){
 			//alert($(this).text());
 			var campusName = $(this).text();
-			$("#dropdownMenu1").text(campusName);
+			
 			$.getJSON("campus/getIdByName.do?campusName="+campusName,function(data){
 				document.cookie="campusId="+data.campusId;
-				//alert(getCookie("campusId"));
+				$.post('campus/getCampusById.do',{
+					campusId : data.campusId
+				},function(data){
+					//根据校区是否开通显示不同的eye
+					if(data.campus.status==1){
+						$("#dropdownMenu1").html(
+								'<i class="icon-eye-open"></i>'+
+								data.campus.campusName);
+					}
+					else if(data.campus.status==0){
+						$("#dropdownMenu1").html(
+								'<i class="icon-eye-close"></i>'+
+								data.campus.campusName);
+					}
+				},"json");
+				
 			});
 			
 		});

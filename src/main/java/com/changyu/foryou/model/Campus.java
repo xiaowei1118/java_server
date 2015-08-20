@@ -16,6 +16,8 @@ public class Campus {
     private Short status;
     
     private String closeReason;
+    
+    private String customService;
 
    /* private Double locationX;
 
@@ -75,6 +77,14 @@ public void setCloseReason(String closeReason) {
 
 public void setCityId(Integer cityId) {
 	this.cityId = cityId;
+}
+
+public String getCustomService() {
+	return customService;
+}
+
+public void setCustomService(String customService) {
+	this.customService = customService;
 }
 
    /* public void setCityId(Integer cityId) {

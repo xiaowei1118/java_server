@@ -101,4 +101,6 @@ public interface FoodService {
 	Integer cancelRecommend(Map<String, Object> paramMap);
 
 	Integer calCommentCount(Map<String, Object> paramMap);
+	
+	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap);
 }

@@ -22,4 +22,8 @@ public interface CampusService {
 	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
 	
 	public List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
+	
+	public Integer updateCampusAdmin(Map<String, Object> paramMap);
+	
+	public Map<String,Object> addCampus(Map<String, Object> paramMap);
 }

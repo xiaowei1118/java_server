@@ -1,5 +1,7 @@
 package com.changyu.foryou.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,12 +20,16 @@ import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CampusAdmin;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
+import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.tools.Constants;
 
 @Controller
 @RequestMapping("/campus")
 public class CampusController {
 	private CampusService campusService;
+	
+	@Autowired
+	private FoodService foodService;
 
 	public CampusService getCampusService() {
 		return campusService;
@@ -203,5 +209,62 @@ public class CampusController {
 		JSONArray array = JSON.parseArray(JSON.toJSONStringWithDateFormat(campusAdmins, "yyyy-MM-dd"));
 		
 		return array;
+	}
+	
+	/**
+	 * 修改校区管理员
+	 * @param campusId
+	 * @param campusAdminName
+	 * @return
+	 */
+	@RequestMapping("/updateCampusAdmin")
+	public @ResponseBody Map<String, Object> updateCampusAdmin(@RequestParam Integer campusId, @RequestParam String campusAdminName){
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("campusId", campusId);
+		paramMap.put("campusAdmin", campusAdminName);
+		
+		Integer result = campusService.updateCampusAdmin(paramMap);
+		
+		if(result==0||result==-1){
+			//没更新成功
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "修改校区的管理员失败！");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "修改校区的管理员成功！");
+		}
+		
+		return responseMap;
+	}
+	
+	/**
+	 * 添加校区，默认添加8个分类
+	 * @param campusId
+	 * @param campusName
+	 * @param cityId
+	 * @param openTime
+	 * @param closeTime
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping("addCampus")
+	public @ResponseBody Map<String, Object> addCampus(@RequestParam Integer campusId, @RequestParam String campusName, @RequestParam Integer cityId, @RequestParam String openTime, @RequestParam String closeTime, @RequestParam Short status) throws ParseException{
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		Date openTimeDate = sdf.parse(openTime);
+		Date closeTimeDate = sdf.parse(closeTime);
+		
+		paramMap.put("campusId", null);
+		paramMap.put("campusName", campusName);
+		paramMap.put("cityId", cityId);
+		paramMap.put("openTime", openTimeDate);
+		paramMap.put("closeTime", closeTimeDate);
+		paramMap.put("status", status);					//默认开启校区
+		
+		campusService.addCampus(paramMap);
+		return responseMap;
 	}
 }
