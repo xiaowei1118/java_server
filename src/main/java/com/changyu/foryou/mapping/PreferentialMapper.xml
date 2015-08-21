@@ -5,6 +5,7 @@
     <id column="preferential_id" property="preferentialId" jdbcType="INTEGER" />
     <result column="need_number" property="needNumber" jdbcType="INTEGER" />
     <result column="discount_num" property="discountNum" jdbcType="INTEGER" />
+      <result column="campus_id" property="campusId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     preferential_id, need_number, discount_num
@@ -70,7 +71,9 @@
     where  preferential_id = #{preferentialId,jdbcType=INTEGER}
   </update>
   <select id="getPreferential" resultMap="BaseResultMap">
-  select preferential_id, need_number, discount_num 
-  from preferential order by need_number desc
+  select preferential_id, need_number, discount_num ,campus_id
+  from preferential
+  where campus_id=#{campusId,jdbcType=INTEGER} 
+  order by need_number desc
   </select>
 </mapper>

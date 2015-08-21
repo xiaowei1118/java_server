@@ -18,6 +18,6 @@ public interface PreferentialMapper {
 
     int updateByPrimaryKey(Preferential record);
 
-	List<Preferential> getPreferential();
+	List<Preferential> getPreferential(Map<String, Object> paramMap);
 
 }

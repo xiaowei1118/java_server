@@ -246,9 +246,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Preferential> getPreferential() {
+	public List<Preferential> getPreferential(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
-		return preferentialMapper.getPreferential();
+		return preferentialMapper.getPreferential(paramMap);
 	}
 
 	@Override
