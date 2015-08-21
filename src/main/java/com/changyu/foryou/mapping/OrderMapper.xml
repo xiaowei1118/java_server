@@ -84,6 +84,8 @@
 		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="total_price" property="totalPrice" jdbcType="REAL" />
 		<result column="is_full_discount" property="isFullDiscount" jdbcType="TINYINT" />
+		
+
 	</resultMap>
 
 	<!-- 超级管理员管理派单model -->
@@ -783,14 +785,14 @@
 	
 	<select id="getOrdersById"  resultMap="SmallOrderMap">
 		select
-		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,
+		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,orders.campus_id,
 		orders.order_count as
 		order_count ,
 		food.is_discount as
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message,pay_way,total_price
+		discount_price,food.message as message,pay_way,total_price,is_full_discount
 		from
 		orders,food
 		where

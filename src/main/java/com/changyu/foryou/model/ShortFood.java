@@ -82,6 +82,14 @@ public class ShortFood {
 		this.campusId = campusId;
 	}
 
+	public Short getIsFullDiscount() {
+		return isFullDiscount;
+	}
+
+	public void setIsFullDiscount(Short isFullDiscount) {
+		this.isFullDiscount = isFullDiscount;
+	}
+
 	private Float discountPrice;
 
 	private String imgUrl;
@@ -89,4 +97,6 @@ public class ShortFood {
 	private Short isDiscount;
 
 	private Long saleNumber;
+	
+	private Short isFullDiscount;
 }
