@@ -98,7 +98,7 @@ public interface OrderService {
 
 	Preferential getPreferentialById(Integer preferentialId);
 
-	List<Preferential> getPreferential();
+	List<Preferential> getPreferential(Map<String, Object> paramMap);
 
 	Integer updateOrderPrice(Map<String, Object> paramMap);
 

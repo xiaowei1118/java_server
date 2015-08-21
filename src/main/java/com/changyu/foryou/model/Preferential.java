@@ -6,8 +6,18 @@ public class Preferential {
     private Integer needNumber;
 
     private Integer discountNum;
+    
+    private Integer campusId;
 
-    public Integer getPreferentialId() {
+    public Integer getCampusId() {
+		return campusId;
+	}
+
+	public void setCampusId(Integer campusId) {
+		this.campusId = campusId;
+	}
+
+	public Integer getPreferentialId() {
         return preferentialId;
     }
 

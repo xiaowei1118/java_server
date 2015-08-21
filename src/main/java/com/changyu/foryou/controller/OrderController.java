@@ -167,15 +167,16 @@ public class OrderController {
 			System.out.println(JSON.toJSONString(togetherIds));
 
 			if (togetherIds.size() != 0) {
+				
 				for (String togetherId : togetherIds) {
 					TogetherOrder togetherOrder = new TogetherOrder(); // 一单
 					togetherOrder.setTogetherId(togetherId);
-
 					paramMap.put("togetherId", togetherId);
 					List<SmallOrder> orderList = orderService
-							.getOrderListInMine(paramMap); // 一单里面的小订单
+							.getOrderListInMine(paramMap); // 一单里面的小订单				
 					togetherOrder.setSmallOrders(orderList);
 					togetherOrder.setPayWay(orderList.get(0).getPayWay());
+					togetherOrder.setTotalPrice(orderList.get(0).getTotalPrice());
 					Short totalStatus=0;
 					if(orderList.get(0).getStatus()!=4)
 					{
@@ -1300,10 +1301,12 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/getPreferentials")
-	public @ResponseBody Map<String, Object> getPreferentialById()
+	public @ResponseBody Map<String, Object> getPreferentialList(@RequestParam Integer campusId)
 	{
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("campusId", campusId);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		List<Preferential> preferentials=orderService.getPreferential();
+		List<Preferential> preferentials=orderService.getPreferential(paramMap);
 		resultMap.put("preferential",preferentials);
 		resultMap.put(Constants.STATUS,Constants.SUCCESS);
 		resultMap.put(Constants.MESSAGE,"获取成功");

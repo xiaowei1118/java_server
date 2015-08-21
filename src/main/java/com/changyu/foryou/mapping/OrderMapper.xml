@@ -402,7 +402,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message,pay_way
+		discount_price,food.message as message,pay_way,total_price
 		from
 		orders,food
 		where
