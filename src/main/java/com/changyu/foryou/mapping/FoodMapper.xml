@@ -37,6 +37,7 @@
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
 		<result column="sale_number" property="saleNumber" jdbcType="BIGINT" />
 		<result column="food_count" property="foodCount" jdbcType="INTEGER"/>
+		<result column="is_full_discount" property="isFullDiscount" jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<resultMap type="com.changyu.foryou.model.VeryShortFood" id="VerySmallResultMap">
@@ -323,7 +324,7 @@
 		select
 	    food.food_id, food.campus_id,name, price, discount_price, img_url,
 		is_discount,food_count,
-		sale_number,info,message,food.grade
+		sale_number,info,message,food.grade,is_full_discount
 		from food
 		<where>
 			food.tag=1 and food.campus_id=#{campusId,jdbcType=INTEGER}
