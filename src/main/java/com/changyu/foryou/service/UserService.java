@@ -54,4 +54,6 @@ public interface UserService {
 	Integer getCountsByDevice(Map<String, Object> paramMap);
 
 	List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap);
+	
+	Users checkLogin(String phone);
 }

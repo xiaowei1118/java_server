@@ -14,6 +14,7 @@ import com.changyu.foryou.mapper.FoodCategoryMapper;
 import com.changyu.foryou.mapper.FoodMapper;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CampusAdmin;
+import com.changyu.foryou.model.City;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.tools.Constants;
@@ -164,6 +165,24 @@ public class CampusServiceImpl implements CampusService {
 	public Integer addCampusAdmin(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.insertCampusAdmin(paramMap);
+	}
+
+	@Override
+	public List<City> getAllCity() {
+		// TODO Auto-generated method stub
+		return campusMapper.selectAllCity();
+	}
+
+	@Override
+	public Integer addCity(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.insertCity(paramMap);
+	}
+
+	@Override
+	public City getCityByName(String cityName) {
+		// TODO Auto-generated method stub
+		return campusMapper.getCityByName(cityName);
 	}
 
 }

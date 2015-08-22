@@ -58,4 +58,6 @@ public interface UsersMapper {
 	Integer getCountsByDevice(Map<String, Object> paramMap);   //获取不同设备用户的个数
 
 	List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap);
+	
+	Users checkLogin(String phone);
 }

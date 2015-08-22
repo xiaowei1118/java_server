@@ -139,12 +139,12 @@ public class UserController {
 	@RequestMapping(value="/toLogin")
 	public @ResponseBody
 	Map<String, Object> toLogin(@RequestParam String phone,@RequestParam String password,HttpServletRequest request) {
-
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (phone!=null&&password!=null&&!phone.trim().equals("") && !password.trim().equals("")) {
-			Users users = userService.selectByUsername(phone);
+			Users users = userService.checkLogin(phone);
 			if (users != null) {
+				System.out.println(Md5.GetMD5Code(password));
 				if (users.getPassword().equals(Md5.GetMD5Code(password))) {
 					map.put(Constants.STATUS, Constants.SUCCESS);
 					map.put(Constants.MESSAGE, "登陆成功");

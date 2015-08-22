@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.changyu.foryou.mapper.CampusMapper;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CampusAdmin;
+import com.changyu.foryou.model.City;
 import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
@@ -52,7 +52,7 @@ public class CampusController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		List<Campus> campus = campusService.getAllCampus(paramMap);
 		JSONArray array = JSON.parseArray(JSON.toJSONStringWithDateFormat(
-				campus, "yyyy-MM-dd"));
+				campus, "HH:mm:ss"));//yyyy-MM-dd HH:mm:ss
 		return array;
 	}
 	
@@ -257,22 +257,23 @@ public class CampusController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping("addCampus")
-	public @ResponseBody Map<String, Object> addCampus(@RequestParam Integer campusId, @RequestParam String campusName, @RequestParam Integer cityId, @RequestParam String openTime, @RequestParam String closeTime, @RequestParam Short status) throws ParseException{
+	public @ResponseBody Map<String, Object> addCampus(@RequestParam String campusName, @RequestParam String cityName, @RequestParam String openTime, @RequestParam String closeTime, @RequestParam Short status, @RequestParam String customService) throws ParseException{
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		Date openTimeDate = sdf.parse(openTime);
 		Date closeTimeDate = sdf.parse(closeTime);
 		
 		paramMap.put("campusId", null);
 		paramMap.put("campusName", campusName);
-		paramMap.put("cityId", cityId);
+		paramMap.put("cityId", campusService.getCityByName(cityName).getCityId());
 		paramMap.put("openTime", openTimeDate);
 		paramMap.put("closeTime", closeTimeDate);
 		paramMap.put("status", status);					//默认开启校区
+		paramMap.put("customService", customService);
 		
-		campusService.addCampus(paramMap);
+		responseMap = campusService.addCampus(paramMap);
 		return responseMap;
 	}
 	
@@ -302,6 +303,36 @@ public class CampusController {
 		}else{
 			responseMap.put(Constants.STATUS, Constants.FAILURE);
 			responseMap.put(Constants.MESSAGE, "添加校区管理员失败");
+		}
+		return responseMap;
+	}
+	
+	/**
+	 * 获取全部城市
+	 * @return
+	 */
+	@RequestMapping("getAllCity")
+	@ResponseBody
+	public List<City> getAllCity(){
+		
+		return campusService.getAllCity();
+	}
+	
+	@RequestMapping("addCity")
+	@ResponseBody
+	public Map<String, Object> addCity(@RequestParam String cityName){
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("cityName", cityName);
+		
+		Integer result = campusService.addCity(paramMap);
+		if(result!=-1&&result!=0){
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE,"添加城市成功！");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "添加城市失败！");
 		}
 		return responseMap;
 	}

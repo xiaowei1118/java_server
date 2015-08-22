@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CampusAdmin;
+import com.changyu.foryou.model.City;
 import com.changyu.foryou.model.CityWithCampus;
 
 public interface CampusService {
@@ -32,4 +33,10 @@ public interface CampusService {
 	Integer deleteCampusAdmin(Map<String,Object> paramMap);		//删除某校区的某管理员
 	
 	Integer addCampusAdmin(Map<String, Object> paramMap);	//添加校区管理员
+	
+	List<City> getAllCity();			///返回所有城市
+	
+	Integer addCity(Map<String, Object> paramMap);		//添加城市
+	
+	City getCityByName(String cityName);
 }

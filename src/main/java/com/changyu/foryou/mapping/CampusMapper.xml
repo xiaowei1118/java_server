@@ -5,6 +5,7 @@
 		<id column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR"/>
 		<result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
 		<result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
 		<result column="close_reason" property="closeReason" jdbcType="VARCHAR" />
@@ -40,6 +41,11 @@
 		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		<result column="last_login_date" property="lastLoginDate"
 			jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.City" id="CityMap">
+		<result column="city_id" property="cityId" jdbcType="INTEGER"/>
+		<result column="city_name" property="cityName" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -134,7 +140,10 @@
 	</update>
 
 	<select id="selectAllCampus" resultMap="BaseResultMap">
-		select * from campus
+		select campus_id,campus_name,campus.city_id,city.city_name,
+		open_time,close_time,status,close_reason,custom_service
+		 from 
+		 campus,city where campus.city_id=city.city_id
 	</select>
 
 	<select id="getCampusWithCity" resultMap="CampusWithCityMap">
@@ -205,13 +214,14 @@
 	<!-- 添加校区 -->
 	<insert id="addCampus">
 		INSERT INTO campus
-		(campus_id,campus_name,city_id,open_time,close_time,status) VALUES
+		(campus_id,campus_name,city_id,open_time,close_time,status,custom_service) VALUES
 		(#{campusId,jdbcType=INTEGER},
 		#{campusName, jdbcType=VARCHAR},
 		#{cityId,jdbcType=INTEGER},
 		#{openTime,jdbcType=TIMESTAMP},
 		#{closeTime,jdbcType=TIMESTAMP},
-		#{status,jdbcType=SMALLINT})
+		#{status,jdbcType=SMALLINT},
+		#{customService,jdbcType=VARCHAR})
 	</insert>
 
 	<select id="getCampusByOrder" resultMap="BaseResultMap">
@@ -237,5 +247,19 @@
 	<insert id="insertCampusAdmin">
 	INSERT INTO campus_admin (campus_admin, password, type, campus_id) VALUES (#{campusAdmin},#{password}, #{type}, #{campusId})
 	</insert>
-
+	
+	<!-- 获取全部城市 -->
+	<select id="selectAllCity" resultMap="CityMap">
+		select * from city
+	</select>
+	
+	<!-- 添加城市 -->
+	<insert id="insertCity">
+		insert into city (city_id,city_name) values (null,#{cityName,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 根据城市名称获取城市ID -->
+	<select id="getCityByName" resultMap="CityMap">
+		select * from city where city_name=#{cityName,jdbcType=VARCHAR}
+	</select>
 </mapper>

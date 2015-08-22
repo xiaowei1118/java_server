@@ -132,4 +132,10 @@ public class UserServiceImpl implements UserService {
 		return usersMapper.selectByPhoneAndPassword(paramMap);
 	}
 
+	@Override
+	public Users checkLogin(String phone) {
+		// TODO Auto-generated method stub
+		return usersMapper.checkLogin(phone);
+	}
+
 }

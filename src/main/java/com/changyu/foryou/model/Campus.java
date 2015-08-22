@@ -9,6 +9,8 @@ public class Campus {
 	private String campusName;
 
 	private Integer cityId;
+	
+	private String cityName;
 
 	private Time openTime;
 
@@ -85,6 +87,14 @@ public class Campus {
 
 	public void setCityId(Integer cityId) {
 		this.cityId = cityId;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
 	}
 
 	/* public void setCityId(Integer cityId) {
