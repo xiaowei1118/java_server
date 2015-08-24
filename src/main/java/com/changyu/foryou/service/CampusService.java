@@ -39,4 +39,6 @@ public interface CampusService {
 	Integer addCity(Map<String, Object> paramMap);		//添加城市
 	
 	City getCityByName(String cityName);
+	
+	Integer updateCampus(Map<String, Object> paramMap);
 }

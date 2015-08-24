@@ -262,4 +262,17 @@
 	<select id="getCityByName" resultMap="CityMap">
 		select * from city where city_name=#{cityName,jdbcType=VARCHAR}
 	</select>
+	
+	<!-- 更新校区 -->
+	<update id="updateCampus">
+		update campus set 
+		campusName=#{campusName,jdbcType=VARCHAR},
+		city_id=#{cityId,jdbcType=INTEGER},
+		open_time=#{openTime,jdbcType=TIMESTAMP},
+		close_time=#{closeTime,jdbcType=TIMESTAMP},
+		status=#{status,jdbcType=SMALLINT},
+		custom_service=#{customService,jdbcType=VARCHAR}
+		where
+		campus_id=#{campusId,jdbcType=INTEGER}
+	</update>
 </mapper>

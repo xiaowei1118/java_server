@@ -56,7 +56,7 @@ public interface OrderService {
 
 	void updateOrderRemarked(String phoneId, Long orderId);
 
-	List<SuperAdminOrder> superAdminGetOrder(Integer isSelected);
+	List<SuperAdminOrder> superAdminGetOrder(Map<String,Object> paramMap);
 
 	int getExitOrderUserRank(String phoneId, String rank);
 

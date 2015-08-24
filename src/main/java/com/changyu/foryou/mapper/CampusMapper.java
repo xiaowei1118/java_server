@@ -50,4 +50,6 @@ public interface CampusMapper {
 	Integer insertCity(Map<String, Object> paramMap);
 	
 	City getCityByName(String cityName);
+	
+	Integer updateCampus(Map<String, Object> paramMap);
 }

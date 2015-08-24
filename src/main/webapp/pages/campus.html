@@ -353,6 +353,7 @@
 			
 		});
 		
+		//显示Modal并初始化Modal的input标签中的值
 		$editButton.click(function(){
 			var array = $table.bootstrapTable('getSelections');
 			if(array.length == 0){
@@ -360,6 +361,23 @@
 			}else if(array.length > 1){
 				alert("请先选中某条记录");
 			}else{
+				//城市列表
+				//先清空上次请求的内容
+				$("#edit_city_name").next().empty();
+				$.get("../campus/getAllCity.do",function(data){
+					for(var i=0; i<data.length; i++){
+						$("#edit_city_name").next().append('<li style="text-align:center;">'+data[i].cityName+'</li>');
+					}
+					//为城市下拉列表添加单击事件监听
+					$("#edit_city_name").next().children().on("click",function(event){
+						$("span_edit_city_name").text($(this).text());
+					});
+					//为状态下拉列表添加单击事件监听
+					$("edit_status").next().children.on("click",function(event){
+						$("span_edit_status").text($(this));
+					});
+				},"json");
+				
 				$("#edit_campus_id").val(array[0].campusId);
 				$("#edit_campus_name").val(array[0].campusName);
 				$("#edit_city_id").val(array[0].cityId);
@@ -371,6 +389,7 @@
 			}
 		});
 		
+		//显示Modal并初始化Modal的input标签中的值
 		$deleteButton.click(function(){
 			var array = $table.bootstrapTable('getSelections');
 			if(array.length>1){
@@ -384,6 +403,7 @@
 			
 		});
 		
+		//显示Modal并初始化Modal的input标签中的值
 		$addCityButton.click(function(){
 			$("#addCityModal").modal('show');
 		});
@@ -391,13 +411,20 @@
 		//Modal“提交更改”按钮监听
 		//Post请求并静态刷新表格数据
 		function plusSubmit(){
-			var campusName = $("#plus_campus_name").val();
+			var campusName = $("#plus_campus_name").val().trim();
 			var cityName = $("#span_plus_city_name").text().trim();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-			var openTime = $("#plus_open_time").val();
-			var closeTime = $("#plus_close_time").val();
+			var openTime = $("#plus_open_time").val().trim();
+			var closeTime = $("#plus_close_time").val().trim();
 			var status = $("#span_plus_status").text().trim();
-			var customService = $("#plus_custom_service").val();
-			alert(cityName);
+			var customService = $("#plus_custom_service").val().trim();
+			
+			//判空
+			if(!campusName||!cityName||!openTime||!closeTime||!status||!customService){
+				alert("对不起，请补填未填写的地方！");
+				return;
+			}
+			
+			//alert(cityName);
 			//status值是“休息”或“营业”，要转换成0或1
 			if(status=="休息"){
 				status = 0;
@@ -418,11 +445,36 @@
 		}
 		
 		function editSubmit(){
-			var campusId = $("#edit_campus_id").val();
+			var campusId = $("#edit_campus_id").val().trim();
 			var campusName = $("#edit_campus_name").val().trim();
 			var cityName = $("#span_edit_city_name").text().trim();
+			var openTime = $("#edit_open_time").val().trim();
+			var closeTime = $("#edit_close_time").val().trim();
+			var status = $("#span_edit_status").text().trim();
+			var customService = $("#edit_custom_service").val().trim();
 			
+			//判空
+			if(!campusId||!campusName||!cityName||!openTime||!closeTime||!status||!customService){
+				alert("对不起，请补填未填写的地方！");
+				return;
+			}
 			
+			if(status=="休息"){
+				status = 0;
+			}else if(status == "营业"){
+				status=1;
+			}
+			$.post("../campus/updateCampus.do",{
+				campusId : campusId,
+				campusName : campusName,
+				cityName : cityName,
+				openTime : openTime,
+				closeTime : closeTime,
+				status : status,
+				customService : customService
+			},function(data){
+				alert(data);
+			},"json");
 		}
 		
 		function deleteSubmit(){
@@ -431,6 +483,12 @@
 		
 		function addCitySubmit(){
 			var cityName = $("#addcity_city_name").val();
+			
+			if(!cityName){
+				alert("对不起，请补填未填写的地方！");
+				return;
+			}
+			
 			$.post("../campus/addCity.do",{
 				cityName : cityName
 			},function(data){

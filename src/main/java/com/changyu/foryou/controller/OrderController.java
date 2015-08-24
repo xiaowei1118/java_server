@@ -782,13 +782,11 @@ public class OrderController {
 			requestMap.put("limit", limit);
 			requestMap.put("offset", (page - 1) * limit);
 		} else {
-			requestMap.put("limit", 5);
-			requestMap.put("offset", 0);
+			
 		}
 		try {
 			List<SuperAdminOrder> orders = orderService
-					.superAdminGetOrder(isSelected);
-
+					.superAdminGetOrder(requestMap);
 			for (SuperAdminOrder superAdminOrder : orders) {
 				String togetherId = superAdminOrder.getTogetherId();
 

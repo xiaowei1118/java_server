@@ -185,4 +185,10 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.getCityByName(cityName);
 	}
 
+	@Override
+	public Integer updateCampus(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return campusMapper.updateCampus(paramMap);
+	}
+
 }

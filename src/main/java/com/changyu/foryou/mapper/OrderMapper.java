@@ -60,7 +60,7 @@ public interface OrderMapper {
 
 	void updateOrderRemarked(@Param(value="phone")String phoneId, @Param(value="orderId")Long orderId);
 
-	List<SuperAdminOrder> superAdminGetOrder(@Param(value="isSelected")Integer isSelected);
+	List<SuperAdminOrder> superAdminGetOrder(Map<String,Object> paramMap);
 
 	int getExitOrderUserRank(@Param(value="phone")String phoneId, @Param(value="rank")String rank);
 

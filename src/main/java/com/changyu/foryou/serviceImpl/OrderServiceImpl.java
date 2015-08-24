@@ -124,8 +124,8 @@ public class OrderServiceImpl implements OrderService {
 		orderMapper.updateOrderRemarked(phoneId,orderId);		
 	}
 
-	public List<SuperAdminOrder> superAdminGetOrder(Integer isSelected) {
-		return orderMapper.superAdminGetOrder(isSelected);
+	public List<SuperAdminOrder> superAdminGetOrder(Map<String, Object> paramMap) {
+		return orderMapper.superAdminGetOrder(paramMap);
 	}
 
 	//弃用，因为现在删除只是将其置为无效

@@ -336,4 +336,30 @@ public class CampusController {
 		}
 		return responseMap;
 	}
+	
+	@RequestMapping("updateCampus")
+	@ResponseBody
+	public Map<String, Object> updateCampus(@RequestParam String campusId,@RequestParam String campusName,@RequestParam String cityName,@RequestParam String openTime,@RequestParam String closeTime,@RequestParam String customService){
+		//管理端这些值都要传过来，传之前判空
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("campusId", campusId);
+		paramMap.put("campusName", campusName);
+		paramMap.put("cityId", campusService.getCityByName(cityName).getCityId());
+		paramMap.put("openTime", openTime);
+		paramMap.put("closeTime", closeTime);
+		
+		Integer result = campusService.updateCampus(paramMap);
+		
+		if(result != 0&&result != -1){
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "更新校区成功！");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "更新校区失败！");
+		}
+		return responseMap;
+	}
+	
 }

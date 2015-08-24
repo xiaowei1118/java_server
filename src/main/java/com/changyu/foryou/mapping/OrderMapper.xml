@@ -579,9 +579,7 @@
 		orders.tag=1
 		and
 		orders.rank=receiver.rank and
-		orders.phone=receiver.phone_id and
-		DATE_SUB(CURDATE(), INTERVAL 10
-		DAY) &lt;= date(together_date)
+		orders.phone=receiver.phone_id
 		<if test="isSelected == 0">
 			and orders.status = 1 and admin_phone is null
 		</if>
@@ -648,11 +646,11 @@
 		orders.status
 		FROM
 		orders,
-		food,
+		food
 		WHERE
 		orders.food_id=food.food_id and
-		orders.status !=0 and
-		orders.status != 4 and  orders.tag=1
+		orders.status!=0 and
+		orders.status!=4 and orders.tag=1
 		and
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
