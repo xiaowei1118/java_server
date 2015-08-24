@@ -266,7 +266,7 @@
 	<!-- 更新校区 -->
 	<update id="updateCampus">
 		update campus set 
-		campusName=#{campusName,jdbcType=VARCHAR},
+		campus_name=#{campusName,jdbcType=VARCHAR},
 		city_id=#{cityId,jdbcType=INTEGER},
 		open_time=#{openTime,jdbcType=TIMESTAMP},
 		close_time=#{closeTime,jdbcType=TIMESTAMP},

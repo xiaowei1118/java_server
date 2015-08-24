@@ -54,7 +54,7 @@
 							<th data-align="center" data-field="campusId" data-sortable="true">校区Id</th>
 							<th data-align="center" data-field="campusName">校区名称</th>
 							<th data-align="center" data-field="campusAdmin">校区管理员</th>
-							<th data-align="center" data-field="lastLoginDate">上次登录时间</th>
+							<th data-align="center" data-field="lastLoginDate" data-sortable="true">上次登录时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -74,15 +74,17 @@
 					<div class="modal-body">
 						<form class="form-horizontal" role="form">
 							<div class="form-group">
-								<label for="plus_campus_id" class="col-sm-2 control-label">校区ID</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_campus_id" placeholder="校区ID">
-								</div>
-							</div>
-							<div class="form-group">
 								<label for="plus_campus_name" class="col-sm-2 control-label">校区名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_campus_name" placeholder="校区名称">
+									<div class="dropdown">
+										<button type="button" class="dropdown-toggle btn btn-default" style="width:100%;" data-toggle="dropdown" id="plus_campus_name">
+											<span id="span_plus_campus_name">校区</span>
+											<b class="caret" style="float:right;margin-top:8px"></b>
+										</button>
+										<ul class="dropdown-menu" style="width:100%;">
+										
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -121,21 +123,21 @@
 					<div class="modal-body">
 						<form class="form-horizontal" role="form">
 							<div class="form-group">
-								<label class="control-label col-sm-2" for="delete_campus_id"></label>
+								<label class="control-label col-sm-2" for="delete_campus_id">校区ID</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="delete_campus_id" placeholder="校区ID">
+									<input type="text" class="form-control" id="delete_campus_id" placeholder="校区ID" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="delete_campus_name" class="col-sm-2 control-label">校区名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="delete_campus_name" placeholder="校区名称">
+									<input type="text" class="form-control" id="delete_campus_name" placeholder="校区名称" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="delete_campus_admin" class="col-sm-2 control-label">校区管理员名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="delete_campus_admin" placeholder="校区管理员名称">
+									<input type="text" class="form-control" id="delete_campus_admin" placeholder="校区管理员名称" readonly>
 								</div>
 							</div>
 						</form>
@@ -162,16 +164,24 @@
 
 					<div class="modal-body">
 						<form class="form-horizontal" role="form">
-							<div class="control-group">
-								<label class="control-label" for="campus-id">校区名称</label>
-								<div class="controls">
-									<input type="text" id="campus-id" placeholder="Campus ID">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="campus-id">校区名称</label>
+								<div class="col-sm-10">
+									<div class="dropdown">
+										<button type="button" class="dropdown-toggle btn btn-default" style="width:100%;" data-toggle="dropdown" id="edit_campus_name">
+											<span id="span_edit_campus_name">校区</span>
+											<b class="caret" style="float:right;margin-top:8px"></b>
+										</button>
+										<ul class="dropdown-menu" style="width:100%">
+										
+										</ul>
+									</div>
 								</div>
 							</div>
-							<div class="control-group">
-								<label class="control-label" for="campus-admin">校区管理员</label>
-								<div class="controls">
-									<input type="text" id="campus-admin" placeholder="Campus Admin" readonly>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="campus-admin">校区管理员</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="edit_campus_admin" placeholder="校区灌流" readonly>
 								</div>
 							</div>
 						</form>
@@ -189,12 +199,10 @@
 	<script>
 	//“添加校区管理员”的模态框的提交更改按钮的点击事件
 	function addCampusAdminSubmit(){
-		var campusId = $("#plus_campus_id").val();
-		var campusName = $("#plus_campus_name").val();
-		var campusAdminName = $("#plus_campus_admin").val();
-		var campusAdminPassword = $("#plus_campus_admin_password").val();
+		var campusName = $("#span_plus_campus_name").text().trim();
+		var campusAdminName = $("#plus_campus_admin").val().trim();
+		var campusAdminPassword = $("#plus_campus_admin_password").val().trim();
 		$.post("../campus/addCampusAdmin.do",{
-			campusId : campusId,
 			campusName : campusName,
 			campusAdminName : campusAdminName,
 			password : campusAdminPassword
@@ -208,19 +216,16 @@
 	}
 	//“更新校区管理员”的模态框的提交更改按钮的点击事件
 	function submitUpdateCampusAdmin(){
-		var campusId = $("#campus-id").val();
-		var campusAdminName = $("#campus-admin").val();
+		var campusName = $("#span_edit_campus_name").text().trim();
+		var campusAdminName = $("#edit_campus_admin").val();
 		$.post("../campus/updateCampusAdmin.do",{
-			campusId : campusId,
+			campusName : campusName,
 			campusAdminName : campusAdminName
 		},function(data){
-			//alert(data.status);
+			alert(data.message);
 			if(data.status='success'){
-				alert(data.message);
 				$("#editModal").modal('hide');
 				$("#table").bootstrapTable('refresh', {silent: true});
-			}else{
-				alert("修改失败");
 			}
 		},"json");
 	}
@@ -234,10 +239,10 @@
 			campusAdminName : campusAdmin 
 		},function(data){
 			alert(data.message);
-			if(data.status=='success'{
+			if(data.status=='success'){
 				$("#deleteModal").modal('hide');
 				$("table").bootstrapTable('refresh',{silent: true});
-			})
+			}
 		},"json");
 	}
 	</script>
@@ -255,6 +260,18 @@
 		
 		$(function() {
 			$plusButton.click(function(){
+				//初始化校区列表
+				//清空校区列表
+				$("#plus_campus_name").next().empty();
+				$.getJSON("../campus/getAllCampus.do",function(data){
+					for(var i=0; i<data.length; i++){
+						$("#plus_campus_name").next().append('<li style="text-align:center;">'+data[i].campusName+'</li>');
+					}
+					//为校区下拉列表项设置单击事件监听
+					$("#plus_campus_name").next().children().click(function(){
+						$("#span_plus_campus_name").text($(this).text());
+					});
+				});
 				$("#plusModal").modal('show');
 			});
 			
@@ -266,10 +283,22 @@
 				} else if (array.length == 0) {
 					alert("请先选中某条记录！");
 				} else {
-					$("#myModalLabel").text("编辑校区管理员");
+					$("#span_edit_campus_name").text(array[0].campusName);
+					//初始化校区列表
+					//首先清空上一次的请求生成的列表
+					$("#edit_campus_name").next().empty();
+					$.getJSON("../campus/getAllCampus.do",function(data){
+						for(var i=0; i<data.length; i++){
+							$("#edit_campus_name").next().append('<li style="text-align:center;">'+data[i].campusName+'</li>');
+						}
+						//为校区下拉列表项设置单击事件监听
+						$("#edit_campus_name").next().children().click(function(){
+							$("#span_edit_campus_name").text($(this).text());
+						});
+					});
+					
+					$("#edit_campus_admin").val(array[0].campusAdmin);
 					$("#editModal").modal('show');
-					$("#campus-id").val(array[0].campusId);
-					$("#campus-admin").val(array[0].campusAdmin);
 				}
 			});
 			
@@ -281,10 +310,11 @@
 				} else if (array.length == 0) {
 					alert("请先选中某条记录！");
 				} else {
-					$("#deleteModal").modal('show');
 					$("#delete_campus_id").val(array[0].campusId);
 					$("#delete_campus_name").val(array[0].campusName);
 					$("#delete_campus_admin").val(array[0].campusAdmin);
+
+					$("#deleteModal").modal('show');
 				}
 			});
 		});

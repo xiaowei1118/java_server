@@ -369,23 +369,30 @@
 						$("#edit_city_name").next().append('<li style="text-align:center;">'+data[i].cityName+'</li>');
 					}
 					//为城市下拉列表添加单击事件监听
-					$("#edit_city_name").next().children().on("click",function(event){
-						$("span_edit_city_name").text($(this).text());
+					$("#edit_city_name").next().children().click(function(){
+						$("#span_edit_city_name").text($(this).text());
 					});
 					//为状态下拉列表添加单击事件监听
-					$("edit_status").next().children.on("click",function(event){
-						$("span_edit_status").text($(this));
+					$("#edit_status").next().children().click(function(){
+						$("#span_edit_status").text($(this).text());
 					});
+					
+					$("#editModal").modal('show');
 				},"json");
-				
+				//初始化
 				$("#edit_campus_id").val(array[0].campusId);
 				$("#edit_campus_name").val(array[0].campusName);
 				$("#edit_city_id").val(array[0].cityId);
-				$("#edit_city_name").val(array[0].cityName);
+				$("#span_edit_city_name").text(array[0].cityName);
 				$("#edit_open_time").val(array[0].openTime);
 				$("#edit_close_time").val(array[0].closeTime);
+				if(array[0].status==0){
+					$("#span_edit_status").text("休息");
+				}else if(array[0].status==1){
+					$("#span_edit_status").text("营业");
+				}
 				$("#edit_custom_service").val(array[0].customService);
-				$("#editModal").modal('show');
+				
 			}
 		});
 		
@@ -473,7 +480,9 @@
 				status : status,
 				customService : customService
 			},function(data){
-				alert(data);
+				alert(data.message);
+				$("#editModal").modal('hide');
+				$table.bootstrapTable('refresh',{client:true});
 			},"json");
 		}
 		

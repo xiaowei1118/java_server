@@ -528,11 +528,14 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="getDeliverAdmin")
-	public @ResponseBody Map<String,Object> getDeliverAdmin() {
+	public @ResponseBody Map<String,Object> getDeliverAdmin(@RequestParam Integer campusId) {
 		Map<String, Object> map=new HashMap<String, Object>();
-
+		Map<String, Object> paramMap=new HashMap<String, Object>();
+		
+		paramMap.put("campusId", campusId);
+		
 		try{
-			List<Users> users=userService.getDeliverAdmin();
+			List<Users> users=userService.getDeliverAdmin(paramMap);
 			map.put(Constants.STATUS, Constants.SUCCESS);
 			map.put(Constants.MESSAGE, "获取配送员成功!");
 			map.put("deliverAdmins", users);
