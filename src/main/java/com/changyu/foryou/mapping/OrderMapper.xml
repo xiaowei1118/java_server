@@ -871,4 +871,22 @@
     where order_id=#{orderId}
     </update>
    
+   <!-- 支付完成后更新价格和状态 -->
+    <update id="updateOrderStatusAndAmount">
+       update
+        orders
+        set total_price=#{amount,jdbcType=REAL},
+        status=2
+        where together_id=#{togetherId,jdbcType=VARCHAR}   
+    </update>
+    
+    <!-- 根据订单号获取校区号 -->
+    <select id="getCampusIdByTogetherId" resultType="Integer">
+       select 
+         campus_id
+       from
+         orders
+       where 
+         together_id=#{togetherId,jdbcType=VARCHAR}
+    </select>
 </mapper>

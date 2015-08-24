@@ -104,6 +104,10 @@ public interface OrderService {
 
 	Integer updateOrder(Order order);
 
+	int updateOrderStatusAndAmount(Map<String, Object> paramMap);
+
+	Integer getCampusIdByTogetherId(Map<String, Object> paramMap);
+
 
 
 	

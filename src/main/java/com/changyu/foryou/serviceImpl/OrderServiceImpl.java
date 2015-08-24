@@ -232,7 +232,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Preferential getPreferentialById(Integer preferentialId) {
-		// TODO Auto-generated method stub
 		return preferentialMapper.selectByPrimaryKey(preferentialId);
 	}
 
@@ -247,20 +246,27 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Preferential> getPreferential(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return preferentialMapper.getPreferential(paramMap);
 	}
 
 	@Override
 	public Integer updateOrderPrice(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.updateOrderPrice(paramMap);
 	}
 
 	@Override
 	public Integer updateOrder(Order order) {
-		// TODO Auto-generated method stub
 		return orderMapper.updateByPrimaryKeySelective(order);
+	}
+
+	@Override
+	public int updateOrderStatusAndAmount(Map<String, Object> paramMap) {
+		return orderMapper.updateOrderStatusAndAmount(paramMap);
+	}
+
+	@Override
+	public Integer getCampusIdByTogetherId(Map<String, Object> paramMap) {
+		return orderMapper.getCampusIdByTogetherId(paramMap);
 	}
 
 	
