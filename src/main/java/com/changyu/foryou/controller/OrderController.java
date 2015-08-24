@@ -3,13 +3,12 @@ package com.changyu.foryou.controller;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,7 @@ import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 import com.changyu.foryou.model.TogetherOrder;
+import com.changyu.foryou.payment.ChargeInterface;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
@@ -504,21 +504,21 @@ public class OrderController {
 	public @ResponseBody Map<String, Object> changeOrderStatus2Buy(
 			@RequestParam String phoneId, @RequestParam String orderId,
 			@RequestParam String rank, String reserveTime, String message,@RequestParam Short payWay,
-			@RequestParam Float totalPrice ,Integer preferentialsId) {
+			@RequestParam Float totalPrice ,Integer preferentialsId,HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
 		try {
 			Calendar calendar = Calendar.getInstance();
 
-			String[] orderString = orderId.split(",");
+			String[] orderString = orderId.split(",");     //传过来的orderId是一个以逗号隔开d字符串
 			int flag = 0;
 			String togetherId = phoneId + String.valueOf(new Date().getTime());
 
 			paramMap.put("orderId",orderString[0]);
 			paramMap.put("phoneId",phoneId);
 			Campus campus=campusService.getCampus(paramMap);   //根据订单获取该校区的详细情况
-
+            final Integer campusIdForPush=campus.getCampusId();
 			//判断该校区是否正在营业
 			if(campus.getStatus()==0){
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -562,7 +562,7 @@ public class OrderController {
 				return map; 
 			}
 			
-					//写入单价操作
+			//写入单价操作
 			for (String id : orderString) {
 				float price=(float) 0.0;
 				paramMap.put("orderId",id);
@@ -587,10 +587,19 @@ public class OrderController {
 				}
 			}
 
+			String channel;
+			if(payWay==1){
+				channel="alipay";
+			}else{
+				channel="wx";
+			}
 			DecimalFormat df = new DecimalFormat("0.0");
 			if (flag != -1 && flag != 0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
+				
+				String clientIp=getIpAddr(request);
+				map.put("charge", ChargeInterface.charge(channel,togetherId,(int)(totalPrice*100),clientIp));
 				map.put("totalPrice",df.format(totalPrice));
 
 				// 开启线程去访问极光推送
@@ -603,8 +612,8 @@ public class OrderController {
 						//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
 
 						Map<String, Object> paramterMap=new HashMap<String,Object>();
-						List<String>
-						superPhones=userService.getAllSuperAdminPhone(paramterMap);
+						paramterMap.put("campusId",campusIdForPush);
+						List<String> superPhones=userService.getAllSuperAdminPhone(paramterMap);
 						for(String phone:superPhones){
 
 							//推送
@@ -1309,5 +1318,26 @@ public class OrderController {
 		resultMap.put(Constants.STATUS,Constants.SUCCESS);
 		resultMap.put(Constants.MESSAGE,"获取成功");
 		return resultMap;
+	}
+	
+	//获取客户端ip
+	public String getIpAddr(HttpServletRequest request){
+	    String ip = request.getHeader("x-forwarded-for");
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("Proxy-Client-IP");
+	    }
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("HTTP_CLIENT_IP");
+	    }
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+	    }
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getRemoteAddr();
+	    }
+	    return ip;
 	}
 }
