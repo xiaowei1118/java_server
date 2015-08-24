@@ -11,6 +11,7 @@ import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
+import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
@@ -27,7 +28,7 @@ public interface OrderService {
 
 	int insertSelectiveOrder(Order order);
 
-	int changeOrderStatus2Buy(String phoneId, String orderId,String togetherId,String rank, String reserveTime, String message,Short payWay);
+	int changeOrderStatus2Buy(String phoneId, String orderId,String togetherId,String rank, String reserveTime, String message,Short payWay,Float price,Float totalPrice);
 
 	int changeOrderStatus2Deliver(String phoneId, String togetherId);
 
@@ -94,6 +95,14 @@ public interface OrderService {
 	String getUserPhone(Map<String, Object> requestMap);
 
 	String getAdminPhone(Map<String, Object> requestMap);
+
+	Preferential getPreferentialById(Integer preferentialId);
+
+	List<Preferential> getPreferential(Map<String, Object> paramMap);
+
+	Integer updateOrderPrice(Map<String, Object> paramMap);
+
+	Integer updateOrder(Order order);
 
 
 

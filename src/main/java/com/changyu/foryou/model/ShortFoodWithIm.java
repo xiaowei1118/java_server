@@ -39,6 +39,6 @@ public class ShortFoodWithIm extends ShortFood {
 
 	public void setGrade(Float grade) {
 		this.grade = grade;
-	}	
+	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CampusAdmin;
+import com.changyu.foryou.model.City;
 import com.changyu.foryou.model.CityWithCampus;
 
 public interface CampusMapper {
@@ -34,5 +35,19 @@ public interface CampusMapper {
 	
 	List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
 
+	Integer updateCampusAdmin(Map<String, Object> paramMap);
+	
+	Integer addCampus(Map<String, Object> paramMap);
+
 	Campus getCampusByOrder(Map<String, Object> paramMap);
+	
+	Integer deleteCampusAdmin(Map<String, Object> paramMap);
+	
+	Integer insertCampusAdmin(Map<String, Object> paramMap);
+	
+	List<City> selectAllCity();
+	
+	Integer insertCity(Map<String, Object> paramMap);
+	
+	City getCityByName(String cityName);
 }

@@ -1,224 +1,194 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>用户管理</title>
-    <link rel="shortcut icon" href="../img/icon.png">
-    <link href="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/bootstrap-table.css" rel="stylesheet">
-    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/jquery.min.js"></script>
-    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/bootstrap-table.js"></script>
-    <script src="//issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
-    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-	<script src="../js/util.js"></script>
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
-    <![endif]-->
-
-</head> 
+<meta charset="UTF-8">
+<title>用户管理</title>
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../assets/bootstrap-table/tableExport.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<script src="../js/util.js"></script>
 <style>
-    .ml10 {
-        margin-left: 10px;
-    }
-    #operate-success{
-		padding:10px;
-		font-size:16px;
-		background-color:#8AC007;
-		color:#FBFBFB;
-		visibility:hidden
-	}
+.ml10 {
+	margin-left: 10px;
+}
+
+#operate-success {
+	padding: 10px;
+	font-size: 16px;
+	background-color: #8AC007;
+	color: #FBFBFB;
+	visibility: hidden
+}
 </style>
-
-
+</head>
 <body>
 	<div class="container">
 		<div class="page-header">
-			<h1>
-				用户管理&nbsp;&nbsp;
-			</h1>
+			<h1>用户管理&nbsp;&nbsp;</h1>
 		</div>
-		<div style="text-align:center;">
-			<span id="operate-success">
-    			设置成功
-    		</span>
+		<div style="text-align: center;">
+			<span id="operate-success">设置成功</span>
 		</div>
-		<div id="export-toolbar">
-			<select class="form-control">
-				<option value="">基本导出</option>
-				<option value="all">导出全部</option>
-				<option value="selected">导出选中</option>		
-			</select>
+		<div>
+			<table id="table" data-toggle="table" data-show-export="false"
+				data-url="../user/getAllUser.do" data-search="true"
+				data-show-refresh="true" data-show-toggle="true"
+				data-side-pagination="server" data-pagination="true">
+				<thead>
+					<tr>
+						<th data-field="state" data-checkbox="true"></th>
+						<th data-field="phone">手机号</th>
+						<th data-field="nickname">昵称</th>
+						<th data-field="type">权限</th>
+						<th data-field="createTime">注册时间</th>
+						<th data-field="lastLoginDate">最后登录时间</th>
+						<th data-field="defaultAddress">默认地址</th>
+						<th data-field="type" data-formatter="typeFormatter">用户类型</th>
+						<th data-field="action" data-formatter="actionFormatter"
+							data-events="actionEvents">权限修改</th>
+					</tr>
+				</thead>
+			</table>
 		</div>
-		<table id="table" 
-       data-id-field="phone"
-       data-pagination="true"
-       data-side-pagination="server"
-       data-search="true"
-       data-height="80%"
-       data-show-refresh="true" 
-       data-show-columns="true"   
-       data-show-toggle="true" 
-       data-toolbar-align="left"
-       data-toolbar="#export-toolbar"
-       data-show-export="true"
-       >
-       <thead>
-        <tr>
-           <th data-field="state" data-checkbox="true"></th>
-           <th data-align="left" data-field="phone">手机号</th>
-           <th data-align="left" data-field="nickname">昵称</th>
-           <th data-align="left" data-field="type" data-sortable="true"
-           data-formatter="formatter">权限</th>
-           <th data-align="left" data-field="createTime"
-           data-sortable="true">注册时间</th>
-           <th data-align="left" data-field="lastLoginDate"
-           data-sortable="true">最后登录时间</th>
-           <th data-align="left" data-field="defaultAddress"
-           data-sortable="true">默认地址</th>
-           <th data-align="left" data-field="token" data-sortable="true"
-           data-formatter="userClass">用户类型</th>
-           <th data-align="left" data-field="action" data-formatter="actionFormatter" data-events="actionEvents">权限修改</th>
-       </tr>
-   </thead>
-</table>
-</div>
+	</div>
+	<script>
+		//全局变量
+		var adminType = getCookie("type"); //0校区管理员，1总校区管理员
+	</script>
+	<script>
+		//通用方法定义
+		function setSuccess(message) {
+			if (!message) {
+				$("#operate-success").text("Well, it works!");
+			} else {
+				$("#operate-success").text(message);
+			}
+			//$("#operate-success").show();
+			$("#operate-success").css("visibility", "visible");
+			window.setTimeout(function() {
+				//$("#operate-success").hide();
+				$("#operate-success").css("visibility", "hidden");
+			}, 2000);
+		}
+		function typeFormatter(value, row, index) {
+			var type = "未定义";
+			switch (value) {
+			case 0:
+				type = "超级管理员";
+				break;
+			case 1:
+				type = "管理员";
+				break;
+			case 2:
+				type = "普通用户";
+				break;
+			}
+			return type;
+		}
+		function actionFormatter(value, row, index) {
+			if (adminType == 0) {
+				//当前角色是校区管理员
+				return [
+						'<a class="admin ml8" href="javascript:void(0)" title="设为管理员">',
+						'&nbsp;<i class="glyphicon glyphicon-heart-empty"></i>&nbsp;',
+						'</a>',
+						'<a class="common ml8" href="javascript:void(0)" title="取消管理员">',
+						'&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp;',
+						'</a>',
+						'<a class="superAdmin ml8" href="javascript:void(0)" title="设置超级管理员">',
+						'&nbsp;<i class="glyphicon glyphicon-heart"></i>&nbsp;',
+						'</a>' ].join('');
+			} else if (adminType == 1) {
+				//当前角色是总校区管理员
+				return "无权操作";
+			}
+		}
+		window.actionEvents = {
+			'click .admin' : function(e, value, row, index) {
+				//alert("admin");
+				$.post("../../foryou/user/setUserAdmin.do", {
+					phone : row.phone
+				}, function(text) {
+					if (text == -1 || text == 0) {
+						setSuccess("设置管理员失败。");
+					} else {
+						setSuccess("设置管理员成功。");
+						$('#table').bootstrapTable('updateRow', {
+							index : index,
+							row : {
+								type : 1
+							}
+						});
+						//$('#table').bootstrapTable('refresh', {silent: true});
+					}
 
-<script>
-function setSuccess(message){
-    if(!message){
-        $("#operate-success").text("Well, it works!");
-    }else{
-    	$("#operate-success").text(message);
-    }
-	//$("#operate-success").show();
-	$("#operate-success").css("visibility", "visible");
-	window.setTimeout(function(){
-		//$("#operate-success").hide();
-		$("#operate-success").css("visibility", "hidden");
-	}, 2000);
-}
-</script>
-<script>
-var adminType = getCookie("type");
-</script>
-<script>
-	$(function(){
-		$("#table").bootstrapTable({
-			url : "../user/getAllUser.do"
+				});
+			},
+			'click .common' : function(e, value, row, index) {
+				//alert("common");
+				$.post("../../foryou/user/setUserCommon.do", {
+					phone : row.phone
+				}, function(text) {
+					if (text == -1 || text == 0) {
+						setSuccess("设置为普通用户失败。");
+					} else {
+						setSuccess("设置为普通用户成功。");
+						$('#table').bootstrapTable('updateRow', {
+							index : index,
+							row : {
+								type : 2
+							}
+						});
+						//$('#table').bootstrapTable('refresh', {silent: true});
+					}
+
+				});
+			},
+			'click .superAdmin' : function(e, value, row, index) {
+				//alert("superAdmin");
+				$.post("../../foryou/user/setUserSuperAdmin.do", {
+					phone : row.phone
+				}, function(text) {
+					if (text == -1 || text == 0) {
+						setSuccess("设置超级管理员失败。");
+					} else {
+						setSuccess("设置超级管理员成功。");
+						$('#table').bootstrapTable('updateRow', {
+							index : index,
+							row : {
+								type : 0
+							}
+						});
+						//$('#table').bootstrapTable('refresh', {silent: true});
+					}
+
+				});
+			}
+		};
+	</script>
+	<script>
+		//需要执行的方法
+		$("#table").bootstrapTable('refreshOptions', function() {
+			exportDataType: 'all'
 		});
-	});
-</script>
-   <script>
-       function formatter(value, row, index) {
-          if (value == "0")
-             return "超级管理员";
-         else if (value == "1") {
-             return "管理员";
-         } else if(value == "2"){
-             return "普通用户";
-         }
-     }
- function userClass(value, row, index) {
-          if (value!=null&&value != "")
-             return "苹果";
-         else {
-             return "安卓";
-         }
-     }
-
-
-     function actionFormatter(value, row, index) {
-    	if(adminType==0){
-    		return [
-    		        '<a class="admin ml8" href="javascript:void(0)" title="设为管理员">',
-    		        '<span class="glyphicon glyphicon-heart-empty"></span>',
-    		        '</a>',
-    		        '<a class="common ml8" href="javascript:void(0)" title="取消管理员">',
-    		        '<span class="glyphicon glyphicon-user"></span>',
-    		        '</a>',
-    		        '<a class="superAdmin ml8" href="javascript:void(0)" title="设置超级管理员">',
-    		        '<span class="glyphicon glyphicon-heart"></span>',
-    		        '</a>'
-    		        ].join('');
-    	}else if(adminType==1){
-    		return "无操作权限";
-    	}
-        
-    }
-
-    window.actionEvents = {
-        'click .admin': function (e, value, row, index) {
-        	//alert("admin");
-            $.post("../../foryou/user/setUserAdmin.do",
-               {phone:row.phone},
-               function(text){
-                  if(text==-1||text==0){
-                     setSuccess("设置管理员失败。");
-                 }else{
-                	 setSuccess("设置管理员成功。");
-                	 $('#table').bootstrapTable('updateRow', {index: index,row: {
-                		 type : 1
-                	 }});
-                     //$('#table').bootstrapTable('refresh', {silent: true});
-                 }
-
-             }
-             );
-        },
-        'click .common': function (e, value, row, index) {
-        	//alert("common");
-            $.post("../../foryou/user/setUserCommon.do",
-               {phone:row.phone},
-               function(text){
-                  if(text==-1||text==0){
-                     setSuccess("设置为普通用户失败。");
-                 }else{
-                	 setSuccess("设置为普通用户成功。");
-                	 $('#table').bootstrapTable('updateRow', {index: index,row:{
-                		 type : 2
-                	 }});
-                     //$('#table').bootstrapTable('refresh', {silent: true});
-                 }
-
-             }
-             );
-        },
-        'click .superAdmin': function (e, value, row, index) {
-        	//alert("superAdmin");
-            $.post("../../foryou/user/setUserSuperAdmin.do",
-               {phone:row.phone},
-               function(text){
-                  if(text==-1||text==0){
-                     setSuccess("设置超级管理员失败。");
-                 }else{
-                	 setSuccess("设置超级管理员成功。");
-                	 $('#table').bootstrapTable('updateRow', {index: index,row:{
-                		 type : 0
-                	 }});
-                     //$('#table').bootstrapTable('refresh', {silent: true});
-                 }
-
-             }
-             );
-        }
-    };
-
-</script>
-<script>
-//表格导出
-$(function(){
-	$('#export-toolbar').find('select').change(function(){
-		$('#table').bootstrapTable('refreshOptions',{
-			exportDataType: $(this).val()
-		});
-	});
-});
-</script>
+	</script>
 </body>
-
 </html>

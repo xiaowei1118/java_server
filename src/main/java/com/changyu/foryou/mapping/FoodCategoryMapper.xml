@@ -177,4 +177,10 @@
   <select id="getAllCategoryCount" resultType="Integer">
   select COUNT(*) from food_category where tag!=0
   </select>
+  
+  <!-- 添加校区默认添加8个分类 -->
+  <insert id="addCategoryWhenAddCampus">
+	insert into food_category (category_id, campus_id, category, img_url,
+	parent_id, tag, serial,is_open) values (#{categoryId},#{campusId},#{category},#{imgUrl},#{parentId},#{tag},#{serial},#{isOpen})
+</insert>
 </mapper>

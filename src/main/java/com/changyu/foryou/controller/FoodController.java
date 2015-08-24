@@ -34,6 +34,7 @@ import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.ShortFood;
 import com.changyu.foryou.model.ShortFoodWithIm;
 import com.changyu.foryou.model.VeryShortFood;
+import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.tools.Constants;
@@ -48,6 +49,8 @@ import com.changyu.foryou.tools.Constants;
 public class FoodController {
 	private FoodService foodService;
 	private OrderService orderService;
+	private CampusService campusService;
+	
 
 	protected static final Logger LOG = LoggerFactory.getLogger(FoodController.class);
 
@@ -61,7 +64,10 @@ public class FoodController {
 		this.foodService = foodService;
 	}
 
-
+	@Autowired
+	public void setCampusService(CampusService campusService){
+		this.campusService = campusService;
+	}
 	/**
 	 * 获取食品的分类,给手机移动端(一级分类)
 	 * @param campusId 校区id
@@ -1109,10 +1115,11 @@ public class FoodController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			Map<String,Object> paramMap=new HashMap<>();
+			Map<String,Object> paramMap=new HashMap<String, Object>();
 			paramMap.put("campusId", campusId);
 			List<HomeCategory>homeCategory=foodService.getHomeCategoryInfo(paramMap);
 			map.put("homeCategory", homeCategory);
+			map.put("campus", campusService.getCampusById(paramMap));
 			map.put(Constants.STATUS, Constants.SUCCESS);
 			map.put(Constants.MESSAGE, "获取主页分类成功");
 		} catch (Exception e) {

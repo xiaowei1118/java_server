@@ -15,6 +15,8 @@ public class TogetherOrder {
     
     private Short payWay;
     
+    private Float totalPrice;
+    
 	public Short getPayWay() {
 		return payWay;
 	}
@@ -44,6 +46,12 @@ public class TogetherOrder {
 	}
 	public void setTogetherDate(Date togetherDate) {
 		this.togetherDate = togetherDate;
+	}
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
     
     

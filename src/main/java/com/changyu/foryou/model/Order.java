@@ -30,6 +30,8 @@ public class Order {
     private String rank;
     
     private Short payWay;
+    
+    private Float totalPrice;
    
 
 	public Order(){
@@ -150,5 +152,13 @@ public class Order {
 
 	public void setPayWay(Short payWay) {
 		this.payWay = payWay;
+	}
+
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

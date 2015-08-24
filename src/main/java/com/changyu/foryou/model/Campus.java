@@ -4,81 +4,100 @@ import java.sql.Time;
 
 
 public class Campus {
-    private Integer campusId;
+	private Integer campusId;
 
-    private String campusName;
+	private String campusName;
 
-    private Integer cityId;
-    
-    private Time openTime;
-    
-    private Time closeTime;
-    
-    private Short status;
-    
-    private String closeReason;
+	private Integer cityId;
+	
+	private String cityName;
 
-   /* private Double locationX;
+	private Time openTime;
+
+	private Time closeTime;
+
+	private Short status;
+
+	private String closeReason;
+
+	private String customService;
+	/* private Double locationX;
 
     private Double locationY;*/
 
-    public Integer getCampusId() {
-        return campusId;
-    }
+	public Integer getCampusId() {
+		return campusId;
+	}
 
-    public void setCampusId(Integer campusId) {
-        this.campusId = campusId;
-    }
+	public void setCampusId(Integer campusId) {
+		this.campusId = campusId;
+	}
 
-    public String getCampusName() {
-        return campusName;
-    }
+	public String getCampusName() {
+		return campusName;
+	}
 
-    public void setCampusName(String campusName) {
-        this.campusName = campusName == null ? null : campusName.trim();
-    }
+	public void setCampusName(String campusName) {
+		this.campusName = campusName == null ? null : campusName.trim();
+	}
 
-   public Integer getCityId() {
-        return cityId;
-    }
+	public Integer getCityId() {
+		return cityId;
+	}
 
-public Time getOpenTime() {
-	return openTime;
-}
+	public Time getOpenTime() {
+		return openTime;
+	}
 
-public void setOpenTime(Time openTime) {
-	this.openTime = openTime;
-}
+	public String getCustomService() {
+		return customService;
+	}
 
-public Time getCloseTime() {
-	return closeTime;
-}
+	public void setCustomService(String customService) {
+		this.customService = customService;
+	}
 
-public void setCloseTime(Time closeTime) {
-	this.closeTime = closeTime;
-}
+	public void setOpenTime(Time openTime) {
+		this.openTime = openTime;
+	}
 
-public Short getStatus() {
-	return status;
-}
+	public Time getCloseTime() {
+		return closeTime;
+	}
 
-public void setStatus(Short status) {
-	this.status = status;
-}
+	public void setCloseTime(Time closeTime) {
+		this.closeTime = closeTime;
+	}
 
-public String getCloseReason() {
-	return closeReason;
-}
+	public Short getStatus() {
+		return status;
+	}
 
-public void setCloseReason(String closeReason) {
-	this.closeReason = closeReason;
-}
+	public void setStatus(Short status) {
+		this.status = status;
+	}
 
-public void setCityId(Integer cityId) {
-	this.cityId = cityId;
-}
+	public String getCloseReason() {
+		return closeReason;
+	}
 
-   /* public void setCityId(Integer cityId) {
+	public void setCloseReason(String closeReason) {
+		this.closeReason = closeReason;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	/* public void setCityId(Integer cityId) {
         this.cityId = cityId;
     }
 

@@ -315,4 +315,9 @@
 	and password=#{password,jdbcType=VARCHAR}	
 	</select>
 	
+	
+	<!-- 登录检查接口 -->
+	<select id="checkLogin" resultMap="BaseResultMap">
+		select * from users where phone=#{phone,jdbcType=VARCHAR}
+	</select>
 </mapper>

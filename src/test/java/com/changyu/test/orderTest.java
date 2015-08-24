@@ -171,6 +171,9 @@ public class orderTest {
 		String rank="1427691760293";
 		String reserveTime="立即送达";
 		String message="苏大送达";
+		Float totalPrice=1000.5f;
+		Float price = 105f;
+		
 		Short payWay=1;
 
 		Calendar calendar = Calendar.getInstance();
@@ -234,7 +237,7 @@ public class orderTest {
 			// 这里做写入单价操作，还没有写！！！
 
 			flag = orderService.changeOrderStatus2Buy(phoneId, id,
-					togetherId, rank, reserveTime, message,payWay);
+					togetherId, rank, reserveTime, message,payWay,price,totalPrice);
 
 			// 更新库存和销量
 			Order order = orderService.selectOneOrder(phoneId, id); // 获取该笔订单的消息
