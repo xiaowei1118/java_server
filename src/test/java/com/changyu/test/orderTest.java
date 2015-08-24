@@ -21,6 +21,7 @@ import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.TogetherOrder;
+import com.changyu.foryou.payment.ChargeInterface;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
@@ -166,7 +167,7 @@ public class orderTest {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 
-		String orderId="1439889845846";
+		String orderId="1429972027467";
 		String phoneId="18896554880";
 		String rank="1427691760293";
 		String reserveTime="立即送达";
@@ -186,6 +187,7 @@ public class orderTest {
 		paramMap.put("phoneId",phoneId);
 		Campus campus=campusService.getCampus(paramMap);
 
+		final Integer campusIdForPush=campus.getCampusId();
 		LOGGER.debug("campus is"+JSON.toJSONString(campus));
 		//判断该校区是否正在营业
 		if(campus.getStatus()==0){
@@ -247,17 +249,19 @@ public class orderTest {
 			paramMap.put("campusId",campus.getCampusId());
 			int flag2=foodService.changeFoodCount(paramMap); // 增加销量，减少存货
 			LOGGER.info(flag2);
-			if (flag == 0 || flag == -1) {
+			if (flag == -1) {
 				break;
 			}
 		}
 
-		if (flag != -1 && flag != 0) {
+		LOGGER.info("flag is"+flag);
+		if (flag != -1) {
 			map.put(Constants.STATUS, Constants.SUCCESS);
 			map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
-
+			//String clientIp=getIpAddr(request);
+			map.put("charge", ChargeInterface.charge("alipay",togetherId,(int)(totalPrice*100),"127.0.0.1"));
 			// 开启线程去访问极光推送
-			pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
+			//pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
 			new Thread(new Runnable() {
 
 				@Override public void run() { //向超级管理员推送，让其分发订单
@@ -265,17 +269,18 @@ public class orderTest {
 					//推送 
 					//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。米奇零点。", 1);
 
-					//Map<String, Object> paramterMap=new HashMap<String,Object>();
-					//List<String>
-					//superPhones=userService.getAllSuperAdminPhone(paramterMap);
-					//for(String phone:superPhones){
+					Map<String, Object> paramterMap=new HashMap<String,Object>();
+					paramterMap.put("campusId",campusIdForPush);
+					LOGGER.info(JSON.toJSONString(paramterMap));
+					List<String> superPhones=userService.getAllSuperAdminPhone(paramterMap);
+					LOGGER.info("超级管理员手机号为："+JSON.toJSONString(superPhones));
+					for(String phone:superPhones){
 
 						//推送
-				//pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
-					//}
+				      pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
+					}
 				} 
 			}).start();
-
 
 		} else {
 			map.put(Constants.STATUS, Constants.FAILURE);

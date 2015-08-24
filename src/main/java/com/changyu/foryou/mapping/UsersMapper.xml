@@ -272,13 +272,14 @@
 		where together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
 
-	<!-- 获取所有的超级管理员 -->
+	<!-- 获取对应校区所有的超级管理员 -->
 	<select id="getAllSuperAdminPhone" resultType="String"
 		parameterType="map">
 		select
 		phone
 		from users
 		where type=0
+		and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
 	<!-- 获取用户token,通过手机号 -->

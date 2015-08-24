@@ -18,17 +18,17 @@ public class ChargeInterface {
 	 */
 	public static String appId = Constants.appId;
 	
-	 public static Charge charge(String orderId,Integer amount) {
+	 public static Charge charge(String channel,String orderId,Integer amount,String clientIp) {
 		    Pingpp.apiKey = apiKey;
 	        Charge charge = null;
 	        Map<String, Object> chargeMap = new HashMap<String, Object>();
 	        chargeMap.put("amount", amount);                        //金额，以分为单位
 	        chargeMap.put("currency", "cny");
-	        chargeMap.put("subject", "Your Subject");            //商品的标题
-	        chargeMap.put("body", "Your Body");                  //商品的描述
+	        chargeMap.put("subject", "For优商品");            //商品的标题
+	        chargeMap.put("body", "For优商品值得信赖");                  //商品的描述
 	        chargeMap.put("order_no", orderId);        //订单号  唯一
-	        chargeMap.put("channel", "alipay");               //支付渠道
-	        chargeMap.put("client_ip", "127.0.0.1");              //发起支付请求的客户端ip
+	        chargeMap.put("channel",channel);               //支付渠道
+	        chargeMap.put("client_ip", clientIp);              //发起支付请求的客户端ip
 	        Map<String, String> app = new HashMap<String, String>();
 	        app.put("id",appId);
 	        chargeMap.put("app", app);
