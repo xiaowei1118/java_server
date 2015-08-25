@@ -109,4 +109,6 @@ public interface OrderMapper {
 	Integer getCampusIdByTogetherId(Map<String, Object> paramMap);    //获取某笔订单的校区号
 
 	CartGood getOrderByOrderId(Map<String, Object> paramMap);            //获取某笔小订单
+
+	Integer cancelOrderWithRefund(Map<String, Object> paramMap);
 }

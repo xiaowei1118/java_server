@@ -1325,4 +1325,28 @@ public class OrderController {
 	    }
 	    return ip;
 	}
+	
+	@RequestMapping("/cancelOrderWithRefund")
+	public @ResponseBody Map<String,Object> cancelOrderWithRefund(String togetherId){
+		Map<String,Object> map=new HashMap<String,Object>();
+		
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();
+			paramMap.put("togetherId", togetherId);
+			
+			Integer flag=orderService.cancelOrderWithRefund(paramMap);
+			if(flag!=-1){
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE,"取消订单成功，退款受理中，请耐心等待");
+			}else{
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE,"取消订单失败，请重试");
+			}
+		} catch (Exception e) {
+			map.put(Constants.STATUS, Constants.SUCCESS);
+			map.put(Constants.MESSAGE,"取消订单失败，请重试");
+		}
+		
+		return map;
+	}
 }

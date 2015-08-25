@@ -110,5 +110,7 @@ public interface OrderService {
 
 	Float getPriceDiscounted(String[] orderId,int campusId,String phoneId);
 
+	Integer cancelOrderWithRefund(Map<String, Object> paramMap);
+
 	
 }

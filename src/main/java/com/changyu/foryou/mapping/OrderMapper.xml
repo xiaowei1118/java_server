@@ -901,4 +901,12 @@
          and order_id=#{orderId,jdbcType=BIGINT} and phone = #{phoneId,jdbcType=VARCHAR}
     </select>
     
+    <update id="cancelOrderWithRefund">
+         update 
+            orders
+         set
+            status=9
+         where
+            together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
 </mapper>

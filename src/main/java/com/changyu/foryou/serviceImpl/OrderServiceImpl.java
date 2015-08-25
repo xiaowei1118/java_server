@@ -300,6 +300,11 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return discountPrice-discount;
 	}
+
+	@Override
+	public Integer cancelOrderWithRefund(Map<String, Object> paramMap) {
+		return orderMapper.cancelOrderWithRefund(paramMap);
+	}
 	
 	
 
