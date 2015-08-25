@@ -64,7 +64,7 @@ public interface OrderService {
 
 	Order selectOneOrder(String phoneId, String orderId);
 
-	List<DeliverOrder> deliverGetOrder(String phoneId);
+	List<DeliverOrder> deliverGetOrder(Map<String, Object> paramMap);
 
 	List<DeliverChildOrder> getDeliverChildOrders(String togetherId);
 
@@ -103,10 +103,6 @@ public interface OrderService {
 	Integer updateOrderPrice(Map<String, Object> paramMap);
 
 	Integer updateOrder(Order order);
-
-
-
 	
-
-	
+	Float getTotalPriceByTogetherId(String togetherId);
 }

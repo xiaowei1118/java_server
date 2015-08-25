@@ -91,7 +91,6 @@
 	<!-- 超级管理员管理派单model -->
 	<resultMap id="SuperAdminOrderMap" type="com.changyu.foryou.model.SuperAdminOrder">
 		<result column="together_id" property="togetherId" jdbcType="VARCHAR" />
-		<result column="price" property="price" jdbcType="REAL" />
 		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
 		<result column="together_date" property="togetherDate"
 			jdbcType="TIMESTAMP" />
@@ -101,6 +100,7 @@
 		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
 		<result column="reserve_time" property="reserveTime" jdbcType="VARCHAR" />
 		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="total_price" property="price" jdbcType="REAL"/>
 	</resultMap>
 
 	<!-- web管理单显示订单 -->
@@ -562,37 +562,30 @@
 
 	<!-- 超级管理员获取订单 -->
 	<select id="superAdminGetOrder" resultMap="SuperAdminOrderMap">
-		SELECT
-		together_id,users.nickname as admin_name,
-		together_date,orders.message,reserve_time,
-		address
-		FROM
-		orders,
-		food,
-		receiver,
-		users
-		WHERE
-		<if test="campusId!=null">
-		orders.campus_id = #{campusId,jdbcType=INTEGER} and 
-		</if>
-		orders.food_id = food.food_id and
-		orders.tag=1
-		and
-		orders.rank=receiver.rank and
-		orders.phone=receiver.phone_id
-		<if test="isSelected == 0">
-			and orders.status = 1 and admin_phone is null
-		</if>
-		<if test="isSelected == 1">
-			and users.phone=orders.admin_phone and orders.status = 1
-			and admin_phone is not null
-		</if>
-		<if test="offset!=null and limit!=null">
-		limit #{limit} offset #{offset}
-		</if>
-		group by together_id
-		order by together_date DESC
-	</select>
+	SELECT
+	together_id,
+	together_date,
+	message,
+	reserve_time,
+	total_price,address,
+	admin_phone
+	FROM
+	together_order
+	WHERE
+	campus_id = #{campusId,jdbcType=INTEGER}
+	AND tag = #{tag,jdbcType=SMALLINT}
+	AND status = #{status,jdbcType=SMALLINT}
+	<if test="isSelected == 0">
+		AND admin_phone IS NULL
+	</if>
+	<if test="isSelected ==1">
+		AND admin_phone IS NOT NULL
+	</if>
+	GROUP BY
+	together_id
+	ORDER BY
+	together_date DESC
+</select>
 
 	<select id="getExitOrderUserRank" resultType="Integer">
 		select
@@ -621,21 +614,24 @@
 		together_id,receiver.name as nickname,receiver.phone as custome_phone,
 		together_date,orders.reserve_time,orders.message,
 		orders.status,
-		address
+		receiver.address
 		FROM
 		orders,
 		receiver
 		WHERE
 		orders.rank=receiver.rank and
-		orders.status !=0 and orders.status !=4
-		and DATE_SUB(CURDATE(),
-		INTERVAL 10 DAY) &lt;= date(together_date) and
+		orders.status=3
+		and
 		orders.phone=receiver.phone_id and orders.admin_phone =
-		#{phone,jdbcType=VARCHAR} and orders.tag=1
+		#{phoneId,jdbcType=VARCHAR} and orders.tag=1
+		and orders.campus_id=#{campusId,jdbcType=INTEGER}
 		group by together_id
 		order by
 		together_date
 		DESC
+		<if test="limit!=null and offset!=null">
+		limit ${offset},${limit}
+		</if>
 	</select>
 
 	<!-- 配送员获取子订单，不包含成功订单 -->
@@ -871,4 +867,8 @@
     where order_id=#{orderId}
     </update>
    
+   <!-- 根据togetherId获取该笔大订单总价 -->
+   <select id="selectTotalPriceByTogetherId" resultType="FLOAT">
+   select total_price from together_order where together_id=#{togetherId,jdbcType=VARCHAR}
+   </select>
 </mapper>

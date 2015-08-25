@@ -340,7 +340,7 @@ public class UserController {
 				//map.put("waitDeliveryOrder", counts.get("wait"));
 				//map.put("waitReceiveOrder",counts.get("deliver"));
 				//map.put("waitCommentOrder", counts.get("comment"));
-							
+				
 				map.put(Constants.STATUS,Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取数据成功");
 				map.put("waitPayOrder", togetherId1.size());

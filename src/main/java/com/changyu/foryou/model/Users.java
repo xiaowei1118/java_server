@@ -29,6 +29,8 @@ public class Users {
     
     private String weiXin;
     
+    private Integer campusId;
+    
     public Users(String phone2, String password2, String nickname2) {
 		phone=phone2;
 		password=password2;
@@ -144,5 +146,13 @@ public class Users {
 
 	public void setWeiXin(String weiXin) {
 		this.weiXin = weiXin;
+	}
+
+	public Integer getCampusId() {
+		return campusId;
+	}
+
+	public void setCampusId(Integer campusId) {
+		this.campusId = campusId;
 	}
 }

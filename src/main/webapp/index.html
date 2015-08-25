@@ -45,18 +45,24 @@ a:hover {
 			<div class='container-fluid'>
 				<a class='brand pull-left'><img class='icon-white icon-leaf'>foryou</a>
 				<ul class='nav pull-right'>
-				<li>
-				<!-- 添加校区下拉菜单 -->
-		<div class="dropdown" id="campusDropdown">
-			<button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
-				校区
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="dropdown-campus">
-				
-			</ul>
-		</div>
-				</li>
+					<li>
+						<div>
+							<button type="button" id="one_key_open" class="btn btn-default">一键开店</button>						
+						</div>
+					</li>
+					<li>
+						<!-- 添加校区下拉菜单 -->
+						<div class="dropdown" id="campusDropdown">
+							<button type="button" class="btn dropdown-toggle"
+								id="dropdownMenu1" data-toggle="dropdown">
+								校区 <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu"
+								aria-labelledby="dropdownMenu1" id="dropdown-campus">
+
+							</ul>
+						</div>
+					</li>
 					<li><a href="../foryou/user/logout.do" rel='tooltip'
 						title='退出'><i class='icon-white icon-off'></i></a></li>
 				</ul>
@@ -192,6 +198,9 @@ a:hover {
 	</section>
 <script>
 $(function(){
+	//根据校区状态显示或隐藏“一键开店”按钮
+	
+	
 	//根据管理员类型判断是否显示校区下拉菜单
 	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单，且隐藏校区管理和校区管理员管理
 	if(getCookie("type")==1){
@@ -253,6 +262,7 @@ $(function(){
 			
 		});
 	});
+	
 	
 });
 </script>

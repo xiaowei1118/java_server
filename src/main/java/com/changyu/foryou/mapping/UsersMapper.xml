@@ -17,7 +17,8 @@
 		<result column="sex" property="sex" jdbcType="SMALLINT" />
 		<result column="academy" property="academy" jdbcType="VARCHAR" />
 		<result column="qq" property="qq" jdbcType="VARCHAR" />
-		<result column="weixin" property="weiXin" jdbcType="VARCHAR" />  
+		<result column="weixin" property="weiXin" jdbcType="VARCHAR" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>  
 	</resultMap>
 	<sql id="Base_Column_List">
 		phone, password, type, nickname, img_url,
@@ -28,7 +29,7 @@
 		select
 		users.phone as phone, password, type, nickname, img_url,
 		last_login_date,create_time,sex,academy,qq,weixin
-		, receiver.address as default_address
+		, receiver.address as default_address,users.campus_id
 		from users,receiver
 		where users.phone = #{phone,jdbcType=VARCHAR}
 		and receiver.phone_id=users.phone

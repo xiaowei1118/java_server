@@ -68,7 +68,7 @@ public interface OrderMapper {
 
 	Order selectByPrimaryKey(@Param(value="orderId")Long orderId, @Param(value="phoneId")String phoneId);
 
-	List<DeliverOrder> deliverGetOrder(@Param(value="phone")String phone);
+	List<DeliverOrder> deliverGetOrder(Map<String,Object> paramMap);
 
 	List<DeliverChildOrder> getDeliverChildOrders(@Param(value="togetherId")String togetherId);
 
@@ -103,7 +103,6 @@ public interface OrderMapper {
 	String getAdminPhone(Map<String, Object> requestMap);             //获取配送员手机号
 
 	Integer updateOrderPrice(Map<String, Object> paramMap);
-
 	
-
+	Float selectTotalPriceByTogetherId(@Param(value="togetherId")String togetherId);
 }
