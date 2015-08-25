@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
 		return usersMapper.getImageUrl(phone);
 	}
 
-	public List<Users> getDeliverAdmin() {
-		return usersMapper.getDeliverAdmin();
+	public List<Users> getDeliverAdmin(Map<String, Object> paramMap) {
+		return usersMapper.getDeliverAdmin(paramMap);
 	}
 
 	public int setUserToken(String phoneId, String token) {

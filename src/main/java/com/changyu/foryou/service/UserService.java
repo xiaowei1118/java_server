@@ -35,7 +35,7 @@ public interface UserService {
 
 	String getImageUrl(String phone);
 
-	List<Users> getDeliverAdmin();
+	List<Users> getDeliverAdmin(Map<String, Object> paramMap);
 
 	int setUserToken(String phoneId, String token);
 

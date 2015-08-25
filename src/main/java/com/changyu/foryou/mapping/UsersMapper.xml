@@ -240,7 +240,7 @@
 		select
 		phone,nickname
 		from users
-		where type=1
+		where type=1 and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
 	<update id="setUserToken">

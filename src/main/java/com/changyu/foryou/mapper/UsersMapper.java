@@ -41,7 +41,7 @@ public interface UsersMapper {
 
 	String getImageUrl(@Param(value="phone")String phone);
 
-	List<Users> getDeliverAdmin();
+	List<Users> getDeliverAdmin(Map<String, Object> paramMap);
 
 	int setUserToken(@Param(value="phone")String phoneId, @Param(value="token")String token);
 

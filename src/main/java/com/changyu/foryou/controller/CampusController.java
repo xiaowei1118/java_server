@@ -201,10 +201,14 @@ public class CampusController {
 	 * @return
 	 */
 	@RequestMapping("/updateCampusAdmin")
-	public @ResponseBody Map<String, Object> updateCampusAdmin(@RequestParam Integer campusId, @RequestParam String campusAdminName){
+	public @ResponseBody Map<String, Object> updateCampusAdmin(@RequestParam String campusName, @RequestParam String campusAdminName){
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("campusId", campusId);
+		
+		Map<String,Object> tempMap = new HashMap<String, Object>();
+		tempMap.put("campusName", campusName);
+		
+		paramMap.put("campusId", campusService.getIdByName(tempMap));
 		paramMap.put("campusAdmin", campusAdminName);
 		
 		Integer result = campusService.updateCampusAdmin(paramMap);
@@ -285,11 +289,14 @@ public class CampusController {
 	 * @return
 	 */
 	@RequestMapping("addCampusAdmin")
-	public @ResponseBody Map<String, Object> addCampusAdmin(@RequestParam Integer campusId, @RequestParam String campusName, @RequestParam String campusAdminName, @RequestParam String password){
+	public @ResponseBody Map<String, Object> addCampusAdmin(@RequestParam String campusName, @RequestParam String campusAdminName, @RequestParam String password){
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
-		paramMap.put("campusId", campusId);
+		Map<String, Object> tempMap = new HashMap<String, Object>();
+		tempMap.put("campusName", campusName);
+		
+		paramMap.put("campusId", campusService.getIdByName(tempMap));
 		paramMap.put("campusName", campusName);
 		paramMap.put("campusAdmin", campusAdminName);
 		paramMap.put("password", password);
@@ -339,7 +346,7 @@ public class CampusController {
 	
 	@RequestMapping("updateCampus")
 	@ResponseBody
-	public Map<String, Object> updateCampus(@RequestParam String campusId,@RequestParam String campusName,@RequestParam String cityName,@RequestParam String openTime,@RequestParam String closeTime,@RequestParam String customService){
+	public Map<String, Object> updateCampus(@RequestParam String campusId,@RequestParam String campusName,@RequestParam String cityName,@RequestParam String openTime,@RequestParam String closeTime, @RequestParam Short status,@RequestParam String customService){
 		//管理端这些值都要传过来，传之前判空
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -349,6 +356,8 @@ public class CampusController {
 		paramMap.put("cityId", campusService.getCityByName(cityName).getCityId());
 		paramMap.put("openTime", openTime);
 		paramMap.put("closeTime", closeTime);
+		paramMap.put("status", status);
+		paramMap.put("customService", customService);
 		
 		Integer result = campusService.updateCampus(paramMap);
 		
