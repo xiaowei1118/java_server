@@ -20,7 +20,7 @@ public class JpushInterface {
                 .setNotification(Notification.alert(message))
                 .setMessage(Message.newBuilder()
                         .setMsgContent(message)
-                        .addExtra("from", "mickey")
+                        .addExtra("from", "foryou")
                         .build())            
                 .build();
 	}
@@ -35,7 +35,7 @@ public class JpushInterface {
                 .setOptions(Options.newBuilder().setApnsProduction(true).build())
                 .setMessage(Message.newBuilder()
                         .setMsgContent(alertString)
-                        .addExtra("from", "mickey")
+                        .addExtra("from", "foryou")
                         .build())
                 .build();
     }
@@ -50,7 +50,7 @@ public class JpushInterface {
 	                .setOptions(Options.newBuilder().setApnsProduction(false).build())
 	                .setMessage(Message.newBuilder()
 	                        .setMsgContent(message)
-	                        .addExtra("from", "mickey")
+	                        .addExtra("from", "foryou")
 	                        .build())
 	                .build();
 	}

@@ -108,9 +108,7 @@ public interface OrderService {
 
 	Integer getCampusIdByTogetherId(Map<String, Object> paramMap);
 
-
-
-	
+	Float getPriceDiscounted(String[] orderId,int campusId,String phoneId);
 
 	
 }

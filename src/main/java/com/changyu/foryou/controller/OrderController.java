@@ -518,6 +518,7 @@ public class OrderController {
 			paramMap.put("orderId",orderString[0]);
 			paramMap.put("phoneId",phoneId);
 			Campus campus=campusService.getCampus(paramMap);   //根据订单获取该校区的详细情况
+			Integer campusId=campus.getCampusId();
 			//判断该校区是否正在营业
 			if(campus.getStatus()==0){
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -560,7 +561,14 @@ public class OrderController {
 				map.put(Constants.MESSAGE,message2.toString()); 
 				return map; 
 			}
+			DecimalFormat df = new DecimalFormat("####.0");
 			
+			Float serverPrice=orderService.getPriceDiscounted(orderString,campusId,phoneId);
+			if(Math.abs(serverPrice-totalPrice)>=1){            //判断客户端价格和服务器端价格是否一致
+				map.put(Constants.STATUS,Constants.FAILURE); 
+				map.put(Constants.MESSAGE,"价格有误"); 
+				return map;
+			}
 			//写入单价操作
 			for (String id : orderString) {
 				float price=(float) 0.0;
@@ -592,13 +600,13 @@ public class OrderController {
 			}else{
 				channel="wx";
 			}
-			DecimalFormat df = new DecimalFormat("0.0");
+			
 			if (flag != -1 && flag != 0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
 				
 				String clientIp=getIpAddr(request);
-				map.put("charge", ChargeInterface.charge(channel,togetherId,(int)(totalPrice*100),clientIp)); //支付
+				map.put("charge", ChargeInterface.charge(channel,togetherId,(int)(Float.parseFloat(df.format(totalPrice))*100),clientIp)); //支付
 				map.put("totalPrice",df.format(totalPrice));
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);

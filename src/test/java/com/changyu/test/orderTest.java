@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.Order;
+import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.TogetherOrder;
 import com.changyu.foryou.payment.ChargeInterface;
@@ -381,4 +382,18 @@ public class orderTest {
 			} 
 		}).start();
 	 }
+	
+	@Test
+	public void testCalcularPrice(){
+		String[] orderIds={
+				"2429775447983","1488888888888","1477777777777"
+		};
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("campusId", 1);
+		paramMap.put("phoneId", "18896554880");
+		
+	     Float price=orderService.getPriceDiscounted(orderIds,1,"18896554880");
+	    //List<Preferential> prefers = orderService.getPreferential(paramMap);
+	    System.out.println(price);
+	}
 }

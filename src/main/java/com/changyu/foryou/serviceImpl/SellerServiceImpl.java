@@ -9,6 +9,11 @@ import com.changyu.foryou.mapper.SellerMapper;
 import com.changyu.foryou.model.Sellers;
 import com.changyu.foryou.service.SellerService;
 
+/**
+ * 商家账号管理
+ * @author xiaowei
+ *
+ */
 @Service("sellerService")
 public class SellerServiceImpl implements SellerService {
 

@@ -612,7 +612,7 @@
 		set
 		admin_phone=#{adminPhone,jdbcType=VARCHAR}
 		where together_id=
-		#{togetherId,jdbcType=VARCHAR} and status = 1
+		#{togetherId,jdbcType=VARCHAR} and status = 2
 	</update>
 
 	<!-- 配送员获取大订单列表 -->
@@ -889,4 +889,16 @@
        where 
          together_id=#{togetherId,jdbcType=VARCHAR}
     </select>
+    
+    <!-- 获取一笔小订单 -->
+     <select id="getOrderByOrderId" resultMap="CartGoodMap">
+       select 
+         is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count
+       from
+         orders,food
+       where 
+         orders.food_id=food.food_id and orders.tag =1
+         and order_id=#{orderId,jdbcType=BIGINT} and phone = #{phoneId,jdbcType=VARCHAR}
+    </select>
+    
 </mapper>

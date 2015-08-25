@@ -9,17 +9,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.mapper.OrderMapper;
 import com.changyu.foryou.mapper.PreferentialMapper;
-import com.changyu.foryou.model.BigOrder;
-import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
 import com.changyu.foryou.model.Preferential;
-import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 import com.changyu.foryou.service.OrderService;
@@ -38,7 +36,16 @@ public class OrderServiceImpl implements OrderService {
 	public void setOrderMapper(OrderMapper orderMapper) {
 		this.orderMapper = orderMapper;
 	}
+    
+	@Autowired
+	public void setPreferentialMapper(PreferentialMapper preferentialMapper) {
+		this.preferentialMapper = preferentialMapper;
+	}
 
+	public List<Preferential> getPreferential(Map<String, Object> paramMap) {
+		return preferentialMapper.getPreferential(paramMap);
+	}
+	
 	public List<CartGood> getOrderList(Map<String,Object> paramMap) {
 		return orderMapper.getOrderListByPhone(paramMap);
 	}
@@ -183,54 +190,44 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.setOrderInvalid(parameterMap);
 	}
 
-	@Override
 	public List<DeliverOrder> selectOrdersByDate(Map<String, Object> paramMap) {
 		return orderMapper.selectOrdersByDate(paramMap);
 	}
 
-	@Override
 	public List<DeliverChildOrder> getAllChildOrders(
 			Map<String, Object> paramMap) {
 		return orderMapper.getAllChildOrder(paramMap);
 	}
 
-	@Override
 	public Date getTogetherDate(Map<String, Object> paramMap) {
 		return orderMapper.getTogetherDate(paramMap);
 	}
 
-	@Override
 	public List<SmallOrder> getOrdersById(Map<String, Object> paramMap) {
 		return orderMapper.getOrdersById(paramMap);
 	}
 
 
-	@Override
 	public Integer modifyOrderStatus(Map<String, Object> paramMap) {
 		return orderMapper.modifyOrderStatus(paramMap);
 	}
 
-	@Override
 	public void deleteOrder(Map<String, Object> paramMap) {
 		orderMapper.deleteOrder(paramMap);
 	}
 
-	@Override
 	public SmallOrder getOrderById(Map<String, Object> paramMap) {
 		return orderMapper.getOrderById(paramMap);
 	}
 
-	@Override
 	public String getUserPhone(Map<String, Object> requestMap) {
 		return orderMapper.getUserPhone(requestMap);
 	}
 
-	@Override
 	public String getAdminPhone(Map<String, Object> requestMap) {
 		return orderMapper.getAdminPhone(requestMap);
 	}
 
-	@Override
 	public Preferential getPreferentialById(Integer preferentialId) {
 		return preferentialMapper.selectByPrimaryKey(preferentialId);
 	}
@@ -239,36 +236,71 @@ public class OrderServiceImpl implements OrderService {
 		return preferentialMapper;
 	}
 
-	@Autowired
-	public void setPreferentialMapper(PreferentialMapper preferentialMapper) {
-		this.preferentialMapper = preferentialMapper;
-	}
+	
 
-	@Override
-	public List<Preferential> getPreferential(Map<String, Object> paramMap) {
-		return preferentialMapper.getPreferential(paramMap);
-	}
-
-	@Override
 	public Integer updateOrderPrice(Map<String, Object> paramMap) {
 		return orderMapper.updateOrderPrice(paramMap);
 	}
 
-	@Override
 	public Integer updateOrder(Order order) {
 		return orderMapper.updateByPrimaryKeySelective(order);
 	}
 
-	@Override
 	public int updateOrderStatusAndAmount(Map<String, Object> paramMap) {
 		return orderMapper.updateOrderStatusAndAmount(paramMap);
 	}
 
-	@Override
+	/**
+	 * 获取某笔订单的校区状态
+	 * @param paramMap
+	 * @return
+	 */
 	public Integer getCampusIdByTogetherId(Map<String, Object> paramMap) {
 		return orderMapper.getCampusIdByTogetherId(paramMap);
 	}
-
+	
+	//
+	public  Float getPriceDiscounted(String[] orderId,int campusId,String phoneId){
+		//获取满减的信息
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("campusId",campusId);
+		paramMap.put("phoneId", phoneId);
+		System.out.println(paramMap);
+		List<Preferential> prefers = getPreferential(paramMap);
+		
+		System.out.println(JSON.toJSONString(prefers));
+		Float discountPrice=0f;         //折扣之后的总价
+		Float fullDiscount=0f;                //满减商品之后的总价
+		System.out.println(JSON.toJSONString(orderId));
+		for (String id : orderId) {
+			paramMap.put("orderId",Long.parseLong(id));
+			Float price = 0f;              //temp
+			CartGood order=orderMapper.getOrderByOrderId(paramMap);
+			System.out.println("order is"+JSON.toJSONString(order));
+			if(order.getIsDiscount()==1){
+				System.out.println(order.getDiscountPrice());
+				price = order.getOrderCount()*order.getDiscountPrice();
+			}else{
+			    price = order.getOrderCount()*order.getPrice();
+			}
+			
+			if(order.getIsFullDiscount()==1){
+				fullDiscount+=price;
+			}
+			
+			discountPrice+=price;
+		}
+		
+		Integer discount=0;  
+		for (Preferential preferential : prefers) {
+			if(fullDiscount>preferential.getNeedNumber()){
+				discount=preferential.getDiscountNum();
+				break;
+			}
+		}
+		return discountPrice-discount;
+	}
+	
 	
 
 

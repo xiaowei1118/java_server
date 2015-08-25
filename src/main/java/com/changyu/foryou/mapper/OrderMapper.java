@@ -107,4 +107,6 @@ public interface OrderMapper {
 	int updateOrderStatusAndAmount(Map<String, Object> paramMap);     //支付成功后更新订单和价格
 
 	Integer getCampusIdByTogetherId(Map<String, Object> paramMap);    //获取某笔订单的校区号
+
+	CartGood getOrderByOrderId(Map<String, Object> paramMap);            //获取某笔小订单
 }

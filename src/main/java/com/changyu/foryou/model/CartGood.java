@@ -21,13 +21,11 @@ public class CartGood {
     
     private Short isFullDiscount;
 
-    //private Integer foodSpecial;
 
     private Long foodId;
 
 	private String  imageUrl;
     
-    //private String specialName;
     
     private Integer foodCount;    
    
