@@ -33,7 +33,8 @@
 		from users,receiver
 		where users.phone = #{phone,jdbcType=VARCHAR}
 		and receiver.phone_id=users.phone
-		AND receiver.tag=0
+		AND receiver.tag=0 
+		limit 1
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from users

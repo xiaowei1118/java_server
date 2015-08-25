@@ -322,7 +322,7 @@ public class UserController {
 		try {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			Users users=userService.selectByUsername(phone);
-			Map<String, Object> counts=orderService.getOrderSummaryCount(phone);
+			//Map<String, Object> counts=orderService.getOrderSummaryCount(phone);
 			paramMap.put("phoneId", phone);
 			paramMap.put("status", 1);
 			List<String> togetherId1=orderService.getTogetherId(paramMap);

@@ -103,6 +103,14 @@ public interface OrderService {
 	Integer updateOrderPrice(Map<String, Object> paramMap);
 
 	Integer updateOrder(Order order);
+
+	int updateOrderStatusAndAmount(Map<String, Object> paramMap);
+
+	Integer getCampusIdByTogetherId(Map<String, Object> paramMap);
+
+	Float getPriceDiscounted(String[] orderId,int campusId,String phoneId);
+
+	Integer cancelOrderWithRefund(Map<String, Object> paramMap);
 	
 	Float getTotalPriceByTogetherId(String togetherId);
 }

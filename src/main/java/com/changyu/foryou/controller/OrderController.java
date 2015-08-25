@@ -519,7 +519,7 @@ public class OrderController {
 			paramMap.put("orderId",orderString[0]);
 			paramMap.put("phoneId",phoneId);
 			Campus campus=campusService.getCampus(paramMap);   //根据订单获取该校区的详细情况
-            final Integer campusIdForPush=campus.getCampusId();
+			Integer campusId=campus.getCampusId();
 			//判断该校区是否正在营业
 			if(campus.getStatus()==0){
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -544,7 +544,7 @@ public class OrderController {
 					||(calendar.get(Calendar.HOUR_OF_DAY)==openHour&&calendar.get(Calendar.MINUTE)<runOpenTime.get(openMinute))
 					){ 
 				StringBuffer message2=new StringBuffer();
-				message2.append("fou优的营业时间为"+openHour+":");
+				message2.append("fou优该校区的营业时间为"+openHour+":");
 
 				if(openMinute<10){
 					message2.append("0"+openMinute);
@@ -562,7 +562,14 @@ public class OrderController {
 				map.put(Constants.MESSAGE,message2.toString()); 
 				return map; 
 			}
+			DecimalFormat df = new DecimalFormat("####.0");
 			
+			Float serverPrice=orderService.getPriceDiscounted(orderString,campusId,phoneId);
+			if(Math.abs(serverPrice-totalPrice)>=1){            //判断客户端价格和服务器端价格是否一致
+				map.put(Constants.STATUS,Constants.FAILURE); 
+				map.put(Constants.MESSAGE,"价格有误"); 
+				return map;
+			}
 			//写入单价操作
 			for (String id : orderString) {
 				float price=(float) 0.0;
@@ -594,36 +601,14 @@ public class OrderController {
 			}else{
 				channel="wx";
 			}
-			DecimalFormat df = new DecimalFormat("0.0");
+			
 			if (flag != -1 && flag != 0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
 				
 				String clientIp=getIpAddr(request);
-				map.put("charge", ChargeInterface.charge(channel,togetherId,(int)(totalPrice*100),clientIp));
+				map.put("charge", ChargeInterface.charge(channel,togetherId,(int)(Float.parseFloat(df.format(totalPrice))*100),clientIp)); //支付
 				map.put("totalPrice",df.format(totalPrice));
-
-				// 开启线程去访问极光推送
-
-				new Thread(new Runnable() {
-
-					@Override public void run() { //向超级管理员推送，让其分发订单
-
-						//推送 
-						//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
-
-						Map<String, Object> paramterMap=new HashMap<String,Object>();
-						paramterMap.put("campusId",campusIdForPush);
-						List<String> superPhones=userService.getAllSuperAdminPhone(paramterMap);
-						for(String phone:superPhones){
-
-							//推送
-							pushService.sendPush(phone,"一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
-						}
-					} 
-				}).start();
-
-
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
 				map.put(Constants.MESSAGE, "下单失败，请重新开始下单");
@@ -1324,5 +1309,29 @@ public class OrderController {
 	        ip = request.getRemoteAddr();
 	    }
 	    return ip;
+	}
+	
+	@RequestMapping("/cancelOrderWithRefund")
+	public @ResponseBody Map<String,Object> cancelOrderWithRefund(String togetherId){
+		Map<String,Object> map=new HashMap<String,Object>();
+		
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();
+			paramMap.put("togetherId", togetherId);
+			
+			Integer flag=orderService.cancelOrderWithRefund(paramMap);
+			if(flag!=-1){
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE,"取消订单成功，退款受理中，请耐心等待");
+			}else{
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE,"取消订单失败，请重试");
+			}
+		} catch (Exception e) {
+			map.put(Constants.STATUS, Constants.SUCCESS);
+			map.put(Constants.MESSAGE,"取消订单失败，请重试");
+		}
+		
+		return map;
 	}
 }

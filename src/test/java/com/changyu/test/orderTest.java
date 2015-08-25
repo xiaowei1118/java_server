@@ -2,6 +2,11 @@ package com.changyu.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.Order;
+import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.TogetherOrder;
 import com.changyu.foryou.payment.ChargeInterface;
@@ -28,6 +34,9 @@ import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.PushService;
 import com.changyu.foryou.service.UserService;
 import com.changyu.foryou.tools.Constants;
+import com.pingplusplus.model.Charge;
+import com.pingplusplus.model.Event;
+import com.pingplusplus.model.Webhooks;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -306,4 +315,85 @@ public class orderTest {
 	 }
 
 	
+	/**
+	 * 测试更新订单的总价和状态
+	 */
+	@Test
+	 public void updateOrderStatusAndAmount(){
+		 Map<String,Object> paramMap=new HashMap<String,Object>();
+		 
+		  paramMap.put("togetherId", "153651867351430139990413");
+		  
+      	  paramMap.put("amount",300*1.0/100);
+      	  int flag=orderService.updateOrderStatusAndAmount(paramMap);   
+      	  System.out.println(flag);
+	 }
+	
+	/**
+	 * 测试更新订单的总价和状态
+	 */
+	@Test
+	 public void testWebHooks(){
+		String path=this.getClass().getResource("/").getPath();
+		System.out.println(path);
+		StringBuffer stringBuffer=new StringBuffer();
+		 try {
+			   File file = new File(path + "com/changyu/test/event.json");
+			   BufferedReader br  = new BufferedReader(new FileReader(file));
+			   String temp = br.readLine();
+			   while (temp != null) {   
+				stringBuffer.append(temp);
+			    temp = br.readLine();    
+			  }
+			   br.close();
+		 }
+		  catch(Exception e){
+		   e.printStackTrace();
+		  }
+		
+		Charge charge = (Charge)Webhooks.parseEvnet(stringBuffer.toString()); 
+		System.out.println(charge.toString());
+		
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("togetherId",charge.getOrderNo());
+		paramMap.put("amount",charge.getAmount()*1.0/100);
+		
+		System.out.println(paramMap);
+		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 	
+		System.out.println("更新数据"+flag);
+		
+		final Integer campusId=orderService.getCampusIdByTogetherId(paramMap);
+		// 开启线程去访问极光推送
+
+		new Thread(new Runnable(){
+			@Override public void run() { //向超级管理员推送，让其分发订单
+
+				//推送 
+				//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);
+
+				Map<String, Object> paramterMap=new HashMap<String,Object>();
+				paramterMap.put("campusId",campusId);
+				List<String> superPhones=userService.getAllSuperAdminPhone(paramterMap);
+				for(String phone:superPhones){
+
+					//推送
+					pushService.sendPush(phone,"一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
+				}
+			} 
+		}).start();
+	 }
+	
+	@Test
+	public void testCalcularPrice(){
+		String[] orderIds={
+				"2429775447983","1488888888888","1477777777777"
+		};
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("campusId", 1);
+		paramMap.put("phoneId", "18896554880");
+		
+	     Float price=orderService.getPriceDiscounted(orderIds,1,"18896554880");
+	    //List<Preferential> prefers = orderService.getPreferential(paramMap);
+	    System.out.println(price);
+	}
 }
