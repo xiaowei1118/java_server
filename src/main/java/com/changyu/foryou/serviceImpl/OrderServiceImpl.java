@@ -152,8 +152,8 @@ public class OrderServiceImpl implements OrderService {
 
 
 	//配送员获取配送订单
-	public List<DeliverOrder> deliverGetOrder(String phoneId) {
-		return orderMapper.deliverGetOrder(phoneId);
+	public List<DeliverOrder> deliverGetOrder(Map<String, Object> paramMap) {
+		return orderMapper.deliverGetOrder(paramMap);
 	}
 
 	public List<DeliverChildOrder> getDeliverChildOrders(String togetherId) {
@@ -246,6 +246,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.updateByPrimaryKeySelective(order);
 	}
 
+
+	@Override
+	public Float getTotalPriceByTogetherId(String togetherId) {
+		// TODO Auto-generated method stub
+		return orderMapper.selectTotalPriceByTogetherId(togetherId);
+	}
+
 	public int updateOrderStatusAndAmount(Map<String, Object> paramMap) {
 		return orderMapper.updateOrderStatusAndAmount(paramMap);
 	}
@@ -309,26 +316,5 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.cancelOrderWithRefund(paramMap);
 	}
 	
-	
-
-
-
-
-
-
-	
-
-
-	
-
-
-
-
-
-
-
-
-
-
 
 }

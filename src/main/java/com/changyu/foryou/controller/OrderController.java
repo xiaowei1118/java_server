@@ -163,7 +163,7 @@ public class OrderController {
 				paramMap.put("offset", (page - 1) * limit);
 			}
 			List<String> togetherIds = orderService.getTogetherId(paramMap);
-
+			
 			System.out.println(JSON.toJSONString(togetherIds));
 
 			if (togetherIds.size() != 0) {
@@ -196,7 +196,8 @@ public class OrderController {
 							.getTogetherDate());
 					togetherOrdersList.add(togetherOrder);
 				}
-
+				
+				
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
 				map.put("orderList", JSON.parse(JSON
@@ -772,35 +773,18 @@ public class OrderController {
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		requestMap.put("isSelected", isSelected);
 		requestMap.put("campusId", campusId);
-
+		requestMap.put("tag", 1);		//订单有效
+		requestMap.put("status", 2);		//2，待确认
+        //System.out.println(isSelected);
 		if (page != null && limit != null) {
 			requestMap.put("limit", limit);
 			requestMap.put("offset", (page - 1) * limit);
-		} else {
-			
-		}
+		} 
+		
 		try {
 			List<SuperAdminOrder> orders = orderService
 					.superAdminGetOrder(requestMap);
-			for (SuperAdminOrder superAdminOrder : orders) {
-				String togetherId = superAdminOrder.getTogetherId();
-
-				List<DeliverChildOrder> deliverChildOrders = orderService
-						.getDeliverChildOrders(togetherId);
-				Float priceFloat = 0f;
-
-				// 获取该笔订单总价
-				for (DeliverChildOrder deliverChildOrder : deliverChildOrders) {
-					if (deliverChildOrder.getIsDiscount() == 0) {
-						priceFloat += deliverChildOrder.getPrice()
-								* deliverChildOrder.getOrderCount();
-					} else {
-						priceFloat += deliverChildOrder.getDiscountPrice()
-								* deliverChildOrder.getOrderCount();
-					}
-				}
-				superAdminOrder.setPrice(priceFloat);
-			}
+			
 			map.put(Constants.STATUS, Constants.SUCCESS);
 			map.put(Constants.MESSAGE, "获取订单成功！");
 			map.put("orderList", JSONArray.parse(JSON
@@ -872,43 +856,44 @@ public class OrderController {
 		if (page != null && limit != null) {
 			requestMap.put("offset", (page - 1) * limit);
 			requestMap.put("limit", limit);
-		} else {
-			requestMap.put("offset", 0);
-			requestMap.put("limit", 5);
 		}
 		try {
 			// 获取一笔订单列表
 			List<DeliverOrder> deliverOrders = orderService
-					.deliverGetOrder(phoneId);
-
-			for (DeliverOrder deliverOrder : deliverOrders) {
-				String togetherId = deliverOrder.getTogetherId();
-				// 获取订单食品集
-				List<DeliverChildOrder> deliverChildOrders = orderService
-						.getDeliverChildOrders(togetherId);
-				Float priceFloat = 0f;
-
-				// 获取该笔订单总价
-				for (DeliverChildOrder deliverChildOrder : deliverChildOrders) {
-					if (deliverChildOrder.getIsDiscount() == 0) {
-						priceFloat += deliverChildOrder.getPrice()
-								* deliverChildOrder.getOrderCount();
-					} else {
-						priceFloat += deliverChildOrder.getDiscountPrice()
-								* deliverChildOrder.getOrderCount();
-					}
+					.deliverGetOrder(requestMap);
+			if(deliverOrders.size()<=0){
+				map.put(Constants.STATUS, Constants.FAILURE);
+				map.put(Constants.MESSAGE, "订单列表为空，请检查phoneId和campusId是否正确。如正确，则当前没有要配送的订单");
+			}else{
+				for (DeliverOrder deliverOrder : deliverOrders) {
+					String togetherId = deliverOrder.getTogetherId();
+					// 获取订单食品集
+					List<DeliverChildOrder> deliverChildOrders = orderService
+							.getDeliverChildOrders(togetherId);
+					Float priceFloat = 0f;
+					priceFloat = orderService.getTotalPriceByTogetherId(togetherId);
+//					// 获取该笔订单总价
+//					for (DeliverChildOrder deliverChildOrder : deliverChildOrders) {
+//						if (deliverChildOrder.getIsDiscount() == 0) {
+//							priceFloat += deliverChildOrder.getPrice()
+//									* deliverChildOrder.getOrderCount();
+//						} else {
+//							priceFloat += deliverChildOrder.getDiscountPrice()
+//									* deliverChildOrder.getOrderCount();
+//						}
+//					}
+					deliverOrder.setTotalPrice(priceFloat);
+					deliverOrder.setOrderList(deliverChildOrders);
 				}
-				deliverOrder.setTotalPrice(priceFloat);
-				deliverOrder.setOrderList(deliverChildOrders);
-			}
 
-			map.put(Constants.STATUS, Constants.SUCCESS);
-			map.put(Constants.MESSAGE, "获取订单成功！");
-			map.put("orderList", JSONArray.parse(JSON
-					.toJSONStringWithDateFormat(deliverOrders, "yyyy-MM-dd")));
+				map.put(Constants.STATUS, Constants.SUCCESS);
+				map.put(Constants.MESSAGE, "获取配送订单成功！");
+				map.put("orderList", JSONArray.parse(JSON
+						.toJSONStringWithDateFormat(deliverOrders, "yyyy-MM-dd")));
+			}
 		} catch (Exception e) {
 			map.put(Constants.STATUS, Constants.FAILURE);
-			map.put(Constants.MESSAGE, "获取订单失败！");
+			map.put(Constants.MESSAGE, "获取配送订单失败！");
 		}
 
 		return map;

@@ -58,7 +58,15 @@
 										//alert(data);
 										document.cookie = "campusId="+data.seller.campusId;
 										document.cookie = "type="+data.seller.type;
-										window.location.href="index.html?backurl="+window.location.href;
+										//获取校区状态（0休息，1营业）并写入Cookie
+										$.post("campus/getCampusById.do",{
+											campusId : data.seller.campusId
+										},function(data){
+											document.cookie = "status="+data.campus.status;
+											//跳转到主页
+											window.location.href="index.html?backurl="+window.location.href;
+										},"json");
+										
 									},"json");
 								}else if($("#dropdownMenu1").text()=='校区管理员'){
 									$("#message").html("对不起，您不是校区管理员！");

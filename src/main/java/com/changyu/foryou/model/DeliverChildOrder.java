@@ -14,7 +14,7 @@ public class DeliverChildOrder {
 	private Short isDiscount;
 
 	private Integer orderCount;
-
+	
 	//private String  imageUrl;
 
 //	private String specialName;
