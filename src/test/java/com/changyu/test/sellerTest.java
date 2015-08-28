@@ -47,6 +47,7 @@ public class sellerTest {
 	 * @param password
 	 * */
 
+	@Test
 	public void toLogin() {
 //		case1
 //		String campusAdmin="18860902711";
@@ -88,6 +89,7 @@ public class sellerTest {
 	 
 	 * */
 	
+	@Test
 	public void getSellerById()
 	{
 //		String campusAdmin="18860902711";
@@ -108,7 +110,7 @@ public class sellerTest {
 	 * @return
 	 */
 	
-
+    @Test
 	public void registerIn()
 	{
 //		case1.2
