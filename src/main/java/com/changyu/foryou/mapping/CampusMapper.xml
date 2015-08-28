@@ -275,4 +275,20 @@
 		where
 		campus_id=#{campusId,jdbcType=INTEGER}
 	</update>
+	
+	<select id="getOldPassword" resultType="String">
+	   select
+	      password
+	   from
+	      campus_admin
+	   where campus_admin=#{campusAdmin,jdbcType=VARCHAR} and campus_id=#{campusId,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateCampusAdminPassword">
+		update
+		  campus_admin
+		set
+		   password=#{newPassword,jdbcType=VARCHAR}
+		where campus_admin=#{campusAdmin,jdbcType=VARCHAR} and campus_id=#{campusId,jdbcType=VARCHAR} 
+	</update>
 </mapper>
