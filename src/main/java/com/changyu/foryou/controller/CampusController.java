@@ -106,7 +106,7 @@ public class CampusController {
 		return map;
 	}
 	
-	//一键关店
+	//一键关店、开店
 	/**
 	 * 
 	 * @param campusId
@@ -116,7 +116,7 @@ public class CampusController {
 	 * @return
 	 */
 	@RequestMapping("/closeCampus")
-	public @ResponseBody Map<String, Object> closeCampus(@RequestParam Integer campusId, @RequestParam String closeReason, @RequestParam Short status){
+	public @ResponseBody Map<String, Object> closeCampus(@RequestParam Integer campusId, String closeReason, @RequestParam Short status){
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		Map<String, Object> responseMap = new HashMap<String,Object>();
 		try{
@@ -126,15 +126,26 @@ public class CampusController {
 			//requestMap.put("closeTime", date);
 			requestMap.put("closeReason", closeReason);
 			requestMap.put("status", status);
-			Integer isClosed = campusService.closeCampus(requestMap);
+			Integer flag = campusService.closeCampus(requestMap);
 			
-			responseMap.put("isClosed", isClosed);
-			responseMap.put(Constants.STATUS, Constants.SUCCESS);
-			responseMap.put(Constants.MESSAGE, "关店成功！");
+			if(status==1){
+				responseMap.put("isOpened", flag);
+				responseMap.put(Constants.STATUS, Constants.SUCCESS);
+				responseMap.put(Constants.MESSAGE, "开店成功！");
+			}else if(status==0){
+				responseMap.put("isClosed", flag);
+				responseMap.put(Constants.STATUS, Constants.SUCCESS);
+				responseMap.put(Constants.MESSAGE, "关店成功！");
+			}
 		}catch(Exception e){
 			e.getStackTrace();
-			responseMap.put(Constants.STATUS, Constants.FAILURE);
-			responseMap.put(Constants.MESSAGE, "关店失败！");
+			if(status==1){
+				responseMap.put(Constants.STATUS, Constants.FAILURE);
+				responseMap.put(Constants.MESSAGE, "开店失败！");
+			}else if(status==0){
+				responseMap.put(Constants.STATUS, Constants.FAILURE);
+				responseMap.put(Constants.MESSAGE, "关店失败！");
+			}
 		}
 		return responseMap;
 	}

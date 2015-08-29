@@ -404,7 +404,7 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message,pay_way,total_price
+		discount_price,food.message as message,pay_way,total_price,is_full_discount
 		from
 		orders,food
 		where
@@ -568,13 +568,14 @@
 	message,
 	reserve_time,
 	total_price,address,
-	admin_phone
+	admin_phone,
+	admin_name
 	FROM
 	together_order
 	WHERE
 	campus_id = #{campusId,jdbcType=INTEGER}
 	AND tag = #{tag,jdbcType=SMALLINT}
-	AND status = #{status,jdbcType=SMALLINT}
+	AND status IN (2,3)
 	<if test="isSelected == 0">
 		AND admin_phone IS NULL
 	</if>
@@ -599,13 +600,14 @@
 	</select>
 
 	<!-- 设置配送员 -->
+	<!-- 因为setDeliverAdmin接口修改了订单状态为3，所以用status IN (2,3) -->
 	<update id="setDeliverAdmin">
 		update
 		orders
 		set
 		admin_phone=#{adminPhone,jdbcType=VARCHAR}
 		where together_id=
-		#{togetherId,jdbcType=VARCHAR} and status = 2
+		#{togetherId,jdbcType=VARCHAR} and status IN (2,3)
 	</update>
 
 	<!-- 配送员获取大订单列表 -->
@@ -798,6 +800,7 @@
 		order by together_date DESC,create_time DESC		
 	</select>
 	
+	<!-- 修改订单状态 -->
 	<update id="modifyOrderStatus">
 	update orders set 
 	<if test="status != null">

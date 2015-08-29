@@ -40,4 +40,5 @@ public class Preferential {
     public void setDiscountNum(Integer discountNum) {
         this.discountNum = discountNum;
     }
+
 }

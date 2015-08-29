@@ -47,7 +47,7 @@ a:hover {
 				<ul class='nav pull-right'>
 					<li>
 						<div>
-							<button type="button" id="one_key_open" class="btn btn-default">一键开店</button>						
+							<button type="button" id="one_key_open" onclick="oneKeyOpen()" class="btn btn-default">一键开店</button>						
 						</div>
 					</li>
 					<li>
@@ -112,7 +112,14 @@ a:hover {
 
 							</a>
 						</figure><hr/></li>
-					
+					<li>
+						<figure>
+							<a href="pages/preferential.html" target="content">
+								<i class="icon-shopping-cart"></i>满减优惠
+							</a>
+						</figure>
+						<hr/>
+					</li>
 					<li><figure>
 							<a href="pages/food_comment.html" target="content"> <i
 								class='icon-thumbs-up'></i> 食品评价&nbsp;&nbsp;
@@ -197,9 +204,46 @@ a:hover {
 		</section>
 	</section>
 <script>
+//定义全局变量
+var adminType = getCookie("type");		//当前登录账号类型（总管理员、校区管理员）
+var campusId = getCookie("campusId");	
+var status = getCookie("status");		//校区状态
+</script>
+<script>
+//定义通用方法
+//一键开店
+function oneKeyOpen(){
+	$.post("campus/closeCampus.do",{
+		campusId : campusId,
+		status : 1
+	},function(data){
+		alert(data.message);
+		if(data.status=="success"){
+			//更新cookie
+			document.cookie="status=1";
+			
+		}else if(data.status=="failure"){
+			//do nothing
+		}
+	},"json");
+}
+</script>
+<script>
 $(function(){
 	//根据校区状态显示或隐藏“一键开店”按钮
-	
+	//如果是总校区管理员，隐藏“一键开店”按钮
+	if(adminType==0){
+		//校区管理员
+		if(status==0){
+			//校区处于休息状态
+		}else if(status==1){
+			//校区处于营业状态
+			$("#one_key_open").hide();
+		}
+	}else if(adminType==1){
+		//总管理员
+		$("#one_key_open").hide();
+	}
 	
 	//根据管理员类型判断是否显示校区下拉菜单
 	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单，且隐藏校区管理和校区管理员管理
@@ -233,8 +277,8 @@ $(function(){
 	$("#dropdown-campus").empty();//移除子元素
 	$.getJSON("campus/getAllCampus.do", function(data){
 		//alert(data.campus[0].campusName);
-		for(var i=0; i < data.campus.length; i++){
-			$("#dropdown-campus").append("<li role='presentation'><a class='campus-item' role='menuitem' tabindex='-1' href='#'>"+data.campus[i].campusName+"</a></li>");
+		for(var i=0; i < data.length; i++){
+			$("#dropdown-campus").append("<li role='presentation'><a class='campus-item' role='menuitem' tabindex='-1' href='#'>"+data[i].campusName+"</a></li>");
 		}
 		$(".campus-item").on("click", function(event){
 			//alert($(this).text());
