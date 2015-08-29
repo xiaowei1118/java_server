@@ -41,4 +41,8 @@ public interface CampusService {
 	City getCityByName(String cityName);
 	
 	Integer updateCampus(Map<String, Object> paramMap);
+
+	String getOldPassword(Map<String, Object> paramMap);
+
+	int updateCampusAdminPassword(Map<String, Object> paramMap);
 }

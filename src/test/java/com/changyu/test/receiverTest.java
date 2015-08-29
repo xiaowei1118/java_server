@@ -110,6 +110,7 @@ public class receiverTest {
 	 * @return
 	 */
 	
+	@Test
 	public void relectReceiver(){
 //		String phoneId="18896554880";
 //		case2
@@ -140,7 +141,7 @@ public class receiverTest {
 	 * @param campusId 校区
 	 * @return
 	 */
-	
+	@Test
 	public void updateReceiver(){
 //			case1
 //	        String phoneId="18896554880";
@@ -211,6 +212,7 @@ public class receiverTest {
 	 * @return
 	 */
 
+	@Test
 	public void setDefaultAddress(){
 //		case1
 //		String phoneId="18896554880";

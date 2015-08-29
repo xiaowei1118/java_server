@@ -157,38 +157,42 @@ public class CampusServiceImpl implements CampusService {
 
 	@Override
 	public Integer deleteCampusAdmin(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return campusMapper.deleteCampusAdmin(paramMap);
 	}
 
 	@Override
 	public Integer addCampusAdmin(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return campusMapper.insertCampusAdmin(paramMap);
 	}
 
 	@Override
 	public List<City> getAllCity() {
-		// TODO Auto-generated method stub
 		return campusMapper.selectAllCity();
 	}
 
 	@Override
 	public Integer addCity(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return campusMapper.insertCity(paramMap);
 	}
 
 	@Override
 	public City getCityByName(String cityName) {
-		// TODO Auto-generated method stub
 		return campusMapper.getCityByName(cityName);
 	}
 
 	@Override
 	public Integer updateCampus(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return campusMapper.updateCampus(paramMap);
+	}
+
+	@Override
+	public String getOldPassword(Map<String, Object> paramMap) {
+		return campusMapper.getOldPassword(paramMap);
+	}
+
+	@Override
+	public int updateCampusAdminPassword(Map<String, Object> paramMap) {
+		return campusMapper.updateCampusAdminPassword(paramMap);
 	}
 
 }

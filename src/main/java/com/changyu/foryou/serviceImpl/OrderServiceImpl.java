@@ -266,7 +266,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.getCampusIdByTogetherId(paramMap);
 	}
 	
-	//
+	/**
+	 * 计算折扣和优惠后的价格
+	 */
 	public  Float getPriceDiscounted(String[] orderId,int campusId,String phoneId){
 		//获取满减的信息
 		Map<String,Object> paramMap=new HashMap<String,Object>();
@@ -300,8 +302,9 @@ public class OrderServiceImpl implements OrderService {
 		
 		Integer discount=0;  
 		for (Preferential preferential : prefers) {
-			if(fullDiscount>preferential.getNeedNumber()){
+			if(fullDiscount>=preferential.getNeedNumber()){
 				discount=preferential.getDiscountNum();
+				
 				break;
 			}
 		}

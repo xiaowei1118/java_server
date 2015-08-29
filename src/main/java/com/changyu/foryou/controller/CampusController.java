@@ -23,6 +23,7 @@ import com.changyu.foryou.model.CityWithCampus;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.tools.Constants;
+import com.changyu.foryou.tools.Md5;
 
 @Controller
 @RequestMapping("/campus")
@@ -382,4 +383,39 @@ public class CampusController {
 		return responseMap;
 	}
 	
+	
+	@RequestMapping("/updateCampusAdminPassword")
+	public @ResponseBody Map<String,Object> updateCampusAdminPassword(Integer campusId,String campusAdmin,String oldPassword,String newPassword){
+		Map<String,Object> resultMap=new HashMap<>();
+		
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();
+			paramMap.put("campusId",campusId);
+			paramMap.put("campusAdmin",campusAdmin);
+			
+			String password=campusService.getOldPassword(paramMap);
+			
+			if(password.equals(Md5.GetMD5Code(oldPassword))){
+				paramMap.put("newPassword",newPassword);
+				
+				int flag=campusService.updateCampusAdminPassword(paramMap);
+				if(flag!=-1){
+					resultMap.put(Constants.STATUS, Constants.SUCCESS);
+					resultMap.put(Constants.MESSAGE,"修改密码成功");
+				}else{
+					resultMap.put(Constants.STATUS, Constants.FAILURE);
+					resultMap.put(Constants.MESSAGE,"修改密码失败");
+				}
+			}else{
+				resultMap.put(Constants.STATUS, Constants.FAILURE);
+				resultMap.put(Constants.MESSAGE,"原密码输入错误请重新输入");
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE,"修改密码失败");
+		}
+		
+		return resultMap;
+	}
 }

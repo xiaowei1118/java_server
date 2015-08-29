@@ -573,6 +573,7 @@ public class OrderController {
 			if(Math.abs(serverPrice-totalPrice)>=1){            //判断客户端价格和服务器端价格是否一致
 				map.put(Constants.STATUS,Constants.FAILURE); 
 				map.put(Constants.MESSAGE,"价格有误"); 
+				System.out.println(serverPrice);
 				return map;
 			}
 			//写入单价操作

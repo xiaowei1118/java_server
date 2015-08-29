@@ -386,7 +386,7 @@ public class orderTest {
 	@Test
 	public void testCalcularPrice(){
 		String[] orderIds={
-				"2429775447983","1488888888888","1477777777777"
+				"1440642075330"
 		};
 		Map<String,Object> paramMap=new HashMap<String,Object>();
 		paramMap.put("campusId", 1);

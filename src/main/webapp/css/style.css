@@ -550,3 +550,26 @@ button.sp{
     margin-left:0 !important;
     padding-left:0;
 }
+
+/**提示样式*/
+#info{
+    width: 180px;
+    height: 26px;
+    background: #FF6347;
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    margin-left: -90px;
+    font-weight: bold;
+    font-size:14px;
+    display: none;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    position: fixed;
+    z-index: 99;
+}
+
+.none{
+    display: none;
+}
