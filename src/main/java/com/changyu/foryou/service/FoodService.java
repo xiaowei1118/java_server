@@ -7,6 +7,7 @@ import com.changyu.foryou.model.Food;
 import com.changyu.foryou.model.FoodCategory;
 import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
+import com.changyu.foryou.model.FoodWithSales;
 import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.ShortFood;
 import com.changyu.foryou.model.ShortFoodWithIm;
@@ -103,4 +104,6 @@ public interface FoodService {
 	Integer calCommentCount(Map<String, Object> paramMap);
 	
 	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap);
+	
+	List<FoodWithSales> getTopFive(Map<String, Object> paramMap);
 }

@@ -15,6 +15,7 @@ import com.changyu.foryou.model.FoodCategory;
 import com.changyu.foryou.model.FoodComment;
 import com.changyu.foryou.model.FoodSpecial;
 import com.changyu.foryou.model.FoodSpecialKey;
+import com.changyu.foryou.model.FoodWithSales;
 import com.changyu.foryou.model.HomeCategory;
 import com.changyu.foryou.model.ShortFood;
 import com.changyu.foryou.model.ShortFoodWithIm;
@@ -271,6 +272,12 @@ public class FoodServiceImpl implements FoodService{
 	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return foodCategoryMapper.addCategoryWhenAddCampus(paramMap);
+	}
+
+	@Override
+	public List<FoodWithSales> getTopFive(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodMapper.getTopFive(paramMap);
 	}
 	
 }

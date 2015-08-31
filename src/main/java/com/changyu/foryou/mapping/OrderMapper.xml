@@ -32,6 +32,7 @@
 		<result column="img_url" property="imageUrl" jdbcType="VARCHAR" />
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
 		<result column="is_full_discount" property="isFullDiscount" jdbcType="TINYINT" />
+		<result column="message" property="message" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 配送员配送界面model -->
@@ -308,7 +309,7 @@
 		tag,img_url,food.status as status,
 		orders.order_count as order_count
 		,food.is_discount as is_discount,
-		food.price as price,food.name as name,discount_price,is_full_discount
+		food.price as price,food.name as name,discount_price,is_full_discount,message
 		from orders,food
 		where
 		orders.food_id=food.food_id and orders.campus_id = food.campus_id and phone =
@@ -898,7 +899,7 @@
     <!-- 获取一笔小订单 -->
      <select id="getOrderByOrderId" resultMap="CartGoodMap">
        select 
-         is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count
+         is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count,message
        from
          orders,food
        where 

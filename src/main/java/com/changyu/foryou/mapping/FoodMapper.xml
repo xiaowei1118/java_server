@@ -44,6 +44,12 @@
 		<id column="food_id" property="foodId" jdbcType="BIGINT" />
 		<result column="home_image" property="homeImgUrl" jdbcType="VARCHAR" />
 	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.FoodWithSales" id="FoodWithSalesResultMap">
+		<id column="food_id" property="foodId" jdbcType="BIGINT"/>
+		<result column="food_name" property="foodName" jdbcType="VARCHAR"/>
+		<result column="sales" property="sales" jdbcType="INTEGER"/>
+	</resultMap>
 
 	<sql id="Base_Column_List">
 		food_id,campus_id, name, price, discount_price, grade,
@@ -498,5 +504,22 @@
 		</if>
 		where food_id=#{foodId, jdbcType=BIGINT}
 	</update>
+	
+	<select id="getTopFive" resultMap="FoodWithSalesResultMap">
+	SELECT orders.food_id,food.name as food_name,SUM(orders.order_count) as sales from orders,food
+		<where>
+		  orders.food_id=food.food_id 
+		<if test="dateStart!=null">
+			AND together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="dateEnd!=null">
+			AND #{dateEnd,jdbcType=TIMESTAMP}
+		</if>
+		</where>
+		GROUP BY food_id ORDER BY SUM(order_count) DESC
+		<if test="limit != null and offset != null">
+		limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+		</if>
+	</select>
 </mapper>
 

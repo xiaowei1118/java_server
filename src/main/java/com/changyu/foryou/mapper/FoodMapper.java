@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.changyu.foryou.model.Food;
+import com.changyu.foryou.model.FoodWithSales;
 import com.changyu.foryou.model.ShortFood;
 import com.changyu.foryou.model.ShortFoodWithIm;
 import com.changyu.foryou.model.VeryShortFood;
@@ -45,4 +46,6 @@ public interface FoodMapper {
 	Integer updateInfoByFoodId(Map<String, Object> paramMap);//更新食品详情图片
 	
 	Integer cancelRecommend(Map<String, Object> paramMap);//取消推荐
+	
+	List<FoodWithSales> getTopFive(Map<String, Object> paramMap);
 }
