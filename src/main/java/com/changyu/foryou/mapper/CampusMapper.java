@@ -56,4 +56,6 @@ public interface CampusMapper {
 	String getOldPassword(Map<String, Object> paramMap);           //获取原密码
 
 	int updateCampusAdminPassword(Map<String, Object> paramMap);   //更新密码
+
+	String getCampusName(Integer campusId);
 }

@@ -16,7 +16,7 @@ public class TogetherOrder {
     private Short payWay;
     
     private Float totalPrice;
-    
+     
 	public Short getPayWay() {
 		return payWay;
 	}

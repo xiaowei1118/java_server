@@ -110,4 +110,15 @@ public interface OrderMapper {
 	CartGood getOrderByOrderId(Map<String, Object> paramMap);            //获取某笔小订单
 
 	Integer cancelOrderWithRefund(Map<String, Object> paramMap);
+
+	List<SuperAdminOrder> getPCOrdersNew(Map<String, Object> paramMap);
+
+	int updateCancelRefund(Map<String, Object> paramMap);            //取消退款
+
+	String getChargeId(Map<String, Object> paramMap);
+
+	Integer updateRefundStatus(Map<String, Object> paramMap);   //更新退款信息状态
+
+	Integer updateorderStatusRefundSuccess(Map<String, Object> paramMap);  //将状态置为11
+
 }

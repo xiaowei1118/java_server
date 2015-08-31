@@ -195,4 +195,9 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.updateCampusAdminPassword(paramMap);
 	}
 
+	@Override
+	public String getCampusName(Integer campusId) {
+		return campusMapper.getCampusName(campusId);
+	}
+
 }

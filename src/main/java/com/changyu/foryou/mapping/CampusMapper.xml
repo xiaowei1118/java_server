@@ -281,7 +281,7 @@
 	      password
 	   from
 	      campus_admin
-	   where campus_admin=#{campusAdmin,jdbcType=VARCHAR} and campus_id=#{campusId,jdbcType=VARCHAR}
+	   where campus_admin=#{campusAdmin,jdbcType=VARCHAR}
 	</select>
 	
 	<update id="updateCampusAdminPassword">
@@ -289,6 +289,13 @@
 		  campus_admin
 		set
 		   password=#{newPassword,jdbcType=VARCHAR}
-		where campus_admin=#{campusAdmin,jdbcType=VARCHAR} and campus_id=#{campusId,jdbcType=VARCHAR} 
+		where campus_admin=#{campusAdmin,jdbcType=VARCHAR}
 	</update>
+	
+	<select id="getCampusName" parameterType="Integer" resultType="String">
+	   select campus_name
+	   from campus
+	   where 
+	     campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
 </mapper>

@@ -3,10 +3,20 @@ package com.changyu.foryou.payment;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.ResultMap;
+
+import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.tools.Constants;
 import com.pingplusplus.Pingpp;
+import com.pingplusplus.exception.APIConnectionException;
+import com.pingplusplus.exception.APIException;
+import com.pingplusplus.exception.AuthenticationException;
+import com.pingplusplus.exception.ChannelException;
+import com.pingplusplus.exception.InvalidRequestException;
 import com.pingplusplus.exception.PingppException;
 import com.pingplusplus.model.Charge;
+import com.pingplusplus.model.Refund;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.Static;
 
 public class ChargeInterface {
 	/**
@@ -18,11 +28,11 @@ public class ChargeInterface {
 	 */
 	public static String appId = Constants.appId;
 	
-	 public static Charge charge(String channel,String orderId,Integer amount,String clientIp) {
+	 public static Charge charge(String channel,String orderId,Float amount,String clientIp) {
 		    Pingpp.apiKey = apiKey;
 	        Charge charge = null;
 	        Map<String, Object> chargeMap = new HashMap<String, Object>();
-	        chargeMap.put("amount", amount);                        //金额，以分为单位
+	        chargeMap.put("amount", (int)(amount*100));                        //金额，以分为单位
 	        chargeMap.put("currency", "cny");
 	        chargeMap.put("subject", "For优商品");            //商品的标题
 	        chargeMap.put("body", "For优商品值得信赖");                  //商品的描述
@@ -41,5 +51,30 @@ public class ChargeInterface {
 	        }
 	        return charge;
 	    }
+	 
+	 public static Refund Refund(String chargeId,Float price){
+		 Pingpp.apiKey = apiKey;
+		 Charge ch;
+		try {
+			 ch = Charge.retrieve(chargeId);
+			 Map<String, Object> refundMap = new HashMap<String, Object>();
+	    	 System.out.println("charge=="+JSON.toJSONString(ch));
+	    	 refundMap.put("amount", (int)(price*100));
+	    	 refundMap.put("description","For优商品正常退款");
+	    	 Refund re = ch.getRefunds().create(refundMap);
+	    	 return re;
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		} catch (InvalidRequestException e) {
+			e.printStackTrace();
+		} catch (APIConnectionException e) {
+			e.printStackTrace();
+		} catch (APIException e) {
+			e.printStackTrace();
+		} catch (ChannelException e) {
+			e.printStackTrace();
+		}
+    	return null;
+	 }
 
 }

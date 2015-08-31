@@ -25,7 +25,7 @@
 		<div class="container">
 			<div class="row-fluid">
 				<div class="page-header">
-					<h1>零食分类管理</h1>
+					<h1>商品分类管理</h1>
 				</div>
 
 				<div id="toolbar" class="btn-group">
@@ -54,16 +54,16 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-align="center" data-field="foodId">食品Id</th>
+							<th data-align="center" data-field="foodId">商品Id</th>
 							<th data-align="center" data-field="name">昵称</th>
-							<th data-align="center" data-field="price">食品价格</th>
+							<th data-align="center" data-field="price">商品价格</th>
 							<th data-align="center" data-field="discountPrice"
 							data-sortable="true">折扣价</th>
-							<th data-align="center" data-field="status" data-sortable="true">食品状态</th>
+							<th data-align="center" data-field="status" data-sortable="true">商品状态</th>
 							<th data-align="center" data-field="primePrice"
 							data-sortable="true">成本价</th>
 							<th data-align="center" data-field="foodFlag"
-							data-sortable="true">食品标签</th>
+							data-sortable="true">商品标签</th>
 						</tr>
 					</thead>
 				</table>
@@ -79,24 +79,24 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-				<h3 class="modal-title" id="myModalLabel">添加食品</h3>
+				<h3 class="modal-title" id="myModalLabel">添加商品</h3>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<div class="control-group">
-						<label class="control-label" for="foodId">食品Id</label>
+						<label class="control-label" for="foodId">商品Id</label>
 						<div class="controls">
 							<input type="text" id="foodId" placeholder="Food Id">
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="foodName">食品名称</label>
+						<label class="control-label" for="foodName">商品名称</label>
 						<div class="controls">
 							<input type="text" id="foodName" placeholder="Food Name">
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="price">食品价格</label>
+						<label class="control-label" for="price">商品价格</label>
 						<div class="controls">
 							<input type="text" id="price" placeholder="Present Price">
 							<span class="add-on">￥</span>
@@ -117,21 +117,21 @@
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="foodTag">食品标签</label>
+						<label class="control-label" for="foodTag">商品标签</label>
 						<div class="controls">
-							<input type="text" id="foodTag" placeholder="食品标签之间请以逗号隔开">
+							<input type="text" id="foodTag" placeholder="商品标签之间请以逗号隔开">
 						</div>
 					</div>
 
 					<div class="control-group">
-						<label class="control-label" for="imgUrl">食品图片</label>
+						<label class="control-label" for="imgUrl">商品图片</label>
 						<div class="controls">
 							<input type="file" id="primeCost" placeholder="Choose Picture">
 						</div>
 					</div>
 
 					<div class="control-group">
-						<label class="control-label" for="status">食品状态</label>
+						<label class="control-label" for="status">商品状态</label>
 						<div class="controls">
 							<label class="radio inline"> <input type="radio"
 								name="optionsRadios" id="status" value="1" checked> 上架
@@ -178,7 +178,7 @@
 			} else if (array.length == 0) {
 				alert("请先选中某条记录！");
 			} else {
-				$("#myModalLabel").text("编辑食品");
+				$("#myModalLabel").text("编辑商品");
 				$("#myModal").modal('show');
 
 			}
@@ -187,7 +187,7 @@
 
 	$(function() {
 		$plusButton.click(function() {
-			$("#myModalLabel").text("添加食品");
+			$("#myModalLabel").text("添加商品");
 			$("#myModal").modal('show');
 		});
 	});

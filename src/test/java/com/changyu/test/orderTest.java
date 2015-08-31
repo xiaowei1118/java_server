@@ -268,7 +268,7 @@ public class orderTest {
 			map.put(Constants.STATUS, Constants.SUCCESS);
 			map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
 			//String clientIp=getIpAddr(request);
-			map.put("charge", ChargeInterface.charge("alipay",togetherId,(int)(totalPrice*100),"127.0.0.1"));
+			map.put("charge", ChargeInterface.charge("alipay",togetherId,totalPrice,"127.0.0.1"));
 			// 开启线程去访问极光推送
 			//pushService.sendPush("18896554880","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。for优。", 1); 
 			new Thread(new Runnable() {
@@ -320,11 +320,10 @@ public class orderTest {
 	 */
 	@Test
 	 public void updateOrderStatusAndAmount(){
-		 Map<String,Object> paramMap=new HashMap<String,Object>();
-		 
-		  paramMap.put("togetherId", "153651867351430139990413");
-		  
+		 Map<String,Object> paramMap=new HashMap<String,Object>();	 
+		  paramMap.put("togetherId", "153651867351430139990413");  
       	  paramMap.put("amount",300*1.0/100);
+      	  paramMap.put("chargeId", "ch_TuDqzDrnHW9Ka94KeTbT88i1");
       	  int flag=orderService.updateOrderStatusAndAmount(paramMap);   
       	  System.out.println(flag);
 	 }

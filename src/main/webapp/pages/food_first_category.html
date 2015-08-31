@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>无标题文档</title>
+	<title>分类管理</title>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
 	<link rel="shortcut icon" href="img/icon.png">
@@ -33,7 +33,7 @@
 			<div class="container">
 				<div class="row-fluid">
 					<div class="page-header">
-						<h1>零食分类管理</h1>
+						<h1>商品分类管理</h1>
 					</div>
 					
 					<div style="text-align:center;">
@@ -67,7 +67,7 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-align="center" data-field="categoryId">食品分类Id</th>
+							<th data-align="center" data-field="categoryId">商品分类Id</th>
 							<th data-align="center" data-field="category">分类名称</th>
 							<th data-align="center" data-field="isOpen" data-formatter="isOpenFormatter">是否开通</th>
 							<th data-align="center" data-field="dasd" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
@@ -85,13 +85,13 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-				<h3 class="modal-title" id="myModalLabel">添加食品</h3>
+				<h3 class="modal-title" id="myModalLabel">添加商品</h3>
 			</div>
 
 			<form class="form-horizontal">
 				<div class="modal-body">
 					<div class="control-group">
-						<label class="control-label" for="category_id">食品分类Id</label>
+						<label class="control-label" for="category_id">商品分类Id</label>
 						<div class="controls">
 							<input type="text" id="category_id" placeholder="Category Id">
 						</div>
@@ -259,7 +259,7 @@ var campusId = getCookie("campusId");
 			} else if (array.length == 0) {
 				alert("请先选中某条记录！");
 			} else {
-				$("#myModalLabel").text("编辑食品分类");
+				$("#myModalLabel").text("编辑商品分类");
 				$("#myModal").modal('show');           
 				$("#category_id").val(array[0].categoryId);
 				$("#category_name").val(array[0].category);
@@ -302,7 +302,7 @@ var campusId = getCookie("campusId");
 	$(function() {
 		$plusButton.click(function() {
 			flag=0;
-			$("#myModalLabel").text("添加食品分类");
+			$("#myModalLabel").text("添加商品分类");
 			$("#category_id").attr("disabled",false);
 			$("#myModal").modal('show');
 			

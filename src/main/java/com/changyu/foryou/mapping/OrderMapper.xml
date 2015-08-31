@@ -870,7 +870,8 @@
 
    <!-- 根据togetherId获取该笔大订单总价 -->
    <select id="selectTotalPriceByTogetherId" resultType="FLOAT">
-   select total_price from together_order where together_id=#{togetherId,jdbcType=VARCHAR}
+     select 
+     total_price from orders where together_id=#{togetherId,jdbcType=VARCHAR} limit 1
    </select>
 
    <!-- 支付完成后更新价格和状态 -->
@@ -878,8 +879,8 @@
        update
         orders
         set total_price=#{amount,jdbcType=REAL},
-        status=2
-        where together_id=#{togetherId,jdbcType=VARCHAR}   
+        status=2 ,charge_id=#{chargeId,jdbcType=VARCHAR}
+       where together_id=#{togetherId,jdbcType=VARCHAR}   
     </update>
     
     <!-- 根据订单号获取校区号 -->
@@ -903,6 +904,7 @@
          and order_id=#{orderId,jdbcType=BIGINT} and phone = #{phoneId,jdbcType=VARCHAR}
     </select>
     
+    <!-- 取消订单，并置为退款状态 -->
     <update id="cancelOrderWithRefund">
          update 
             orders
@@ -912,4 +914,51 @@
             together_id=#{togetherId,jdbcType=VARCHAR}
     </update>
 
+
+     <!--获取客户端订单 -->
+    <select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
+    	select 
+    	    together_id,custome_phone as phone,together_date,total_price as price,address
+    	from together_order
+    	where tag=1 and status=#{status} 
+    	<if test="campusId != null">
+    		and campus_id=#{campusId,jdbcType=INTEGER}
+    	</if>
+    </select>
+    
+    <!-- 退款订单取消退款  -->
+    <update id="updateCancelRefund">
+       update 
+          orders
+       set 
+          status=4
+       where
+       		together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 获取订单的chargeId -->
+    <select id="getChargeId" resultType="String">
+    	select 
+    	  charge_id
+    	 from 
+    	   orders
+    	 where together_id=#{togetherId,jdbcType=VARCHAR}
+    	 limit 1
+    </select>
+    
+    <!-- 更新退款订单状态，推给总校区管理员 -->
+    <update id="updateRefundStatus">
+       update
+          orders
+       set status=10
+       where together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 更新退款订单状态，推给管理员 -->
+    <update id="updateorderStatusRefundSuccess">
+       update
+          orders
+       set status=11
+       where together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
 </mapper>

@@ -105,7 +105,7 @@
 		FROM food_comment,users,orders
 		WHERE
 		food_comment.phone = users.phone and  food_comment.order_id =orders.order_id AND food_comment.food_id=#{foodId,jdbcType=BIGINT} 	and food_comment.campus_id=#{campusId,jdbcType=INTEGER}
-		AND food_comment.tag=1  and comment is not null and comment !=' '
+		AND food_comment.tag=1
 		<if test="limit!=null and offset !=null">
 			LIMIT #{limit} OFFSET #{offset,jdbcType=INTEGER}
 		</if>
