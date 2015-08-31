@@ -2,25 +2,15 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 	<title>商品管理</title>
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
+	<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
     <link rel="shortcut icon" href="img/icon.png">
-</head>
-
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-
-
-<!-- <script src="../js/bootstrap-table.min.js"></script>
-	<script src="../js/bootstrap-table-zh-CN.min.js"></script> -->
-
-	<script
-	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/bootstrap-table.min.js"></script>
-
-	<script
-	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.4.0/locale/bootstrap-table-zh-CN.min.js"></script>
-	<script src="../js/util.js"></script>
 	<style>
 		.ml10 {
 			margin-left: 10px;
@@ -33,6 +23,7 @@
 			visibility:hidden
 		}
 	</style>
+</head>
 	<body>
 		<div class="container">
 			<div class="row-fluid">
@@ -52,13 +43,13 @@
 
 				<div id="toolbar" class="btn-group">
 					<button id="plus" type="button" class="btn btn-default">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 					</button>
 					<button id="edit" type="button" class="btn btn-default">
-						<i class="icon-edit"></i>
+						<i class="glyphicon glyphicon-edit"></i>
 					</button>
 					<button id="delete" type="button" class="btn btn-default">
-						<i class="icon-trash"></i>
+						<i class="glyphicon glyphicon-minus"></i>
 					</button>
 				</div>
 				<div>
@@ -70,8 +61,9 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
+
 							<th data-align="left" data-field="foodId" data-sortable="true">商品Id</th>
-							<th data-align="left" data-field="name">昵称</th>
+							<th data-align="left" data-field="name">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</th>
 							<th data-align="left" data-field="price" data-sortable="true">商品价格</th>
 							<th data-align="left" data-field="discountPrice"
 							data-sortable="true" data-sortable="true">折扣价</th>
@@ -426,7 +418,24 @@ aria-hidden="true">
 
 </div>
  -->
-</body>
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/jquery.validate.js"></script>
+<script src="../assets/bootstrap-table/messages_cn.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../assets/bootstrap-table/tableExport.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<script src="../js/util.js"></script>
 <script>
 function setSuccess(message){
     if(!message){
@@ -869,4 +878,5 @@ window.homeImageEvents = {
 	
 };
 </Script>
+</body>
 </html>

@@ -3,9 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>无标题文档</title>
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
-    <link rel="shortcut icon" href="img/icon.png">
+	<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+    <link rel="shortcut icon" href="../img/icon.png">
 </head>
 
 <script src="../js/jquery.min.js"></script>
@@ -43,13 +47,9 @@
 					<table data-toggle="table"
 					data-id-field="foodId"         
 					data-toolbar="#toolbar"
-					data-url="../../foryou/food/getAllFoodCategorys.do"
-					data-search="true"
-					data-show-refresh="true"
-					data-show-toggle="true"
-					data-pagination="true"
-					data-show-columns="true" 
-					data-height="80%"
+					data-url="../foryou/service/getAllFoodCategories.do"
+					data-search="true" data-show-refresh="true" data-show-toggle="true"
+					data-pagination="true" data-show-columns="true" data-height="80%"
 					data-click-to-select="true">
 					<thead>
 						<tr>
@@ -58,10 +58,11 @@
 							<th data-align="center" data-field="name">昵称</th>
 							<th data-align="center" data-field="price">商品价格</th>
 							<th data-align="center" data-field="discountPrice"
+
 							data-sortable="true">折扣价</th>
 							<th data-align="center" data-field="status" data-sortable="true">商品状态</th>
 							<th data-align="center" data-field="primePrice"
-							data-sortable="true">成本价</th>
+								data-sortable="true">成本价</th>
 							<th data-align="center" data-field="foodFlag"
 							data-sortable="true">商品标签</th>
 						</tr>
@@ -101,19 +102,19 @@
 							<input type="text" id="price" placeholder="Present Price">
 							<span class="add-on">￥</span>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="discountPrice">折扣价</label>
-						<div class="controls">
-							<input type="text" id="discountPrice"
-							placeholder="Discount Price"> <span class="add-on">￥</span>
+						<div class="control-group">
+							<label class="control-label" for="discountPrice">折扣价</label>
+							<div class="controls">
+								<input type="text" id="discountPrice"
+									placeholder="Discount Price"> <span class="add-on">￥</span>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="primeCost">成本价</label>
-						<div class="controls">
-							<input type="text" id="primeCost" placeholder="Prime Cost">
-							<span class="add-on">￥</span>
+						<div class="control-group">
+							<label class="control-label" for="primeCost">成本价</label>
+							<div class="controls">
+								<input type="text" id="primeCost" placeholder="Prime Cost">
+								<span class="add-on">￥</span>
+							</div>
 						</div>
 					</div>
 					<div class="control-group">
@@ -121,15 +122,7 @@
 						<div class="controls">
 							<input type="text" id="foodTag" placeholder="商品标签之间请以逗号隔开">
 						</div>
-					</div>
-
-					<div class="control-group">
-						<label class="control-label" for="imgUrl">商品图片</label>
-						<div class="controls">
-							<input type="file" id="primeCost" placeholder="Choose Picture">
 						</div>
-					</div>
-
 					<div class="control-group">
 						<label class="control-label" for="status">商品状态</label>
 						<div class="controls">
@@ -139,31 +132,38 @@
 							name="optionsRadios" id="status2" value="0"> 下架
 						</label>
 					</div>
+
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="status">是否打折</label>
-					<div class="controls">
-						<label class="radio inline"> <input type="radio"
-							name="optionsRadios1" id="is_discount" value="0" checked> 不打折
-						</label> <label class="radio inline"> <input type="radio"
-						name="optionsRadios1" id="is_discount2" value="1"> 打折
-					</label>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary">提交更改</button>
 				</div>
 			</div>
-		</form>
+			<!-- /.modal-content -->
+		</div>
 	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-		</button>
-		<button type="button" class="btn btn-primary">提交更改</button>
-	</div>
-</div>
-<!-- /.modal-content -->
-</div>
-</div>
-<!-- /.modal -->
-</body>
-<Script>
+	<!-- /.modal -->
+
+	<script src="../assets/bootstrap-table/jquery.min.js"></script>
+	<script src="../assets/bootstrap-table/jquery.validate.js"></script>
+	<script src="../assets/bootstrap-table/messages_cn.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+	<script src="../assets/bootstrap-table/tableExport.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+	<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+	<script src="../js/util.js"></script>
+	<Script>
 	var $table = $("#table");
 	var $plusButton = $("#plus");
 	var $editButton = $("#edit");
@@ -192,4 +192,5 @@
 		});
 	});
 </Script>
+</body>
 </html>

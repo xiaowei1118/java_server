@@ -159,7 +159,6 @@ public class PayController {
 		paramMap.put("chargeId",chargeId);
 		System.out.println(paramMap);
 		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 ,以及chargeId
-		System.out.println("更新数据"+flag);
 		
 		final Integer campusId=orderService.getCampusIdByTogetherId(paramMap);
 		// 开启线程去访问极光推送

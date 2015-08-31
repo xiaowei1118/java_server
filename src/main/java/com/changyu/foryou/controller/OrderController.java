@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +38,7 @@ import com.changyu.foryou.payment.ChargeInterface;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
+import com.changyu.foryou.service.PreferentialService;
 import com.changyu.foryou.service.PushService;
 import com.changyu.foryou.service.ReceiverService;
 import com.changyu.foryou.service.UserService;
@@ -59,6 +61,10 @@ public class OrderController {
 	private ReceiverService receiverService;
 	private CampusService  campusService;
 	private PushService pushService;
+	
+	@Autowired()
+	@Qualifier("preferentialService")
+	private PreferentialService preferentialService;
 
 	@Autowired
 	public void setReceiverService(ReceiverService receiverService) {
@@ -198,7 +204,6 @@ public class OrderController {
 							.getTogetherDate());
 					togetherOrdersList.add(togetherOrder);
 				}
-				
 				
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
@@ -777,7 +782,6 @@ public class OrderController {
 		requestMap.put("isSelected", isSelected);
 		requestMap.put("campusId", campusId);
 		requestMap.put("tag", 1);		//订单有效
-		requestMap.put("status", 2);		//2，待确认
         //System.out.println(isSelected);
 		if (page != null && limit != null) {
 			requestMap.put("limit", limit);
@@ -813,8 +817,13 @@ public class OrderController {
 			@RequestParam final String adminPhone) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			int flag = orderService.setDeliverAdmin(togetherId, adminPhone); // 设置配送员
-			if (flag != -1 && flag != 0) {
+			int flag1 = orderService.setDeliverAdmin(togetherId, adminPhone); // 设置配送员
+			//修改大订单状态为3（配送中）
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("togetherId", togetherId);
+			paramMap.put("status", 3);
+			int flag2 = orderService.modifyOrderStatus(paramMap);
+			if (flag1 != -1 && flag1 != 0 && flag2!=-1 && flag2!=0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "设置配送员成功！");
 
@@ -1014,7 +1023,7 @@ public class OrderController {
 				List<DeliverChildOrder> deliverChildOrders = orderService
 						.getAllChildOrders(paramMap);
 				Float priceFloat = 0f;
-
+				
 				// 获取该笔订单总价
 				for (DeliverChildOrder deliverChildOrder : deliverChildOrders) {
 					if (deliverChildOrder.getIsDiscount() == 0) {
@@ -1308,7 +1317,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/cancelOrderWithRefund")
-	public @ResponseBody Map<String,Object> cancelOrderWithRefund(String togetherId){
+	public @ResponseBody Map<String,Object> cancelOrderWithRefund(@RequestParam String togetherId){
 		Map<String,Object> map=new HashMap<String,Object>();
 		
 		try {
