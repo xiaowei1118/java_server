@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.PayService;
 import com.changyu.foryou.service.PushService;
@@ -82,7 +81,7 @@ public class PayController {
     	return resultMap;
     }*/
 
-	@RequestMapping("/payWebHooksForSuccess")
+	@RequestMapping("/webHooksForPayAndRefund")
 	public void webHooksForPaySuccess(HttpServletRequest request, HttpServletResponse response) throws IOException, AuthenticationException, InvalidRequestException, APIConnectionException, APIException, ChannelException{
 		request.setCharacterEncoding("UTF8");
 
@@ -103,30 +102,63 @@ public class PayController {
 		reader.close();
 		// 解析异步通知数据
 		Event event = Webhooks.eventParse(buffer.toString());
-		if ("charge.succeeded".equals(event.getType())) {       //支付的回调		
+		if ("charge.succeeded".equals(event.getType())) {       //支付成功的回调		
 			
 			doPaySuccess(buffer.toString());      //事务处理
 			response.setStatus(200);
 		} else if ("refund.succeeded".equals(event.getType())) {  //退款的回调
+			doRefundSuccess(buffer.toString());       //退款事务处理
 			response.setStatus(200);
 		} else {
 			response.setStatus(500);
 		}
 	}
 	
+	
+	
+	private int doRefundSuccess(String buffer) {
+		Charge charge = (Charge)Webhooks.parseEvnet(buffer);
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+
+		//String chargeId=charge.getId();   //获取chargeId
+		String togetherId=charge.getOrderNo();
+		paramMap.put("togetherId",togetherId);
+		final double price=charge.getAmount()*1.0/100;
+		String channel=charge.getChannel();
+		final String channelString;
+		if(channel.equals("wx")){
+			channelString="微信";
+		}else{
+			channelString="支付宝";
+		}
+		Integer flag=orderService.updateOrderStatusRefundSuccess(paramMap);
+		final String phone=orderService.getUserPhone(paramMap);        //根据订单号获取用户手机号
+		new Thread(new Runnable() {               //开启极光推送，通知用户退款成功
+
+			@Override public void run() { //向超级管理员推送，让其分发订单
+
+				//推送 
+				pushService.sendPush(phone,"您的一笔金额为"+price+"的订单已经退回到您的"+channelString+"账户中，请及时查看。For优。", 5);
+
+			} 
+		}).start();
+		
+		return flag;
+	}
+
 	public int doPaySuccess(String buffer){
 		Charge charge = (Charge)Webhooks.parseEvnet(buffer); 
 		
-		System.out.println(JSON.toJSONString(charge));
+		//System.out.println(JSON.toJSONString(charge));
 		//获得charge对象
 		Map<String,Object> paramMap=new HashMap<String,Object>();
 
+		String chargeId=charge.getId();
 		paramMap.put("togetherId",charge.getOrderNo());
 		paramMap.put("amount",charge.getAmount()*1.0/100);
-		
+		paramMap.put("chargeId",chargeId);
 		System.out.println(paramMap);
-		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 	
-		System.out.println("更新数据"+flag);
+		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 ,以及chargeId
 		
 		final Integer campusId=orderService.getCampusIdByTogetherId(paramMap);
 		// 开启线程去访问极光推送

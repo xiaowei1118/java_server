@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 /**
  * 
  * @author xiaowei
- *copyright @倡予科技有限公司
+ *copyright @倡予信息科技有限公司
  */
 public class XssHttpServletRequestWraper extends HttpServletRequestWrapper {
 
@@ -31,7 +31,7 @@ public class XssHttpServletRequestWraper extends HttpServletRequestWrapper {
 			String[] newValues = new String[values.length];
 			
 			for(int i =0; i< values.length; i++){
-				newValues[i] = clearXss(values[i]);
+				newValues[i] = clearXss(values[i]).trim();
 				System.out.println(newValues[i]);
 			}
 			return newValues;

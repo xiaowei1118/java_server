@@ -16,7 +16,6 @@
 		<result column="rank" property="rank" jdbcType="VARCHAR" />
 		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
 	</resultMap>
-
 	<!-- 对应购物车model -->
 	<resultMap id="CartGoodMap" type="com.changyu.foryou.model.CartGood">
 		<id column="order_id" property="orderId" jdbcType="BIGINT" />
@@ -124,7 +123,11 @@
 			jdbcType="TIMESTAMP" />
 	</resultMap>
 	
-
+	<resultMap type="com.changyu.foryou.model.MiniOrder" id="MiniOrderMap">
+		<result column="status" property="status" jdbcType="SMALLINT"/>
+		<result column="order_count" property="orderCount" jdbcType="INTEGER"/>
+	</resultMap>
+	
 	<sql id="Base_Column_List">
 		order_id, phone, create_time, status, price,
 		order_count,together_id,
@@ -134,6 +137,7 @@
 	</sql>
 	
 
+   
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
@@ -309,7 +313,7 @@
 		tag,img_url,food.status as status,
 		orders.order_count as order_count
 		,food.is_discount as is_discount,
-		food.price as price,food.name as name,discount_price,is_full_discount,message
+		food.price as price,food.name as name,discount_price,is_full_discount,food.message
 		from orders,food
 		where
 		orders.food_id=food.food_id and orders.campus_id = food.campus_id and phone =
@@ -885,6 +889,7 @@
         status=2
         where together_id=#{togetherId,jdbcType=VARCHAR}   
     </update>
+  
     
     <!-- 根据订单号获取校区号 -->
     <select id="getCampusIdByTogetherId" resultType="Integer">
@@ -899,7 +904,7 @@
     <!-- 获取一笔小订单 -->
      <select id="getOrderByOrderId" resultMap="CartGoodMap">
        select 
-         is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count,message
+         is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count
        from
          orders,food
        where 
@@ -907,6 +912,7 @@
          and order_id=#{orderId,jdbcType=BIGINT} and phone = #{phoneId,jdbcType=VARCHAR}
     </select>
     
+    <!-- 取消订单，并置为退款状态 -->
     <update id="cancelOrderWithRefund">
          update 
             orders
@@ -916,4 +922,56 @@
             together_id=#{togetherId,jdbcType=VARCHAR}
     </update>
 
+
+     <!--获取客户端订单 -->
+    <select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
+    	select 
+    	    together_id,custome_phone as phone,together_date,total_price as price,address
+    	from together_order
+    	where tag=1 and status=#{status} 
+    	<if test="campusId != null">
+    		and campus_id=#{campusId,jdbcType=INTEGER}
+    	</if>
+    </select>
+    
+    <!-- 退款订单取消退款  -->
+    <update id="updateCancelRefund">
+       update 
+          orders
+       set 
+          status=4
+       where
+       		together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 获取订单的chargeId -->
+    <select id="getChargeId" resultType="String">
+    	select 
+    	  charge_id
+    	 from 
+    	   orders
+    	 where together_id=#{togetherId,jdbcType=VARCHAR}
+    	 limit 1
+    </select>
+    
+    <!-- 更新退款订单状态，推给总校区管理员 -->
+    <update id="updateRefundStatus">
+       update
+          orders
+       set status=10
+       where together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 更新退款订单状态，推给管理员 -->
+    <update id="updateorderStatusRefundSuccess">
+       update
+          orders
+       set status=11
+       where together_id=#{togetherId,jdbcType=VARCHAR}
+    </update>
+	
+	<select id="getMiniOrderByPhone" resultType="Integer">
+	select COUNT(together_id) from orders WHERE together_id in
+	(select DISTINCT together_id from orders where phone=#{phoneId,jdbcType=VARCHAR} and status=#{status,jdbcType=SMALLINT})
+	</select>
 </mapper>

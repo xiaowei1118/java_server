@@ -27,6 +27,7 @@ import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
+import com.changyu.foryou.model.MiniOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
 import com.changyu.foryou.model.Preferential;
@@ -43,6 +44,8 @@ import com.changyu.foryou.service.PushService;
 import com.changyu.foryou.service.ReceiverService;
 import com.changyu.foryou.service.UserService;
 import com.changyu.foryou.tools.Constants;
+import com.pingplusplus.model.Charge;
+import com.pingplusplus.model.Refund;
 
 /**
  * 处理订单控制器
@@ -203,6 +206,17 @@ public class OrderController {
 					togetherOrdersList.add(togetherOrder);
 				}
 				
+				List<MiniOrder> statusList = new ArrayList<MiniOrder>();
+				
+				//根据phoneId获取各个状态订单数量
+				for (int i = 1; i <= 5; i++) {
+					MiniOrder order = new MiniOrder();
+					order.setStatus(Short.parseShort(i+""));
+					paramMap.put("status", i);
+					order.setOrderCount(orderService.getMiniOrderByPhone(paramMap));
+					statusList.add(order);
+				}
+				map.put("statusList", statusList);
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
 				map.put("orderList", JSON.parse(JSON
@@ -578,7 +592,7 @@ public class OrderController {
 			}
 			//写入单价操作
 			for (String id : orderString) {
-				float price=(float) 0.0;
+				float price= 0f;
 				paramMap.put("orderId",id);
 				SmallOrder smallOrder=orderService.getOrderById(paramMap);
 				if(smallOrder.getIsDiscount()==1)
@@ -590,7 +604,8 @@ public class OrderController {
 					price = smallOrder.getPrice()*smallOrder.getOrderCount();
 				}		
 				flag = orderService.changeOrderStatus2Buy(phoneId, id,
-						togetherId, rank, reserveTime, message,payWay,price,totalPrice);				
+						togetherId, rank, reserveTime, message,payWay,price,totalPrice);	
+				
 				Order order = orderService.selectOneOrder(phoneId, id); // 获取该笔订单的消息				
 				paramMap.put("foodId", order.getFoodId());
 				paramMap.put("orderCount", order.getOrderCount());
@@ -611,9 +626,9 @@ public class OrderController {
 			if (flag != -1 && flag != 0) {
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "下单成功，即将开始配送！");
-				
 				String clientIp=getIpAddr(request);
-				map.put("charge", ChargeInterface.charge(channel,togetherId,(int)(Float.parseFloat(df.format(totalPrice))*100),clientIp)); //支付
+				Charge charge=ChargeInterface.charge(channel,togetherId,(Float.parseFloat(df.format(totalPrice))),clientIp);
+				map.put("charge", charge); //支付
 				map.put("totalPrice",df.format(totalPrice));
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -1066,6 +1081,11 @@ public class OrderController {
 		BigOrder bigOrder = new BigOrder();
 		bigOrder.setTogetherId(togetherId);
 		List<SmallOrder> orders = orderService.getOrdersById(paramMap);
+		
+		Integer campusId=orders.get(0).getCampusId();
+		
+		String campusName=campusService.getCampusName(campusId);
+		
 		if (orders.size() > 0 && orders!= null) {
 			if (orders.get(0).getStatus() != 4) {
 				status = orders.get(0).getStatus();
@@ -1079,30 +1099,12 @@ public class OrderController {
 
 			}
 			Receiver receiver = receiverService.getReceiver(paramMap);
+			receiver.setAddress(campusName+receiver.getAddress());
 			Date date = orders.get(0).getTogetherDate();
 			bigOrder.setDate(date);
-			System.out.println(orders.get(0).getPayWay());
+			//System.out.println(orders.get(0).getPayWay());
 			bigOrder.setPayWay(orders.get(0).getPayWay());
-			// 若order表里的price有信息
-			/*
-			 * if (orders!=null&&orders.size() > 0) { for (int i = 0; i <
-			 * orders.size(); i++) { sum += orders.get(i).getPrice(); } }
-			 */
-
-//			if (orders.size() > 0 && orders != null) 
-//			{
-//				for(SmallOrder i:orders)
-//				{
-//					if(i.getIsDiscount()==1)
-//					{
-//						sum += i.getDiscountPrice()*i.getOrderCount();
-//					}
-//					else
-//					{
-//						sum += i.getPrice()*i.getOrderCount();
-//					}
-//				}
-//			}
+			
 			Float sum=orders.get(0).getTotalPrice();
 			if(sum!=null)
 			{
@@ -1321,6 +1323,11 @@ public class OrderController {
 	    return ip;
 	}
 	
+	/**
+	 * 取消订单并退款
+	 * @param togetherId
+	 * @return
+	 */
 	@RequestMapping("/cancelOrderWithRefund")
 	public @ResponseBody Map<String,Object> cancelOrderWithRefund(@RequestParam String togetherId){
 		Map<String,Object> map=new HashMap<String,Object>();
@@ -1344,4 +1351,131 @@ public class OrderController {
 		
 		return map;
 	}
+	
+	/**
+	 * 获取退款订单
+	 * @param campusId
+	 * @return
+	 */
+	@RequestMapping("/getRefundOrder")
+	public @ResponseBody List<SuperAdminOrder> getRefundOrder(Integer campusId,Integer type){
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+				
+		if(type==1){
+			paramMap.put("status",10);
+		}else if(type==0){
+			paramMap.put("status", 9);
+			paramMap.put("campusId",campusId);
+		}
+		
+	    List<SuperAdminOrder> refundOrders=orderService.getPCOrders(paramMap);
+		System.out.println(refundOrders);
+	    return refundOrders;
+	}
+	
+	/**
+	 * 取消退款
+	 * @return
+	 */
+	@RequestMapping("/cancelRefund")
+	public @ResponseBody Map<String,Object> cancelRefund(String togetherId){
+		Map<String,Object> resultMap=new HashMap<>();
+		
+		try {
+			Map<String,Object> paramMap=new HashMap<>();
+			paramMap.put("togetherId",togetherId);
+			
+			int flag=orderService.updateCancelRefund(paramMap);
+			
+			if(flag==-1){
+				resultMap.put(Constants.STATUS,Constants.FAILURE);
+				resultMap.put(Constants.MESSAGE,"取消失败");
+			}else{
+				resultMap.put(Constants.STATUS, Constants.SUCCESS);
+				resultMap.put(Constants.MESSAGE,"取消成功");
+			}
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+			resultMap.put(Constants.STATUS,Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE,"取消失败");
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * 总校区管理员确认退款
+	 * @param togetherId
+	 * @param totalPrice
+	 * @return
+	 */
+	@RequestMapping("/refund")
+	public @ResponseBody Map<String,Object> refund(String togetherId,Float totalPrice){
+		Map<String,Object> resultMap=new HashMap<>();
+		
+		try {
+		    Map<String,Object> paramMap=new HashMap<String,Object>();
+		    paramMap.put("togetherId", togetherId);
+		    
+		    Float price=orderService.getTotalPriceByTogetherId(togetherId);
+		    if(Math.abs(price-totalPrice)>0.1){
+		    	resultMap.put(Constants.STATUS,Constants.FAILURE);
+				resultMap.put(Constants.MESSAGE,"退款失败");
+		    }else{
+		    	 String chargeId=orderService.getChargeId(paramMap);
+		    	 if(chargeId!=null){
+		    		 Refund refund=ChargeInterface.Refund(chargeId, price);
+		    		 if(refund!=null){
+		    			 resultMap.put("refund", refund);
+				    	 resultMap.put(Constants.STATUS,Constants.SUCCESS);
+				    	 resultMap.put(Constants.MESSAGE,"操作成功");
+		    		 }else{
+		    			 resultMap.put(Constants.STATUS,Constants.SUCCESS);
+				    	 resultMap.put(Constants.MESSAGE,"操作失败");
+		    		 }
+		    	 }else{
+		    		 resultMap.put(Constants.STATUS,Constants.SUCCESS);
+			    	 resultMap.put(Constants.MESSAGE,"操作失败");
+		    	 }	
+		    }
+		} catch (Exception e) {
+			e.getStackTrace();
+			resultMap.put(Constants.STATUS,Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE,"退款失败");
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * 校区管理员确认退款
+	 * @param togetherId
+	 * @param totalPrice
+	 * @return
+	 */
+	@RequestMapping("/confirmRefund")
+	public @ResponseBody Map<String,Object> confirmRefund(String togetherId){
+		Map<String,Object> resultMap=new HashMap<>();
+		
+		try {
+		    Map<String,Object> paramMap=new HashMap<String,Object>();
+		    paramMap.put("togetherId", togetherId);
+		    int flag=orderService.updateRefundStatus(paramMap);   //将状态置为10
+		    if(flag!=-1){
+		    	resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		        resultMap.put(Constants.MESSAGE,"修改成功");
+		    }else{
+		    	resultMap.put(Constants.STATUS,Constants.FAILURE);
+		    	resultMap.put(Constants.MESSAGE, "修改失败");
+		    }
+		} catch (Exception e) {
+			e.getStackTrace();
+			resultMap.put(Constants.STATUS,Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE,"修改失败");
+		}
+		
+		return resultMap;
+	}
+	
 }

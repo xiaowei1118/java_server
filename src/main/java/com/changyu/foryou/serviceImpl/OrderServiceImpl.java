@@ -303,8 +303,7 @@ public class OrderServiceImpl implements OrderService {
 		Integer discount=0;  
 		for (Preferential preferential : prefers) {
 			if(fullDiscount>=preferential.getNeedNumber()){
-				discount=preferential.getDiscountNum();
-				
+				discount=preferential.getDiscountNum();		
 				break;
 			}
 		}
@@ -314,6 +313,38 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Integer cancelOrderWithRefund(Map<String, Object> paramMap) {
 		return orderMapper.cancelOrderWithRefund(paramMap);
+	}
+
+	@Override
+	public List<SuperAdminOrder> getPCOrders(Map<String, Object> paramMap) {
+		return orderMapper.getPCOrdersNew(paramMap);
+	}
+
+	@Override
+	public int updateCancelRefund(Map<String, Object> paramMap) {
+		return orderMapper.updateCancelRefund(paramMap);
+	}
+
+	@Override
+	public String getChargeId(Map<String, Object> paramMap) {
+		return orderMapper.getChargeId(paramMap);       //获取支付的chargeId
+	}
+
+	@Override
+	public Integer updateRefundStatus(Map<String, Object> paramMap) {
+		return orderMapper.updateRefundStatus(paramMap);
+	}
+
+	//退款完成时将状态置为11
+	@Override
+	public Integer updateOrderStatusRefundSuccess(Map<String, Object> paramMap) {
+		return orderMapper.updateorderStatusRefundSuccess(paramMap);
+	}
+
+	@Override
+	public Integer getMiniOrderByPhone(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getMiniOrderByPhone(paramMap);
 	}
 	
 

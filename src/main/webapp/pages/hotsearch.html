@@ -230,7 +230,6 @@
 
 	window.actionEvents = {
         'click .not-display': function (e, value, row, index) {
-        	console.log(value);
             $.post(
             	"../hotSearch/setNot2Display.do",
               {hotId:row.hotId,campusId:campusId},
@@ -250,13 +249,12 @@
              );
         },
         'click .to-display': function (e, value, row, index) {
-        	console.log(value);
             $.post(
             	"../hotSearch/set2Display.do",
                {hotId:row.hotId,campusId:campusId},
                function(data){
                   if(data.status=="failure"){
-                     $('#info').show();
+                      $('#info').show();
 		              $('#info').html("操作失败");
 		              setTimeout("$('#info').hide()", 2000 );
                  }else{

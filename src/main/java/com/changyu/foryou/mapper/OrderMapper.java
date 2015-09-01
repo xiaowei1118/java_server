@@ -6,13 +6,12 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.changyu.foryou.model.BigOrder;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
+import com.changyu.foryou.model.MiniOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
-import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 
@@ -110,4 +109,16 @@ public interface OrderMapper {
 	CartGood getOrderByOrderId(Map<String, Object> paramMap);            //获取某笔小订单
 
 	Integer cancelOrderWithRefund(Map<String, Object> paramMap);
+
+	List<SuperAdminOrder> getPCOrdersNew(Map<String, Object> paramMap);
+
+	int updateCancelRefund(Map<String, Object> paramMap);            //取消退款
+
+	String getChargeId(Map<String, Object> paramMap);
+
+	Integer updateRefundStatus(Map<String, Object> paramMap);   //更新退款信息状态
+
+	Integer updateorderStatusRefundSuccess(Map<String, Object> paramMap);  //将状态置为11
+
+	Integer getMiniOrderByPhone(Map<String, Object> paramMap);	//获取订单状态对应的数量
 }

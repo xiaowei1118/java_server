@@ -4,15 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.changyu.foryou.model.BigOrder;
-import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
 import com.changyu.foryou.model.Preferential;
-import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 
@@ -113,4 +110,16 @@ public interface OrderService {
 	Integer cancelOrderWithRefund(Map<String, Object> paramMap);
 	
 	Float getTotalPriceByTogetherId(String togetherId);
+
+	List<SuperAdminOrder> getPCOrders(Map<String, Object> paramMap);
+
+	int updateCancelRefund(Map<String, Object> paramMap);
+
+	String getChargeId(Map<String, Object> paramMap);  //获取支付的chargeId
+
+	Integer updateRefundStatus(Map<String, Object> paramMap);   //更新退款状态
+
+	Integer updateOrderStatusRefundSuccess(Map<String, Object> paramMap);
+	
+	Integer getMiniOrderByPhone(Map<String, Object> paramMap);
 }

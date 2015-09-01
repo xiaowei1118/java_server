@@ -390,8 +390,8 @@ public class CampusController {
 		
 		try {
 			Map<String,Object> paramMap=new HashMap<String,Object>();
-			paramMap.put("campusId",campusId);
-			paramMap.put("campusAdmin",campusAdmin);
+			//paramMap.put("campusId",campusId);
+			paramMap.put("campusAdmin",campusAdmin);    //campusAdmin唯一
 			
 			String password=campusService.getOldPassword(paramMap);
 			

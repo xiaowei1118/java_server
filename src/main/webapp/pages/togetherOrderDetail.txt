@@ -32,7 +32,7 @@
             <table class="item_table">
               <thead>
                 <tr>
-                  <th>美食篮子</th>
+                  <th>商品篮子</th>
                   <th>单价</th>
                   <th>数量</th>
                   <th>总价</th>

@@ -3,20 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <title>销售额分析</title>
+<link rel="stylesheet" href="../css/bootstrap-datepicker3.css">
+<link rel="stylesheet"
+	href="../css/bootstrap-datepicker3.standalone.css">
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
+	rel="stylesheet">
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-datepicker.js"></script>
+<script type="text/javascript"
+	src="../js/bootstrap-datepicker.zh-CN.min.js"></script>
+<script src="../js/util.js"></script>
+
 </head>
 <body>
-<div class="container">
-	<div class="row">
-		<div class="col-md-2">
-			月份
-		</div>
-		<div class="col-md-10">
-			<div class="date" data-date="" data-data-format="MM yyyy" data-link-format="yyyy-mm">
-				<input text="text" readonly>
-				<span ></span>
-			</div>
-		</div>
-	</div>
-</div>
+	<form id="order_center_filter">
+		<span class="ml10">选择日期：</span> <span> <input type="text"
+			value="" id="datepicker" class="datepicker">
+		</span> <input type="button" id="select" value="查询" class="submit" />
+	</form>
+	<script>
+	  $('#datepicker').datepicker({
+		   todayBtn : "linked",
+		   language : "zh-CN",
+		   autoclose : true,
+		   minView : 0
+		 });
+	</script>
 </body>
 </html>
