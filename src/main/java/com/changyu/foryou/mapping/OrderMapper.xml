@@ -586,7 +586,7 @@
 	together_id
 	ORDER BY
 	together_date DESC
-</select>
+   </select>
 
 	<select id="getExitOrderUserRank" resultType="Integer">
 		select
@@ -894,6 +894,7 @@
          orders
        where 
          together_id=#{togetherId,jdbcType=VARCHAR}
+       limit 1
     </select>
     
     <!-- 获取一笔小订单 -->
