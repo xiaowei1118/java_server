@@ -237,7 +237,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	
-
 	public Integer updateOrderPrice(Map<String, Object> paramMap) {
 		return orderMapper.updateOrderPrice(paramMap);
 	}

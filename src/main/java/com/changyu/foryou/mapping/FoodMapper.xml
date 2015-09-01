@@ -343,7 +343,7 @@
 			<when test="sortId==1">
 				ORDER BY sale_number DESC
 			</when>
-			<when test="sortId==2"> ORDER BY price ASC
+			<when test="sortId==2"> ORDER BY case when is_discount=1 then discount_price else price END ASC
 			</when>
 			<otherwise>
 				ORDER BY modify_time DESC

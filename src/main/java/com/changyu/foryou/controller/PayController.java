@@ -102,8 +102,7 @@ public class PayController {
 		reader.close();
 		// 解析异步通知数据
 		Event event = Webhooks.eventParse(buffer.toString());
-		if ("charge.succeeded".equals(event.getType())) {       //支付成功的回调		
-			
+		if ("charge.succeeded".equals(event.getType())) {       //支付成功的回调			
 			doPaySuccess(buffer.toString());      //事务处理
 			response.setStatus(200);
 		} else if ("refund.succeeded".equals(event.getType())) {  //退款的回调
@@ -115,7 +114,11 @@ public class PayController {
 	}
 	
 	
-	
+	/**
+	 * 退款操作
+	 * @param buffer
+	 * @return
+	 */
 	private int doRefundSuccess(String buffer) {
 		Charge charge = (Charge)Webhooks.parseEvnet(buffer);
 		Map<String,Object> paramMap=new HashMap<String,Object>();
