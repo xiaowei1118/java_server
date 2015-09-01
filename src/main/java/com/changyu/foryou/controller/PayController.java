@@ -149,6 +149,7 @@ public class PayController {
 		return flag;
 	}
 
+	/**支付成功**/
 	public int doPaySuccess(String buffer){
 		Charge charge = (Charge)Webhooks.parseEvnet(buffer); 
 		

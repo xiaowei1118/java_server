@@ -27,7 +27,9 @@ public class CartGood {
 	private String  imageUrl;
     
     
-    private Integer foodCount;    
+    private Integer foodCount;
+    
+    private String message;
    
 	
 	public Long getOrderId() {
@@ -149,6 +151,14 @@ public class CartGood {
 
 	public void setIsFullDiscount(Short isFullDiscount) {
 		this.isFullDiscount = isFullDiscount;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	

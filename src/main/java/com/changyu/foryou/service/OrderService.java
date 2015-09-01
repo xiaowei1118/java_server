@@ -120,4 +120,6 @@ public interface OrderService {
 	Integer updateRefundStatus(Map<String, Object> paramMap);   //更新退款状态
 
 	Integer updateOrderStatusRefundSuccess(Map<String, Object> paramMap);
+	
+	Integer getMiniOrderByPhone(Map<String, Object> paramMap);
 }

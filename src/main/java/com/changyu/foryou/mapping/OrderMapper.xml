@@ -965,4 +965,9 @@
        set status=11
        where together_id=#{togetherId,jdbcType=VARCHAR}
     </update>
+	
+	<select id="getMiniOrderByPhone" resultType="Integer">
+	select COUNT(together_id) from orders WHERE together_id in
+	(select DISTINCT together_id from orders where phone=#{phoneId,jdbcType=VARCHAR} and status=#{status,jdbcType=SMALLINT})
+	</select>
 </mapper>

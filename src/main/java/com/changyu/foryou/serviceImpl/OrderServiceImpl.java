@@ -339,6 +339,12 @@ public class OrderServiceImpl implements OrderService {
 	public Integer updateOrderStatusRefundSuccess(Map<String, Object> paramMap) {
 		return orderMapper.updateorderStatusRefundSuccess(paramMap);
 	}
+
+	@Override
+	public Integer getMiniOrderByPhone(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getMiniOrderByPhone(paramMap);
+	}
 	
 
 }

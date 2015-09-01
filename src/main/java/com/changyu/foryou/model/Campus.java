@@ -1,6 +1,7 @@
 package com.changyu.foryou.model;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 
 
 public class Campus {
@@ -12,9 +13,9 @@ public class Campus {
 	
 	private String cityName;
 
-	private Time openTime;
+	private Timestamp openTime;
 
-	private Time closeTime;
+	private Timestamp closeTime;
 
 	private Short status;
 
@@ -45,7 +46,7 @@ public class Campus {
 		return cityId;
 	}
 
-	public Time getOpenTime() {
+	public Timestamp getOpenTime() {
 		return openTime;
 	}
 
@@ -57,15 +58,15 @@ public class Campus {
 		this.customService = customService;
 	}
 
-	public void setOpenTime(Time openTime) {
+	public void setOpenTime(Timestamp openTime) {
 		this.openTime = openTime;
 	}
 
-	public Time getCloseTime() {
+	public Timestamp getCloseTime() {
 		return closeTime;
 	}
 
-	public void setCloseTime(Time closeTime) {
+	public void setCloseTime(Timestamp closeTime) {
 		this.closeTime = closeTime;
 	}
 

@@ -3,6 +3,8 @@ package com.changyu.foryou.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1275,4 +1277,27 @@ public class FoodController {
 		return responseMap;
 	}
 
+	@RequestMapping("getTopFive")
+	public @ResponseBody Map<String, Object> getTopFive(@RequestParam String dateStart,@RequestParam String dateEnd, Integer page, Integer limit){
+		Map<String,Object> requestMap = new HashMap<String, Object>();
+		Map<String,Object> responseMap = new HashMap<String, Object>();
+		
+		if(dateStart!=null&&dateEnd!=null){
+			try {
+				requestMap.put("dateStart", new SimpleDateFormat("yyyy-MM-dd").parse(dateStart));
+				requestMap.put("dateEnd", new SimpleDateFormat("yyyy-MM-dd").parse(dateEnd));
+				requestMap.put("limit", limit);
+				requestMap.put("offset", (page-1)*limit);
+				JSONArray hotFive = (JSONArray) JSONArray.toJSON(foodService.getTopFive(requestMap));
+				responseMap.put("hotFive", hotFive);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		/*JSONArray hotFive = (JSONArray) JSONArray.toJSON(foodService.getTopFive(requestMap));
+		responseMap.put("hotFive", hotFive);*/
+		return responseMap;
+	}
 }

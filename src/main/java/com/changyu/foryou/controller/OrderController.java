@@ -27,6 +27,7 @@ import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
+import com.changyu.foryou.model.MiniOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
 import com.changyu.foryou.model.Preferential;
@@ -205,6 +206,17 @@ public class OrderController {
 					togetherOrdersList.add(togetherOrder);
 				}
 				
+				List<MiniOrder> statusList = new ArrayList<MiniOrder>();
+				
+				//根据phoneId获取各个状态订单数量
+				for (int i = 1; i <= 5; i++) {
+					MiniOrder order = new MiniOrder();
+					order.setStatus(Short.parseShort(i+""));
+					paramMap.put("status", i);
+					order.setOrderCount(orderService.getMiniOrderByPhone(paramMap));
+					statusList.add(order);
+				}
+				map.put("statusList", statusList);
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
 				map.put("orderList", JSON.parse(JSON
