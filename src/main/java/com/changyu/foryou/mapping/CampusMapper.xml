@@ -19,7 +19,7 @@
 	<resultMap id="CampusWithCityMap" type="com.changyu.foryou.model.CityWithCampus">
 		<id column="city_id" property="cityId" jdbcType="INTEGER" />
 		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
-		<collection property="campuses" ofType="Campus">
+		<collection property="campuses" ofType="com.changyu.foryou.model.Campus">
 			<id column="campus_id" property="campusId" jdbcType="INTEGER" />
 			<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
 		</collection>

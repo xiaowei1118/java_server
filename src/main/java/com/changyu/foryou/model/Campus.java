@@ -1,6 +1,5 @@
 package com.changyu.foryou.model;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 

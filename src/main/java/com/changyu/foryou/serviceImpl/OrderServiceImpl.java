@@ -346,6 +346,18 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return orderMapper.getMiniOrderByPhone(paramMap);
 	}
+
+	@Override
+	public Integer getSalesInfoByCampusId(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getSalesInfoByCampusId(paramMap);
+	}
+
+	@Override
+	public Float getTradeVolumeByCampusId(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return orderMapper.getTradeVolumeByCampusId(paramMap);
+	}
 	
 
 }
