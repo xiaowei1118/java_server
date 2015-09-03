@@ -922,7 +922,7 @@
      <!--获取客户端订单 -->
     <select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
     	select 
-    	    together_id,custome_phone as phone,together_date,total_price as price,address
+    	    together_id,phone,together_date,total_price as price,address
     	from together_order
     	where tag=1 and status=#{status} 
     	<if test="campusId != null">
