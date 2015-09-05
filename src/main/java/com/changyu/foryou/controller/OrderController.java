@@ -27,7 +27,6 @@ import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.CartGood;
 import com.changyu.foryou.model.DeliverChildOrder;
 import com.changyu.foryou.model.DeliverOrder;
-import com.changyu.foryou.model.MiniOrder;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.model.PCOrder;
 import com.changyu.foryou.model.Preferential;
@@ -35,6 +34,7 @@ import com.changyu.foryou.model.Receiver;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.SuperAdminOrder;
 import com.changyu.foryou.model.TogetherOrder;
+import com.changyu.foryou.model.TradeInfo;
 import com.changyu.foryou.payment.ChargeInterface;
 import com.changyu.foryou.service.CampusService;
 import com.changyu.foryou.service.FoodService;
@@ -43,6 +43,7 @@ import com.changyu.foryou.service.PreferentialService;
 import com.changyu.foryou.service.PushService;
 import com.changyu.foryou.service.ReceiverService;
 import com.changyu.foryou.service.UserService;
+import com.changyu.foryou.tools.CalendarTool;
 import com.changyu.foryou.tools.Constants;
 import com.pingplusplus.model.Charge;
 import com.pingplusplus.model.Refund;
@@ -206,17 +207,41 @@ public class OrderController {
 					togetherOrdersList.add(togetherOrder);
 				}
 				
-				List<MiniOrder> statusList = new ArrayList<MiniOrder>();
-				
 				//根据phoneId获取各个状态订单数量
 				for (int i = 1; i <= 5; i++) {
-					MiniOrder order = new MiniOrder();
-					order.setStatus(Short.parseShort(i+""));
-					paramMap.put("status", i);
-					order.setOrderCount(orderService.getMiniOrderByPhone(paramMap));
-					statusList.add(order);
+					int count = 0;
+					if(i!=5&&i!=4){
+						paramMap.put("status", i);
+						count = orderService.getMiniOrderByPhone(paramMap);
+					}
+					switch (i) {
+					case 1:
+						//代付款
+						map.put("waitPayOrder", count);
+						break;
+					case 2:
+						//待确认
+						map.put("waitMakeSureOrder", count);
+						break;
+					case 3:
+						//配送中
+						map.put("distribution", count);
+						break;
+					case 4:
+						//待评价
+						paramMap.put("status", 4);
+						paramMap.put("isRemarked", 0);
+						map.put("waitCommmentOrder", count);
+						break;
+					case 5:
+						//已完成
+						paramMap.put("status", 4);
+						paramMap.put("isRemarked", 1);
+						map.put("doneOrder", orderService.getMiniOrderByPhone(paramMap));
+						break;
+					}
 				}
-				map.put("statusList", statusList);
+				
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
 				map.put("orderList", JSON.parse(JSON
@@ -1476,6 +1501,72 @@ public class OrderController {
 		}
 		
 		return resultMap;
+	}
+	
+	/**
+	 * 获取销量和销售额
+	 * @param campusId
+	 * @return
+	 */
+	@RequestMapping("getSalesInfoByCampusId")
+	@ResponseBody
+	public JSONArray getSalesByDate(Integer campusId){
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+		
+		Date dateStart;
+		Date dateEnd;
+		List<TradeInfo> tradeList = new ArrayList<TradeInfo>();
+		
+		paramMap.put("campusId", campusId);
+		
+		//当天订单数、销售额
+		dateStart = CalendarTool.getTodayStart();
+		dateEnd  = CalendarTool.getTodayEnd();
+		paramMap.put("dateStart", dateStart);
+		paramMap.put("dateEnd", dateEnd);
+		TradeInfo todayInfo = new TradeInfo();
+		todayInfo.setInfoDateType("当天");
+		todayInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));	//获取指定时间段和指定校区的订单总数
+		todayInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));	//获取指定时间段和指定校区的订单交易额
+		paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信
+		todayInfo.setTradeVolumeAliPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区、指定支付方式的订单交易额
+		paramMap.put("payWay", 2);
+		todayInfo.setTradeVolumeWeChatPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区、指定支付方式的订单交易额
+		tradeList.add(todayInfo);
+		paramMap.remove("payWay");
+		
+		//本周订单数、销售额
+		dateStart = CalendarTool.getMondayOfThisWeek();
+		dateEnd  = CalendarTool.getSundayOfThisWeek();
+		paramMap.put("dateStart", dateStart);
+		paramMap.put("dateEnd", dateEnd);
+		TradeInfo weekInfo = new TradeInfo();
+		weekInfo.setInfoDateType("当周");
+		weekInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));//获取指定时间段和指定校区的订单总数
+		weekInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段和指定校区的订单交易额
+		paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信
+		weekInfo.setTradeVolumeAliPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区和指定支付方式的订单交易额
+		paramMap.put("payWay", 2);
+		weekInfo.setTradeVolumeWeChatPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区、指定支付方式的订单交易额
+		tradeList.add(weekInfo);
+		paramMap.remove("payWay");
+		
+		//本月订单数、销售额
+		dateStart = CalendarTool.getFirstDayOfThisMonth();
+		dateEnd = CalendarTool.getLastDayOfThisMonth();
+		paramMap.put("dateStart", dateStart);
+		paramMap.put("dateEnd", dateEnd);
+		TradeInfo monthInfo = new TradeInfo();
+		monthInfo.setInfoDateType("当月");
+		monthInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));//获取指定时间段和指定校区的订单总数
+		monthInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段和指定校区的订单交易额
+		paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信
+		monthInfo.setTradeVolumeAliPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区和指定支付方式的订单交易额
+		paramMap.put("payWay", 2);
+		monthInfo.setTradeVolumeWeChatPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区、指定支付方式的订单交易额
+		tradeList.add(monthInfo);
+		
+		return (JSONArray)JSON.toJSON(tradeList);
 	}
 	
 }

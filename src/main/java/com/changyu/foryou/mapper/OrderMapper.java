@@ -121,4 +121,8 @@ public interface OrderMapper {
 	Integer updateorderStatusRefundSuccess(Map<String, Object> paramMap);  //将状态置为11
 
 	Integer getMiniOrderByPhone(Map<String, Object> paramMap);	//获取订单状态对应的数量
+	
+	Integer getSalesInfoByCampusId(Map<String, Object> paramMap);	//根据校区和时间段获取销售量
+	
+	Float getTradeVolumeByCampusId(Map<String, Object> paramMap);	//获取指定时间段和指定校区的订单交易额
 }

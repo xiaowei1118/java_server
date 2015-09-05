@@ -967,7 +967,48 @@
     </update>
 	
 	<select id="getMiniOrderByPhone" resultType="Integer">
-	select COUNT(together_id) from orders WHERE together_id in
-	(select DISTINCT together_id from orders where phone=#{phoneId,jdbcType=VARCHAR} and status=#{status,jdbcType=SMALLINT})
+	SELECT
+	count(DISTINCT together_id)
+	FROM
+	orders
+	<where>
+	phone=#{phoneId,jdbcType=VARCHAR}
+	<if test="isRemarked!=null">
+	and is_remarked=#{isRemarked,jdbcType=SMALLINT}
+	</if>
+	<if test="status!=null">
+	and status=#{status,jdbcType=SMALLINT}
+	</if>
+	and tag=1
+	</where>
 	</select>
+	
+	<!-- 获取指定时间段和指定校区的订单总数 -->
+	<select id="getSalesInfoByCampusId" resultType="Integer">
+	select COUNT(DISTINCT together_id) from orders
+	where campus_id=#{campusId}
+	and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+	and #{dateEnd,jdbcType=TIMESTAMP}
+	and tag=1
+	</select>
+	
+	<!-- 获取指定时间段和指定校区的订单交易额 -->
+	<select id="getTradeVolumeByCampusId" resultType="Float">
+	SELECT sum(total_price)
+	from together_order
+	<where>
+	campus_id=#{campusId,jdbcType=INTEGER}
+	<if test="dateStart!=null and dateEnd!=null">
+	and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+	AND #{dateEnd,jdbcType=TIMESTAMP}
+	</if>
+	<if test="dateToday!=null">
+	and together_date>=#{dateToday,jdbcType=TIMESTAMP}
+	</if>
+	<if test="payWay!=null">
+	AND pay_way=#{payWay,jdbcType=SMALLINT}
+	</if>
+	</where>
+	</select>
+	
 </mapper>

@@ -5,8 +5,8 @@
 	<!-- <settings>
 		<setting name="cacheEnabled" value="true" />
 	</settings> -->
-	<typeAliases>
+	<!-- <typeAliases>
 		<package name="com.changyu.foryou.model" />
-	</typeAliases>
+	</typeAliases> -->
 
 </configuration>
