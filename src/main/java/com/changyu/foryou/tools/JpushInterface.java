@@ -18,6 +18,7 @@ public class JpushInterface {
                 .setPlatform(Platform.android_ios())
                 .setAudience(Audience.all())
                 .setNotification(Notification.alert(message))
+                .setOptions(Options.newBuilder().setApnsProduction(false).build())
                 .setMessage(Message.newBuilder()
                         .setMsgContent(message)
                         .addExtra("from", "foryou")
@@ -32,7 +33,8 @@ public class JpushInterface {
                 .setPlatform(Platform.android_ios())
                 .setAudience(Audience.alias(phone))
                 .setNotification(Notification.alert(alertString))
-                .setOptions(Options.newBuilder().setApnsProduction(true).build())
+                .setOptions(Options.newBuilder().setApnsProduction(false
+                		).build())
                 .setMessage(Message.newBuilder()
                         .setMsgContent(alertString)
                         .addExtra("from", "foryou")

@@ -883,7 +883,6 @@
 		where order_id=#{orderId}
 	</update>
 
-
 	<!-- 根据togetherId获取该笔大订单总价 -->
 	<select id="selectTotalPriceByTogetherId" resultType="FLOAT">
 		select
@@ -1016,6 +1015,4 @@
 		
 		
 	</select> -->
-
-
 </mapper>
