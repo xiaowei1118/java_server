@@ -167,6 +167,20 @@ public class OrderController {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("phoneId", phoneId);
 			paramMap.put("status", status);
+			
+			List<Integer> count=new ArrayList<Integer>();
+			for(int i=1;i<=5;i++){
+				paramMap.put("status", i);
+				List<String> togetherId=orderService.getTogetherId(paramMap);
+				count.add(togetherId.size());
+			}
+			
+			map.put("waitPay",count.get(0));
+			map.put("hasPaid",count.get(1));
+			map.put("delivering",count.get(2));
+			map.put("waitComment",count.get(3));
+			map.put("done", count.get(4));
+			
 			if (limit != null && page != null) {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page - 1) * limit);
@@ -209,14 +223,24 @@ public class OrderController {
 				List<MiniOrder> statusList = new ArrayList<MiniOrder>();
 				
 				//根据phoneId获取各个状态订单数量
-				for (int i = 1; i <= 5; i++) {
+				/*for (int i = 1; i <= 5; i++) {
 					MiniOrder order = new MiniOrder();
 					order.setStatus(Short.parseShort(i+""));
-					paramMap.put("status", i);
+					if(i==1||i==2||i==3){
+						paramMap.put("status", i);
+					}
+					else if(i==4){
+						paramMap.put("status", 4);
+						paramMap.put("isRemarked", 0);
+					}
+					else if(i==5){
+						paramMap.put("status", 4);
+						paramMap.put("isRemarked", 1);
+					}
 					order.setOrderCount(orderService.getMiniOrderByPhone(paramMap));
 					statusList.add(order);
-				}
-				map.put("statusList", statusList);
+				}*/
+				/*map.put("statusList", statusList);*/
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "获取订单成功");
 				map.put("orderList", JSON.parse(JSON

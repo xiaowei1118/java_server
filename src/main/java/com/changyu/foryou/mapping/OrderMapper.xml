@@ -4,7 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Order">
 		<id column="order_id" property="orderId" jdbcType="BIGINT" />
 		<id column="phone" property="phone" jdbcType="VARCHAR" />
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="together_id" property="togetherId" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="status" property="status" jdbcType="SMALLINT" />
@@ -31,7 +31,8 @@
 		<result column="food_id" property="foodId" jdbcType="BIGINT" />
 		<result column="img_url" property="imageUrl" jdbcType="VARCHAR" />
 		<result column="is_discount" property="isDiscount" jdbcType="SMALLINT" />
-		<result column="is_full_discount" property="isFullDiscount" jdbcType="TINYINT" />
+		<result column="is_full_discount" property="isFullDiscount"
+			jdbcType="TINYINT" />
 	</resultMap>
 
 	<!-- 配送员配送界面model -->
@@ -79,12 +80,13 @@
 			jdbcType="VARCHAR" />
 		<result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
-		<result column="message" property="message" jdbcType="VARCHAR"/>
+		<result column="message" property="message" jdbcType="VARCHAR" />
 		<result column="pay_way" property="payWay" jdbcType="SMALLINT" />
 		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="total_price" property="totalPrice" jdbcType="REAL" />
-		<result column="is_full_discount" property="isFullDiscount" jdbcType="TINYINT" />
-		
+		<result column="is_full_discount" property="isFullDiscount"
+			jdbcType="TINYINT" />
+
 
 	</resultMap>
 
@@ -100,7 +102,7 @@
 		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
 		<result column="reserve_time" property="reserveTime" jdbcType="VARCHAR" />
 		<result column="message" property="message" jdbcType="VARCHAR" />
-		<result column="total_price" property="price" jdbcType="REAL"/>
+		<result column="total_price" property="price" jdbcType="REAL" />
 	</resultMap>
 
 	<!-- web管理单显示订单 -->
@@ -122,7 +124,7 @@
 		<result column="together_date" property="togetherDate"
 			jdbcType="TIMESTAMP" />
 	</resultMap>
-	
+
 
 	<sql id="Base_Column_List">
 		order_id, phone, create_time, status, price,
@@ -131,7 +133,7 @@
 		tag,
 		food_id,rank
 	</sql>
-	
+
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
 		select
@@ -162,11 +164,13 @@
 		phone, create_time,
 		status, price, order_count,
 		is_remarked,
-		tag, food_id)
+		tag,
+		food_id)
 		values (#{orderId,jdbcType=BIGINT},
 		#{phone,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP},
-		#{status,jdbcType=SMALLINT}, #{price,jdbcType=REAL},
+		#{status,jdbcType=SMALLINT},
+		#{price,jdbcType=REAL},
 		#{orderCount,jdbcType=INTEGER},
 		#{isRemarked,jdbcType=SMALLINT},
 		#{tag,jdbcType=SMALLINT},
@@ -295,7 +299,8 @@
 		#{isRemarked,jdbcType=SMALLINT},
 		tag =
 		#{tag,jdbcType=SMALLINT},
-		food_id =
+		food_id
+		=
 		#{foodId,jdbcType=BIGINT}
 		where order_id = #{orderId,jdbcType=BIGINT}
 	</update>
@@ -308,11 +313,14 @@
 		tag,img_url,food.status as status,
 		orders.order_count as order_count
 		,food.is_discount as is_discount,
-		food.price as price,food.name as name,discount_price,is_full_discount
+		food.price as price,food.name as
+		name,discount_price,is_full_discount
 		from orders,food
 		where
-		orders.food_id=food.food_id and orders.campus_id = food.campus_id and phone =
-		#{phoneId,jdbcType=VARCHAR} and orders.campus_id=#{campusId,jdbcType=INTEGER}
+		orders.food_id=food.food_id and orders.campus_id = food.campus_id and
+		phone =
+		#{phoneId,jdbcType=VARCHAR} and
+		orders.campus_id=#{campusId,jdbcType=INTEGER}
 		and food.status=1 and
 		orders.tag = 1 and
 		orders.status = 0
@@ -356,7 +364,7 @@
 		pay_way=#{payWay,jdbcType=SMALLINT},
 		price=#{price,jdbcType=REAL}
 		,total_price=#{totalPrice,jdbcType=REAL}
-		where	
+		where
 		order_id=#{orderId,jdbcType=BIGINT} And
 		phone=#{phoneId,jdbcType=VARCHAR}
 	</update>
@@ -397,14 +405,16 @@
 	<select id="getOrderListInMine" resultMap="SmallOrderMap"
 		parameterType="String">
 		select
-		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,orders.campus_id as campus_id,
+		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,orders.campus_id
+		as campus_id,
 		orders.order_count as
 		order_count ,
 		food.is_discount as
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message,pay_way,total_price,is_full_discount
+		discount_price,food.message as
+		message,pay_way,total_price,is_full_discount
 		from
 		orders,food
 		where
@@ -412,21 +422,16 @@
 		and phone =
 		#{phoneId,jdbcType=VARCHAR} And
 		together_id=#{togetherId,jdbcType=VARCHAR}
-		<!-- <if test="status!=null">
-			and orders.status = #{status,jdbcType=SMALLINT}
-			<if test="status==3">
-				and is_remarked = 0
-			</if
-		</if>
-		<if test="status==null"> -->
-			and orders.status !=0
+		<!-- <if test="status!=null"> and orders.status = #{status,jdbcType=SMALLINT} 
+			<if test="status==3"> and is_remarked = 0 </if </if> <if test="status==null"> -->
+		and orders.status !=0
 		<!-- </if> -->
 		and
 		orders.tag=1
-		order by together_date DESC,create_time DESC		
+		order by together_date DESC,create_time DESC
 	</select>
 
-    <!-- 弃用 -->
+	<!-- 弃用 -->
 	<select id="getOrderListInMineWait2Deliver" resultMap="SmallOrderMap"
 		parameterType="String">
 		select
@@ -442,10 +447,10 @@
 		and orders.status = 1 and orders.tag=1
 		order by create_time
 		DESC
-		
+
 	</select>
 
-    <!-- 弃用 -->
+	<!-- 弃用 -->
 	<select id="getOrderListInMineDeliver" resultMap="SmallOrderMap"
 		parameterType="String">
 		select
@@ -483,17 +488,16 @@
 
 	<!-- 获取用户的订单togetherId -->
 	<select id="getTogetherId" resultType="String" parameterType="String">
-		select distinct
-		together_id
+		select together_id
 		from orders
 		<where>
 			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
 			orders.tag=1
-			<if test="status!=null and status!=4 and status!=5">			
+			<if test="status!=null and status!=4 and status!=5">
 				and status = #{status,jdbcType=SMALLINT}
 			</if>
 			<if test="status==4">
-			    and status=4
+				and status=4
 			</if>
 			<if test="status==5">
 				and status=4
@@ -503,13 +507,13 @@
 			</if>
 		</where>
 		group by together_id
-			<if test="status==4">
-			    having count(order_id)!=sum(is_remarked)
-			</if>
-			<if test="status==5">
-				having count(order_id)=sum(is_remarked)
-			</if>
-		order by together_date DESC		 
+		<if test="status==4">
+			having count(order_id)!=sum(is_remarked)
+		</if>
+		<if test="status==5">
+			having count(order_id)=sum(is_remarked)
+		</if>
+		order by together_date DESC
 		<if test="limit !=null and offset !=null">
 			LIMIT #{limit,jdbcType=INTEGER} OFFSET
 			#{offset,jdbcType=INTEGER}
@@ -524,12 +528,13 @@
 		from orders
 		where phone=
 		#{phone,jdbcType=VARCHAR} And food_id=
-		#{foodId,jdbcType=BIGINT} and status=0 and orders.tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+		#{foodId,jdbcType=BIGINT} and status=0 and orders.tag=1 and
+		campus_id=#{campusId,jdbcType=INTEGER}
 		order by
 		create_time DESC
 	</select>
 
-<!--    待测试 -->
+	<!-- 待测试 -->
 	<delete id="deleteCartGood" parameterType="com.changyu.foryou.model.Order">
 		delete from orders
 		where phone=
@@ -562,31 +567,31 @@
 
 	<!-- 超级管理员获取订单 -->
 	<select id="superAdminGetOrder" resultMap="SuperAdminOrderMap">
-	SELECT
-	together_id,
-	together_date,
-	message,
-	reserve_time,
-	total_price,address,
-	admin_phone,
-	admin_name
-	FROM
-	together_order
-	WHERE
-	campus_id = #{campusId,jdbcType=INTEGER}
-	AND tag = #{tag,jdbcType=SMALLINT}
-	AND status IN (2,3)
-	<if test="isSelected == 0">
-		AND admin_phone IS NULL
-	</if>
-	<if test="isSelected ==1">
-		AND admin_phone IS NOT NULL
-	</if>
-	GROUP BY
-	together_id
-	ORDER BY
-	together_date DESC
-   </select>
+		SELECT
+		together_id,
+		together_date,
+		message,
+		reserve_time,
+		total_price,address,
+		admin_phone,
+		admin_name
+		FROM
+		together_order
+		WHERE
+		campus_id = #{campusId,jdbcType=INTEGER}
+		AND tag = #{tag,jdbcType=SMALLINT}
+		AND status IN (2,3)
+		<if test="isSelected == 0">
+			AND admin_phone IS NULL
+		</if>
+		<if test="isSelected ==1">
+			AND admin_phone IS NOT NULL
+		</if>
+		GROUP BY
+		together_id
+		ORDER BY
+		together_date DESC
+	</select>
 
 	<select id="getExitOrderUserRank" resultType="Integer">
 		select
@@ -613,7 +618,8 @@
 	<!-- 配送员获取大订单列表 -->
 	<select id="deliverGetOrder" resultMap="DeliverOrderMap">
 		SELECT
-		together_id,receiver.name as nickname,receiver.phone as custome_phone,
+		together_id,receiver.name as nickname,receiver.phone as
+		custome_phone,
 		together_date,orders.reserve_time,orders.message,
 		orders.status,
 		receiver.address
@@ -626,13 +632,14 @@
 		and
 		orders.phone=receiver.phone_id and orders.admin_phone =
 		#{phoneId,jdbcType=VARCHAR} and orders.tag=1
-		and orders.campus_id=#{campusId,jdbcType=INTEGER}
+		and
+		orders.campus_id=#{campusId,jdbcType=INTEGER}
 		group by together_id
 		order by
 		together_date
 		DESC
 		<if test="limit!=null and offset!=null">
-		limit ${offset},${limit}
+			limit ${offset},${limit}
 		</if>
 	</select>
 
@@ -679,7 +686,8 @@
 		orders.food_id = food.food_id
 		AND orders.admin_phone =
 		users.phone
-		AND orders.rank = receiver.rank
+		AND
+		orders.rank = receiver.rank
 		AND
 		orders.phone =
 		receiver.phone_id
@@ -753,11 +761,11 @@
 		select *
 		from together_order
 		where
-		<if test="date!=null">		
+		<if test="date!=null">
 			DATE_FORMAT(together_date,"%Y-%m-%d")=#{date,jdbcType=DATE}
 		</if>
 		<if test="date==null">
-			 DATE_FORMAT(together_date,"%Y-%m-%d")=CURDATE()
+			DATE_FORMAT(together_date,"%Y-%m-%d")=CURDATE()
 		</if>
 		ORDER BY
 		together_date ASC
@@ -766,20 +774,23 @@
 	<!-- 获取大订单中的小订单子订单,包含成功订单 -->
 	<select id="getAllChildOrder" resultMap="DeliverChildOrderMap">
 		select *
-		from detail_order
-		where 
+		from
+		detail_order
+		where
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
-	
+
 	<select id="getTogetherDate" resultType="java.util.Date">
 		select
-		distinct together_date
+		distinct
+		together_date
 		from orders
-		where together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR} and tag=1
 	</select>
-	
-	
-	<select id="getOrdersById"  resultMap="SmallOrderMap">
+
+
+	<select id="getOrdersById" resultMap="SmallOrderMap">
 		select
 		order_id,img_url,is_remarked,orders.food_id,orders.status,together_date,orders.campus_id,
 		orders.order_count as
@@ -788,7 +799,8 @@
 		is_discount,
 		food.price as
 		price,food.name as name,
-		discount_price,food.message as message,pay_way,total_price,is_full_discount
+		discount_price,food.message as
+		message,pay_way,total_price,is_full_discount
 		from
 		orders,food
 		where
@@ -797,39 +809,40 @@
 		together_id=#{togetherId,jdbcType=VARCHAR}
 		and
 		orders.tag=1
-		order by together_date DESC,create_time DESC		
+		order by
+		together_date DESC,create_time DESC
 	</select>
-	
+
 	<!-- 修改订单状态 -->
 	<update id="modifyOrderStatus">
-	update orders set 
-	<if test="status != null">
-		status=#{status, jdbcType=SMALLINT}
-	</if>
-	<if test="isRemarked != null">
-		,is_remarked=#{isRemarked, jdbcType=SMALLINT}
-	</if>
-	<where>
-	together_id=#{togetherId, jdbcType=VARCHAR}
-	and tag=1
-	<if test="orderId != null">
-	and order_id=#{orderId, jdbcType=BIGINT}
-	</if>
-	<if test="status==3">
-	and admin_phone is not null
-	</if>
-	</where>
+		update orders set
+		<if test="status != null">
+			status=#{status, jdbcType=SMALLINT}
+		</if>
+		<if test="isRemarked != null">
+			,is_remarked=#{isRemarked, jdbcType=SMALLINT}
+		</if>
+		<where>
+			together_id=#{togetherId, jdbcType=VARCHAR}
+			and tag=1
+			<if test="orderId != null">
+				and order_id=#{orderId, jdbcType=BIGINT}
+			</if>
+			<if test="status==3">
+				and admin_phone is not null
+			</if>
+		</where>
 	</update>
-	
+
 	<update id="deleteOrder">
-	update orders
-	set tag = 0 
-	where together_id=#{togetherId,jdbcType=VARCHAR}
-	and status=4	
+		update orders
+		set tag = 0
+		where together_id=#{togetherId,jdbcType=VARCHAR}
+		and status=4
 	</update>
-	
+
 	<select id="getOrderById" resultMap="SmallOrderMap">
-	select
+		select
 		order_id,img_url,orders.food_id,
 		orders.order_count as
 		order_count ,
@@ -842,132 +855,167 @@
 		orders,food
 		where
 		orders.food_id=food.food_id
-		And 
+		And
 		order_id=#{orderId,jdbcType=BIGINT}
 	</select>
- 
-    <select id="getUserPhone" resultType="String">
-        select 
-            phone
-        from orders
-        where
-            together_id=#{togetherId,jdbcType=VARCHAR}
-        limit 1
-    </select>
-    
-    <select id="getAdminPhone" resultType="String">
-        select 
-            admin_phone
-        from orders
-        where
-            together_id=#{togetherId,jdbcType=VARCHAR} 
-        limit 1
-    </select>
-    
-    <update id="updateOrderPrice">
-    update orders 
-    set total_price=#{totalPrice}
-    where order_id=#{orderId}
-    </update>
-   
 
-   <!-- 根据togetherId获取该笔大订单总价 -->
-   <select id="selectTotalPriceByTogetherId" resultType="FLOAT">
-     select 
-     total_price from orders where together_id=#{togetherId,jdbcType=VARCHAR} limit 1
-   </select>
-
-   <!-- 支付完成后更新价格和状态 -->
-    <update id="updateOrderStatusAndAmount">
-       update
-        orders
-        set total_price=#{amount,jdbcType=REAL},
-        status=2 ,charge_id=#{chargeId,jdbcType=VARCHAR}
-       where together_id=#{togetherId,jdbcType=VARCHAR}   
-    </update>
-    
-    <!-- 根据订单号获取校区号 -->
-    <select id="getCampusIdByTogetherId" resultType="Integer">
-       select 
-         campus_id
-       from
-         orders
-       where 
-         together_id=#{togetherId,jdbcType=VARCHAR}
-       limit 1
-    </select>
-    
-    <!-- 获取一笔小订单 -->
-     <select id="getOrderByOrderId" resultMap="CartGoodMap">
-       select 
-         is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count
-       from
-         orders,food
-       where 
-         orders.food_id=food.food_id and orders.tag =1
-         and order_id=#{orderId,jdbcType=BIGINT} and phone = #{phoneId,jdbcType=VARCHAR}
-    </select>
-    
-    <!-- 取消订单，并置为退款状态 -->
-    <update id="cancelOrderWithRefund">
-         update 
-            orders
-         set
-            status=9
-         where
-            together_id=#{togetherId,jdbcType=VARCHAR}
-    </update>
-
-
-     <!--获取客户端订单 -->
-    <select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
-    	select 
-    	    together_id,custome_phone as phone,together_date,total_price as price,address
-    	from together_order
-    	where tag=1 and status=#{status} 
-    	<if test="campusId != null">
-    		and campus_id=#{campusId,jdbcType=INTEGER}
-    	</if>
-    </select>
-    
-    <!-- 退款订单取消退款  -->
-    <update id="updateCancelRefund">
-       update 
-          orders
-       set 
-          status=4
-       where
-       		together_id=#{togetherId,jdbcType=VARCHAR}
-    </update>
-    
-    <!-- 获取订单的chargeId -->
-    <select id="getChargeId" resultType="String">
-    	select 
-    	  charge_id
-    	 from 
-    	   orders
-    	 where together_id=#{togetherId,jdbcType=VARCHAR}
-    	 limit 1
-    </select>
-    
-    <!-- 更新退款订单状态，推给总校区管理员 -->
-    <update id="updateRefundStatus">
-       update
-          orders
-       set status=10
-       where together_id=#{togetherId,jdbcType=VARCHAR}
-    </update>
-    
-    <!-- 更新退款订单状态，推给管理员 -->
-    <update id="updateorderStatusRefundSuccess">
-       update
-          orders
-       set status=11
-       where together_id=#{togetherId,jdbcType=VARCHAR}
-    </update>
-	
-	<select id="getMiniOrderByPhone" resultType="Integer">
-	select COUNT(together_id) from orders WHERE together_id in
-	(select DISTINCT together_id from orders where phone=#{phoneId,jdbcType=VARCHAR} and status=#{status,jdbcType=SMALLINT})
+	<select id="getUserPhone" resultType="String">
+		select
+		phone
+		from orders
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		limit 1
 	</select>
+
+	<select id="getAdminPhone" resultType="String">
+		select
+		admin_phone
+		from orders
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		limit 1
+	</select>
+
+	<update id="updateOrderPrice">
+		update orders
+		set total_price=#{totalPrice}
+		where order_id=#{orderId}
+	</update>
+
+
+	<!-- 根据togetherId获取该笔大订单总价 -->
+	<select id="selectTotalPriceByTogetherId" resultType="FLOAT">
+		select
+		total_price from orders where together_id=#{togetherId,jdbcType=VARCHAR} limit 1
+	</select>
+
+	<!-- 支付完成后更新价格和状态 -->
+	<update id="updateOrderStatusAndAmount">
+		update
+		orders
+		set total_price=#{amount,jdbcType=REAL},
+		status=2 ,charge_id=#{chargeId,jdbcType=VARCHAR}
+		where together_id=#{togetherId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 根据订单号获取校区号 -->
+	<select id="getCampusIdByTogetherId" resultType="Integer">
+		select
+		campus_id
+		from
+		orders
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+		limit 1
+	</select>
+
+	<!-- 获取一笔小订单 -->
+	<select id="getOrderByOrderId" resultMap="CartGoodMap">
+		select
+		is_discount,discount_price,food.price,is_full_discount,orders.food_id,order_count
+		from
+		orders,food
+		where
+		orders.food_id=food.food_id and orders.tag =1
+		and order_id=#{orderId,jdbcType=BIGINT} and phone =
+		#{phoneId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 取消订单，并置为退款状态 -->
+	<update id="cancelOrderWithRefund">
+		update
+		orders
+		set
+		status=9
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+	</update>
+
+
+	<!--获取客户端订单 -->
+	<select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
+		select
+		together_id,custome_phone as phone,together_date,total_price as price,address
+		from together_order
+		where tag=1 and status=#{status}
+		<if test="campusId != null">
+			and campus_id=#{campusId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<!-- 退款订单取消退款 -->
+	<update id="updateCancelRefund">
+		update
+		orders
+		set
+		status=4
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 获取订单的chargeId -->
+	<select id="getChargeId" resultType="String">
+		select
+		charge_id
+		from
+		orders
+		where together_id=#{togetherId,jdbcType=VARCHAR}
+		limit 1
+	</select>
+
+	<!-- 更新退款订单状态，推给总校区管理员 -->
+	<update id="updateRefundStatus">
+		update
+		orders
+		set status=10
+		where together_id=#{togetherId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 更新退款订单状态，推给管理员 -->
+	<update id="updateorderStatusRefundSuccess">
+		update
+		orders
+		set status=11
+		where together_id=#{togetherId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 获取各个状态的订单数量 -->
+	<!-- <select id="getMiniOrderByPhone" resultType="String">
+		SELECT COUNT(DISTINCT together_id) from orders WHERE together_id in 
+			(select DISTINCT together_id from orders <where> phone=#{phoneId,jdbcType=VARCHAR} 
+			<if test="isRemarked!=null"> and is_remarked=#{isRemarked,jdbcType=SMALLINT} 
+			</if> and status=#{status,jdbcType=SMALLINT} and tag=1 </where> GROUP BY 
+			together_id)
+		select 
+		  together_id
+		from orders
+		<where>
+			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
+			orders.tag=1
+			<if test="status!=null and status!=4 and status!=5">
+				and status = #{status,jdbcType=SMALLINT}
+			</if>
+			<if test="status==4">
+				and status=4
+			</if>
+			<if test="status==5">
+				and status=4
+			</if>
+			<if test="status==null">
+				and status !=0
+			</if>
+		</where>
+		group by together_id
+		<if test="status==4">
+			having count(order_id)!=sum(is_remarked)
+		</if>
+		<if test="status==5">
+			having count(order_id)=sum(is_remarked)
+		</if>
+		
+		
+	</select> -->
+
+
 </mapper>
