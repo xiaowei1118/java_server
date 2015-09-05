@@ -931,7 +931,6 @@
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</update>
 
-
 	<!--获取客户端订单 -->
 	<select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
 		select
@@ -1015,4 +1014,32 @@
 		
 		
 	</select> -->
+	
+	<!-- 获取指定时间段和指定校区的订单总数 -->
+	<select id="getSalesInfoByCampusId" resultType="Integer">
+	select COUNT(DISTINCT together_id) from orders
+	where campus_id=#{campusId}
+	and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+	and #{dateEnd,jdbcType=TIMESTAMP}
+	and tag=1
+	</select>
+	
+	<!-- 获取指定时间段和指定校区的订单交易额 -->
+	<select id="getTradeVolumeByCampusId" resultType="Float">
+	SELECT sum(total_price)
+	from together_order
+	<where>
+	campus_id=#{campusId,jdbcType=INTEGER}
+	<if test="dateStart!=null and dateEnd!=null">
+	and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+	AND #{dateEnd,jdbcType=TIMESTAMP}
+	</if>
+	<if test="dateToday!=null">
+	and together_date>=#{dateToday,jdbcType=TIMESTAMP}
+	</if>
+	<if test="payWay!=null">
+	AND pay_way=#{payWay,jdbcType=SMALLINT}
+	</if>
+	</where>
+	</select>
 </mapper>
