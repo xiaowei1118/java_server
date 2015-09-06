@@ -76,23 +76,23 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
-	<!-- <filter>
+	<filter>
 		<filter-name>SessionFilter</filter-name>
-		<filter-class>com.changyu.foryou.tools.IsLoginFilter</filter-class>
+		<filter-class>com.changyu.foryou.filter.IsLoginFilter</filter-class>
 		<init-param>
-			<param-name>loginStrings</param-name>对登录页面不进行过滤
+			<param-name>loginStrings</param-name><!-- 对登录页面不进行过滤 -->
 			<param-value>/login.html;/kidding.html;version.html</param-value>
 		</init-param>
 		<init-param>
-			<param-name>includeStrings</param-name>只对指定过滤参数后缀进行过滤
+			<param-name>includeStrings</param-name><!-- 只对指定过滤参数后缀进行过滤 -->
 			<param-value>.html;.jsp</param-value>
 		</init-param>
 		<init-param>
-			<param-name>redirectPath</param-name>未通过跳转到登录界面
+			<param-name>redirectPath</param-name><!-- 未通过跳转到登录界面 -->
 			<param-value>/login.html</param-value>
 		</init-param>
 		<init-param>
-			<param-name>disabletestfilter</param-name>Y:过滤无效
+			<param-name>disabletestfilter</param-name><!-- Y:过滤无效 -->
 			<param-value>N</param-value>
 		</init-param>
 	</filter>
@@ -100,7 +100,7 @@
 	<filter-mapping>
 		<filter-name>SessionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping>
 
 	<!-- <resource-ref>
 	    <res-ref-name>jdbc/foryouDB</res-ref-name>

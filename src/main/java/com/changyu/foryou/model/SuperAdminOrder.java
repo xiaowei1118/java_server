@@ -12,6 +12,7 @@ public class SuperAdminOrder {
 	private Float price;
     private String reserveTime;
     private String message;
+    private String chargeId;
     
 	public Date getTogetherDate() {
 		return togetherDate;
@@ -67,6 +68,12 @@ public class SuperAdminOrder {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String getChargeId() {
+		return chargeId;
+	}
+	public void setChargeId(String chargeId) {
+		this.chargeId = chargeId;
 	}
 
 }

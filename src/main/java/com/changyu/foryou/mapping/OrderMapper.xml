@@ -103,6 +103,7 @@
 		<result column="reserve_time" property="reserveTime" jdbcType="VARCHAR" />
 		<result column="message" property="message" jdbcType="VARCHAR" />
 		<result column="total_price" property="price" jdbcType="REAL" />
+		<result column="charge_id" property="chargeId" jdbcType="REAL" />
 	</resultMap>
 
 	<!-- web管理单显示订单 -->
@@ -934,7 +935,7 @@
 	<!--获取客户端订单 -->
 	<select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
 		select
-		together_id,custome_phone as phone,together_date,total_price as price,address
+		together_id,custome_phone as phone,together_date,total_price as price,address,charge_id
 		from together_order
 		where tag=1 and status=#{status}
 		<if test="campusId != null">

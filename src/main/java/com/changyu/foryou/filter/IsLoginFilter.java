@@ -55,7 +55,7 @@ public class IsLoginFilter implements Filter{
 	            return;
 	        }
 	        
-	        String user = ( String ) hrequest.getSession().getAttribute("phone");
+	        String user = ( String ) hrequest.getSession().getAttribute("campusAdmin");
 	        if (user == null) {
 	            wrapper.sendRedirect(redirectPath);
 	            return;

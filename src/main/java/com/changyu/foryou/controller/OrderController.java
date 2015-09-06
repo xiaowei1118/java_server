@@ -1456,11 +1456,11 @@ public class OrderController {
 				    	 resultMap.put(Constants.STATUS,Constants.SUCCESS);
 				    	 resultMap.put(Constants.MESSAGE,"操作成功");
 		    		 }else{
-		    			 resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		    			 resultMap.put(Constants.STATUS,Constants.FAILURE);
 				    	 resultMap.put(Constants.MESSAGE,"操作失败");
 		    		 }
 		    	 }else{
-		    		 resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		    		 resultMap.put(Constants.STATUS,Constants.FAILURE);
 			    	 resultMap.put(Constants.MESSAGE,"操作失败");
 		    	 }	
 		    }

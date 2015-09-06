@@ -12,10 +12,6 @@
 <script src="../assets/bootstrap-table/jquery.min.js"></script>
 <script src="../assets/bootstrap-table/bootstrap.min.js"></script>
 <script src="../assets/bootstrap-table/bootstrap-table.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
-<script src="../assets/bootstrap-table/tableExport.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
 <script src="../js/bootstrap-table-zh-CN.min.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,7 +23,7 @@
 <script src="../js/util.js"></script>
 <style type="text/css">
 	 .ml10 {
-        margin-left: 10px;
+        margin-top:10px;
     }
 </style>
 </head>
@@ -53,6 +49,7 @@
 			<thead>
 				<tr>
 					<th data-align="left" data-field="togetherId">订单号</th>
+					<th data-align="left" data-field="chargeId">chargeId</th>
 					<th data-align="left" data-field="userPhone">用户手机号</th>
 					<th data-align="left" data-field="price"
 						data-sortable="true">价格</th>
@@ -76,7 +73,7 @@
 
      function refundFormatter(value, row, index) {
 	    return [
-				 '<a class="refund btn btn-danger ml10" herf="javascript:void(0)" title="close">',
+				 '<a class="refund btn btn-danger" herf="javascript:void(0)" title="close">',
 				 '确认退款',
 				 '</a>',
 				 '<a class="cancel btn btn-danger ml10" herf="javascript:void(0)" title="close">',
@@ -93,6 +90,7 @@
         			$.post("../order/refund.do",
         			   {togetherId:row.togetherId,totalPrice:row.price},
         			   function(data){
+        			   	console.log(data);
         			      if(data.status=="failure"){
         			          $('#info').show();
 		               	      $('#info').html("退款失败，请重试");

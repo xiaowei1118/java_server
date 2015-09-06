@@ -3,8 +3,6 @@ package com.changyu.foryou.payment;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.ResultMap;
-
 import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.tools.Constants;
 import com.pingplusplus.Pingpp;
@@ -16,7 +14,6 @@ import com.pingplusplus.exception.InvalidRequestException;
 import com.pingplusplus.exception.PingppException;
 import com.pingplusplus.model.Charge;
 import com.pingplusplus.model.Refund;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.Static;
 
 public class ChargeInterface {
 	/**

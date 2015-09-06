@@ -187,27 +187,27 @@
 		users.phone, type, nickname, img_url,
 		last_login_date,create_time,address as default_address,token
 		from users
-		<if test="search == null or search =='' ">
-			left
-		</if>
-		join receiver
+		left join receiver
 		on
 		users.phone = receiver.phone_id and receiver.tag=0
-		<if test="search != null and search !='' ">
-			and (nickname like #{search,jdbcType=VARCHAR} or users.phone like
-			#{search,jdbcType=VARCHAR})
-		</if>
-
-		<if test="sort != null">
-			order by ${sort}
-		</if>
-		<if test="sort != null and order != null">
-			${order}
-		</if>
-		<if test="offset != null and limit != null">
-			limit #{offset,jdbcType=INTEGER} ,
-			#{limit,jdbcType=INTEGER}
-		</if>
+		<where>	
+		    1=1	
+			<if test="search != null and search !='' ">
+				and (nickname like #{search,jdbcType=VARCHAR} or users.phone like
+				#{search,jdbcType=VARCHAR})
+			</if>
+			<if test="sort != null">
+				order by ${sort}
+			</if>
+			<if test="sort != null and order != null">
+				${order}
+			</if>
+			<if test="offset != null and limit != null">
+				limit #{offset,jdbcType=INTEGER} ,
+				#{limit,jdbcType=INTEGER}
+			</if>
+		</where>
+		
 	</select>
 
 	<select id="getUserCount" resultType="Integer">

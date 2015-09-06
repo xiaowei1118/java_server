@@ -1,6 +1,5 @@
 package com.changyu.foryou.tools;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 

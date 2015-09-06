@@ -124,7 +124,8 @@ public class UserController {
 			search="%"+search+"%";
 		}
 
-		JSONArray  json=JSONArray.parseArray(JSON.toJSONStringWithDateFormat(userService.getAllUser(limit,offset,sort,order,search), "yyyy-MM-dd"));
+		List<Users> userlist=userService.getAllUser(limit,offset,sort,order,search);
+		JSONArray  json=JSONArray.parseArray(JSON.toJSONStringWithDateFormat(userlist,"yyyy-MM-dd"));
 		map.put("total", userService.getUserCount(search));
 		map.put("rows", json);
 		return map;

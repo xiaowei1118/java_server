@@ -311,7 +311,7 @@ public class CampusController {
 		paramMap.put("campusId", campusService.getIdByName(tempMap));
 		paramMap.put("campusName", campusName);
 		paramMap.put("campusAdmin", campusAdminName);
-		paramMap.put("password", password);
+		paramMap.put("password", Md5.GetMD5Code(password));
 		paramMap.put("type", 0);			//只能添加校区管理员，总校区管理员只能从数据库添加，更符合逻辑
 		
 		Integer result = campusService.addCampusAdmin(paramMap);
@@ -396,7 +396,7 @@ public class CampusController {
 			String password=campusService.getOldPassword(paramMap);
 			
 			if(password.equals(Md5.GetMD5Code(oldPassword))){
-				paramMap.put("newPassword",newPassword);
+				paramMap.put("newPassword",Md5.GetMD5Code(newPassword));
 				
 				int flag=campusService.updateCampusAdminPassword(paramMap);
 				if(flag!=-1){
