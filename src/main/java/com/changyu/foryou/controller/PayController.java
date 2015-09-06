@@ -36,6 +36,9 @@ public class PayController {
     private UserService userService;
     private PushService pushService;
     
+    private static final Logger LOGGER = Logger
+			.getLogger(PayController.class);
+    
 	public PushService getPushService() {
 		return pushService;
 	}
@@ -44,8 +47,7 @@ public class PayController {
 		this.pushService = pushService;
 	}
 
-	private static final Logger LOGGER = Logger
-			.getLogger(PayController.class);
+	
 	public PayService getPayService() {
 		return payService;
 	}

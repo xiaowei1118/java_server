@@ -116,15 +116,15 @@
         			$.post("../order/confirmRefund.do",
         			   {togetherId:row.togetherId},
         			   function(data){
-        			      if(data.status="success"){
+        			      if(data.status=="success"){
         			          $('#info').show();
 		               	      $('#info').html("操作成功");
 		             	      setTimeout("$('#info').hide()", 2000 );
+		             	      $('#table').bootstrapTable('refresh', {silent: true});
         			      }else{
         			    	  $('#info').show();
 		               	      $('#info').html("操作失败");
-		             	      setTimeout("$('#info').hide()", 2000 );    
-        			         $('#table').bootstrapTable('refresh', {silent: true});
+		             	      setTimeout("$('#info').hide()", 2000 );       
         			     }
         			 },'json'
         			 );	
