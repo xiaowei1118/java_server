@@ -503,7 +503,7 @@
 				and status=4
 			</if>
 			<if test="status==null">
-				and status !=0
+				and status !=0 and status!=9 and status!=10 and status!=11
 			</if>
 		</where>
 		group by together_id

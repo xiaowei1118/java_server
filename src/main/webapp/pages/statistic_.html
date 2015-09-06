@@ -16,14 +16,14 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<h1>销售分析</h1>
+			<h1>销售额分析</h1>
 		</div>
 		<div class="row">
-			<div id="toolbar" class="col-sm-3">
+			<div id="toolbar" class="col-sm-3 col-md-3">
 				<div class="form-group">
 					<div class='input-group date' id='datetimepicker1'>
-						<input type='text' class="form-control" />
-						<span class="input-group-addon">
+						<input id="input_month" type='text' class="form-control"/>
+						<span class="input-group-addon ">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
@@ -71,12 +71,22 @@
 	<script src="../js/util.js"></script>
 	<script>
 		$(function() {
+			var month = $("#input_month").val();
+			//document.cookie="month="+month;
 			$("#table").bootstrapTable({
-				url : "../order/getSalesInfoByCampusId.do?"+"campusId="+getCookie("campusId")
+				url : "../order/getSalesInfoByCampusId.do?"+"campusId="+getCookie("campusId")+"&month="+month
 			});
 			$('#datetimepicker1').datetimepicker({
 				format : 'YYYY-MM',
 				viewMode : 'months'
+			});
+			$('#datetimepicker1').on("dp.change",function(e){
+				//alert(e.date);
+				//alert($('#datetimepicker1').data("DateTimePicker").date());
+				//根据选择的年月重新加载表格数据
+				month = $("#input_month").val();
+				//document.cookie="month="+month;
+				$("#table").bootstrapTable('refresh',{silent:true,url : "../order/getSalesInfoByCampusId.do?"+"campusId="+getCookie("campusId")+"&month="+month});
 			});
 		});
 	</script>

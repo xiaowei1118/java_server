@@ -51,6 +51,9 @@
 					<button id="delete" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-minus"></i>
 					</button>
+					<button id="addFoodCountBtn" type="button" class="btn btn-default">
+						一键添加库存
+					</button>
 				</div>
 				<div>
 					<table id="table" data-id-field="foodId"
@@ -61,13 +64,13 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-
 							<th data-align="left" data-field="foodId" data-sortable="true">商品Id</th>
 							<th data-align="left" data-field="name">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</th>
 							<th data-align="left" data-field="price" data-sortable="true">商品价格</th>
 							<th data-align="left" data-field="discountPrice"
 							data-sortable="true" data-sortable="true">折扣价</th>
 							<th data-align="left" data-field="isDiscount"  data-formatter="discountFormatter">打折?</th>
+							<th data-align="left" data-field="foodCount">库存</th>
 							<th data-align="left" data-field="status" data-sortable="true" data-formatter="statusFormatter">商品状态</th>
 							<th data-align="left" data-field="primeCost"
 							data-sortable="true">成本价</th>
@@ -75,6 +78,7 @@
 							data-sortable="true">商品标签</th>
 							<th data-align="left" data-field="categoryId"
 							data-sortable="true">所属分类</th>
+							<th data-align="left" data-field="isFullDiscount" data-formatter="isFullDiscountFormatter">是否满减</th>
 							<th data-align="left" data-field="toHome"
 							 data-formatter="toHomeOperateFormatter" data-events="homeImageEvents">推到首页</th>
 							<th data-align="center" data-field="homeImage" data-formatter="homeImageFormatter">首页商品</th>
@@ -99,80 +103,80 @@
 				<form id="dataCommit" class="form-horizontal" method="post"
 					enctype="multipart/form-data" action="../service/updateFoods.do">
 					<div class="modal-body">
-						<div class="control-group">
-							<label class="control-label" for="campusId2">校区Id</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="campusId2">校区Id</label>
+							<div class="col-sm-10">
 								<input type="text" id="campusId2" name="campusId" readonly="readonly">
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="foodId2">商品Id</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="foodId2">商品Id</label>
+							<div class="col-sm-10">
 								<input type="text" id="foodId2" name="foodId"
 									placeholder="Food Id">
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="categoryId2">商品分类Id</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="categoryId2">商品分类Id</label>
+							<div class="col-sm-10">
 								<input type="text" id="categoryId2" name="categoyId"
 									placeholder="Category Id">
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="foodName2">商品名称</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="foodName2">商品名称</label>
+							<div class="col-sm-10">
 								<input type="text" id="foodName2" name="foodName"
 									placeholder="Food Name">
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="price2">商品价格</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="price2">商品价格</label>
+							<div class="col-sm-10">
 								<input type="text" id="price2" name="price"
 									placeholder="Present Price"> <span class="add-on">￥</span>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="discountPrice2">折扣价</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="discountPrice2">折扣价</label>
+							<div class="col-sm-10">
 								<input type="text" id="discountPrice2" name="discountPrice"
 									placeholder="Discount Price"> <span class="add-on">￥</span>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="primeCost2">成本价</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="primeCost2">成本价</label>
+							<div class="col-sm-10">
 								<input type="text" id="primeCost2" name="primeCost"
 									placeholder="Prime Cost"> <span class="add-on">￥</span>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="foodTag2">商品标签</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="foodTag2">商品标签</label>
+							<div class="col-sm-10">
 								<input type="text" id="foodTag2" name="foodTag"
 									placeholder="商品标签之间请以逗号隔开">
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="imgUrl2">商品主图片</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="imgUrl2">商品主图片</label>
+							<div class="col-sm-10">
 								<input type="file" id="imgUrl2" name="myfile"
 									placeholder="Choose Picture">
 							</div>
 						</div>
 
-						<div class="control-group">
-							<label class="control-label" for="imgUrl3">商品详情图片</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="imgUrl3">商品详情图片</label>
+							<div class="col-sm-10">
 								<input type="file" id="imgUrl3" name="myfile"
 									placeholder="Choose Picture">
 							</div>
 						</div>
 
-						<div class="control-group">
-							<label class="control-label" for="status">商品状态</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="status">商品状态</label>
+							<div class="col-sm-10">
 								<label class="radio inline"> <input type="radio"
 									name="status" id="status" value="1" checked> 上架
 								</label> <label class="radio inline"> <input type="radio"
@@ -180,9 +184,9 @@
 								</label>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="is_discount">是否打折</label>
-							<div class="controls">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="is_discount">是否打折</label>
+							<div class="col-sm-10">
 								<label class="radio inline"> <input type="radio"
 									name="is_discount" id="is_discount" value="0" checked>
 									不打折
@@ -229,6 +233,7 @@
 	<div class="modal fade" id="pushToHomeModal" tabindex="-1" roal="dialog"
 	aria-labelledby="pushToHomeModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
+		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
@@ -261,6 +266,7 @@
 					<button type="submit" class="btn btn-primary">提交更改</button>
 				</div>
 			</form>
+			</div>
 		</div>
 	</div>
 	
@@ -269,6 +275,7 @@
 	<div class="modal fade" id="manageDetailImageModal" tabindex="-1" role="dialog"
 	aria-labelledby="manageDetailImageModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
+		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
@@ -304,8 +311,50 @@
 						<button type="submit" class="btn btn-primary">提交修改</button>
 					</div>
 			</form>
-		</div><!-- /.modal-content -->
+			</div><!-- /.modal-content -->
+		</div>
 	</div><!-- /.modal -->
+	
+	<!-- 添加库存modal -->
+	<div class="modal fade" id="addFoodCountModal" tabindex="-1" role="dialog" aria-labelledby="addFoodCountModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+					</button>
+					<h4 class="modal-title" id="addFoodCountModalLabel">添加库存</h4>
+				</div>
+				<form class="form-horizontal" role="form">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="campus_id_add_count" class="control-label col-sm-2">校区ID</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="campus_id_add_count" name="campusId" readonly>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label for="food_id_add_count" class="control-label col-sm-2">商品ID</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="food_id_add_count" name="foodId" readonly>
+							</div>
+						</div>-->
+						<div class="form-group">
+							<label for="count_add_count" class="control-label col-sm-2">商品库存</label>
+							<div class="col-sm-10">
+								<input type="number" class="form-control" id="count_add_count" name="addCount">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" id="addFoodCountSubmit">提交更改</button>
+					</div>
+				</form>
+				
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
 <!-- 
 <div class="modal fade" id="addSpecialModal" tabindex="-1"
 role="dialog" aria-labelledby="addSpecialModalLabel"
@@ -877,6 +926,49 @@ window.homeImageEvents = {
 	}
 	
 };
+
+function isFullDiscountFormatter(value, row, index){
+	if(value==0){
+		return '否';
+	}else if(value==1){
+		return '是';
+	}
+}
+
+$(function(){
+	$("#addFoodCountSubmit").click(function(){
+		var campusId = $("#campus_id_add_count").val();
+		var addCount = $("#count_add_count").val();
+		$.post("../service/addFoodCount.do",{
+			campusId : campusId,
+			addCount : addCount
+		},function(data){
+			//alert(data);
+			$("#addFoodCountModal").modal('hide');
+			$("#table").bootstrapTable('refresh',{silent:true});
+			alert(data.message);
+			
+		},"json");
+	});
+	
+	var $addFoodCountBtn = $("#addFoodCountBtn");
+	$addFoodCountBtn.click(function(){
+		/*var array = $("#table").bootstrapTable('getSelections');
+		if(array.length==0){
+			alert("请至少选中一条记录！");
+		}else if(array.length>1){
+			alert("不能同时编辑多条记录！");
+		}else if(array.length==1){
+			//alert(array[0].foodCount);
+			$("#campus_id_add_count").val(getCookie("campusId"));
+			$("#food_id_add_count").val(array[0].foodId);
+			$("count_add_count").val(0);
+			$("#addFoodCountModal").modal('show');
+		}*/
+		$("#campus_id_add_count").val(getCookie("campusId"));
+		$("#addFoodCountModal").modal('show');
+	});
+});
 </Script>
 </body>
 </html>

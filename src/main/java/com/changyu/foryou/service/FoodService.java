@@ -106,4 +106,8 @@ public interface FoodService {
 	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap);
 	
 	List<FoodWithSales> getTopFive(Map<String, Object> paramMap);
+	
+	Integer addFoodCountById(Map<String, Object> paramMap);//添加库存
+	
+	Integer addFoodCount(Map<String, Object> paramMap);//添加库存
 }
