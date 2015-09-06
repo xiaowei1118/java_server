@@ -60,7 +60,7 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-align="center" data-field="categoryId">商品分类Id</th>
+							<th data-align="center" data-field="categoryId" data-visible="true">商品分类Id</th>
 							<th data-align="center" data-field="category">分类名称</th>
 							<th data-align="center" data-field="isOpen" data-formatter="isOpenFormatter">是否开通</th>
 							<th data-align="center" data-field="dasd" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
@@ -83,15 +83,15 @@
 
 			<form class="form-horizontal">
 				<div class="modal-body">
-					<div class="control-group">
-						<label class="control-label" for="category_id">商品分类Id</label>
-						<div class="controls">
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="category_id">商品分类Id</label>
+						<div class="col-sm-8">
 							<input type="text" id="category_id" placeholder="Category Id">
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="category_name">分类名称</label>
-						<div class="controls">
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="category_name">分类名称</label>
+						<div class="col-sm-8">
 							<input type="text" id="category_name" placeholder="Category Name">
 						</div>
 					</div>

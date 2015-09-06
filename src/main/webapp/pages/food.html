@@ -91,6 +91,7 @@
 		</div>
 	</div>
 
+	<!-- 添加商品Modal start -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -103,7 +104,7 @@
 				<form id="dataCommit" class="form-horizontal" method="post"
 					enctype="multipart/form-data" action="../service/updateFoods.do">
 					<div class="modal-body">
-						<div class="form-group">
+						<div class="form-group" style="display:none">
 							<label class="control-label col-sm-2" for="campusId2">校区Id</label>
 							<div class="col-sm-10">
 								<input type="text" id="campusId2" name="campusId" readonly="readonly">
@@ -228,8 +229,9 @@
 		</div>
 	</div>
 	<!-- /.modal -->
+	<!-- 添加商品Modal End -->
 	
-	<!-- 推送图片到主页 -->
+	<!-- 推送图片到主页 modal start -->
 	<div class="modal fade" id="pushToHomeModal" tabindex="-1" roal="dialog"
 	aria-labelledby="pushToHomeModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -269,9 +271,10 @@
 			</div>
 		</div>
 	</div>
+	<!-- 推送图片到主页 modal end -->
 	
 	
-	<!-- 详情图片管理 -->
+	<!-- 详情图片管理 modal start -->
 	<div class="modal fade" id="manageDetailImageModal" tabindex="-1" role="dialog"
 	aria-labelledby="manageDetailImageModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -314,8 +317,9 @@
 			</div><!-- /.modal-content -->
 		</div>
 	</div><!-- /.modal -->
+	<!-- 详情图片管理 modal end -->
 	
-	<!-- 添加库存modal -->
+	<!-- 添加库存modal start -->
 	<div class="modal fade" id="addFoodCountModal" tabindex="-1" role="dialog" aria-labelledby="addFoodCountModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -355,6 +359,7 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal -->
 	</div>
+	<!-- 添加库存modal end -->
 <!-- 
 <div class="modal fade" id="addSpecialModal" tabindex="-1"
 role="dialog" aria-labelledby="addSpecialModalLabel"

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>校区管理</title>
+<title>满减优惠管理</title>
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap.min.css">
 <link rel="stylesheet"
@@ -55,10 +55,10 @@
 				<thead>
 					<tr>
 						<th data-field="state" data-checkbox="true"></th>
-						<th data-field="preferentialId" data-sortable="true">满减ID</th>
+						<th data-field="preferentialId" data-sortable="true" data-visible="false">满减ID</th>
 						<th data-field="needNumber" data-sortable="true">满</th>
 						<th data-field="discountNum" data-sortable="true">减</th>
-						<th data-field="campusId" data-sortable="true">校区ID</th>
+						<th data-field="campusId" data-sortable="true" data-visible="false">校区ID</th>
 					</tr>
 				</thead>
 			</table>
@@ -75,7 +75,7 @@
 					</div>
 					<div class="modal-body">
 						<form id="plus_form" class="form-horizontal" role="form">
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<label for="plus_campus_id" class="col-sm-2 control-label">当前校区ID</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="plus_campus_id" name="campusId" placeholder="当前校区ID" readonly>
@@ -116,13 +116,13 @@
 					</div>
 					<div class="modal-body">
 						<form id="edit_form" class="form-horizontal" role="form">
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<label for="edit_preferential_id" class="col-sm-2 control-label">满减优惠ID</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="edit_preferential_id" name="preferentialId" placeholder="满减优惠ID" readonly>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none">
 								<label for="edit_campus_id" class="col-sm-2 control-label">当前校区ID</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="edit_campus_id" name="campusId" placeholder="当前校区ID">

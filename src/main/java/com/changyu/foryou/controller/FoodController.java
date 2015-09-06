@@ -835,7 +835,7 @@ public class FoodController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/updateFoods.do")
+	@RequestMapping(value="/updateFoods")
 	public String updateFoods(@RequestParam MultipartFile[] myfile,HttpServletRequest request){
 		try {
 			Long foodId=Long.valueOf(request.getParameter("foodId"));            //获取食品id
@@ -941,7 +941,7 @@ public class FoodController {
 			e.printStackTrace();
 			return "redirect:/pages/uploadError.html";
 		}
-		return "redirect:/pages/uploadError.html";
+		return "redirect:/pages/food.html";
 	}
 
 	/**
