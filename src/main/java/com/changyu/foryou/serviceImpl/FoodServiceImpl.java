@@ -279,6 +279,18 @@ public class FoodServiceImpl implements FoodService{
 		// TODO Auto-generated method stub
 		return foodMapper.getTopFive(paramMap);
 	}
+
+	@Override
+	public Integer addFoodCountById(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodMapper.addFoodCountById(paramMap);
+	}
+
+	@Override
+	public Integer addFoodCount(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return foodMapper.addFoodCount(paramMap);
+	}
 	
 }
 

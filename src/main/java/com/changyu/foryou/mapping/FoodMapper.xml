@@ -58,7 +58,7 @@
 		status,
 		food_flag, tag, is_discount,
 		category_id,
-		prime_cost, sale_number,food_count,food.message as message,to_home,home_image
+		prime_cost, sale_number,food_count,food.message as message,to_home,home_image,is_full_discount
 	</sql>
 
 	<sql id="Small_Column_List">
@@ -521,5 +521,20 @@
 		limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
 		</if>
 	</select>
+	
+	<update id="addFoodCountById">
+	update food set food_count=#{foodCount,jdbcType=INTEGER} where campus_id=#{campusId,jdbcType=INTEGER} and food_id=#{foodId,jdbcType=BIGINT}
+	</update>
+	
+	<update id="addFoodCount">
+		UPDATE food
+		SET food_count = food_count + #{addCount,jdbcType=INTEGER}
+		<where>
+		campus_id=#{campusId,jdbcType=INTEGER}
+		<if test="foodId!=null">
+		and fodd_id=#{foodId,jdbcType=BIGINT}	
+		</if>
+		</where>
+	</update>
 </mapper>
 

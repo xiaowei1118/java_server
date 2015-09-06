@@ -186,10 +186,11 @@ public class OrderController {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", (page - 1) * limit);
 			}
+			paramMap.put("status", status);
 			List<String> togetherIds = orderService.getTogetherId(paramMap);
 			
-			System.out.println(JSON.toJSONString(togetherIds));
-
+			//System.out.println(JSON.toJSONString(togetherIds));
+			
 			if (togetherIds.size() != 0) {
 				
 				for (String togetherId : togetherIds) {
@@ -1510,7 +1511,7 @@ public class OrderController {
 	 */
 	@RequestMapping("getSalesInfoByCampusId")
 	@ResponseBody
-	public JSONArray getSalesByDate(Integer campusId){
+	public JSONArray getSalesByDate(@RequestParam Integer campusId, String month){
 		Map<String,Object> paramMap=new HashMap<String,Object>();
 		
 		Date dateStart;
@@ -1518,8 +1519,27 @@ public class OrderController {
 		List<TradeInfo> tradeList = new ArrayList<TradeInfo>();
 		
 		paramMap.put("campusId", campusId);
+		//System.out.println("month="+month);
+		//如果month不为空，说明切换了月份；但是注意month为本月的时候，此时是下面的情况
+		if(month!=null&&!month.equals(null)&&!month.equals("")&&!CalendarTool.checkIsThisMonth(month)){
+			Map<String,Date> dateMap = CalendarTool.getFirstAndLastDayOfMonth(month);
+			dateStart = dateMap.get("monthStart");
+			dateEnd = dateMap.get("monthEnd");
+			paramMap.put("dateStart", dateStart);
+			paramMap.put("dateEnd", dateEnd);
+			TradeInfo monthInfo = new TradeInfo();
+			monthInfo.setInfoDateType("当月");
+			monthInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));//获取指定时间段和指定校区的订单总数
+			monthInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段和指定校区的订单交易额
+			paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信
+			monthInfo.setTradeVolumeAliPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区和指定支付方式的订单交易额
+			paramMap.put("payWay", 2);
+			monthInfo.setTradeVolumeWeChatPay(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段、指定校区、指定支付方式的订单交易额
+			tradeList.add(monthInfo);
+			return (JSONArray)JSON.toJSON(tradeList);
+		}
 		
-		//当天订单数、销售额
+		//当天订单数、销售额-
 		dateStart = CalendarTool.getTodayStart();
 		dateEnd  = CalendarTool.getTodayEnd();
 		paramMap.put("dateStart", dateStart);

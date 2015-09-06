@@ -1300,4 +1300,45 @@ public class FoodController {
 		responseMap.put("hotFive", hotFive);*/
 		return responseMap;
 	}
+	
+	@RequestMapping("addFoodCountById")
+	@ResponseBody
+	public Map<String, Object> addFoodCountById(@RequestParam Integer campusId, @RequestParam Integer foodId, @RequestParam Integer addCount){
+		Map<String,Object> requestMap = new HashMap<String, Object>();
+		Map<String,Object> responseMap = new HashMap<String, Object>();
+		
+		requestMap.put("campusId", campusId);
+		requestMap.put("foodId", foodId);
+		Food thisFood = foodService.selectFoodByPrimaryKey(requestMap);
+		requestMap.put("foodCount", thisFood.getFoodCount()+addCount);
+		Integer result = foodService.addFoodCountById(requestMap);
+		if(result!=0&&result!=-1){
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "添加库存成功");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "添加库存失败");
+		}
+		return responseMap;
+	}
+	
+	@RequestMapping("addFoodCount")
+	@ResponseBody
+	public Map<String, Object> addFoodCount(@RequestParam Integer campusId, @RequestParam Integer addCount){
+		Map<String,Object> requestMap = new HashMap<String, Object>();
+		Map<String,Object> responseMap = new HashMap<String, Object>();
+		
+		requestMap.put("campusId", campusId);
+		requestMap.put("addCount", addCount);
+		//System.out.println(resultMap);
+		Integer result = foodService.addFoodCount(requestMap);
+		if(result!=0&&result!=-1){
+			responseMap.put(Constants.STATUS, Constants.SUCCESS);
+			responseMap.put(Constants.MESSAGE, "添加库存成功");
+		}else{
+			responseMap.put(Constants.STATUS, Constants.FAILURE);
+			responseMap.put(Constants.MESSAGE, "添加库存失败");
+		}
+		return responseMap;
+	}
 }

@@ -48,4 +48,8 @@ public interface FoodMapper {
 	Integer cancelRecommend(Map<String, Object> paramMap);//取消推荐
 	
 	List<FoodWithSales> getTopFive(Map<String, Object> paramMap);
+	
+	Integer addFoodCountById(Map<String, Object> paramMap);//添加库存
+	
+	Integer addFoodCount(Map<String, Object> paramMap);
 }
