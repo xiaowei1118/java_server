@@ -33,6 +33,9 @@ a:hover {
 			$.get("../foryou/user/getUserType.do", function(text){            
 				if (text=="1") {
 					$("#user-link").hide();
+					$("#hotsearch").hide();
+					$("#preferential").hide();
+					$("#closeStore").hide();
 				};
 
 			});
@@ -103,7 +106,7 @@ a:hover {
 
 							</a>
 						</figure><hr/></li>
-					<li>
+					<li id="preferential">
 						<figure>
 							<a href="pages/preferential.html" target="content">
 								<i class="icon-shopping-cart"></i>满减优惠
@@ -168,14 +171,14 @@ a:hover {
 								<i class="icon-globe"></i>
 								校区管理&nbsp;&nbsp;
 							</a>
-						</figure>
+						</figure><hr/>
 					</li>
-					<li><figure>
-							<a href="pages/hotsearch.html" target="content"><i
+					<li id="hotsearch"><figure>
+							<a href="pages/hotsearch.html" id="hotsearch" target="content"><i
 								class='icon-zoom-out'></i>搜索标签 </a>
 						</figure><hr/></li>
 					<li>
-					<li>
+					<li id="closeStore">
 						<figure>
 							<a href="pages/close.html" target="content">
 								<i class="icon-off"></i>一键关店
