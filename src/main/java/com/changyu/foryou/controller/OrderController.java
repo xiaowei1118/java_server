@@ -959,12 +959,17 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getPCSimpleOrder")
-	public @ResponseBody Map<String, Object> getPcOrders(Short status,
+	public @ResponseBody Map<String, Object> getPcOrders(Short status,@RequestParam Integer campusId,
 			Integer limit, Integer offset, String search) {
 		Map<String, Object> map = new HashMap<String, Object>();
-
-		List<PCOrder> lists = orderService.getPCOrders(status, limit, offset,
-				search);
+		
+        Map<String,Object> paramMap=new HashMap<String,Object>();
+        paramMap.put("campusId", campusId);
+        paramMap.put("limit", limit);
+        paramMap.put("offset", offset);
+        paramMap.put("search", search);
+        paramMap.put("status", status);
+		List<PCOrder> lists = orderService.getPCSimpleOrders(paramMap);
 		DecimalFormat df = new DecimalFormat("####.00");
 
 		for (PCOrder order : lists) {
@@ -983,7 +988,7 @@ public class OrderController {
 		JSONArray jsonArray = JSONArray.parseArray(JSON
 				.toJSONStringWithDateFormat(lists, "yyyy-MM-dd"));
 
-		long totalCount = orderService.getPCOrdersCount(status, search);
+		long totalCount = orderService.getPCSimpleOrdersCount(paramMap);
 		map.put("rows", jsonArray);
 		map.put("total", totalCount);
 		return map;

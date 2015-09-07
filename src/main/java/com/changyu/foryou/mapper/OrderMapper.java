@@ -125,4 +125,8 @@ public interface OrderMapper {
 	Integer getSalesInfoByCampusId(Map<String, Object> paramMap);	//根据校区和时间段获取销售量
 	
 	Float getTradeVolumeByCampusId(Map<String, Object> paramMap);	//获取指定时间段和指定校区的订单交易额
+
+	List<PCOrder> getPCSimpleOrders(Map<String, Object> paramMap);
+
+	long getPCSimpleOrdersCount(Map<String, Object> paramMap);
 }

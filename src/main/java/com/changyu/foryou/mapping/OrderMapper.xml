@@ -504,7 +504,8 @@
 				and status=4
 			</if>
 			<if test="status==null">
-				and status !=0 and status!=9 and status!=10 and status!=11
+				and status !=0 and status!=9 and status!=10 and
+				status!=11
 			</if>
 		</where>
 		group by together_id
@@ -580,7 +581,8 @@
 		together_order
 		WHERE
 		campus_id = #{campusId,jdbcType=INTEGER}
-		AND tag = #{tag,jdbcType=SMALLINT}
+		AND tag =
+		#{tag,jdbcType=SMALLINT}
 		AND status IN (2,3)
 		<if test="isSelected == 0">
 			AND admin_phone IS NULL
@@ -661,7 +663,7 @@
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
 
-	<!-- web端获取订单（除待发货订单） -->
+	<!-- web端获取订单（除待发货订单） 弃用 -->
 	<select id="getPCOrders" resultMap="PCSimpleOrderMap">
 		SELECT
 		together_id,
@@ -702,7 +704,50 @@
 		order by together_date DESC,orders.phone ASC
 		limit ${offset},${limit}
 	</select>
+    
+    <!-- pc端获取订单 -->
+	<select id="getPCSimpleOrders" resultMap="PCSimpleOrderMap">
+		SELECT
+		together_id,
+		orders.phone,
+		food. NAME AS NAME,
+		order_count,
+		address,
+		orders.admin_phone,
+		together_date,
+		receiver.phone AS receiver_phone,
+		food.price AS food_price,
+		orders.price,
+		is_discount,
+		discount_price,
+		users.nickname AS admin_name
+		FROM
+		orders
+		LEFT JOIN food on orders.food_id = food.food_id and
+		orders.campus_id=food.campus_id
+		left join receiver on orders.rank = receiver.rank and orders.phone =
+		receiver.phone_id
+		left join users on orders.admin_phone=users.phone
+		WHERE orders. STATUS =#{status,jdbcType=SMALLINT}
+		AND orders.tag = 1
+		and orders.campus_id=#{campusId,jdbcType=INTEGER}
+		<if test="search!=null">
+			and orders.phone like "%${search}%"
+		</if>
+		order by together_date DESC,orders.phone ASC
+		limit ${offset},${limit}
+	</select>
 
+     <select id="getPCSimpleOrdersCount" resultType="Long">
+        select count(*)
+        from orders
+        WHERE orders. STATUS =#{status,jdbcType=SMALLINT}
+		AND orders.tag = 1
+		and orders.campus_id=#{campusId,jdbcType=INTEGER}
+		<if test="search!=null">
+			and phone like "%${search}%"
+		</if>
+     </select>
 	<!-- web端获取代发货订单 -->
 	<select id="getPCOrdersWithOutAdmin" resultMap="PCSimpleOrderMap">
 		SELECT
@@ -838,7 +883,8 @@
 	<update id="deleteOrder">
 		update orders
 		set tag = 0
-		where together_id=#{togetherId,jdbcType=VARCHAR}
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
 		and status=4
 	</update>
 
@@ -872,7 +918,8 @@
 	<select id="getAdminPhone" resultType="String">
 		select
 		admin_phone
-		from orders
+		from
+		orders
 		where
 		together_id=#{togetherId,jdbcType=VARCHAR}
 		limit 1
@@ -881,13 +928,15 @@
 	<update id="updateOrderPrice">
 		update orders
 		set total_price=#{totalPrice}
-		where order_id=#{orderId}
+		where
+		order_id=#{orderId}
 	</update>
 
 	<!-- 根据togetherId获取该笔大订单总价 -->
 	<select id="selectTotalPriceByTogetherId" resultType="FLOAT">
 		select
-		total_price from orders where together_id=#{togetherId,jdbcType=VARCHAR} limit 1
+		total_price from orders where
+		together_id=#{togetherId,jdbcType=VARCHAR} limit 1
 	</select>
 
 	<!-- 支付完成后更新价格和状态 -->
@@ -896,7 +945,8 @@
 		orders
 		set total_price=#{amount,jdbcType=REAL},
 		status=2 ,charge_id=#{chargeId,jdbcType=VARCHAR}
-		where together_id=#{togetherId,jdbcType=VARCHAR}
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
 	</update>
 
 	<!-- 根据订单号获取校区号 -->
@@ -918,7 +968,8 @@
 		orders,food
 		where
 		orders.food_id=food.food_id and orders.tag =1
-		and order_id=#{orderId,jdbcType=BIGINT} and phone =
+		and
+		order_id=#{orderId,jdbcType=BIGINT} and phone =
 		#{phoneId,jdbcType=VARCHAR}
 	</select>
 
@@ -935,9 +986,11 @@
 	<!--获取客户端订单 -->
 	<select id="getPCOrdersNew" resultMap="SuperAdminOrderMap">
 		select
-		together_id,custome_phone as phone,together_date,total_price as price,address,charge_id
+		together_id,custome_phone as phone,together_date,total_price as
+		price,address,charge_id
 		from together_order
-		where tag=1 and status=#{status}
+		where tag=1 and
+		status=#{status}
 		<if test="campusId != null">
 			and campus_id=#{campusId,jdbcType=INTEGER}
 		</if>
@@ -968,7 +1021,8 @@
 		update
 		orders
 		set status=10
-		where together_id=#{togetherId,jdbcType=VARCHAR}
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
 	</update>
 
 	<!-- 更新退款订单状态，推给管理员 -->
@@ -976,71 +1030,49 @@
 		update
 		orders
 		set status=11
-		where together_id=#{togetherId,jdbcType=VARCHAR}
+		where
+		together_id=#{togetherId,jdbcType=VARCHAR}
 	</update>
 
 	<!-- 获取各个状态的订单数量 -->
-	<!-- <select id="getMiniOrderByPhone" resultType="String">
-		SELECT COUNT(DISTINCT together_id) from orders WHERE together_id in 
-			(select DISTINCT together_id from orders <where> phone=#{phoneId,jdbcType=VARCHAR} 
-			<if test="isRemarked!=null"> and is_remarked=#{isRemarked,jdbcType=SMALLINT} 
-			</if> and status=#{status,jdbcType=SMALLINT} and tag=1 </where> GROUP BY 
-			together_id)
-		select 
-		  together_id
-		from orders
-		<where>
-			phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and
-			orders.tag=1
-			<if test="status!=null and status!=4 and status!=5">
-				and status = #{status,jdbcType=SMALLINT}
-			</if>
-			<if test="status==4">
-				and status=4
-			</if>
-			<if test="status==5">
-				and status=4
-			</if>
-			<if test="status==null">
-				and status !=0
-			</if>
-		</where>
-		group by together_id
-		<if test="status==4">
-			having count(order_id)!=sum(is_remarked)
-		</if>
-		<if test="status==5">
-			having count(order_id)=sum(is_remarked)
-		</if>
-		
-		
-	</select> -->
-	
+	<!-- <select id="getMiniOrderByPhone" resultType="String"> SELECT COUNT(DISTINCT 
+		together_id) from orders WHERE together_id in (select DISTINCT together_id 
+		from orders <where> phone=#{phoneId,jdbcType=VARCHAR} <if test="isRemarked!=null"> 
+		and is_remarked=#{isRemarked,jdbcType=SMALLINT} </if> and status=#{status,jdbcType=SMALLINT} 
+		and tag=1 </where> GROUP BY together_id) select together_id from orders <where> 
+		phone = #{phoneId,jdbcType=VARCHAR} and together_id is not null and orders.tag=1 
+		<if test="status!=null and status!=4 and status!=5"> and status = #{status,jdbcType=SMALLINT} 
+		</if> <if test="status==4"> and status=4 </if> <if test="status==5"> and 
+		status=4 </if> <if test="status==null"> and status !=0 </if> </where> group 
+		by together_id <if test="status==4"> having count(order_id)!=sum(is_remarked) 
+		</if> <if test="status==5"> having count(order_id)=sum(is_remarked) </if> 
+		</select> -->
+
 	<!-- 获取指定时间段和指定校区的订单总数 -->
 	<select id="getSalesInfoByCampusId" resultType="Integer">
-	select COUNT(DISTINCT together_id) from orders
-	where campus_id=#{campusId}
-	and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
-	and #{dateEnd,jdbcType=TIMESTAMP}
-	and tag=1
+		select COUNT(DISTINCT together_id) from orders
+		where campus_id=#{campusId}
+		and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+		and #{dateEnd,jdbcType=TIMESTAMP}
+		and tag=1
 	</select>
-	
+
 	<!-- 获取指定时间段和指定校区的订单交易额 -->
 	<select id="getTradeVolumeByCampusId" resultType="Float">
-	SELECT sum(total_price)
-	from together_order
-	<where>
-	campus_id=#{campusId,jdbcType=INTEGER}
-	<if test="dateStart!=null and dateEnd!=null">
-	and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
-	AND #{dateEnd,jdbcType=TIMESTAMP}
-	</if>
-	<if test="dateToday!=null">
-	and together_date>=#{dateToday,jdbcType=TIMESTAMP}
-	</if>
-	<if test="payWay!=null">
-	AND pay_way=#{payWay,jdbcType=SMALLINT}
-	</if>
-	</where>
+		SELECT sum(total_price)
+		from together_order
+		<where>
+			campus_id=#{campusId,jdbcType=INTEGER}
+			<if test="dateStart!=null and dateEnd!=null">
+				and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
+				AND #{dateEnd,jdbcType=TIMESTAMP}
+			</if>
+			<if test="dateToday!=null">
+				and together_date>=#{dateToday,jdbcType=TIMESTAMP}
+			</if>
+			<if test="payWay!=null">
+				AND pay_way=#{payWay,jdbcType=SMALLINT}
+			</if>
+		</where>
 	</select>
 </mapper>

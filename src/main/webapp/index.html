@@ -257,6 +257,13 @@ $(function(){
 	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单，且隐藏校区管理和校区管理员管理
 	if(getCookie("type")==1){
 		$("#campusDropdown").css("visibility", "visible");
+		if(campusId!=null&&typeof(campusId)!="undefined"){
+			$.post('campus/getCampusById.do', {
+				campusId : getCookie("campusId")
+			},function(data){		
+			   $("#dropdownMenu1").html(data.campus.campusName+'<span class="caret"></span>');	
+			},"json");
+		}
 	}else{
 		//隐藏校区管理和校区管理员管理
 		$("#li-campus-admin").hide();

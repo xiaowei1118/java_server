@@ -342,20 +342,27 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Integer getMiniOrderByPhone(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.getMiniOrderByPhone(paramMap);
 	}
 
 	@Override
 	public Integer getSalesInfoByCampusId(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.getSalesInfoByCampusId(paramMap);
 	}
 
 	@Override
 	public Float getTradeVolumeByCampusId(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return orderMapper.getTradeVolumeByCampusId(paramMap);
+	}
+
+	@Override
+	public List<PCOrder> getPCSimpleOrders(Map<String, Object> paramMap) {
+		return orderMapper.getPCSimpleOrders(paramMap);
+	}
+
+	@Override
+	public long getPCSimpleOrdersCount(Map<String, Object> paramMap) {
+		return orderMapper.getPCSimpleOrdersCount(paramMap);
 	}
 	
 
