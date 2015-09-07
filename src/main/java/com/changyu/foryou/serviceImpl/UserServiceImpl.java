@@ -68,16 +68,16 @@ public class UserServiceImpl implements UserService {
 		return usersMapper.getUserCount(search);
 	}
 
-	public Integer setUserAdmin(String phone) {
-		return usersMapper.setUserAdmin(phone);
+	public Integer setUserAdmin(String phone,Integer campusId) {
+		return usersMapper.setUserAdmin(phone,campusId);
 	}
 
-	public Integer setUserCommon(String phone) {
-		return usersMapper.setUserCommon(phone);
+	public Integer setUserCommon(String phone,Integer campusId) {
+		return usersMapper.setUserCommon(phone,campusId);
 	}
 
-	public Integer setUserSuperAdmin(String phone) {
-		return usersMapper.setUserSuperAdmin(phone);
+	public Integer setUserSuperAdmin(String phone,Integer campusId) {
+		return usersMapper.setUserSuperAdmin(phone,campusId);
 	}
 
 	public int updateImageUrl(String imageUrl, String phone) {
@@ -134,8 +134,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users checkLogin(String phone) {
-		// TODO Auto-generated method stub
 		return usersMapper.checkLogin(phone);
+	}
+
+	@Override
+	public List<String> getUserByType(Map<String, Object> paramMap) {
+		return usersMapper.getUserByType(paramMap);
 	}
 
 }

@@ -75,8 +75,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="setUserAdmin")
-	public @ResponseBody Integer setUserAdmin(@RequestParam String phone){
-		return userService.setUserAdmin(phone);
+	public @ResponseBody Integer setUserAdmin(@RequestParam String phone,@RequestParam Integer campusId){
+		return userService.setUserAdmin(phone,campusId);
 	}
 
 	/**
@@ -85,8 +85,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="setUserCommon")
-	public @ResponseBody Integer setUserCommon(@RequestParam String phone){
-		return userService.setUserCommon(phone);
+	public @ResponseBody Integer setUserCommon(@RequestParam String phone,@RequestParam Integer campusId){
+		return userService.setUserCommon(phone,campusId);
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="setUserSuperAdmin")
-	public @ResponseBody Integer setUserSuperAdmin(@RequestParam String phone){
-		return userService.setUserSuperAdmin(phone);
+	public @ResponseBody Integer setUserSuperAdmin(@RequestParam String phone,@RequestParam Integer campusId){
+		return userService.setUserSuperAdmin(phone,campusId);
 	}
 
 	/**

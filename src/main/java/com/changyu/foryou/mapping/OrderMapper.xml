@@ -807,11 +807,12 @@
 		select *
 		from together_order
 		where
+		status !=1 and campus_id=#{campusId,jdbcType=INTEGER}
 		<if test="date!=null">
-			DATE_FORMAT(together_date,"%Y-%m-%d")=#{date,jdbcType=DATE}
+			and DATE_FORMAT(together_date,"%Y-%m-%d")=#{date,jdbcType=DATE}
 		</if>
 		<if test="date==null">
-			DATE_FORMAT(together_date,"%Y-%m-%d")=CURDATE()
+			and DATE_FORMAT(together_date,"%Y-%m-%d")=CURDATE()
 		</if>
 		ORDER BY
 		together_date ASC

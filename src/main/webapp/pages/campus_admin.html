@@ -9,6 +9,8 @@
 	href="../assets/bootstrap-table/bootstrap-table.css">
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap-editable.css">
+<link rel="stylesheet"
+	href="../css/style.css">
 </head>
 <body>
 	<div class="container">
@@ -16,14 +18,15 @@
 			<div class="page-header">
 				<h1>校区管理员管理</h1>
 			</div>
+			<div id="info"></div>
 			<div>
 				<div id="toolbar" class="btn-group">
 					<button id="plus" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-plus"></i>
 					</button>
-					<button id="edit" type="button" class="btn btn-default">
+					<!-- <button id="edit" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-edit"></i>
-					</button>
+					</button> -->
 					<button id="delete" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-minus"></i>
 					</button>
@@ -80,15 +83,16 @@
 							<div class="form-group">
 								<label for="plus_campus_admin_password" class="col-sm-2 control-label">密码</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_campus_admin_password" name="password" placeholder="校区管理员初始密码">
+									<input type="password" class="form-control" id="plus_campus_admin_password" name="password" placeholder="校区管理员初始密码">
 								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<input type="submit" id="addCampusSubmitButton" class="btn btn-primary" value="提交更改"/>
 							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" id="addCampusSubmitButton" class="btn btn-primary" onclick="addCampusAdminSubmit()">提交更改</button>
-					</div>
+					
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal -->
 		</div>
@@ -185,10 +189,6 @@
 <script src="../assets/bootstrap-table/messages_cn.js"></script>
 <script src="../assets/bootstrap-table/bootstrap.min.js"></script>
 <script src="../assets/bootstrap-table/bootstrap-table.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
-<script src="../assets/bootstrap-table/tableExport.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
 <script src="../js/bootstrap-table-zh-CN.min.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -200,7 +200,7 @@
 <script src="../js/util.js"></script>
 <script>
 //只能验证是否包含字母数字特殊字符
-$.validator.addMethod("hasLetterAndNumAndSpecialSign",function(value,element,param){
+/*$.validator.addMethod("hasLetterAndNumAndSpecialSign",function(value,element,param){
 	if(value.length<6){
 		alert("密码长度不小于6");
 		return false;
@@ -218,21 +218,30 @@ $.validator.addMethod("hasLetterAndNumAndSpecialSign",function(value,element,par
     alert("密码强度不符合,请重新输入");
     return false;
 },"密码必须包含英文字母、数字和特殊字符");
+*/
+
 $("#plus_form").validate({
-	debug: true,
-	focusInvalid: false,
-	onkeyup: false,
 	rules:{
 		campusAdminName:{
 			required: true,
 		},
 		password:{
 			required: true,
-			hasLetterAndNumAndSpecialSign: true
+			rangelength: [6,12]
+		}
+	},
+	messages:{
+		campusAdminName:{
+			required:"用户名必须",
+		},
+		password:{
+			required:"密码必须",
+			rangelength:"密码长度在6-12之间"
 		}
 	},
 	submitHandler: function(form){
 		var campusName = $("#span_plus_campus_name").text().trim();
+		console.log(campusName);
 		var campusAdminName = $("#plus_campus_admin").val().trim();
 		var campusAdminPassword = $("#plus_campus_admin_password").val().trim();
 		
@@ -252,11 +261,12 @@ $("#plus_form").validate({
 </script>
 	<script>
 	//“添加校区管理员”的模态框的提交更改按钮的点击事件
-	function addCampusAdminSubmit(){
+	/*function addCampusAdminSubmit(){
+		$plusForm=document.getElementById('#plus_form');
 		$("#plus_form").submit();
-	}
+	}*/
 	//“更新校区管理员”的模态框的提交更改按钮的点击事件
-	function submitUpdateCampusAdmin(){
+	/*function submitUpdateCampusAdmin(){
 		var campusName = $("#span_edit_campus_name").text().trim();
 		var campusAdminName = $("#edit_campus_admin").val();
 		$.post("../campus/updateCampusAdmin.do",{
@@ -269,7 +279,7 @@ $("#plus_form").validate({
 				$("#table").bootstrapTable('refresh', {silent: true});
 			}
 		},"json");
-	}
+	}*/
 	//“删除校区管理员”的模态框的提交更改按钮的点击事件
 	function deleteCampusAdminSubmit(){
 		var campusId = $("#delete_campus_id").val();
@@ -306,7 +316,7 @@ $("#plus_form").validate({
 				$("#plus_campus_name").next().empty();
 				$.getJSON("../campus/getAllCampus.do",function(data){
 					for(var i=0; i<data.length; i++){
-						$("#plus_campus_name").next().append('<li style="text-align:center;">'+data[i].campusName+'</li>');
+						$("#plus_campus_name").next().append('<li style="text-align:center;" data-campusId="'+data[i].campusId+'">'+data[i].campusName+'</li>');
 					}
 					//为校区下拉列表项设置单击事件监听
 					$("#plus_campus_name").next().children().click(function(){
@@ -316,7 +326,12 @@ $("#plus_form").validate({
 				$("#plusModal").modal('show');
 			});
 			
-			$editButton.click(function() {
+			$("#plusModal").on("hidden.bs.modal", function() {
+					$('#plus_campus_admin').val("");
+					$('#plus_campus_admin_password').val('');
+			 });
+
+			/*$editButton.click(function() {
 				var array = $table.bootstrapTable('getSelections');
 				flag = 1;
 				if (array.length > 1) {
@@ -341,7 +356,7 @@ $("#plus_form").validate({
 					$("#edit_campus_admin").val(array[0].campusAdmin);
 					$("#editModal").modal('show');
 				}
-			});
+			});*/
 			
 			$deleteButton.click(function(){
 				var array = $table.bootstrapTable('getSelections');

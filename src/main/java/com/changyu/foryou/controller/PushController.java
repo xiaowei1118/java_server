@@ -1,7 +1,12 @@
 package com.changyu.foryou.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +18,7 @@ import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.PushPayload;
 
+import com.changyu.foryou.service.UserService;
 import com.changyu.foryou.tools.Constants;
 import com.changyu.foryou.tools.JpushInterface;
 
@@ -22,9 +28,15 @@ public class PushController {
 	protected static final Logger log = LoggerFactory.getLogger(PushController.class);
 	private static final String appKey = "6b618bf4a73419c8e351240e";
 	private static final String masterSecret = "a80ba2c3934895be10ae9a75";
-
+    private UserService userService;
+    
+    @Autowired
+    public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+    
 	@RequestMapping(value="pushPlatForm")
-	private @ResponseBody String pushPlatForm(@RequestParam String push_data,String pushDeviceAndroid,String pushDeviceIos,String alert, String phone) {
+	private @ResponseBody String pushPlatForm(@RequestParam String push_data,@RequestParam Integer campusId,String pushDeviceAndroid,String pushDeviceIos,String alert, String phone) {
 
 		JPushClient jpushClient = new JPushClient(masterSecret, appKey, 1);
 		PushPayload payload=null;
@@ -50,7 +62,18 @@ public class PushController {
 					payload = JpushInterface.buildPushObject_android_and_ios_alias_alert(push_data,phone);
 				}
 			}else{
-				payload = JpushInterface.buildPushObject_android_and_ios_tag_alert(push_data,String.valueOf((Integer.valueOf(alert)-2)));		
+				//payload = JpushInterface.buildPushObject_android_and_ios_tag_alert(push_data,String.valueOf((Integer.valueOf(alert)-2)));
+				Map<String,Object> paramMap=new HashMap<>();
+				Integer type=Integer.valueOf(alert)-2;
+				paramMap.put("type",type);
+				paramMap.put("campusId", campusId);
+				List<String> phones=userService.getUserByType(paramMap);
+				for (String phone1 : phones) {
+					payload = JpushInterface.buildPushObject_android_and_ios_alias_alert(push_data,phone1);
+					PushResult result = jpushClient.sendPush(payload);
+					log.info("Got result - " + result);	
+				}
+				return Constants.SUCCESS;
 			}
 			PushResult result = jpushClient.sendPush(payload);
 			log.info("Got result - " + result);

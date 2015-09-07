@@ -243,6 +243,12 @@
 	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Food">
 		update food
 		<set>
+		    <if test="isFullDiscount != null">
+		        is_full_discount=#{isFullDiscount,jdbcType=SMALLINT},
+		    </if>
+		    <if test="message != null">
+		        message=#{message,jdbcType=VARCHAR},
+		    </if>
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
 			</if>

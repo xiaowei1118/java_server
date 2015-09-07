@@ -5,10 +5,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-table.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 	<link rel="shortcut icon" href="../img/icon.png">
 	<script src="../js/jquery.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/jquery.validate.min.js"></script>
+	<script src="../js/util.js"></script>
+
 </head>
 <style type="text/css">
 	#pushForm label.error{
@@ -16,6 +19,9 @@
 		font-size:15px;
 		font-family: "新宋体"; 
 	}
+	  .block{
+	 		display: block;
+	 	} 
 </style>
 <body>
 	<div class="container">
@@ -25,16 +31,22 @@
 			</h1>
 		</div>
 		<form id="pushForm" enctype="multipart/form-data">
+		    <div class="control-group none">
+		    	<label for="campusId" style="font-weight:bold;font-size:1.4em">校区id:</label>
+		        <div class="controls">
+		            <input type="text" id="campusId" name="campusId"/>
+		        </div>
+		    </div>
 			<div class="control-group">
 				<label for="push_data" style="font-weight:bold;font-size:1.4em">推送内容：</label>
 				<div class="controls">
 					<textarea id="push_data" class="form-control" rows="5" style="width:100%" name="push_data"  placeholder="推送的内容....."></textarea>	
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group block">
 				<label class="control-label">推送对象：</label>
 				<div class="controls">
-					<label class="checkbox inline"> <input type="checkbox"
+					<label class="checkbox"> <input type="checkbox"
 						name="pushDeviceAndroid" value="1" id="androidPush" checked>
 						Android设备
 					</label> <label class="checkbox inline"> <input type="checkbox"
@@ -42,9 +54,9 @@
 				</label>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group block">
 			<div class="controls">
-				<label class="radio inline"> <input type="radio"
+				<label class="radio"> <input type="radio"
 					name="alert" id="alertAll" value="1" checked>
 					广播(所有人)
 				</label> <label class="radio inline"> <input type="radio"
@@ -70,10 +82,12 @@
 </div>
 <script type="text/javascript">
 	var $pushForm=$("#pushForm");
+	var $campusId=getCookie("campusId");
+
     var validator;
 	$(function(){
 		$("#phoneLabel").hide();
-
+        $("#campusId").val($campusId);
 		validator=$pushForm.validate({
 			debug:false,
 			rules:{

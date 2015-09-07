@@ -1069,13 +1069,14 @@ public class OrderController {
 				
 				// 获取该笔订单总价
 				for (DeliverChildOrder deliverChildOrder : deliverChildOrders) {
-					if (deliverChildOrder.getIsDiscount() == 0) {
+					/*if (deliverChildOrder.getIsDiscount() == 0) {
 						priceFloat += deliverChildOrder.getPrice()
 								* deliverChildOrder.getOrderCount();
 					} else {
 						priceFloat += deliverChildOrder.getDiscountPrice()
 								* deliverChildOrder.getOrderCount();
-					}
+					}*/
+					priceFloat+=deliverChildOrder.getPrice();
 				}
 				totalPrice += priceFloat;
 				deliverOrder.setTotalPrice(Float.parseFloat(df

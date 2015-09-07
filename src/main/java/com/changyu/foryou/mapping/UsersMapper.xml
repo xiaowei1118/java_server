@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.changyu.foryou.mapper.UsersMapper">
-   <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
 	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Users">
 		<id column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="password" property="password" jdbcType="VARCHAR" />
@@ -18,7 +18,7 @@
 		<result column="academy" property="academy" jdbcType="VARCHAR" />
 		<result column="qq" property="qq" jdbcType="VARCHAR" />
 		<result column="weixin" property="weiXin" jdbcType="VARCHAR" />
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>  
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		phone, password, type, nickname, img_url,
@@ -26,15 +26,26 @@
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
-		select
-		users.phone as phone, password, type, nickname, img_url,
-		last_login_date,create_time,sex,academy,qq,weixin
-		, receiver.address as default_address,users.campus_id
-		from users,receiver
-		where users.phone = #{phone,jdbcType=VARCHAR}
-		and receiver.phone_id=users.phone
-		AND receiver.tag=0 
-		limit 1
+		SELECT
+		users.phone AS phone,
+		PASSWORD,
+		type,
+		nickname,
+		img_url,
+		last_login_date,
+		create_time,
+		sex,
+		academy,
+		qq,
+		weixin,
+		receiver.address AS default_address,
+		users.campus_id
+		FROM
+		users
+		left join receiver on receiver.phone_id = users.phone AND receiver.tag = 0
+		WHERE
+		users.phone = #{phone,jdbcType=VARCHAR}
+		LIMIT 1
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from users
@@ -102,38 +113,38 @@
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Users">
-	update users
-	<set>
-		<if test="sex!=null">
-			sex=#{sex,jdbcType=SMALLINT},
-		</if>
-		<if test="qq!=null">
-			qq=#{qq,jdbcType=VARCHAR},
-		</if>
-		<if test="weiXin!=null">
-			weixin=#{weiXin,jdbcType=VARCHAR},
-		</if>
-		<if test="academy!=null">
-			academy=#{academy,jdbcType=VARCHAR},
-		</if>
-		<if test="password != null">
-			password = #{password,jdbcType=VARCHAR},
-		</if>
-		<if test="type != null">
-			type = #{type,jdbcType=SMALLINT},
-		</if>
-		<if test="nickname != null">
-			nickname = #{nickname,jdbcType=VARCHAR},
-		</if>
-		<if test="imgUrl != null">
-			img_url = #{imgUrl,jdbcType=VARCHAR},
-		</if>
-		<if test="lastLoginDate != null">
-			last_login_date = #{lastLoginDate,jdbcType=DATE},
-		</if>
-	</set>
-	where phone = #{phone,jdbcType=VARCHAR}
-</update>
+		update users
+		<set>
+			<if test="sex!=null">
+				sex=#{sex,jdbcType=SMALLINT},
+			</if>
+			<if test="qq!=null">
+				qq=#{qq,jdbcType=VARCHAR},
+			</if>
+			<if test="weiXin!=null">
+				weixin=#{weiXin,jdbcType=VARCHAR},
+			</if>
+			<if test="academy!=null">
+				academy=#{academy,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=SMALLINT},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="imgUrl != null">
+				img_url = #{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginDate != null">
+				last_login_date = #{lastLoginDate,jdbcType=DATE},
+			</if>
+		</set>
+		where phone = #{phone,jdbcType=VARCHAR}
+	</update>
 	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Users">
 		update users
 		set
@@ -156,23 +167,29 @@
 	</update>
 
 	<!--设置管理员 -->
-	<update id="setUserAdmin" parameterType="String">
+	<update id="setUserAdmin">
 		update users
-		set type=1
-		where phone = #{phone,jdbcType=VARCHAR}
+		set type=1 ,
+		campus_id=#{campusId,jdbcType=INTEGER}
+		where phone =
+		#{phone,jdbcType=VARCHAR}
 	</update>
 
-	<update id="setUserCommon" parameterType="String">
+	<update id="setUserCommon">
 		update users
-		set type=2
-		where phone = #{phone,jdbcType=VARCHAR}
+		set type=2,
+		campus_id=#{campusId,jdbcType=INTEGER}
+		where phone =
+		#{phone,jdbcType=VARCHAR}
 	</update>
 
-	<update id="setUserSuperAdmin" parameterType="String">
+	<update id="setUserSuperAdmin">
 		update users
 		set
-		type=0
-		where phone = #{phone,jdbcType=VARCHAR}
+		type=0,
+		campus_id=#{campusId,jdbcType=INTEGER}
+		where phone =
+		#{phone,jdbcType=VARCHAR}
 	</update>
 
 	<update id="updateLastLoginTime">
@@ -190,10 +207,11 @@
 		left join receiver
 		on
 		users.phone = receiver.phone_id and receiver.tag=0
-		<where>	
-		    1=1	
+		<where>
+			1=1
 			<if test="search != null and search !='' ">
-				and (nickname like #{search,jdbcType=VARCHAR} or users.phone like
+				and (nickname like #{search,jdbcType=VARCHAR} or
+				users.phone like
 				#{search,jdbcType=VARCHAR})
 			</if>
 			<if test="sort != null">
@@ -207,7 +225,7 @@
 				#{limit,jdbcType=INTEGER}
 			</if>
 		</where>
-		
+
 	</select>
 
 	<select id="getUserCount" resultType="Integer">
@@ -240,7 +258,8 @@
 	<select id="getDeliverAdmin" resultMap="BaseResultMap">
 		select
 		phone,nickname
-		from users
+		from
+		users
 		where type=1 and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
@@ -255,7 +274,8 @@
 		select
 		token
 		from users
-		join orders on users.phone=orders.phone and
+		join
+		orders on users.phone=orders.phone and
 		together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
 
@@ -264,13 +284,15 @@
 		update
 		users
 		set token=null
-		where token=#{token,jdbcType=VARCHAR}
+		where
+		token=#{token,jdbcType=VARCHAR}
 	</update>
 
 	<select id="getUserPhone" resultType="String">
 		select distinct
 		phone
-		from orders
+		from
+		orders
 		where together_id=#{togetherId,jdbcType=VARCHAR}
 	</select>
 
@@ -281,7 +303,8 @@
 		phone
 		from users
 		where type=0
-		and campus_id=#{campusId,jdbcType=INTEGER}
+		and
+		campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
 	<!-- 获取用户token,通过手机号 -->
@@ -290,9 +313,10 @@
 		select
 		token
 		from users
-		where phone = #{adminPhone,jdbcType=VARCHAR}
+		where phone =
+		#{adminPhone,jdbcType=VARCHAR}
 	</select>
-	
+
 	<!-- 获取用户token,通过手机号 -->
 	<select id="getCountsByDevice" resultType="Integer"
 		parameterType="map">
@@ -300,27 +324,34 @@
 		count(*)
 		from users
 		where
-		   1=1
-		 <if test="device==0">
-		    and  token is not null
-		 </if>
-		  <if test="device==1">
-		    and  token is null
-		 </if>
+		1=1
+		<if test="device==0">
+			and token is not null
+		</if>
+		<if test="device==1">
+			and token is null
+		</if>
 	</select>
-	
+
 	<select id="selectByPhoneAndPassword" resultMap="BaseResultMap"
-	parameterType="map">
-	select 
-	<include refid="Base_Column_List"></include>
-	from users
-	where phone=#{phone,jdbcType=VARCHAR}
-	and password=#{password,jdbcType=VARCHAR}	
+		parameterType="map">
+		select
+		<include refid="Base_Column_List"></include>
+		from users
+		where phone=#{phone,jdbcType=VARCHAR}
+		and password=#{password,jdbcType=VARCHAR}
 	</select>
-	
-	
+
+
 	<!-- 登录检查接口 -->
 	<select id="checkLogin" resultMap="BaseResultMap">
-		select * from users where phone=#{phone,jdbcType=VARCHAR}
+		select * from users where
+		phone=#{phone,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getUserByType" resultType="String">
+	   select phone
+	   from users
+	   where type=#{type,jdbcType=SMALLINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 </mapper>

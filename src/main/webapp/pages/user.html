@@ -72,6 +72,7 @@
 	<script>
 		//全局变量
 		var adminType = getCookie("type"); //0校区管理员，1总校区管理员
+		var campusId=getCookie("campusId");
 	</script>
 	<script>
 		//通用方法定义
@@ -125,7 +126,8 @@
 			'click .admin' : function(e, value, row, index) {
 				//alert("admin");
 				$.post("../../foryou/user/setUserAdmin.do", {
-					phone : row.phone
+					phone : row.phone,
+                    campusId:campusId
 				}, function(text) {
 					if (text == -1 || text == 0) {
 						setSuccess("设置管理员失败。");
@@ -145,7 +147,8 @@
 			'click .common' : function(e, value, row, index) {
 				//alert("common");
 				$.post("../../foryou/user/setUserCommon.do", {
-					phone : row.phone
+					phone : row.phone,
+					campusId:campusId
 				}, function(text) {
 					if (text == -1 || text == 0) {
 						setSuccess("设置为普通用户失败。");
@@ -165,7 +168,8 @@
 			'click .superAdmin' : function(e, value, row, index) {
 				//alert("superAdmin");
 				$.post("../../foryou/user/setUserSuperAdmin.do", {
-					phone : row.phone
+					phone : row.phone,
+					campusId:campusId
 				}, function(text) {
 					if (text == -1 || text == 0) {
 						setSuccess("设置超级管理员失败。");

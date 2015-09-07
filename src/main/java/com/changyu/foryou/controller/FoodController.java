@@ -844,10 +844,12 @@ public class FoodController {
 			Float discountPrice=Float.valueOf(request.getParameter("discountPrice"));   //获取折扣价
 			Short status=Short.valueOf(request.getParameter("status"));           //获取食品上架下架状态
 			Short isDiscount=Short.valueOf(request.getParameter("is_discount"));    //是否打折
+			Short isFullDiscount=Short.valueOf(request.getParameter("isFullDiscount"));  //是否参加满减
 			String foodFlag=request.getParameter("foodTag");            //食品标签
-			Integer categoryId=Integer.valueOf(request.getParameter("categoyId"));  //获取分类Id
+			Integer categoryId=Integer.valueOf(request.getParameter("parentId"));  //获取分类Id
 			Float primeCost=null;
 
+			String message=request.getParameter("message");
 			String temp1=request.getParameter("primeCost");       //获取成本价
 			String temp2=request.getParameter("foodCount");       //获取食品数量
 			Integer campusId=Integer.valueOf(request.getParameter("campusId"));  //获取校区
@@ -880,8 +882,10 @@ public class FoodController {
 					}
 				}  
 			}
-			Food food=new Food(campusId,foodId, name, price, discountPrice, imageUrl.get(0), imageUrl.get(1), status,foodFlag, isDiscount, categoryId, primeCost);
-			
+			Food food=new Food(campusId,foodId, name, price, discountPrice, imageUrl.get(0), null, status,foodFlag, isDiscount, categoryId, primeCost);
+			food.setMessage(message);
+			food.setFoodCount(foodCount);
+			food.setIsFullDiscount(isFullDiscount);
 			Map<String,Object> paramMap=new HashMap<String,Object>();
 			paramMap.put("campusId",campusId);
 			paramMap.put("foodId", foodId);
@@ -920,7 +924,7 @@ public class FoodController {
 				}
 
 				//删除原食品辅助图片
-				if(food.getInfo()!=null&&orignFood.getInfo()!=null){
+				/*if(food.getInfo()!=null&&orignFood.getInfo()!=null){
 					String[] temp=orignFood.getInfo().split("/");
 					String imageName=temp[(temp.length-1)];
 
@@ -930,7 +934,7 @@ public class FoodController {
 					if(file.isFile()){
 						file.delete();//删除
 					}
-				}
+				}*/
 
 				if(flag!=-1&&flag!=0){
 					return "redirect:/pages/food.html";

@@ -12,6 +12,7 @@
           <span class="item-title">下单时间:</span><span class="item-content">date##</span>
           <span class="item-title">订单总额:</span><span class="item-content">orderPrice##元</span>
           <span class="item-title">订单状态:</span><span class="item-content">orderStatus##</span>
+          <!-- <span class="item-title">支付方式:</span><span class="item-content">payWay##</span> -->
         </div>
         <div class="list_content">
           <table class="order_meta">

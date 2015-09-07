@@ -74,7 +74,7 @@ public class userTest {
 //		String phone = "18896554880";
 //		case2
 		String phone = "18860902573";
-		LOGGER.debug("==================="+JSON.toJSONString(userService.setUserAdmin(phone)));
+		LOGGER.debug("==================="+JSON.toJSONString(userService.setUserAdmin(phone,2)));
 		return ;
 	}
 	
@@ -84,12 +84,13 @@ public class userTest {
 	 * @return
 	 */
 	
+	@Test
 	public void setUserCommon(){
 //		case1
 //		String phone = "18896554880";
 //		case2
 		String phone = "18860902573";
-		LOGGER.debug("==================="+JSON.toJSONString(userService.setUserCommon(phone)));
+		LOGGER.debug("==================="+JSON.toJSONString(userService.setUserCommon(phone,2)));
 		return ;
 	}
 
@@ -104,7 +105,7 @@ public class userTest {
 		String phone = "18896554880";
 //		case2
 //		String phone = "18860902573";
-		LOGGER.debug("==================="+JSON.toJSONString(userService.setUserSuperAdmin(phone)));
+		LOGGER.debug("==================="+JSON.toJSONString(userService.setUserSuperAdmin(phone,2)));
 		return ;
 	}
 

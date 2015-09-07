@@ -3,12 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <title>校区管理</title>
+<title>搜索标签管理</title>
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap.min.css">
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap-table.css">
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap-editable.css">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../assets/bootstrap-table/tableExport.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<script src="../js/util.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -24,9 +42,9 @@
 					<button id="edit" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-edit"></i>
 					</button>
-					<button id="delete" type="button" class="btn btn-default">
+					<!-- <button id="delete" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-minus"></i>
-					</button>
+					</button> -->
 					<button id="add_city" type="button" class="btn btn-primary">
 						添加城市
 					</button>
@@ -283,10 +301,6 @@
 	<script src="../assets/bootstrap-table/jquery.min.js"></script>
 	<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
 	<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
-	<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
-	<script src="../assets/bootstrap-table/tableExport.js"></script>
-	<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
-	<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
 	<script src="../js/bootstrap-table-zh-CN.min.js"></script>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -311,17 +325,13 @@
 			var html = [];
 			switch(value){
 			case 0:
-				html=[
-					'<a class="status-close" href="javascript:void(0)" title="休息中">',
-					'休息中',
-					'</a>'
+				html=[			
+					'休息中',	
 				];
 				break;
 			case 1:
 				html=[
-					'<a class="status-open" href="javascript:void(0)" title="营业中">',
 					'营业中',
-					'</a>'
 				];
 				break;
 			}
@@ -419,7 +429,7 @@
 		//Post请求并静态刷新表格数据
 		function plusSubmit(){
 			var campusName = $("#plus_campus_name").val().trim();
-			var cityName = $("#span_plus_city_name").text().trim();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+			var cityName = $("#span_plus_city_name").text().trim();              
 			var openTime = $("#plus_open_time").val().trim();
 			var closeTime = $("#plus_close_time").val().trim();
 			var status = $("#span_plus_status").text().trim();

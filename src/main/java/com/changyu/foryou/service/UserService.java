@@ -25,11 +25,11 @@ public interface UserService {
 
 	Integer getUserCount(String search);
 
-	Integer setUserAdmin(String phone);
+	Integer setUserAdmin(String phone, Integer campusId);
 
-	Integer setUserCommon(String phone);
+	Integer setUserCommon(String phone, Integer campusId);
 
-	Integer setUserSuperAdmin(String phone);
+	Integer setUserSuperAdmin(String phone, Integer campusId);
 
 	int updateImageUrl(String imageUrl, String phone);
 
@@ -56,4 +56,6 @@ public interface UserService {
 	List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap);
 	
 	Users checkLogin(String phone);
+
+	List<String> getUserByType(Map<String, Object> paramMap);
 }

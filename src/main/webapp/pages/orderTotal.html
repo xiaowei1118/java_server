@@ -6,8 +6,6 @@
   <meta name="title" content="foryou" />
   <meta name="language" content="zh" />
   <title>foryou后台管理系统</title>
-
-
   <link rel="stylesheet" href="../css/order.css">
   <link rel="stylesheet" href="../css/bootstrap-datepicker3.css">
   <link rel="stylesheet"
@@ -18,7 +16,6 @@
   rel="stylesheet">
   <link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
   <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-
   <script type="text/javascript" src="../js/bootstrap-datepicker.js"></script>
   <script type="text/javascript"
   src="../js/bootstrap-datepicker.zh-CN.min.js"></script>
@@ -42,8 +39,6 @@
 
  </style>
 </head>
-
-
 <body>
 	<section id="content">
 		<div class="g5 list_panel no_dine main_container" id="list_panel">
@@ -129,15 +124,29 @@
 				text = text.replace(/(adminName##)/g, "");
 			}
 			//判断订单状态
-			if (data.status == "1") {
-				text = text.replace(/(orderStatus##)/g, "代发货");
-			} else if (data.status == "2") {
-				text = text.replace(/(orderStatus##)/g, "配送中");
+			if (data.status == "2") {
+				text = text.replace(/(orderStatus##)/g, "待确认");
 			} else if (data.status == "3") {
+				text = text.replace(/(orderStatus##)/g, "配送中");
+			} else if (data.status == "4") {
 				text = text.replace(/(orderStatus##)/g, "交易完成");
-			} else {
+			}else if (data.status == "9") {
+				text = text.replace(/(orderStatus##)/g, "申请退款中");
+			}else if (data.status == "10") {
+				text = text.replace(/(orderStatus##)/g, "管理员同意退款");
+			} else if (data.status == "11") {
+				text = text.replace(/(orderStatus##)/g, "退款完成");
+			}else{
 				text = text.replace(/(orderStatus##)/g, "");
 			}
+
+			/*if(data.payWay=="1"){
+				text=text.replace(/(payWay##)/g,"支付宝支付");
+			}else if(data.payWay=="2"){
+				text = text.replace(/(payWay##)/g,"微信支付");
+			}else{
+				text = text.replace(/(payWay##)/g,"");
+			}*/
 
 			if (data.reserveTime != null) {
 				text = text.replace(/(reserveTime##)/g, data.reserveTime);
@@ -155,7 +164,7 @@
 					price = $smallOrder.price;
 				}
 
-				var totalPrice = price * $smallOrder.orderCount;
+				var totalPrice = $smallOrder.price;
 				$("#" + data.togetherId)
 						.append(
 								[
@@ -177,7 +186,6 @@
 	};
 
 	function time()
-
 	{
 		var now = new Date();
 		var year = now.getFullYear();

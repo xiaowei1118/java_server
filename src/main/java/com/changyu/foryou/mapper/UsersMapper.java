@@ -31,11 +31,11 @@ public interface UsersMapper {
 
 	Integer getUserCount(@Param(value="search")String search);
 
-	Integer setUserAdmin(String phone);
+	Integer setUserAdmin(@Param(value="phone")String phone, @Param(value="campusId")Integer campusId);
 
-	Integer setUserCommon(String phone);
+	Integer setUserCommon(@Param(value="phone")String phone,@Param(value="campusId")Integer campusId);
 
-	Integer setUserSuperAdmin(String phone);
+	Integer setUserSuperAdmin(@Param(value="phone")String phone, @Param(value="campusId")Integer campusId);
 
 	int updateUserImage(@Param(value="imageUrl")String imageUrl, @Param(value="phone")String phone);
 
@@ -60,4 +60,6 @@ public interface UsersMapper {
 	List<Users> selectByPhoneAndPassword(Map<String, Object> paramMap);
 	
 	Users checkLogin(String phone);
+
+	List<String> getUserByType(Map<String, Object> paramMap);
 }

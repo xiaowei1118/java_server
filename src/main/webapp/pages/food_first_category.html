@@ -2,15 +2,15 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
 	<title>分类管理</title>
 	<link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap.min.css">
-<link rel="stylesheet"
+    <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap-table.css">
-<link rel="stylesheet"
+    <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap-editable.css">
 	<link rel="shortcut icon" href="../img/icon.png">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 <style>
 #operate-success{
 	padding:10px;
@@ -60,7 +60,7 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-align="center" data-field="categoryId" data-visible="true">商品分类Id</th>
+							<th data-align="center" data-field="categoryId" data-visible="false">商品分类Id</th>
 							<th data-align="center" data-field="category">分类名称</th>
 							<th data-align="center" data-field="isOpen" data-formatter="isOpenFormatter">是否开通</th>
 							<th data-align="center" data-field="dasd" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
@@ -83,7 +83,7 @@
 
 			<form class="form-horizontal">
 				<div class="modal-body">
-					<div class="form-group">
+					<div class="form-group none">
 						<label class="control-label col-sm-3" for="category_id">商品分类Id</label>
 						<div class="col-sm-8">
 							<input type="text" id="category_id" placeholder="Category Id">
@@ -112,10 +112,6 @@
 <script src="../assets/bootstrap-table/messages_cn.js"></script>
 <script src="../assets/bootstrap-table/bootstrap.min.js"></script>
 <script src="../assets/bootstrap-table/bootstrap-table.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
-<script src="../assets/bootstrap-table/tableExport.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
 <script src="../js/bootstrap-table-zh-CN.min.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -326,13 +322,6 @@ var campusId = getCookie("campusId");
 	function submitData(){
 		var categoryId=$("#category_id").val();
 		var categoryName=$("#category_name").val(); 
-
-		if (!(/[1-9]/.test(categoryId))) {
-			alert("id只可以是数字,请重新输入");
-			$("#category_id").val("");
-			$("#category_id").focus();
-			return;
-		};
 
 		$(function(){
 				var campusId = getCookie("campusId");
