@@ -52,4 +52,6 @@ public interface FoodMapper {
 	Integer addFoodCountById(Map<String, Object> paramMap);//添加库存
 	
 	Integer addFoodCount(Map<String, Object> paramMap);
+
+	String getFoodHomeImage(Map<String, Object> paramMap);
 }

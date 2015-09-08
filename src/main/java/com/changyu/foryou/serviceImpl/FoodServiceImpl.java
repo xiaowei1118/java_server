@@ -246,50 +246,47 @@ public class FoodServiceImpl implements FoodService{
 
 	@Override
 	public Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodMapper.uploadHomeFoodByFoodId(paramMap);
 	}
 
 	@Override
 	public Integer updateInfoByFoodId(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodMapper.updateInfoByFoodId(paramMap);
 	}
 
 	@Override
 	public Integer cancelRecommend(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodMapper.cancelRecommend(paramMap);
 	}
 
 	@Override
 	public Integer calCommentCount(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodCommentMapper.calCommentCount(paramMap);
 	}
 
 	@Override
 	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodCategoryMapper.addCategoryWhenAddCampus(paramMap);
 	}
 
 	@Override
 	public List<FoodWithSales> getTopFive(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodMapper.getTopFive(paramMap);
 	}
 
 	@Override
 	public Integer addFoodCountById(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodMapper.addFoodCountById(paramMap);
 	}
 
 	@Override
 	public Integer addFoodCount(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return foodMapper.addFoodCount(paramMap);
+	}
+
+	@Override
+	public String getFoodHomeImage(Map<String, Object> paramMap) {
+		return foodMapper.getFoodHomeImage(paramMap);
 	}
 	
 }

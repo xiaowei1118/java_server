@@ -1551,7 +1551,7 @@ public class OrderController {
 		paramMap.put("dateStart", dateStart);
 		paramMap.put("dateEnd", dateEnd);
 		TradeInfo todayInfo = new TradeInfo();
-		todayInfo.setInfoDateType("当天");
+		todayInfo.setInfoDateType("今天");
 		todayInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));	//获取指定时间段和指定校区的订单总数
 		todayInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));	//获取指定时间段和指定校区的订单交易额
 		paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信
@@ -1567,7 +1567,7 @@ public class OrderController {
 		paramMap.put("dateStart", dateStart);
 		paramMap.put("dateEnd", dateEnd);
 		TradeInfo weekInfo = new TradeInfo();
-		weekInfo.setInfoDateType("当周");
+		weekInfo.setInfoDateType("本周");
 		weekInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));//获取指定时间段和指定校区的订单总数
 		weekInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段和指定校区的订单交易额
 		paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信
@@ -1583,7 +1583,7 @@ public class OrderController {
 		paramMap.put("dateStart", dateStart);
 		paramMap.put("dateEnd", dateEnd);
 		TradeInfo monthInfo = new TradeInfo();
-		monthInfo.setInfoDateType("当月");
+		monthInfo.setInfoDateType("本月");
 		monthInfo.setOrderCount(orderService.getSalesInfoByCampusId(paramMap));//获取指定时间段和指定校区的订单总数
 		monthInfo.setTradeVolume(orderService.getTradeVolumeByCampusId(paramMap));//获取指定时间段和指定校区的订单交易额
 		paramMap.put("payWay", 1);	//payWay:0,没有; 1,支付宝; 2,微信

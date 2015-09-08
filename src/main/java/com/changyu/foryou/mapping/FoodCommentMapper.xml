@@ -121,18 +121,15 @@
 		nickname,
 		is_hidden
 		FROM
-		food_comment,
-		users,
-		food
+		food_comment
+		left join users on food_comment.phone = users.phone
+		left join food  on food_comment.food_id=food.food_id and food.campus_id=food_comment.campus_id
 		<where>
-			food_comment.phone = users.phone and
-			food_comment.food_id=food.food_id 
-			and food.campus_id=food_comment.campus_id
-			and comment is not null and comment !="" 
+		    comment is not null and comment !="" 
 			and food.campus_id=#{campusId,jdbcType=INTEGER}
 			<if test="search != null and search !='' ">
-				and food_id =
-				#{search,jdbcType=INTEGER})
+				and food.food_id =
+				#{search,jdbcType=INTEGER}
 			</if>
 		</where>
 		<if test="sort != null">
@@ -151,16 +148,13 @@
 		SELECT
 		  count(*)
 		FROM
-		food_comment,
-		users,
-		food
+		food_comment
 		<where>
-			food_comment.phone = users.phone and food.campus_id=food_comment.campus_id and
-			food_comment.food_id=food.food_id and comment is not null and comment !=""
-			and food.campus_id=#{campusId,jdbcType=INTEGER}
+			comment is not null and comment !=""
+			and campus_id=#{campusId,jdbcType=INTEGER}
 			<if test="search != null and search !='' ">
 				and  food_id =
-				#{search,jdbcType=VARCHAR}) 
+				#{search,jdbcType=VARCHAR} 
 			</if>
 		</where>
 	</select>

@@ -110,4 +110,6 @@ public interface FoodService {
 	Integer addFoodCountById(Map<String, Object> paramMap);//添加库存
 	
 	Integer addFoodCount(Map<String, Object> paramMap);//添加库存
+
+	String getFoodHomeImage(Map<String, Object> paramMap);  //获取原来的首页图片
 }

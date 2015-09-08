@@ -484,15 +484,13 @@
 	   
 	</select>
 
-    	<update id="uploadHomeFoodByFoodId">
+    <update id="uploadHomeFoodByFoodId">
 		update food set
-		<if test="toHome != null">
-		to_home=#{toHome, jdbcType=SMALLINT}
-		</if>
+		   to_home=#{toHome, jdbcType=SMALLINT}
 		<if test="homeImage != null">
 		, home_image=#{homeImage, jdbcType=VARCHAR}
 		</if>
-		where food_id=#{foodId, jdbcType=BIGINT}
+		where food_id=#{foodId, jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</update>
 
 	<update id="updateInfoByFoodId">
@@ -500,21 +498,19 @@
 		<if test="info != null">
 			info=#{info, jdbcType=VARCHAR}
 		</if>
-		where food_id=#{foodId, jdbcType=BIGINT}
+		where food_id=#{foodId, jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</update>
 	
 	<update id="cancelRecommend">
-		update food set
-		<if test="toHome != null">
+		update food set	
 			to_home=#{toHome, jdbcType=SMALLINT}
-		</if>
-		where food_id=#{foodId, jdbcType=BIGINT}
+		where food_id=#{foodId, jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</update>
 	
 	<select id="getTopFive" resultMap="FoodWithSalesResultMap">
 	SELECT orders.food_id,food.name as food_name,SUM(orders.order_count) as sales from orders,food
 		<where>
-		  orders.food_id=food.food_id 
+		  orders.food_id=food.food_id and orders.campus_id=#{campusId,jdbcType=INTEGER}
 		<if test="dateStart!=null">
 			AND together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
 		</if>
@@ -538,9 +534,18 @@
 		<where>
 		campus_id=#{campusId,jdbcType=INTEGER}
 		<if test="foodId!=null">
-		and fodd_id=#{foodId,jdbcType=BIGINT}	
+		and food_id=#{foodId,jdbcType=BIGINT}	
 		</if>
 		</where>
 	</update>
+	
+	<select id="getFoodHomeImage" resultType="String">
+	  select
+	     home_image
+	  from food
+	  where
+	    campus_id=#{campusId,jdbcType=INTEGER} and food_id=#{foodId,jdbcType=BIGINT}	
+	  limit 1
+	</select>
 </mapper>
 

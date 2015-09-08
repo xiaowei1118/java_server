@@ -1179,29 +1179,56 @@ public class FoodController {
 	@RequestMapping("/uploadHomeImage")
 	public String updateHomeImageByFoodId(@RequestParam MultipartFile homeImageFile, HttpServletRequest request) throws IOException{
 		String foodId = request.getParameter("foodId");
-		if(homeImageFile.isEmpty()){
+		Integer campusId=Integer.valueOf(request.getParameter("campusId"));
+		System.out.println(campusId);
+		String imageUrl=null;
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("foodId", foodId);
+		//这个toHome值在后台修改
+		paramMap.put("toHome", 1);
+		paramMap.put("campusId", campusId);   //校区号
+		
+		if(homeImageFile.isEmpty()){            //不更新主页图片
 			System.out.println("文件未上传");
-		}else{
+		
+			
+			int flag = foodService.uploadHomeFoodByFoodId(paramMap); 
+			if(flag!=0&&flag!=-1){
+				return "redirect:/pages/food.html";
+			}
+		}else{        //更新主页图片
 			String contentType = homeImageFile.getContentType();
 			if(contentType.startsWith("image")){
 				String realPath = request.getSession().getServletContext().getRealPath("/");
 				realPath = realPath.replace("foryou", "ForyouImage");
-				realPath.concat("food");
+				realPath = realPath.concat("food/");
 				String newFileName = new Date().getTime() + "" + new Random().nextInt() + ".jpg";
 				FileUtils.copyInputStreamToFile(homeImageFile.getInputStream(), new File(realPath, newFileName));
-				String imageUrl = Constants.localIp+"/food/"+newFileName;
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("foodId", foodId);
-				//这个toHome值在后台修改
-				paramMap.put("toHome", 1);
-				paramMap.put("homeImage", imageUrl);
+			    imageUrl = Constants.localIp+"/food/"+newFileName;
+			    //获取原来的图片
+				String oldImgUrl=foodService.getFoodHomeImage(paramMap);
+				
+				paramMap.put("homeImage", imageUrl);	
 				int flag = foodService.uploadHomeFoodByFoodId(paramMap);
+				
+				if(imageUrl!=null&&oldImgUrl!=null){
+					String[] temp=oldImgUrl.split("/");
+					String imageName=temp[(temp.length-1)];
+
+					String name2=realPath+imageName;
+
+					File file=new File(name2);
+					if(file.isFile()){
+						file.delete();//删除
+					}
+				}
+				
 				if(flag!=0&&flag!=-1){
 					return "redirect:/pages/food.html";
 				}
 			}
 		}
-		return "redirect:/pages/uploadError.html";
+		return "redirect:/pages/food.html";
 	}
 	
 	/**
@@ -1221,7 +1248,7 @@ public class FoodController {
 		
 		for (MultipartFile detailImageFile : detailImageFiles) {
 			if(detailImageFile.isEmpty()){
-				System.out.println("文件2未上传");
+				System.out.println("文件未上传");
 			}else{
 				String contentType = detailImageFile.getContentType();
 				if(contentType.startsWith("image")){
@@ -1262,14 +1289,19 @@ public class FoodController {
 		return (JSONArray) JSON.toJSON(foodCategories);
 	}
 	
+	/**
+	 * 对应校区
+	 * @param foodId
+	 * @return
+	 */
 	@RequestMapping("cancelRecommend")
-	public @ResponseBody Map<String, Object> cancelRecommend(@RequestParam Long foodId){
+	public @ResponseBody Map<String, Object> cancelRecommend(@RequestParam Long foodId,@RequestParam Integer campusId){
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("foodId", foodId);
 		paramMap.put("toHome", 0);
-		
+		paramMap.put("campusId",campusId);
 		Integer cancel = foodService.cancelRecommend(paramMap);
 		if(cancel==-1||cancel==0){
 			responseMap.put(Constants.STATUS, Constants.FAILURE);
@@ -1281,8 +1313,16 @@ public class FoodController {
 		return responseMap;
 	}
 
+	/**
+	 * 
+	 * @param dateStart
+	 * @param dateEnd
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
 	@RequestMapping("getTopFive")
-	public @ResponseBody Map<String, Object> getTopFive(@RequestParam String dateStart,@RequestParam String dateEnd, Integer page, Integer limit){
+	public @ResponseBody Map<String, Object> getTopFive(@RequestParam String dateStart,@RequestParam Integer campusId,@RequestParam String dateEnd, Integer page, Integer limit){
 		Map<String,Object> requestMap = new HashMap<String, Object>();
 		Map<String,Object> responseMap = new HashMap<String, Object>();
 		
@@ -1292,6 +1332,7 @@ public class FoodController {
 				requestMap.put("dateEnd", new SimpleDateFormat("yyyy-MM-dd").parse(dateEnd));
 				requestMap.put("limit", limit);
 				requestMap.put("offset", (page-1)*limit);
+				requestMap.put("campusId", campusId);
 				JSONArray hotFive = (JSONArray) JSONArray.toJSON(foodService.getTopFive(requestMap));
 				responseMap.put("hotFive", hotFive);
 			} catch (ParseException e) {

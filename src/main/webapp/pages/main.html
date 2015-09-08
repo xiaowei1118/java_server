@@ -31,16 +31,19 @@
 			</div>
 			
 			<div>
-				<ul id="myTab" class="nav nav-tabs" role="tablist">
+				<ul id="myTab" class="nav nav-pills" role="tablist">
 
 					<li class="active"><a href="#statistic" role="tab" data-toggle="tab">销量分析</a></li>
-					<li><a href="#statictic_" role="tab" data-toggle="tab">销售额分析</a></li>
+					<li><a href="#statictic1" role="tab" data-toggle="tab">销售额分析</a></li>
 				</ul>
 			</div>
 			<!-- 选项卡面板 -->
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane active" id="statistic"></div>
-				<div class="tab-pane" id="statictic_"><iframe src="statistic_.html" id="iframepage" height="400" width="800" scrolling="no"></iframe></div>
+				<!-- <div class="tab-pane active" id="statistic1">
+					
+				</div> -->
+				<div class="tab-pane" id="statictic1"><iframe src="statistic_.html" id="iframepage" height="400" width="800" scrolling="no"></iframe></div>
 			</div>
 		</div>
 	</div>
@@ -63,55 +66,6 @@
 	        $("#operate-success").css("visibility", "hidden");
 	    }, 2000);
 	}
-		$(function () {
-			if(!getCookie("campusId")){
-				setSuccess("请在右上角选择校区！");
-			}
-			
-			$.get("../user/getUserDevicePercent.do",function(text){
-				var json = eval('(' + text + ')');
-
-             $('#devicePercent').highcharts({
-             	chart: {
-             		plotBackgroundColor: null,
-             		plotBorderWidth: null,
-             		plotShadow: false
-             	},
-             	title: {
-             		text: 'Ios 和 Android用户占比'
-             	},
-             	tooltip: {
-             		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-             	},
-             	plotOptions: {
-             		pie: {
-             			allowPointSelect: true,
-             			cursor: 'pointer',
-             			dataLabels: {
-             				enabled: true,
-             				color: '#000000',
-             				connectorColor: '#000000',
-             				format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-             			}
-             		}
-             	},
-             	series: [{
-             		type: 'pie',
-             		name: '设别占比',
-             		data: [
-             		['Android',   json.android],
-             		{
-             			name: 'Ios',
-             			y: json.ios,
-             			sliced: true,
-             			selected: true
-             		},
-             		]
-             	}]
-             });
-});
-
-});
 </script>
 <script>
 //日期格式化函数
@@ -143,18 +97,17 @@ $(function() {
 	var dateEnd = new Date();
 	//alert(myDate.format("yyyy-MM-dd"));
 	var dateStart = new Date();
-	dateStart.setDate(dateEnd.getDate() - 60);
+	dateStart.setDate(dateEnd.getDate() - 30);
 	var xCategories = new Array();
 	var seriesData = new Array();
 	var start = dateStart.format("yyyy-MM-dd");
 	var end = dateEnd.format("yyyy-MM-dd");
 	//alert(start);
 	$.get("../service/getTopFive.do" + "?dateStart=" + start + "&dateEnd="
-			+ end+"&limit=5&page=1", function(text) {
+			+ end+"&limit=10&page=1&campusId="+getCookie("campusId"), function(text) {
 
 		var json = eval('(' + text + ')');
 		$.each(json.hotFive, function(index, obj) {
-			//alert(obj.sellCount);
 			xCategories.push(obj.foodName);
 			seriesData.push(obj.sales);
 		});
@@ -184,6 +137,8 @@ $(function() {
 		});
 
 	});
+
+	//$("#statistic1").load("statistic_.html");
 });
 </script>
 </body>

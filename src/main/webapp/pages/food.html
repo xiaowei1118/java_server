@@ -285,6 +285,13 @@
 			enctype="multipart/form-data"
 			action="../service/uploadHomeImage.do">
 				<div class="modal-body">
+				    <div class="control-group">
+						<label class="control-label" for="campus-id">校区id</label>
+						<div class="controls">
+							<input type="text" id="campus-id"
+							name="campusId" readonly>
+						</div>
+					</div>
 					<div class="control-group">
 						<label class="control-label" for="food-id">商品ID</label>
 						<div class="controls">
@@ -991,12 +998,14 @@ window.homeImageEvents = {
 	'click .toHomeOperate' : function(e, value, row, index){
 		//alert(row);
 		$("#food-id").val(row.foodId);
+		$('#campus-id').val(getCookie('campusId'));
 		$("#homeImageFile").val("");
 		//$(this).modal('show');
 	},
 	'click .cancelRecommendOperate':function(e, value, row, index){
 		$.post("../service/cancelRecommend.do",{
-			foodId : row.foodId
+			foodId : row.foodId,
+			campusId:getCookie("campusId")
 		},function(data){
 			setSuccess(data.message);
 			$table.bootstrapTable('refresh');

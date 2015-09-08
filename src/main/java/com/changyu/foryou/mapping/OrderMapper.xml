@@ -1052,7 +1052,7 @@
 	<!-- 获取指定时间段和指定校区的订单总数 -->
 	<select id="getSalesInfoByCampusId" resultType="Integer">
 		select COUNT(DISTINCT together_id) from orders
-		where campus_id=#{campusId}
+		where campus_id=#{campusId} and status=4
 		and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
 		and #{dateEnd,jdbcType=TIMESTAMP}
 		and tag=1
@@ -1063,7 +1063,7 @@
 		SELECT sum(total_price)
 		from together_order
 		<where>
-			campus_id=#{campusId,jdbcType=INTEGER}
+			campus_id=#{campusId,jdbcType=INTEGER} and status=4
 			<if test="dateStart!=null and dateEnd!=null">
 				and together_date BETWEEN #{dateStart,jdbcType=TIMESTAMP}
 				AND #{dateEnd,jdbcType=TIMESTAMP}
