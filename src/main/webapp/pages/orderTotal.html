@@ -128,7 +128,7 @@
 				text = text.replace(/(orderStatus##)/g, "待确认");
 			} else if (data.status == "3") {
 				text = text.replace(/(orderStatus##)/g, "配送中");
-			} else if (data.status == "4") {
+			} else if (data.status == "4"||data.status=="5") {
 				text = text.replace(/(orderStatus##)/g, "交易完成");
 			}else if (data.status == "9") {
 				text = text.replace(/(orderStatus##)/g, "申请退款中");

@@ -154,7 +154,7 @@
     select 
        category_id,serial,is_open
     from food_category
-    where serial is not null and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
+    where serial is not null and serial !=0 and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
     order by serial
   </select>
   
