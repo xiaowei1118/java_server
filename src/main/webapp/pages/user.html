@@ -54,7 +54,7 @@
 				data-side-pagination="server" data-pagination="true">
 				<thead>
 					<tr>
-						<th data-field="state" data-checkbox="true"></th>
+						<!-- <th data-field="state" data-checkbox="true"></th> -->
 						<th data-field="phone">手机号</th>
 						<th data-field="nickname">昵称</th>
 						<th data-field="type">权限</th>
@@ -93,10 +93,10 @@
 			var type = "未定义";
 			switch (value) {
 			case 0:
-				type = "超级管理员";
+				type = "分派员";
 				break;
 			case 1:
-				type = "管理员";
+				type = "配送员";
 				break;
 			case 2:
 				type = "普通用户";
@@ -108,13 +108,13 @@
 			if (adminType == 0) {
 				//当前角色是校区管理员
 				return [
-						'<a class="admin ml8" href="javascript:void(0)" title="设为管理员">',
+						'<a class="admin ml8" href="javascript:void(0)" title="设为配送员">',
 						'&nbsp;<i class="glyphicon glyphicon-heart-empty"></i>&nbsp;',
 						'</a>',
-						'<a class="common ml8" href="javascript:void(0)" title="取消管理员">',
+						'<a class="common ml8" href="javascript:void(0)" title="设为普通用户">',
 						'&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp;',
 						'</a>',
-						'<a class="superAdmin ml8" href="javascript:void(0)" title="设置超级管理员">',
+						'<a class="superAdmin ml8" href="javascript:void(0)" title="设置分派员">',
 						'&nbsp;<i class="glyphicon glyphicon-heart"></i>&nbsp;',
 						'</a>' ].join('');
 			} else if (adminType == 1) {

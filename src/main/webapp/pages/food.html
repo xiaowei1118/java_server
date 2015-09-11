@@ -194,13 +194,6 @@
 									placeholder="foodCount">
 							</div>
 						</div>	
-						<!-- <div class="form-group">
-							<label class="control-label col-md-4" for="imgUrl3">商品详情图片</label>
-							<div class="col-md-8">
-								<input type="file" id="imgUrl3" name="myfile"
-									placeholder="Choose Picture">
-							</div>
-						</div> -->
 
 						<div class="form-group">
 							<label class="control-label col-md-4" for="status">商品状态</label>
@@ -234,26 +227,6 @@
 								</label>
 							</div>
 						</div>
-						<!-- <div class="control-group" id="is_default">
-							<label class="control-label" for="default_special">是否使用默认口味</label>
-							<div class="controls" id="default_special">
-								<label class="radio inline"> <input type="radio"
-									id="default_special1" name="default_special" value="1" checked>
-									是
-								</label> <label class="radio inline"> <input type="radio"
-									id="default_special2" name="default_special" value="0">
-									否
-								</label>
-							</div>
-						</div>
-						<div class="control-group" id="foodCounts">
-							<label class="control-label" for="foodCount">默认口味数量</label>
-							<div class="controls">
-								<input type="text" id="foodCount" name="foodCount"
-									placeholder="Food Count">
-							</div>
-						</div>
-						 -->
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -336,21 +309,30 @@
 			action="../service/uploadDetailImage.do">
 				<div class="modal-body">
 					<div class="editImage">
-						<img alt="正在加载中" width="100" height="50">
+						<img alt="正在加载中" id="showImg1" width="100" height="50">
 						<input type="file" id="detailImg1" name="detailImageFiles"
 									placeholder="Choose Picture">
 					</div>
+					<div class="form-group">
+					   <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+					   <div class="col-sm-10">
+					     <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+					   </div>
+					 </div>
 					<br/>
 					<div class="editImage">
-						<img alt="正在加载中"  width="100" height="50">
+						<img alt="正在加载中" id="showImg2" width="100" height="50">
 						<input type="file" id="detailImg2" name="detailImageFiles"
 									placeholder="Choose Picture">
 					</div>
 					<br/>
 					<div class="editImage">
-						<img alt="正在加载中"  width="100" height="50">
+						<img alt="正在加载中" id="showImg3" width="100" height="50">
 						<input type="file" id="detailImg3" name="detailImageFiles"
 									placeholder="Choose Picture">
+						
+						<input type="checkbox" id="is_delete1" class="inline"  name="is_delete1"/> 删除
+						
 					</div>
 					</div>
 					<div class="modal-footer">
@@ -381,12 +363,6 @@
 								<input type="text" class="form-control" id="campus_id_add_count" name="campusId" readonly>
 							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label for="food_id_add_count" class="control-label col-md-4">商品ID</label>
-							<div class="col-md-8">
-								<input type="text" class="form-control" id="food_id_add_count" name="foodId" readonly>
-							</div>
-						</div>-->
 						<div class="form-group">
 							<label for="count_add_count" class="control-label col-md-2">商品库存</label>
 							<div class="col-md-10">
@@ -957,7 +933,7 @@ function homeImageFormatter(value, row, index){
 function detailImageManageFormatter(value, row, index){
 	if(adminType==0){
 		return [
-				'<a class="edit" href="javascript:void(0)" data-target="#manageDetailImageModal" data-toggle="modal" title="edit">',
+				'<a class="edit" href="javascript:void(0)" title="edit">',
 				'管理',
 				'</a>'
 			].join('');
@@ -968,9 +944,22 @@ function detailImageManageFormatter(value, row, index){
 
 window.detailImageOperateEvents={
 	'click .edit' : function(e, value, row, index){
-		$("detailImg1").val("");
-		$("detailImg2").val("");
-		$("detailImg3").val("");
+		$("#detailImg1").val("");
+		$("#detailImg2").val("");
+		$("#detailImg3").val("");
+		$("#manageDetailImageModal").modal("show");
+
+		$.post(
+			'../service/getDetailImg.do',
+			{foodId:row.foodId,campusId:getCookie("campusId")},
+			function(data){
+			   var json=data.imgs;
+			   console.log(json.length);
+			  for (var i = json.length - 1; i >= 0; i--) {
+			  	 $("#showImg"+(i+1)).attr("src",json[i]);
+			  };
+			},"json"
+		);
 	}	
 };
 

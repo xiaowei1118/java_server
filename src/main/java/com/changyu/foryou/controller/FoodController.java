@@ -1386,4 +1386,28 @@ public class FoodController {
 		}
 		return responseMap;
 	}
+	
+	@RequestMapping("/getDetailImg")
+	@ResponseBody
+	public Map<String,Object> getDetailImg(@RequestParam Integer campusId,@RequestParam Long foodId){
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		  
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();
+			paramMap.put("campusId",campusId);
+			paramMap.put("foodId",foodId);
+			
+			String imgs=foodService.getDetailImg(paramMap);
+			String[] detailImgs=imgs.split(",");
+			resultMap.put("imgs",detailImgs);
+			resultMap.put(Constants.STATUS,Constants.SUCCESS);
+			resultMap.put(Constants.MESSAGE, "获取成功");
+		} catch (Exception e) {
+			e.getStackTrace();
+			resultMap.put(Constants.STATUS, Constants.FAILURE);
+			resultMap.put(Constants.MESSAGE, "获取失败");
+		}
+		
+		return resultMap;
+	}
 }

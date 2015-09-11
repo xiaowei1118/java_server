@@ -288,6 +288,11 @@ public class FoodServiceImpl implements FoodService{
 	public String getFoodHomeImage(Map<String, Object> paramMap) {
 		return foodMapper.getFoodHomeImage(paramMap);
 	}
+
+	@Override
+	public String getDetailImg(Map<String, Object> paramMap) {
+		return foodMapper.getDetailImg(paramMap);
+	}
 	
 }
 

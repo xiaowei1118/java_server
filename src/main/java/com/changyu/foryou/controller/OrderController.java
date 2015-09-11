@@ -1390,7 +1390,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/getRefundOrder")
-	public @ResponseBody List<SuperAdminOrder> getRefundOrder(Integer campusId,Integer type){
+	public @ResponseBody JSONArray getRefundOrder(Integer campusId,Integer type){
 		Map<String,Object> paramMap=new HashMap<String,Object>();
 				
 		if(type==1){
@@ -1402,7 +1402,7 @@ public class OrderController {
 		
 	    List<SuperAdminOrder> refundOrders=orderService.getPCOrders(paramMap);
 		System.out.println(refundOrders);
-	    return refundOrders;
+	    return JSONArray.parseArray(JSON.toJSONStringWithDateFormat(refundOrders, "yyyy-MM-dd"));
 	}
 	
 	/**

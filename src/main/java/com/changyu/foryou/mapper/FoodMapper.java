@@ -54,4 +54,6 @@ public interface FoodMapper {
 	Integer addFoodCount(Map<String, Object> paramMap);
 
 	String getFoodHomeImage(Map<String, Object> paramMap);
+
+	String getDetailImg(Map<String, Object> paramMap);   //获取食品详情图片
 }

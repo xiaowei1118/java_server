@@ -547,5 +547,14 @@
 	    campus_id=#{campusId,jdbcType=INTEGER} and food_id=#{foodId,jdbcType=BIGINT}	
 	  limit 1
 	</select>
+	
+	<select id="getDetailImg" resultType="String">
+	  select
+	     info
+	  from food
+	  where
+	    campus_id=#{campusId,jdbcType=INTEGER} and food_id=#{foodId,jdbcType=BIGINT}	
+	  limit 1
+	</select>
 </mapper>
 
