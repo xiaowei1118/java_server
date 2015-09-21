@@ -335,34 +335,47 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	//退款完成时将状态置为11
-	@Override
 	public Integer updateOrderStatusRefundSuccess(Map<String, Object> paramMap) {
 		return orderMapper.updateorderStatusRefundSuccess(paramMap);
 	}
 
-	@Override
 	public Integer getMiniOrderByPhone(Map<String, Object> paramMap) {
 		return orderMapper.getMiniOrderByPhone(paramMap);
 	}
 
-	@Override
 	public Integer getSalesInfoByCampusId(Map<String, Object> paramMap) {
 		return orderMapper.getSalesInfoByCampusId(paramMap);
 	}
 
-	@Override
 	public Float getTradeVolumeByCampusId(Map<String, Object> paramMap) {
 		return orderMapper.getTradeVolumeByCampusId(paramMap);
 	}
 
-	@Override
 	public List<PCOrder> getPCSimpleOrders(Map<String, Object> paramMap) {
 		return orderMapper.getPCSimpleOrders(paramMap);
 	}
 
-	@Override
 	public long getPCSimpleOrdersCount(Map<String, Object> paramMap) {
 		return orderMapper.getPCSimpleOrdersCount(paramMap);
+	}
+
+	public List<SuperAdminOrder> getPCInvalidOrders(Map<String, Object> paramMap) {
+		return orderMapper.getPCInvalidOrders(paramMap);
+	}
+
+	@Override
+	public int deleteOrderTrue(Map<String, Object> paramMap) {
+		return orderMapper.deleteOrderTrue(paramMap);
+	}
+
+	@Override
+	public void deleteStatus7Order(String phone) {
+         orderMapper.deleteStatus7Order(phone);		
+	}
+
+	@Override
+	public List<Order> getAllOrdersByTogetherId(String orderNo) {
+		return orderMapper.getAllOrderByTogetherId(orderNo);
 	}
 	
 

@@ -21,11 +21,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
 <![endif]-->
 <script src="../js/util.js"></script>
-<style type="text/css">
-	 .ml10 {
-        margin-top: ;:10px;
-    }
-</style>
+
 </head>
 <body>
    <div id="info"></div>
@@ -49,7 +45,6 @@
 			<thead>
 				<tr>
 					<th data-align="left" data-field="togetherId">订单号</th>
-					<th data-align="left" data-field="chargeId">chargeId</th>
 					<th data-align="left" data-field="userPhone">用户手机号</th>
 					<th data-align="left" data-field="price"
 						data-sortable="true">价格</th>
@@ -57,7 +52,7 @@
 						data-sortable="true">订购时间</th>
 					<th data-align="left" data-field="address"
 						data-sortable="true">配送地址</th>
-					<th data-field="refund" data-formatter="refundFormatter" data-events="refundEvents">确认退款</th>
+					<th data-field="refund" data-formatter="deleteFormatter" data-events="deleteEvents">确认退款</th>
 				</tr>
 			</thead>
 		</table>
@@ -68,50 +63,22 @@
 
      var $table=$('#table');
 	 $("#table").bootstrapTable({
-		url : '../order/getRefundOrder.do?campusId='+campusId+"&type="+type
+		url : '../order/getInvalideOrder.do?campusId='+campusId
 	 });
 
-     function refundFormatter(value, row, index) {
+     function deleteFormatter(value, row, index) {
 	    return [
-				 '<a class="refund btn btn-danger" herf="javascript:void(0)" title="close">',
-				 '确认退款',
-				 '</a>',
-				 '<a class="cancel btn btn-danger ml10" herf="javascript:void(0)" title="close">',
-				 '取消退款',
+				 '<a class="invalide btn" herf="javascript:void(0)" title="close">',
+				 '确认删除',
 				 '</a>'
 				].join('');					
 	} 
 
-      window.refundEvents = {
-        'click .refund': function (e, value, row, index) {
-        	if(confirm('是否确定退款')){
-        		if(type==1){
-        			//总校区管理员退款
-        			$.post("../order/refund.do",
-        			   {togetherId:row.togetherId,totalPrice:row.price},
-        			   function(data){
-        			   	console.log(data);
-        			      if(data.status=="failure"){
-        			          $('#info').show();
-		               	      $('#info').html("退款失败，请重试");
-		             	      setTimeout("$('#info').hide()", 2000 );
-        			     }else if(data.status=="success"){
-        			     	    var msg=data.refund.failureMsg;
-        			    	 if(msg!=null){
-                                var alipay_url=msg.substring(17);
-                                window.location.href=alipay_url;
-        			    	 }else{
-        			    	 	 $('#info').show();
-		               	         $('#info').html("微信支付用户退款成功");
-		             	         setTimeout("$('#info').hide()", 2000 );  
-        			    	 	 $('#table').bootstrapTable('refresh', {silent: true});
-        			    	 }	        
-        			     }
-        			 },'json'
-        			 );
-        		}else{
-        			//校区管理员确认退款
-        			$.post("../order/confirmRefund.do",
+      window.deleteEvents = {
+        'click .invalide': function (e, value, row, index) {
+        	
+        			//校区管理员删除订单
+        			$.post("../order/deleteOrderTrue.do",
         			   {togetherId:row.togetherId},
         			   function(data){
         			      if(data.status=="success"){
@@ -127,30 +94,6 @@
         			 },'json'
         			 );	
         		}
-        		
-        	}
-           
-        },
-        'click .cancel': function (e, value, row, index) {
-        	if(confirm('是否确定取消退款')){
-        		$.post("../order/cancelRefund.do",
-        		   {togetherId:row.togetherId},
-        		   function(data){
-        		      if(data.status=="success"){
-        		      	$('#table').bootstrapTable('refresh', {silent: true});
-        		        $('#info').show();
-		               	$('#info').html("操作成功");
-		             	setTimeout("$('#info').hide()", 2000 );
-        		     }else{
-        		    	$('#info').show();
-		               	$('#info').html("失败");
-		             	setTimeout("$('#info').hide()", 2000 );
-        		     }
-
-        		 },'json'
-        		 );
-        	}
-        }
     };
 </script>
 </body>

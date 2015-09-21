@@ -1,6 +1,5 @@
 package com.changyu.foryou.controller;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -345,14 +344,20 @@ public class CampusController {
 		
 		paramMap.put("cityName", cityName);
 		
-		Integer result = campusService.addCity(paramMap);
-		if(result!=-1&&result!=0){
-			responseMap.put(Constants.STATUS, Constants.SUCCESS);
-			responseMap.put(Constants.MESSAGE,"添加城市成功！");
+		if(campusService.getCityByName(cityName)==null){
+			Integer result = campusService.addCity(paramMap);
+			if(result!=-1&&result!=0){
+				responseMap.put(Constants.STATUS, Constants.SUCCESS);
+				responseMap.put(Constants.MESSAGE,"添加城市成功！");
+			}else{
+				responseMap.put(Constants.STATUS, Constants.FAILURE);
+				responseMap.put(Constants.MESSAGE, "添加城市失败！");
+			}
 		}else{
 			responseMap.put(Constants.STATUS, Constants.FAILURE);
-			responseMap.put(Constants.MESSAGE, "添加城市失败！");
+			responseMap.put(Constants.MESSAGE, "该城市已存在");
 		}
+		
 		return responseMap;
 	}
 	

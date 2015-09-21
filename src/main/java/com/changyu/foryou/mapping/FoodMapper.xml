@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.changyu.foryou.mapper.FoodMapper">
-	<!-- <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" 
-		/> -->
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
 	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Food"
 		extends="SmallResultMap">
 		<result column="grade" property="grade" jdbcType="REAL" />
@@ -20,10 +19,10 @@
 	
 	<resultMap type="com.changyu.foryou.model.ShortFoodWithIm" id="SmallWithImResultMap"
 	extends="SmallResultMap">
-	<result column="info" property="info" jdbcType="VARCHAR" />
-	<result column="message" property="message" jdbcType="VARCHAR" />
-	<result column="grade" property="grade" jdbcType="SMALLINT" />
-	<result column="comment_count" property="commentNumber" jdbcType="INTEGER" />
+	   <result column="info" property="info" jdbcType="VARCHAR" />
+	   <result column="message" property="message" jdbcType="VARCHAR" />
+	   <result column="grade" property="grade" jdbcType="SMALLINT" />
+	   <result column="comment_count" property="commentNumber" jdbcType="INTEGER" />
 	</resultMap>
 
 	<resultMap id="SmallResultMap" type="com.changyu.foryou.model.ShortFood">
@@ -185,6 +184,9 @@
 			<if test="foodCount != null">
 			    food_count,
 			</if>
+			<if test="message != null">
+			    message,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="foodId != null">
@@ -237,6 +239,9 @@
 			</if>
 			<if test="foodCount != null">
 			    #{foodCount,jdbcType=INTEGER},
+			</if>
+			<if test="message != null">
+			    message=#{message,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -350,7 +355,7 @@
 				#{tagPattern})
 			</if>
 		</where>
-		group by food.food_id
+		<!-- group by food.food_id -->
 		<choose>
 			<when test="sortId==1">
 				ORDER BY sale_number DESC
@@ -367,6 +372,7 @@
 		</if>
 
 	</select>
+
 
 	<!-- 根据分类id，两个商品标签，做模糊查询 -->
 	<select id="selectFoodsByTwoTags" resultMap="SmallWithImResultMap">
@@ -508,7 +514,7 @@
 	</update>
 	
 	<select id="getTopFive" resultMap="FoodWithSalesResultMap">
-	SELECT orders.food_id,food.name as food_name,SUM(orders.order_count) as sales from orders,food
+		SELECT orders.food_id,food.name as food_name,SUM(orders.order_count) as sales from orders,food
 		<where>
 		  orders.food_id=food.food_id and orders.campus_id=#{campusId,jdbcType=INTEGER}
 		<if test="dateStart!=null">
@@ -525,7 +531,7 @@
 	</select>
 	
 	<update id="addFoodCountById">
-	update food set food_count=#{foodCount,jdbcType=INTEGER} where campus_id=#{campusId,jdbcType=INTEGER} and food_id=#{foodId,jdbcType=BIGINT}
+	    update food set food_count=#{foodCount,jdbcType=INTEGER} where campus_id=#{campusId,jdbcType=INTEGER} and food_id=#{foodId,jdbcType=BIGINT}
 	</update>
 	
 	<update id="addFoodCount">
@@ -557,4 +563,3 @@
 	  limit 1
 	</select>
 </mapper>
-

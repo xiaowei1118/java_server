@@ -129,4 +129,12 @@ public interface OrderMapper {
 	List<PCOrder> getPCSimpleOrders(Map<String, Object> paramMap);
 
 	long getPCSimpleOrdersCount(Map<String, Object> paramMap);
+
+	List<SuperAdminOrder> getPCInvalidOrders(Map<String, Object> paramMap);  //获取无效订单
+
+	int deleteOrderTrue(Map<String, Object> paramMap);                       //删除无效订单
+
+	int deleteStatus7Order(String phone);              //删除无效订单（从商品详情点立即购买，却没有支付的
+
+	List<Order> getAllOrderByTogetherId(String orderNo);   //
 }

@@ -2,11 +2,11 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>	
-	<!-- <settings>
+	<settings>
 		<setting name="cacheEnabled" value="true" />
-	</settings> -->
-	<!-- <typeAliases>
+	</settings>
+	<typeAliases>
 		<package name="com.changyu.foryou.model" />
-	</typeAliases> -->
+	</typeAliases>
 
 </configuration>

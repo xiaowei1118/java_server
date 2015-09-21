@@ -29,7 +29,7 @@
 			var password=document.getElementById("password").value;
 			
 			if ((phone==null||phone=="")||(password==null||password=="")) {
-				$("#message").html("Phone or password is empty,Please theck it again");
+				$("#message").html("账号或者密码为空，请检查后输入");
 				return;
 			};
 			
@@ -38,7 +38,7 @@
 				return;
 			}
 			$.post("../../foryou/seller/toLogin.do",
-				{campusAdmin:phone,password:password},
+				{campusAdmin:phone,password:password,server:"56846a8a2fee49d14901d39cc48b8b2a"},
 				function(text){
 					var json=eval('('+text+')');
 					if (json.status=="success") {
@@ -53,7 +53,7 @@
 									//将当前管理员管理的校区id存到cookie
 									//getSellerById获取校区管理员信息
 									$.post("seller/getSellerById.do",{
-										campusAdmin : phone
+										campusAdmin : phone,server:"56846a8a2fee49d14901d39cc48b8b2a"
 									},function(data){
 										//alert(data);
 										//alert(data.seller.type);
@@ -61,7 +61,7 @@
 										document.cookie = "type="+data.seller.type;
 										//获取校区状态（0休息，1营业）并写入Cookie
 										$.post("campus/getCampusById.do",{
-											campusId : data.seller.campusId
+											campusId : data.seller.campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"
 										},function(data){
 											document.cookie = "status="+data.campus.status;
 											//跳转到主页
@@ -83,14 +83,14 @@
 									//将当前管理员管理的校区id存到cookie
 									//getSellerById获取校区管理员信息
 									$.post("seller/getSellerById.do",{
-										campusAdmin : phone
+										campusAdmin : phone,server:"56846a8a2fee49d14901d39cc48b8b2a"
 									},function(data){
 										//alert(data);
 										document.cookie = "campusId="+data.seller.campusId;
 										document.cookie = "type="+data.seller.type;
 										//获取校区状态（0休息，1营业）并写入Cookie
 										$.post("campus/getCampusById.do",{
-											campusId : data.seller.campusId
+											campusId : data.seller.campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"
 										},function(data){
 											document.cookie = "status="+data.campus.status;
 											//跳转到主页
@@ -132,14 +132,14 @@
 							<div class="control-group">
 								<label class="control-label" for="phone">用户名</label>
 								<div class="controls">
-									<input type="text" id="phone" placeholder="Please Input Mobile">
+									<input type="text" id="phone" placeholder="账号">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="password">密码</label>
 								<div class="controls">
 									<input type="password" id="password"
-									placeholder="Please Input Password">
+									placeholder="密码">
 								</div>
 							</div>
 							<div class="control-group" style="height:60px">

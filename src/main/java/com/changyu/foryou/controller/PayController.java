@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.changyu.foryou.model.Order;
+import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.PayService;
 import com.changyu.foryou.service.PushService;
@@ -35,6 +37,7 @@ public class PayController {
 	private OrderService orderService;
     private UserService userService;
     private PushService pushService;
+    private FoodService foodService;
     
     private static final Logger LOGGER = Logger
 			.getLogger(PayController.class);
@@ -47,6 +50,10 @@ public class PayController {
 		this.pushService = pushService;
 	}
 
+	@Autowired
+	public void setFoodService(FoodService foodService) {
+		this.foodService = foodService;
+	}
 	
 	public PayService getPayService() {
 		return payService;
@@ -165,6 +172,14 @@ public class PayController {
 		paramMap.put("chargeId",chargeId);
 		System.out.println(paramMap);
 		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 ,以及chargeId
+		
+		List<Order> orders = orderService.getAllOrdersByTogetherId(charge.getOrderNo()); // 获取该笔订单的消息				
+		for(Order order:orders){
+			paramMap.put("foodId", order.getFoodId());
+			paramMap.put("orderCount", order.getOrderCount());
+			paramMap.put("campusId",order.getCampusId());
+			foodService.changeFoodCount(paramMap); // 增加销量，减少存货
+	    }
 		
 		final Integer campusId=orderService.getCampusIdByTogetherId(paramMap);
 		// 开启线程去访问极光推送

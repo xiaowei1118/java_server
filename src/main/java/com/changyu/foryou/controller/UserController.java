@@ -154,7 +154,8 @@ public class UserController {
 					session.setAttribute("type", users.getType());
 					session.setAttribute("phone", users.getPhone());
 					Date date=new Date();
-					userService.updateLastLoginTime(date,phone);					
+					userService.updateLastLoginTime(date,phone);
+					orderService.deleteStatus7Order(phone);
 				} else {
 					map.put(Constants.STATUS, Constants.FAILURE);
 					map.put(Constants.MESSAGE, "账号或密码错误，请检查后输入");
@@ -407,13 +408,12 @@ public class UserController {
 		String phone=request.getParameter("phoneId");
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		image=image.replaceAll(" ", "+");
+		//image=image.replaceAll(" ", "+");
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
 		realPath=realPath.replace("foryou", "ForyouImage");
-		realPath=realPath.concat("/users/");
+		realPath=realPath.concat("users/");
 		String fileNameString=new Random().nextLong()+""+new Date().getTime()+".jpg";
-
 
 		if (image == null) {
 			map.put(Constants.STATUS, Constants.FAILURE);
@@ -423,8 +423,6 @@ public class UserController {
 		@SuppressWarnings("restriction")
 		BASE64Decoder decoder = new BASE64Decoder();
 		try {
-
-
 			//Base64解码
 			@SuppressWarnings("restriction")
 			byte[] b = decoder.decodeBuffer(image);
@@ -483,7 +481,7 @@ public class UserController {
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
 		realPath=realPath.replace("foryou", "ForyouImage");
-		realPath=realPath.concat("/android/");
+		realPath=realPath.concat("android/");
 		String fileNameString=new Random().nextInt(100)+""+new Date().getTime()+"log.log";
 
 		if (log == null) {

@@ -128,4 +128,12 @@ public interface OrderService {
 	List<PCOrder> getPCSimpleOrders(Map<String, Object> paramMap);
 
 	long getPCSimpleOrdersCount(Map<String, Object> paramMap);
+
+	List<SuperAdminOrder> getPCInvalidOrders(Map<String, Object> paramMap);  //获取无效订单
+
+	int deleteOrderTrue(Map<String, Object> paramMap);        //真正删除无效订单
+
+	void deleteStatus7Order(String phone);    //删除无效订单（从商品详情点立即购买，却没有支付的)
+
+	List<Order> getAllOrdersByTogetherId(String orderNo);   //根据大订单号获取所有的订单
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.changyu.foryou.mapper.FoodCommentMapper">
- <cache eviction="LRU" flushInterval="180000" size="512" readOnly="true" />
+	<cache eviction="LRU" flushInterval="180000" size="512" readOnly="true" />
 	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.FoodComment">
 		<result column="food_id" property="foodId" jdbcType="BIGINT" />
-		<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
 		<result column="name" property="foodName" jdbcType="VARCHAR" />
 		<result column="comment" property="comment" jdbcType="VARCHAR" />
 		<result column="date" property="date" jdbcType="DATE" />
@@ -18,12 +18,16 @@
 		<result column="order_id" property="orderId" jdbcType="BIGINT" />
 	</resultMap>
 	<insert id="insert" parameterType="com.changyu.foryou.model.FoodComment">
-		insert into food_comment (food_id, campus_id,comment, date,
+		insert into food_comment
+		(food_id, campus_id,comment, date,
 		grade, phone, tag
 		)
-		values (#{foodId,jdbcType=BIGINT}, #{campusId,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR},
+		values
+		(#{foodId,jdbcType=BIGINT},
+		#{campusId,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR},
 		#{date,jdbcType=DATE},
-		#{grade,jdbcType=SMALLINT}, #{phone,jdbcType=VARCHAR}, #{tag,jdbcType=SMALLINT}
+		#{grade,jdbcType=SMALLINT},
+		#{phone,jdbcType=VARCHAR}, #{tag,jdbcType=SMALLINT}
 		)
 	</insert>
 	<insert id="insertSelective" parameterType="com.changyu.foryou.model.FoodComment">
@@ -91,10 +95,11 @@
 	<select id="getCommentCountsById" resultType="Long">
 		SELECT
 		count(*)
-		FROM food_comment
+		FROM
+		food_comment
 		WHERE
-		food_id=#{foodId,jdbcType=BIGINT} 
-		AND tag=1 
+		food_id=#{foodId,jdbcType=BIGINT}
+		AND tag=1
 		and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
@@ -104,8 +109,14 @@
 		grade, food_comment.phone,nickname,users.img_url,is_hidden,order_count
 		FROM food_comment,users,orders
 		WHERE
-		food_comment.phone = users.phone and  food_comment.order_id =orders.order_id AND food_comment.food_id=#{foodId,jdbcType=BIGINT} 	and food_comment.campus_id=#{campusId,jdbcType=INTEGER}
-		AND food_comment.tag=1
+		food_comment.phone = users.phone
+		and food_comment.order_id =orders.order_id AND
+		food_comment.food_id=#{foodId,jdbcType=BIGINT} and
+		food_comment.campus_id=#{campusId,jdbcType=INTEGER}
+		AND food_comment.comment is not null
+		AND food_comment.comment !=""
+		AND
+		food_comment.tag=1
 		<if test="limit!=null and offset !=null">
 			LIMIT #{limit} OFFSET #{offset,jdbcType=INTEGER}
 		</if>
@@ -122,10 +133,13 @@
 		is_hidden
 		FROM
 		food_comment
-		left join users on food_comment.phone = users.phone
-		left join food  on food_comment.food_id=food.food_id and food.campus_id=food_comment.campus_id
+		left join users
+		on food_comment.phone = users.phone
+		left join food on
+		food_comment.food_id=food.food_id and
+		food.campus_id=food_comment.campus_id
 		<where>
-		    comment is not null and comment !="" 
+			comment is not null and comment !=""
 			and food.campus_id=#{campusId,jdbcType=INTEGER}
 			<if test="search != null and search !='' ">
 				and food.food_id =
@@ -146,44 +160,50 @@
 
 	<select id="getFoodCommentCount" resultType="Integer">
 		SELECT
-		  count(*)
+		count(*)
 		FROM
 		food_comment
 		<where>
 			comment is not null and comment !=""
-			and campus_id=#{campusId,jdbcType=INTEGER}
+			and
+			campus_id=#{campusId,jdbcType=INTEGER}
 			<if test="search != null and search !='' ">
-				and  food_id =
-				#{search,jdbcType=VARCHAR} 
+				and food_id =
+				#{search,jdbcType=VARCHAR}
 			</if>
 		</where>
 	</select>
-	
+
 	<delete id="deleteFoodComment">
-	    delete
-	    from 
-	     food_comment
-	    <where>
-	       food_id=#{foodId,jdbcType=BIGINT}
-	       and date_format(date,'%Y-%m-%d')=#{date,jdbcType=DATE}
-	       and grade=#{grade} and campus_id=#{campusId,jdbcType=INTEGER}
-	    </where>
+		delete
+		from
+		food_comment
+		<where>
+			food_id=#{foodId,jdbcType=BIGINT}
+			and date_format(date,'%Y-%m-%d')=#{date,jdbcType=DATE}
+			and grade=#{grade} and campus_id=#{campusId,jdbcType=INTEGER}
+		</where>
 	</delete>
-	
+
 	<select id="getAvageGrade" resultType="Float">
-	   SELECT 
-	     AVG(grade)
-	   from food_comment
-	   where
-	     food_id=#{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+		SELECT
+		AVG(grade)
+		from food_comment
+		where
+		food_id=#{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
-	
+
 	<select id="calCommentCount" resultType="Integer">
-	select count(comment) as commentCount
-	from food,food_comment
-	where food.food_id=#{foodId,jdbcType=BIGINT} and food_comment.tag=1 and comment is not null and comment!=' '
-	and(food_comment.campus_id=#{campusId,jdbcType=INTEGER}) and food.food_id=food_comment.food_id and order_id in (select order_id from orders)
-	group by food.food_id
+		SELECT
+		count(*) AS commentCount
+		FROM
+		food_comment
+		WHERE
+		food_id =#{foodId,jdbcType=BIGINT}	
+		AND campus_id =#{campusId,jdbcType=INTEGER}
+		AND food_comment.tag = 1
+		AND COMMENT IS NOT NULL
+		AND COMMENT != ''		
 	</select>
-	
+
 </mapper>

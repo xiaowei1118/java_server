@@ -150,7 +150,7 @@ var campusId = getCookie("campusId");
 		var campusId = getCookie("campusId");
 		//alert(campusId);
 		$("#table").bootstrapTable({
-			url : "../service/getAllFoodCategories4Client.do?campusId="+campusId
+			url : "../service/getAllFoodCategories4Client.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId="+campusId
 		});
 		/*$("#table").ajaxComplete(function(){
 			$("#table>tbody>tr>td:odd:odd").text("fdsdfgd");
@@ -209,7 +209,8 @@ var campusId = getCookie("campusId");
             		categoryName : row.category,
             		campusId : campusId,
 					isOpen : 1,
-            		status : 1//0是添加，1是更新
+            		status : 1,//0是添加，1是更新
+            		server:"56846a8a2fee49d14901d39cc48b8b2a"
             	},function(data){
             		setSuccess(data.message);
             	}, "json");
@@ -236,7 +237,8 @@ var campusId = getCookie("campusId");
             		categoryName : row.category,
             		campusId : campusId,
 					isOpen : 0,
-            		status : 1//0是添加，1是更新
+            		status : 1,//0是添加，1是更新
+            		server:"56846a8a2fee49d14901d39cc48b8b2a"
             	},function(data){
             		setSuccess(data.message);
             	}, "json");
@@ -291,7 +293,7 @@ var campusId = getCookie("campusId");
 				};
 					//alert(data.seller.campusId);
 					var campusId = getCookie("campusId");
-					$.post("../service/deleteFoodCategory.do", {categoryIds:categoryIds, campusId:campusId}, function(json){
+					$.post("../service/deleteFoodCategory.do", { server:"56846a8a2fee49d14901d39cc48b8b2a",categoryIds:categoryIds, campusId:campusId}, function(json){
 						json = eval('(' + json + ')');
 						if (json.status=="success") {
 							for (var i = array.length - 1; i >= 0; i--) {
@@ -330,7 +332,8 @@ var campusId = getCookie("campusId");
 					categoryId : categoryId,
 					categoryName : categoryName,
 					status : flag,
-					isOpen : 1
+					isOpen : 1,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
 				}, function(text) {
 					var json = eval('(' + text + ')');
 					if (json.status == "success") {

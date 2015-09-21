@@ -103,7 +103,7 @@ $(function() {
 	var start = dateStart.format("yyyy-MM-dd");
 	var end = dateEnd.format("yyyy-MM-dd");
 	//alert(start);
-	$.get("../service/getTopFive.do" + "?dateStart=" + start + "&dateEnd="
+	$.get("../service/getTopFive.do?server=56846a8a2fee49d14901d39cc48b8b2a&" + "dateStart=" + start + "&dateEnd="
 			+ end+"&limit=10&page=1&campusId="+getCookie("campusId"), function(text) {
 
 		var json = eval('(' + text + ')');

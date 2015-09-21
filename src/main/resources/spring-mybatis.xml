@@ -14,7 +14,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 
 	<!-- <task:annotation-driven /> -->
 	<!-- jndi方式 -->
-	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
 			<value>java:comp/env/jdbc/foryouDB</value>
 		</property>
@@ -23,10 +23,10 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="dataSource">
 			<ref bean="dataSource" />
 		</property>
-	</bean> -->
+	</bean>
 
 	<!-- 配置数据源 -->
-	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+	<!-- <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
 		<property name="url" value="${jdbc_url}" />
 		<property name="username" value="${jdbc_username}" />
@@ -48,9 +48,9 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="removeAbandoned" value="true" />
 		<property name="removeAbandonedTimeout" value="1800" />
 		<property name="logAbandoned" value="true" />
-	<!-- 	<property name="filters" value="stat" /> -->
-		<property name="filters" value="mergeStat" />
-	</bean>
+		<property name="filters" value="stat" />
+		<property name="filters" value="mergeStat" /> 
+	</bean>-->
 
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

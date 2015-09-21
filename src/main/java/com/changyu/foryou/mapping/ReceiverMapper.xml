@@ -158,7 +158,7 @@
 		#{phoneId,jdbcType=VARCHAR}
 	</update>
 	
-	<select id="getReceiver" resultMap="BaseResultMap">
+	<!-- <select id="getReceiver" resultMap="BaseResultMap">
 		select
 		distinct
 		receiver.rank, receiver.phone_id, receiver.phone, receiver.name, 
@@ -166,6 +166,21 @@
 		from orders,receiver
 		where together_id=#{togetherId,jdbcType=VARCHAR}and orders.tag=1
 		and receiver.rank=orders.rank  and is_out=0
+	</select> -->
+	
+	<select id="getReceiver" resultMap="BaseResultMap">
+		select 
+		   <include refid="Base_Column_List" />
+	    from 
+	       receiver
+	    where
+	       rank = (
+	           select rank 
+	           from
+	           orders
+	           where together_id=#{togetherId,jdbcType=VARCHAR}
+	           limit 1
+	    )
 	</select>
 
 </mapper>

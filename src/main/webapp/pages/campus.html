@@ -3,21 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>校区管理</title>
-<title>搜索标签管理</title>
+<title>校区管理</title>
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap.min.css">
 <link rel="stylesheet"
 	href="../assets/bootstrap-table/bootstrap-table.css">
-<link rel="stylesheet"
-	href="../assets/bootstrap-table/bootstrap-editable.css">
 <link rel="stylesheet" href="../css/style.css">
 <script src="../assets/bootstrap-table/jquery.min.js"></script>
 <script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/jquery.validate.js"></script>
+<script src="../assets/bootstrap-table/messages_cn.js"></script>
 <script src="../assets/bootstrap-table/bootstrap-table.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
-<script src="../assets/bootstrap-table/tableExport.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
-<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
 <script src="../js/bootstrap-table-zh-CN.min.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,6 +22,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
 <![endif]-->
+<!-- <script src="../js/jquery.cookie.js"></script> -->
 <script src="../js/util.js"></script>
 </head>
 <body>
@@ -42,9 +39,9 @@
 					<button id="edit" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-edit"></i>
 					</button>
-					<!-- <button id="delete" type="button" class="btn btn-default">
+					<button id="delete" type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-minus"></i>
-					</button> -->
+					</button>
 					<button id="add_city" type="button" class="btn btn-primary">
 						添加城市
 					</button>
@@ -58,10 +55,10 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-field="campusId">校区ID</th>
+							<th data-field="campusId" data-visible="false">校区ID</th>
 							<th data-field="campusName">校区名称</th>
-							<th data-field="cityId">城市ID</th>
-							<th data-field="cityName">城市名称</th>
+							<th data-field="cityId" data-visible="false">城市ID</th>
+							<th data-field="cityName">所在城市</th>
 							<th data-field="openTime">开店时间</th>
 							<th data-field="closeTime">关店时间</th>
 							<th data-field="status" data-formatter="statusFormatter">状态</th>
@@ -83,11 +80,11 @@
 						<h4 class="modal-title" id="myPlusModalLabel">添加校区</h4>
 					</div>
 					<div class="modal-body">
-						<form class="form-horizontal" role="form">
+						<form id="plus_campus_form"class="form-horizontal" role="form">
 							<div class="form-group">
 								<label for="plus_campus_name" class="col-sm-2 control-label">校区名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_campus_name" placeholder="校区名称">
+									<input type="text" class="form-control" id="plus_campus_name" name="campusName" placeholder="校区名称">
 								</div>
 							</div>
 							<div class="form-group">
@@ -107,13 +104,13 @@
 							<div class="form-group">
 								<label for="plus_open_time" class="col-sm-2 control-label">开店时间</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_open_time" placeholder="例06:00">
+									<input type="text" class="form-control" id="plus_open_time" name="openTime"placeholder="例06:00">
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="plus_close_time" class="col-sm-2 control-label">关店时间</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_close_time" placeholder="例23:00">
+									<input type="text" class="form-control" id="plus_close_time"name="closeTimeoep" placeholder="例23:00">
 								</div>
 							</div>
 							<div class="form-group">
@@ -142,12 +139,13 @@
 									<input type="number" class="form-control" id="plus_custom_service" placeholder="客服电话">
 								</div>
 							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<button type="button" class="btn btn-primary" onclick="plusSubmit()">提交更改</button>
+							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary" onclick="plusSubmit()">提交更改</button>
-					</div>
+					
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal -->
 		</div>
@@ -161,7 +159,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 							&times;
 						</button>
-						<h4 class="modal-title" id="myDeleteModalLabel">删除校区</h4>
+						<h4 class="modal-title" id="myDeleteModalLabel">关闭校区</h4>
 					</div>
 					<div class="modal-body">
 						<form class="form-horizontal" role="form">
@@ -175,7 +173,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary" onclick="deleteSubmit()">提交更改</button>
+						<button type="submit" class="btn btn-primary" onclick="deleteSubmit()">提交更改</button>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal -->
@@ -193,8 +191,8 @@
 						<h4 class="modal-title" id="myEditModalLabel">修改校区</h4>
 					</div>
 					<div class="modal-body">
-						<form class="form-horizontal" role="form">
-							<div class="form-group">
+						<form id="edit-campus-form" class="form-horizontal" role="form">
+							<div class="form-group none">
 								<label for="edit_campus_id" class="col-sm-2 control-label">校区ID</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="edit_campus_id" placeholder="校区ID" readonly>
@@ -258,12 +256,13 @@
 									<input type="text" class="form-control" id="edit_custom_service" placeholder="客服">
 								</div>
 							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<button type="submit" class="btn btn-primary" onclick="editSubmit()">提交更改</button>
+							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary" onclick="editSubmit()">提交更改</button>
-					</div>
+					
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal -->
 		</div>
@@ -298,18 +297,7 @@
 		</div>
 		<!-- 添加城市Modal End -->
 	</div>
-	<script src="../assets/bootstrap-table/jquery.min.js"></script>
-	<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
-	<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
-	<script src="../js/bootstrap-table-zh-CN.min.js"></script>
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
-	<![endif]-->
-	<script src="../js/util.js"></script>
+	
 	<script>
 		var $table = $("#table");
 		//全局变量
@@ -320,7 +308,37 @@
 	</script>
 	<script>
 		//可供调用方法
-		
+		$.validator.addMethod("time", function(value, element) {
+		    return this.optional(element) || /^\d{1,2}:\d{2}$/.test(value);
+		},"时间格式不正确，请检查是否有中文字符");
+
+		$("#plus_campus_form").validate({
+			rules:{
+				campusName:{
+					required: true,
+				},
+				openTime:{
+					required: true,
+				    time:true,
+				},
+				closeTime:{
+					required:true,
+					time:true,
+				}
+			},
+			messages:{
+				campusName:{
+					required: "校区名称必须",
+				},
+				openTime:{
+					required: "开店时间必须",			   
+				},
+				closeTime:{
+					required: "关店时间必须",
+				}
+			}
+		});
+
 		function statusFormatter(value, row, index){
 			var html = [];
 			switch(value){
@@ -457,7 +475,8 @@
 				status : status,
 				customService : customService
 			},function(data){
-				alert(data.message);
+				$("#plusModal").modal('hide');
+				$table.bootstrapTable('refresh',{client:true});
 			},"json");
 		}
 		
@@ -490,14 +509,24 @@
 				status : status,
 				customService : customService
 			},function(data){
-				alert(data.message);
 				$("#editModal").modal('hide');
 				$table.bootstrapTable('refresh',{client:true});
 			},"json");
 		}
 		
 		function deleteSubmit(){
-			alert("建议使用关闭校区功能而非删除校区！");
+			//alert("建议使用关闭校区功能而非删除校区！");
+			var array = $table.bootstrapTable('getSelections');
+
+			$.post("../campus/closeCampus.do",
+				{campusId:array.campusId,closeReason:"该校区已暂停营业,对您造成不便深感抱歉",status:0},
+				function(data){
+					if(data.satus=="success"){
+						alert(data.message);
+					}else{
+						alert(data.message);
+					}
+			},'json');
 		}
 		
 		function addCitySubmit(){
@@ -511,8 +540,14 @@
 			$.post("../campus/addCity.do",{
 				cityName : cityName
 			},function(data){
-				alert(data.message);
-				$("#addCityModal").modal('hide');
+				if(data.status=="success"){
+					alert(data.message);
+					$("#addCityModal").modal('hide');
+				}else{
+					alert(data.message);
+				}
+				
+				
 			},"json");
 		}
 	</script>

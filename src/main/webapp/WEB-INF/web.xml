@@ -48,6 +48,7 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 
+ 
 	<listener>
 		<description>spring监听器</description>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -96,17 +97,17 @@
 			<param-value>N</param-value>
 		</init-param>
 	</filter>
-
+	
 	<filter-mapping>
 		<filter-name>SessionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-	<!-- <resource-ref>
+	
+	<resource-ref>
 	    <res-ref-name>jdbc/foryouDB</res-ref-name>
 	    <res-type>javax.sql.DataSource</res-type>
 	    <res-auth>Container</res-auth>
-  </resource-ref> -->
+	  </resource-ref>
   
 	<welcome-file-list>
 		<welcome-file>/login.html</welcome-file>

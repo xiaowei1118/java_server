@@ -38,7 +38,7 @@
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
-							<th data-align="center" data-field="campusId" data-sortable="true">校区Id</th>
+							<th data-align="center" data-field="campusId" data-sortable="true" data-visible="false">校区Id</th>
 							<th data-align="center" data-field="campusName">校区名称</th>
 							<th data-align="center" data-field="campusAdmin">校区管理员</th>
 							<th data-align="center" data-field="lastLoginDate" data-sortable="true">上次登录时间</th>
@@ -75,15 +75,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="plus_campus_admin" class="col-sm-2 control-label">校区管理员名称</label>
+								<label for="plus_campus_admin" class="col-sm-2 control-label">校区账户</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="plus_campus_admin" name="campusAdminName" placeholder="校区管理员名称">
+									<input type="text" class="form-control" id="plus_campus_admin" name="campusAdminName" placeholder="校区账号名称">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="plus_campus_admin_password" class="col-sm-2 control-label">密码</label>
+								<label for="plus_campus_admin_password" class="col-sm-2 control-label">校区密码</label>
 								<div class="col-sm-10">
-									<input type="password" class="form-control" id="plus_campus_admin_password" name="password" placeholder="校区管理员初始密码">
+									<input type="password" class="form-control" id="plus_campus_admin_password" name="password" placeholder="校区账号初始密码">
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -227,7 +227,7 @@ $("#plus_form").validate({
 		},
 		password:{
 			required: true,
-			rangelength: [6,12]
+			rangelength: [8,12]
 		}
 	},
 	messages:{
@@ -236,7 +236,7 @@ $("#plus_form").validate({
 		},
 		password:{
 			required:"密码必须",
-			rangelength:"密码长度在6-12之间"
+			rangelength:"密码长度在8-12之间"
 		}
 	},
 	submitHandler: function(form){

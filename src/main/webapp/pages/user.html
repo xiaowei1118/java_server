@@ -49,7 +49,7 @@
 		</div>
 		<div>
 			<table id="table" data-toggle="table" data-show-export="false"
-				data-url="../user/getAllUser.do" data-search="true"
+				data-url="../user/getAllUser.do?server=56846a8a2fee49d14901d39cc48b8b2a" data-search="true"
 				data-show-refresh="true" data-show-toggle="true"
 				data-side-pagination="server" data-pagination="true">
 				<thead>
@@ -127,12 +127,13 @@
 				//alert("admin");
 				$.post("../../foryou/user/setUserAdmin.do", {
 					phone : row.phone,
-                    campusId:campusId
+                    campusId:campusId,
+                    server:"56846a8a2fee49d14901d39cc48b8b2a"
 				}, function(text) {
 					if (text == -1 || text == 0) {
-						setSuccess("设置管理员失败。");
+						setSuccess("设置配送员失败。");
 					} else {
-						setSuccess("设置管理员成功。");
+						setSuccess("设置配送员成功。");
 						$('#table').bootstrapTable('updateRow', {
 							index : index,
 							row : {
@@ -148,7 +149,8 @@
 				//alert("common");
 				$.post("../../foryou/user/setUserCommon.do", {
 					phone : row.phone,
-					campusId:campusId
+					campusId:campusId,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
 				}, function(text) {
 					if (text == -1 || text == 0) {
 						setSuccess("设置为普通用户失败。");
@@ -169,12 +171,13 @@
 				//alert("superAdmin");
 				$.post("../../foryou/user/setUserSuperAdmin.do", {
 					phone : row.phone,
-					campusId:campusId
+					campusId:campusId,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
 				}, function(text) {
 					if (text == -1 || text == 0) {
-						setSuccess("设置超级管理员失败。");
+						setSuccess("设置分派员失败。");
 					} else {
-						setSuccess("设置超级管理员成功。");
+						setSuccess("设置分派员成功。");
 						$('#table').bootstrapTable('updateRow', {
 							index : index,
 							row : {

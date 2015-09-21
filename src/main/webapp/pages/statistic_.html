@@ -71,7 +71,7 @@
 			var month = $("#input_month").val();
 			//document.cookie="month="+month;
 			$("#table").bootstrapTable({
-				url : "../order/getSalesInfoByCampusId.do?"+"campusId="+getCookie("campusId")+"&month="+month
+				url : "../order/getSalesInfoByCampusId.do?server=56846a8a2fee49d14901d39cc48b8b2a&"+"campusId="+getCookie("campusId")+"&month="+month
 			});
 			$('#datetimepicker1').datetimepicker({
 				format : 'YYYY-MM',
@@ -83,7 +83,7 @@
 				//根据选择的年月重新加载表格数据
 				month = $("#input_month").val();
 				//document.cookie="month="+month;
-				$("#table").bootstrapTable('refresh',{silent:true,url : "../order/getSalesInfoByCampusId.do?"+"campusId="+getCookie("campusId")+"&month="+month});
+				$("#table").bootstrapTable('refresh',{silent:true,url : "../order/getSalesInfoByCampusId.do?server=56846a8a2fee49d14901d39cc48b8b2a&"+"campusId="+getCookie("campusId")+"&month="+month});
 			});
 		});
 	</script>

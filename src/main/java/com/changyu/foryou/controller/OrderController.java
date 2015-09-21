@@ -1280,6 +1280,7 @@ public class OrderController {
 
 		try {
 			Order order = new Order(campusId, phoneId, foodId, foodCount);
+			order.setStatus((short)7);
 			paramMap.put("orderId",order.getOrderId());
 			int flag = orderService.insertSelectiveOrder(order);
 
@@ -1406,11 +1407,26 @@ public class OrderController {
 	}
 	
 	/**
+	 * 获取退款订单
+	 * @param campusId
+	 * @return
+	 */
+	@RequestMapping("/getInvalideOrder")
+	public @ResponseBody JSONArray getInvalidOrder(Integer campusId){
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+				
+		paramMap.put("campusId",campusId);
+		
+	    List<SuperAdminOrder> refundOrders=orderService.getPCInvalidOrders(paramMap);  //PC获取无效订单
+	    return JSONArray.parseArray(JSON.toJSONStringWithDateFormat(refundOrders, "yyyy-MM-dd"));
+	}
+	
+	/**
 	 * 取消退款
 	 * @return
 	 */
 	@RequestMapping("/cancelRefund")
-	public @ResponseBody Map<String,Object> cancelRefund(String togetherId){
+	public @ResponseBody Map<String,Object> cancelRefund(@RequestParam String togetherId){
 		Map<String,Object> resultMap=new HashMap<>();
 		
 		try {
@@ -1443,7 +1459,7 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/refund")
-	public @ResponseBody Map<String,Object> refund(String togetherId,Float totalPrice){
+	public @ResponseBody Map<String,Object> refund(@RequestParam String togetherId,Float totalPrice){
 		Map<String,Object> resultMap=new HashMap<>();
 		
 		try {
@@ -1593,6 +1609,30 @@ public class OrderController {
 		tradeList.add(monthInfo);
 		
 		return (JSONArray)JSON.toJSON(tradeList);
+	}
+	
+	@RequestMapping("/deleteOrderTrue")
+	@ResponseBody
+	public Map<String,Object> deleteOrderTrue(@RequestParam String togetherId){
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		try {
+			Map<String,Object> paramMap=new HashMap<String,Object>();
+			paramMap.put("togetherId",togetherId);
+			int flag=orderService.deleteOrderTrue(paramMap);
+			if(flag!=-1){
+		    	resultMap.put(Constants.STATUS,Constants.SUCCESS);
+		        resultMap.put(Constants.MESSAGE,"删除成功");
+		    }else{
+		    	resultMap.put(Constants.STATUS,Constants.FAILURE);
+		    	resultMap.put(Constants.MESSAGE, "删除失败");
+		    }
+		} catch (Exception e) {
+			e.getStackTrace();
+			resultMap.put(Constants.STATUS,Constants.FAILURE);
+	    	resultMap.put(Constants.MESSAGE, "删除失败");
+		}
+		
+		return resultMap;
 	}
 	
 }

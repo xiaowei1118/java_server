@@ -34,11 +34,11 @@ public class Sign {
 	    // 先将参数以其参数名的字典序升序进行排序
 	    Map<String, String[]> sortedParams = new TreeMap<String, String[]>(params);
 	    Set<Entry<String, String[]>> entrys = sortedParams.entrySet();
-	 
+	   
 	    // 遍历排序后的字典，将所有参数按"key=value"格式拼接在一起
 	    StringBuilder basestring = new StringBuilder();
 	    for (Entry<String, String[]> param : entrys) {
-	    	if(param.getKey().equals("secret")||param.getKey().equals("sign")){
+	    	if(param.getKey().equals("timestamp")||param.getKey().equals("secret")||param.getKey().equals("sign")){
 	    		continue;
 	    	}
 	    	String value = ((String[])param.getValue())[0];
@@ -49,9 +49,9 @@ public class Sign {
 	    // 使用MD5对待签名串求签
 	    byte[] bytes = null;
 	    try {
-	        MessageDigest md5 = MessageDigest.getInstance("MD5");    
+	      MessageDigest md5 = MessageDigest.getInstance("MD5");    
 	      bytes = md5.digest(basestring.toString().getBytes("UTF-8"));
-	      System.out.println(basestring.toString());
+	      System.out.println(basestring.toString());  //一次
 	      
 	    } catch (GeneralSecurityException ex) {
 	        throw new IOException(ex);

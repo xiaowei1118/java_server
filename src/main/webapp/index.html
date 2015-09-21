@@ -10,6 +10,7 @@
 <script type='text/javascript' src="js/bootstrap.min.js"></script>
 <script type='text/javascript' src="js/main.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
+
 <style>
 a:hover {
 	text-decoration: none
@@ -20,22 +21,26 @@ a:hover {
 	margin-left:-22px;
 }
 .right{
-   float:right;
-   width:91%;
-   margin-top:35px;
+   float:left;
+   width:1100px;
+   margin-top:42px;
 }
 #campusDropdown{
 	visibility:hidden
 }
+.sideBar ul{
+	border-right: 1px solid #eee;
+}
 </style>
 <script type="text/javascript">
 		$(function(){
-			$.get("../foryou/user/getUserType.do", function(text){            
+			$.get("../foryou/user/getUserType.do?server=56846a8a2fee49d14901d39cc48b8b2a", function(text){            
 				if (text=="1") {
 					$("#user-link").hide();
 					$("#hotsearch").hide();
 					$("#preferential").hide();
 					$("#closeStore").hide();
+					$("#valideOrder").hide();
 				};
 
 			});
@@ -66,7 +71,7 @@ a:hover {
 							</ul>
 						</div>
 					</li>
-					<li><a href="../foryou/user/logout.do" rel='tooltip'
+					<li><a href="../foryou/user/logout.do?server=56846a8a2fee49d14901d39cc48b8b2a" rel='tooltip'
 						title='退出'><i class='icon-white icon-off'></i></a></li>
 				</ul>
 			</div>
@@ -78,7 +83,7 @@ a:hover {
 			<div class="sideBar left">
 				<br />
 				<ul>
-					<li><figure>
+					<li class="active"><figure>
 							<i class='icon-home'></i>
 							<a href="pages/main.html" target="content">首页&nbsp;&nbsp;</a>
 						</figure><hr /></li>
@@ -143,6 +148,8 @@ a:hover {
 									class='icon-fire'></i>配送中</a><hr/></li>
 							<li><a href="pages/order_refund.html" target="content"><i
 									class='icon-fire'></i>退款中</a><hr/></li>
+							<li id="valideOrder"><a href="pages/order_invalide.html" target="content"><i
+									class='icon-fire'></i>无效订单</a><hr/></li>
 						</ul>
 					</li>
 					
@@ -161,7 +168,7 @@ a:hover {
 						<figure>
 							<a href="pages/campus_admin.html" target="content">
 								<i class="icon-wrench"></i>
-								管理员管理
+								账号管理
 							</a>
 						</figure><hr/>
 					</li>
@@ -203,9 +210,9 @@ a:hover {
 				</ul>
 
 			</div>
-			<div class='right' width="100%" height="100%">
-				<iframe name="content" src="pages/main.html"
-					style="height:720px;width:100%" scroling="yes" frameborder="0"
+			<div class='right' style="width:1050px;border-left:1px solid #eee;">
+				<iframe id="content" name="content" src="pages/main.html"
+					style="height:720px;width:1100px" scroling="yes" frameborder="0"
 					border="0" marginwidth="0" marginheight="0"></iframe>
 			</div>
 
@@ -223,7 +230,8 @@ var status = getCookie("status");		//校区状态
 function oneKeyOpen(){
 	$.post("campus/closeCampus.do",{
 		campusId : campusId,
-		status : 1
+		status : 1,
+		server:"56846a8a2fee49d14901d39cc48b8b2a"
 	},function(data){
 		alert(data.message);
 		if(data.status=="success"){
@@ -259,7 +267,7 @@ $(function(){
 		$("#campusDropdown").css("visibility", "visible");
 		if(campusId!=null&&typeof(campusId)!="undefined"){
 			$.post('campus/getCampusById.do', {
-				campusId : getCookie("campusId")
+				campusId : getCookie("campusId"),server:"56846a8a2fee49d14901d39cc48b8b2a"
 			},function(data){		
 			   $("#dropdownMenu1").html(data.campus.campusName+'<span class="caret"></span>');	
 			},"json");
@@ -270,7 +278,7 @@ $(function(){
 		$("#li-campus").hide();
 		//$("#campusDropdown").css("visibility", "hidden");
 		//根据校区id获取校区名称
-		$.post('campus/getCampusById.do', {
+		$.post('campus/getCampusById.do?server=56846a8a2fee49d14901d39cc48b8b2a', {
 			campusId : getCookie("campusId")
 		},function(data){
 			//根据校区是否开通显示不同的eye
@@ -290,7 +298,7 @@ $(function(){
 	}
 	
 	$("#dropdown-campus").empty();//移除子元素
-	$.getJSON("campus/getAllCampus.do", function(data){
+	$.getJSON("campus/getAllCampus.do?server=56846a8a2fee49d14901d39cc48b8b2a", function(data){
 		//alert(data.campus[0].campusName);
 		for(var i=0; i < data.length; i++){
 			$("#dropdown-campus").append("<li role='presentation'><a class='campus-item' role='menuitem' tabindex='-1' href='#'>"+data[i].campusName+"</a></li>");
@@ -299,8 +307,11 @@ $(function(){
 			//alert($(this).text());
 			var campusName = $(this).text();
 			
-			$.getJSON("campus/getIdByName.do?campusName="+campusName,function(data){
-				document.cookie="campusId="+data.campusId;
+			$.getJSON("campus/getIdByName.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusName="+campusName,function(data){
+				console.log(data);
+				console.log(data.campusId);
+				//document.cookie="campusId="+data.campusId;
+				$.cookie('campusId',data.campusId);
 				$.post('campus/getCampusById.do',{
 					campusId : data.campusId
 				},function(data){
@@ -316,7 +327,7 @@ $(function(){
 								data.campus.campusName);
 					}
 				},"json");
-				
+				$('#content').attr('src', $('li.active figure a').attr('href'));
 			});
 			
 		});

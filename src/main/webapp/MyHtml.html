@@ -21,8 +21,8 @@
 		var sign = getSignature();
 		$
 				.get(
-						"../foryou/service/selectFoods.do?username=xiaowei&password=zc0829&secret=13234234234234&sign="
-								+ sign, function(data) {
+						"../foryou/user/toLogin.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId=1&phone=xiaowei&password=zc0829&secret=13234234234234&sign="
+								+ sign+"&timestamp="+new Date().getTime(), function(data) {
 
 						});
 	});

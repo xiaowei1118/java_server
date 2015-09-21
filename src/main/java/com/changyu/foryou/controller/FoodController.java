@@ -53,7 +53,6 @@ public class FoodController {
 	private OrderService orderService;
 	private CampusService campusService;
 	
-
 	protected static final Logger LOG = LoggerFactory.getLogger(FoodController.class);
 
 	@Autowired
@@ -150,7 +149,6 @@ public class FoodController {
 				}
 			}
 			else{
-
 				foodTag=foodTag.replace(","," ").replace(".", " ").replace(">", " ").replace("'", " ").replace("，", " ").trim();
 				String[] Flags=foodTag.split(" ");
 				for (int i = 0; i < Flags.length; i++) {
@@ -396,40 +394,7 @@ public class FoodController {
 		return foods;
 	}
 
-	/**
-	 * 获取食品 的一级分类
-	 * @return
-	 */
-	/*@RequestMapping("/getAllFoodFristCategorys")
-	public @ResponseBody List<FoodCategory> getAllFoodFirstCategorys(){
-		List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
-
-		try {
-			foodCategories=foodService.getAllFoodFirstCategories();	
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-		return foodCategories;
-	}*/
-
-	/**
-	 * 获取食品的二级分类
-	 * @return
-	 */
-	/*@RequestMapping("/getAllFoodSecondCategorys")
-	public @ResponseBody List<FoodCategory> getAllFoodSecondCategorys(){
-		List<FoodCategory> foodCategories =new ArrayList<FoodCategory>();
-
-		try {
-			foodCategories=foodService.getAllFoodSecondCategories();	
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-		return foodCategories;
-	}*/
-
+	
 	/**
 	 * 添加食品口味   弃用
 	 * @param campusId
@@ -864,7 +829,7 @@ public class FoodController {
 			//Short isDefault=Short.valueOf(request.getParameter("default_special"));
 			String realPath = request.getSession().getServletContext().getRealPath("/"); 
 			realPath=realPath.replace("foryou", "ForyouImage");
-			realPath=realPath.concat("\\food\\");
+			realPath=realPath.concat("food/");
 			System.out.println(realPath);               //打印出服务器路径
 
 			List<String> imageUrl=new ArrayList<String>();
@@ -1190,8 +1155,7 @@ public class FoodController {
 		
 		if(homeImageFile.isEmpty()){            //不更新主页图片
 			System.out.println("文件未上传");
-		
-			
+					
 			int flag = foodService.uploadHomeFoodByFoodId(paramMap); 
 			if(flag!=0&&flag!=-1){
 				return "redirect:/pages/food.html";
@@ -1245,27 +1209,52 @@ public class FoodController {
 		StringBuffer bufferInfo = new StringBuffer();
 		
 		String foodId = request.getParameter("foodId");
-		
+		String campusId = request.getParameter("campusId");
+	    
+		int i=0;
 		for (MultipartFile detailImageFile : detailImageFiles) {
+			i++;	
+			String is_delete=request.getParameter("is_delete"+i);
+			if(is_delete!=null&&request.getParameter("is_delete"+i).equals("on")){
+				bufferInfo.append("");
+				break;
+			}
 			if(detailImageFile.isEmpty()){
-				System.out.println("文件未上传");
+				System.out.println("文件未上传");			
+				bufferInfo.append(","+request.getParameter("img"+i));
 			}else{
 				String contentType = detailImageFile.getContentType();
 				if(contentType.startsWith("image")){
 					String realPath = request.getSession().getServletContext().getRealPath("/");
 					realPath = realPath.replace("foryou", "ForyouImage");
-					realPath.concat("food");
+					realPath=realPath.concat("food/");
+					//System.out.println(realPath);
 					String newFileName = new Date().getTime()+""+new Random().nextInt()+".jpg";
 					FileUtils.copyInputStreamToFile(detailImageFile.getInputStream(), new File(realPath, newFileName));
-					String imageUrl = Constants.localIp+"/food/info/"+newFileName;
-					bufferInfo.append(imageUrl);
+					String imageUrl = Constants.localIp+"/food/"+newFileName;
+					bufferInfo.append(","+imageUrl);
+					
+					String oldImgUrl=request.getParameter("img"+i);
+					if(imageUrl!=null&&oldImgUrl!=null){
+						String[] temp=oldImgUrl.split("/");
+						String imageName=temp[(temp.length-1)];
+
+						String name2=realPath+imageName;
+
+						File file=new File(name2);
+						if(file.isFile()){
+							file.delete();//删除
+						}
+					}
 				}
+				
 			}
 		}
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("foodId", foodId);
 		paramMap.put("info", bufferInfo.toString());
+		paramMap.put("campusId", campusId);
 		int flag = foodService.updateInfoByFoodId(paramMap);
 		if(flag!=0&&flag!=-1){
 			return "redirect:/pages/food.html";
@@ -1346,6 +1335,9 @@ public class FoodController {
 		return responseMap;
 	}
 	
+	/*
+	 * 添加商品库存
+	 */
 	@RequestMapping("addFoodCountById")
 	@ResponseBody
 	public Map<String, Object> addFoodCountById(@RequestParam Integer campusId, @RequestParam Integer foodId, @RequestParam Integer addCount){
@@ -1367,6 +1359,9 @@ public class FoodController {
 		return responseMap;
 	}
 	
+	/*
+	 * 添加库存
+	 */
 	@RequestMapping("addFoodCount")
 	@ResponseBody
 	public Map<String, Object> addFoodCount(@RequestParam Integer campusId, @RequestParam Integer addCount){
@@ -1387,6 +1382,9 @@ public class FoodController {
 		return responseMap;
 	}
 	
+	/*
+	 * 获取商品详情
+	 */
 	@RequestMapping("/getDetailImg")
 	@ResponseBody
 	public Map<String,Object> getDetailImg(@RequestParam Integer campusId,@RequestParam Long foodId){
@@ -1399,7 +1397,15 @@ public class FoodController {
 			
 			String imgs=foodService.getDetailImg(paramMap);
 			String[] detailImgs=imgs.split(",");
-			resultMap.put("imgs",detailImgs);
+			List<String> detailImgsWithoutNull=new ArrayList<String>();
+			
+			for(String img:detailImgs){
+				if(!img.trim().equals("")){
+					detailImgsWithoutNull.add(img);
+				}		
+			}
+			resultMap.put("imgs",detailImgsWithoutNull);
+		
 			resultMap.put(Constants.STATUS,Constants.SUCCESS);
 			resultMap.put(Constants.MESSAGE, "获取成功");
 		} catch (Exception e) {

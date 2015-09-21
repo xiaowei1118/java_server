@@ -116,6 +116,12 @@
 				<form id="dataCommit" class="form-horizontal" method="post"
 					enctype="multipart/form-data" action="../service/updateFoods.do">
 					<div class="modal-body">
+					     <div class="form-group" style="display:none">
+							<label class="control-label col-md-4" for="campusId2">校区Id</label>
+							<div class="col-md-8">
+								<input type="text" id="campusId2" name="server" readonly="readonly" value="56846a8a2fee49d14901d39cc48b8b2a">
+							</div>
+						</div>
 						<div class="form-group" style="display:none">
 							<label class="control-label col-md-4" for="campusId2">校区Id</label>
 							<div class="col-md-8">
@@ -188,7 +194,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-4" for="imgUrl2">商品库存</label>
+							<label class="control-label col-md-4" for="foodCount">商品库存</label>
 							<div class="col-md-8">
 								<input type="text" id="foodCount2" name="foodCount"
 									placeholder="foodCount">
@@ -258,14 +264,14 @@
 			enctype="multipart/form-data"
 			action="../service/uploadHomeImage.do">
 				<div class="modal-body">
-				    <div class="control-group">
+				    <div class="control-group none">
 						<label class="control-label" for="campus-id">校区id</label>
 						<div class="controls">
 							<input type="text" id="campus-id"
 							name="campusId" readonly>
 						</div>
 					</div>
-					<div class="control-group">
+					<div class="control-group none">
 						<label class="control-label" for="food-id">商品ID</label>
 						<div class="controls">
 							<input type="text" id="food-id"
@@ -304,37 +310,69 @@
 					详情图片管理
 				</h4>
 			</div>
-			<form class="form-horizontal" method="post"
+			<form id="detailImg" class="form-horizontal" method="post"
 			enctype="multipart/form-data"
 			action="../service/uploadDetailImage.do">
 				<div class="modal-body">
-					<div class="editImage">
-						<img alt="正在加载中" id="showImg1" width="100" height="50">
-						<input type="file" id="detailImg1" name="detailImageFiles"
-									placeholder="Choose Picture">
+					 <div class="control-group none">
+						<label class="control-label" for="campus_id_detail">校区id</label>
+						<div class="controls">
+							<input type="text" id="campus_id_detail"
+							name="campusId" readonly>
+						</div>
+					</div>
+					<div class="control-group none">
+						<label class="control-label" for="food_id_detail">商品ID</label>
+						<div class="controls">
+							<input type="text" id="food_id_detail"
+							name="foodId" readonly>
+						</div>
 					</div>
 					<div class="form-group">
-					   <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-					   <div class="col-sm-10">
-					     <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-					   </div>
-					 </div>
-					<br/>
-					<div class="editImage">
+					    <input type="text" id="img1" name="img1" class="none"/>
+					    <label for="detailImg1" class="col-sm-2 control-label">    图片一</label>
+					    <div class="col-sm-4">
+						<img alt="正在加载中" id="showImg1" width="100" height="50">
+						</div>
+						<div calss="col-sm-4">
+							<input type="file" id="detailImg1" name="detailImageFiles"
+										placeholder="Choose Picture">
+					    </div>
+					    <div calss="col-sm-2">
+					    	<input type="checkbox" id="is_delete1" class="inline"  name="is_delete1"/> 删除
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<input type="text" id="img2" name="img2" class="none"/>
+					    <label for="detailImg1" class="col-sm-2 control-label">    图片二</label>
+					    <div class="col-sm-4">
 						<img alt="正在加载中" id="showImg2" width="100" height="50">
-						<input type="file" id="detailImg2" name="detailImageFiles"
-									placeholder="Choose Picture">
+						</div>
+						<div calss="col-sm-4">
+							<input type="file" id="detailImg1" name="detailImageFiles"
+										placeholder="Choose Picture">
+					    </div>
+					    <div calss="col-sm-2">
+					    	<input type="checkbox" id="is_delete2" class="inline"  name="is_delete2"/> 删除
+					    </div>
 					</div>
-					<br/>
-					<div class="editImage">
+					<div class="form-group">
+						<input type="text" id="img3" name="img3" class="none"/>
+					    <label for="detailImg1" class="col-sm-2 control-label">    图片三</label>
+					    <div class="col-sm-4">
 						<img alt="正在加载中" id="showImg3" width="100" height="50">
-						<input type="file" id="detailImg3" name="detailImageFiles"
-									placeholder="Choose Picture">
-						
-						<input type="checkbox" id="is_delete1" class="inline"  name="is_delete1"/> 删除
-						
+						</div>
+						<div calss="col-sm-4">
+							<input type="file" id="detailImg1" name="detailImageFiles"
+										placeholder="Choose Picture">
+					    </div>
+					    <div calss="col-sm-2">
+					    	<input type="checkbox" id="is_delete3" class="inline" name="is_delete3"/> 删除
+					    </div>
 					</div>
-					</div>
+					
+				</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 						<button type="submit" class="btn btn-primary">提交修改</button>
@@ -566,8 +604,11 @@ if(adminType==1){
 				// var div = document.getElementById("myModal");
 				// div.scrollTop = div.scrollHeight;
 			}
-		});*/
+		});*/ 
+		
+	/*	var uploadImageUrl="../service/uploadDetailImage.do?campusId="+getCookie('campusId');
 
+        $("#detailImg").attr("action",uploadImageUrl);*/
 		$editButton.click(function() {
 			var array = $table.bootstrapTable('getSelections');
 			tag=1;
@@ -615,7 +656,6 @@ if(adminType==1){
 			$("#foodTag2").val("");
 			$("#categoryId2").val("");
 			$("#imgUrl2").val("");
-			$("#imgUrl3").val("");
 			$("#foodCount2").val("");
 			$("#message").val("");
             obj.options.length = 0;
@@ -627,6 +667,41 @@ if(adminType==1){
 			is_discount[0].checked=true;
 			var isFullDiscount=document.getElementsByName("isFullDiscount");
 			isFullDiscount[0].checked=true;
+			//var default_special=document.getElementsByName("default_special");
+			//default_special[0].checked=true;
+		});
+
+		$("#manageDetailImageModal").on("hidden.bs.modal", function() {
+			$("#img1").val("");
+			$("#img2").val("");
+			$("#img3").val("");
+			$("#detailImg1").val("");
+			$("#detailImg2").val("");
+			$("#detailImg3").val("");
+			$("#is_delete1").prop("checked",false);
+			$("#is_delete2").prop("checked",false);
+			$("#is_delete3").prop("checked",false);
+			//清楚modal的数据
+			/*$("#foodId2").val("");
+			$("#foodId2").attr("readonly",false);
+			$("#foodName2").val("");
+			$("#price2").val("");
+			$("#discountPrice2").val("");
+			$("#primeCost2").val("");
+			$("#foodTag2").val("");
+			$("#categoryId2").val("");
+			$("#imgUrl2").val("");
+			$("#foodCount2").val("");
+			$("#message").val("");
+            obj.options.length = 0;
+            
+			var status=document.getElementsByName("status")
+			status[0].checked=true;
+
+			var is_discount=document.getElementsByName("is_discount");
+			is_discount[0].checked=true;
+			var isFullDiscount=document.getElementsByName("isFullDiscount");
+			isFullDiscount[0].checked=true;*/
 			//var default_special=document.getElementsByName("default_special");
 			//default_special[0].checked=true;
 		});
@@ -853,15 +928,16 @@ if(adminType==1){
 $("#commitFoodDataButton").on("click",function(){
         //对表单的数据进行验证
         var categoryId=$("#categoryId2").val();
-        var foodCount=$("#foodCount").val();
+        var foodCount=$("#foodCount2").val();
         var foodId=$("#foodId2").val();
         var foodName=$("#foodName2").val();
         var price=$("#price2").val();
         var discountPrice=$("#discountPrice2").val();
         var primeCost=$("#primeCost2").val();
         var $foodCommitDataForm=document.getElementById("dataCommit");
+
         console.log(categoryId);
-        if(!(/[0-9]+$/.test(categoryId))||!(/[0-9]+$/.test(foodId))){
+        if(!(/^[0-9]+$/.test(categoryId))||!(/[0-9]+$/.test(foodId))){
         	alert("商品id和上级分类id只可以是数字");
         	return;
         }
@@ -883,6 +959,11 @@ $("#commitFoodDataButton").on("click",function(){
 
         if(foodName==null||foodName==""){
         	alert("商品名称不能为空!");
+        	return;
+        }
+
+        if(!(/^[1-9][0-9]+$/.test(foodCount))){
+        	alert("商品库存格式有问题,检查后重新输入。");
         	return;
         }
         /*var value = $("input[name='default_special']:checked").val();
@@ -948,15 +1029,18 @@ window.detailImageOperateEvents={
 		$("#detailImg2").val("");
 		$("#detailImg3").val("");
 		$("#manageDetailImageModal").modal("show");
-
+        $("#campus_id_detail").val(getCookie("campusId"));
+        $("#food_id_detail").val(row.foodId);
 		$.post(
 			'../service/getDetailImg.do',
 			{foodId:row.foodId,campusId:getCookie("campusId")},
 			function(data){
 			   var json=data.imgs;
 			   console.log(json.length);
-			  for (var i = json.length - 1; i >= 0; i--) {
+			  for (var i = json.length - 1; i >= 0; i--)
+			   {
 			  	 $("#showImg"+(i+1)).attr("src",json[i]);
+			  	 $("#img"+(i+1)).val(json[i]);
 			  };
 			},"json"
 		);

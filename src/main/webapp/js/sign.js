@@ -8,8 +8,8 @@ function getSignature(){
 	// 创建参数表  
 	var param = {};  
 	param["password"]="zc0829";  
-	param["username"]="xiaowei";  
-
+	param["phone"]="xiaowei";  
+    param['campusId']="1";
 	// 对参数名进行字典排序  
 	var array = new Array();  
 	for(var key in param)  
