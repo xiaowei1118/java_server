@@ -52,7 +52,8 @@
     				campusId : getCookie("campusId"),
     				foodId:row.foodId,
     				date:row.date,
-    				grade:row.grade
+    				grade:row.grade,
+                    server:"56846a8a2fee49d14901d39cc48b8b2a"
     			},
     			function(text){
     				if(text!=1){
@@ -70,7 +71,7 @@
     		var campusId = getCookie("campusId");
         		//alert(campusId);
         	$("#table").bootstrapTable({
-        		url:"../service/getAllComments.do?campusId="+campusId
+        		url:"../service/getAllComments.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId="+campusId
         	});
     	});
     	

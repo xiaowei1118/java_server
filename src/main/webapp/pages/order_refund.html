@@ -68,7 +68,7 @@
 
      var $table=$('#table');
 	 $("#table").bootstrapTable({
-		url : '../order/getRefundOrder.do?campusId='+campusId+"&type="+type
+		url : '../order/getRefundOrder.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId='+campusId+"&type="+type
 	 });
 
      function refundFormatter(value, row, index) {
@@ -88,7 +88,7 @@
         		if(type==1){
         			//总校区管理员退款
         			$.post("../order/refund.do",
-        			   {togetherId:row.togetherId,totalPrice:row.price},
+        			   {togetherId:row.togetherId,totalPrice:row.price,server:"56846a8a2fee49d14901d39cc48b8b2a"},
         			   function(data){
         			   	console.log(data);
         			      if(data.status=="failure"){
@@ -112,7 +112,9 @@
         		}else{
         			//校区管理员确认退款
         			$.post("../order/confirmRefund.do",
-        			   {togetherId:row.togetherId},
+        			   {togetherId:row.togetherId,
+        			   	server:"56846a8a2fee49d14901d39cc48b8b2a"
+        			   },
         			   function(data){
         			      if(data.status=="success"){
         			          $('#info').show();
@@ -134,7 +136,7 @@
         'click .cancel': function (e, value, row, index) {
         	if(confirm('是否确定取消退款')){
         		$.post("../order/cancelRefund.do",
-        		   {togetherId:row.togetherId},
+        		   {togetherId:row.togetherId,server:"56846a8a2fee49d14901d39cc48b8b2a"},
         		   function(data){
         		      if(data.status=="success"){
         		      	$('#table').bootstrapTable('refresh', {silent: true});

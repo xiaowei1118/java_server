@@ -15,11 +15,8 @@
 		campus_admin,password,type,campus_id,last_login_date
 	</sql>
 
-
-
-
 	<select id="selectByCampusAdmin" resultMap="BaseResultMap"
-		parameterType="java.lang.String">
+		parameterType="java.lang.String" useCache="false">
 		select
 		<include refid="Base_Column_List">
 		</include>

@@ -229,7 +229,8 @@
 				$.post("../preferential/addPref.do",{
 					campusId : campusId,
 					needNumber : needNumber,
-					discountNum : discountNum
+					discountNum : discountNum,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
 				},function(data){
 					$("#plusModal").modal('hide');
 					$("#table").bootstrapTable('refresh',{silent:true});
@@ -265,7 +266,8 @@
 					preferentialId : preferentialId,
 					campusId : campusId,
 					needNumber : needNumber,
-					discountNum : discountNum
+					discountNum : discountNum,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
 				},function(data){
 					$("#editModal").modal('hide');
 					$("#table").bootstrapTable('refresh',{silent:true});
@@ -327,7 +329,8 @@
 				alert("无法删除多条记录");
 			}else if(array.length==1){
 				$.post("../preferential/deletePref.do",{
-					preferentialId : array[0].preferentialId
+					preferentialId : array[0].preferentialId,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
 				},function(data){
 					$("#deleteModal").modal('hide');
 					$("#table").bootstrapTable('refresh',{silent:true});
@@ -342,7 +345,7 @@
 	//方法执行
 	$(function(){
 		$("table").bootstrapTable({
-			url : '../preferential/getAllPref.do?campusId='+getCookie("campusId")
+			url : '../preferential/getAllPref.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId='+getCookie("campusId")
 		});
 		
 		

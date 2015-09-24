@@ -108,7 +108,7 @@
 		    var campusId = getCookie("campusId");
 		    var $table=$('#table');
 			$("#table").bootstrapTable({
-				url : '../hotSearch/getHotSearchs.do?campusId='+campusId
+				url : '../hotSearch/getHotSearchs.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId='+campusId
 			});
 
 			function submitHotSearchData(){
@@ -118,7 +118,7 @@
 
                  $.post(
                  	'../hotSearch/updateHotSearch.do',
-                 	{hotId:hotId,displayName:displayName,searchTag:searchTag,campusId:campusId},
+                 	{hotId:hotId,displayName:displayName,searchTag:searchTag,campusId:campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"},
                  	function(data){
  						if(data.status=="success"){
  							$('#info').show();
@@ -199,7 +199,7 @@
                         };
 					    $.post(
            				 '../hotSearch/deleteHotSearchs.do',
-           				  {hotIds:$hotSearchIds},
+           				  {hotIds:$hotSearchIds,server:"56846a8a2fee49d14901d39cc48b8b2a"},
            				  function(data){
            				  	 if(data.status=="success"){
            				  	 	$('#info').show();
@@ -228,7 +228,7 @@
         'click .not-display': function (e, value, row, index) {
             $.post(
             	"../hotSearch/setNot2Display.do",
-              {hotId:row.hotId,campusId:campusId},
+              {hotId:row.hotId,campusId:campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"},
                function(data){
                   if(data.status=="failure"){
                       $('#info').show();
@@ -247,7 +247,7 @@
         'click .to-display': function (e, value, row, index) {
             $.post(
             	"../hotSearch/set2Display.do",
-               {hotId:row.hotId,campusId:campusId},
+               {hotId:row.hotId,campusId:campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"},
                function(data){
                   if(data.status=="failure"){
                       $('#info').show();

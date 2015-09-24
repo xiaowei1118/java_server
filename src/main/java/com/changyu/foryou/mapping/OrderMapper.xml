@@ -1120,7 +1120,7 @@
 	
 	<!-- 获取所有一笔大订单的所有小订单 -->
 	<select id="getAllOrderByTogetherId" resultMap="BaseResultMap">
-	    select food_id,order_id,campus_id
+	    select food_id,order_id,campus_id,order_count
 	    from
 	       orders
 	    where together_id=#{togetherId,jdbcType=VARCHAR}

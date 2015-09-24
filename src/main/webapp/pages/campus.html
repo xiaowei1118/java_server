@@ -47,7 +47,7 @@
 					</button>
 				</div>
 				<table id="table" data-toggle="table"
-					data-url="../campus/getAllCampus.do" data-toolbar="#toolbar"
+					data-url="../campus/getAllCampus.do?server=56846a8a2fee49d14901d39cc48b8b2a"data-toolbar="#toolbar"
 					data-pagination="true" data-striped="true" data-search="true"
 					data-show-refresh="true" data-show-toggle="true"
 					data-show-columns="true" data-height="80%"
@@ -362,7 +362,7 @@
 			//城市列表
 			//先清空城市下拉菜单
 			$("#plus_city_name").next().empty();			
-			$.get("../campus/getAllCity.do",function(data){
+			$.get("../campus/getAllCity.do?server=56846a8a2fee49d14901d39cc48b8b2a",function(data){
 				for(var i=0; i<data.length; i++){
 					$("#plus_city_name").next().append('<li style="text-align:center">'+data[i].cityName+'</li>');
 				}
@@ -392,7 +392,7 @@
 				//城市列表
 				//先清空上次请求的内容
 				$("#edit_city_name").next().empty();
-				$.get("../campus/getAllCity.do",function(data){
+				$.get("../campus/getAllCity.do?server=56846a8a2fee49d14901d39cc48b8b2a",function(data){
 					for(var i=0; i<data.length; i++){
 						$("#edit_city_name").next().append('<li style="text-align:center;">'+data[i].cityName+'</li>');
 					}
@@ -473,7 +473,8 @@
 				openTime : openTime,
 				closeTime : closeTime,
 				status : status,
-				customService : customService
+				customService : customService,
+				server:"56846a8a2fee49d14901d39cc48b8b2a"
 			},function(data){
 				$("#plusModal").modal('hide');
 				$table.bootstrapTable('refresh',{client:true});
@@ -507,7 +508,8 @@
 				openTime : openTime,
 				closeTime : closeTime,
 				status : status,
-				customService : customService
+				customService : customService,
+				server:"56846a8a2fee49d14901d39cc48b8b2a"
 			},function(data){
 				$("#editModal").modal('hide');
 				$table.bootstrapTable('refresh',{client:true});
@@ -517,12 +519,13 @@
 		function deleteSubmit(){
 			//alert("建议使用关闭校区功能而非删除校区！");
 			var array = $table.bootstrapTable('getSelections');
-
+            console.log(array);
 			$.post("../campus/closeCampus.do",
-				{campusId:array.campusId,closeReason:"该校区已暂停营业,对您造成不便深感抱歉",status:0},
+				{campusId:array[0].campusId,closeReason:"该校区已暂停营业,对您造成不便深感抱歉",status:0,server:"56846a8a2fee49d14901d39cc48b8b2a"},
 				function(data){
-					if(data.satus=="success"){
+					if(data.status=="success"){
 						alert(data.message);
+						$("#deleteModal").modal('hide');
 					}else{
 						alert(data.message);
 					}
@@ -538,7 +541,7 @@
 			}
 			
 			$.post("../campus/addCity.do",{
-				cityName : cityName
+				cityName : cityName,server:"56846a8a2fee49d14901d39cc48b8b2a"
 			},function(data){
 				if(data.status=="success"){
 					alert(data.message);

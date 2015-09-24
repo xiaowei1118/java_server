@@ -76,7 +76,8 @@ function setSuccess(message){
 <script>
 	$(function(){
 		$.post("../campus/getCampusById.do",{
-			campusId : getCookie("campusId")
+			campusId : getCookie("campusId"),
+			server:"56846a8a2fee49d14901d39cc48b8b2a"
 		},function(data){
 			$("#campus_name").val(data.campus.campusName);
 		},"json");
@@ -91,7 +92,8 @@ function setSuccess(message){
 			$.post("../campus/closeCampus.do",{
 				campusId : getCookie("campusId"),
 				closeReason : closeReason,
-				status : 0//关店传0，开店传1。
+				status : 0,//关店传0，开店传1。
+				server:"56846a8a2fee49d14901d39cc48b8b2a"
 			},function(data){
 				setSuccess(data.message);
 				if(data.status=='success'){

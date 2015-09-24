@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Order;
 import com.changyu.foryou.service.FoodService;
 import com.changyu.foryou.service.OrderService;
@@ -28,6 +29,7 @@ import com.pingplusplus.exception.ChannelException;
 import com.pingplusplus.exception.InvalidRequestException;
 import com.pingplusplus.model.Charge;
 import com.pingplusplus.model.Event;
+import com.pingplusplus.model.Refund;
 import com.pingplusplus.model.Webhooks;
 
 @Controller
@@ -129,20 +131,15 @@ public class PayController {
 	 * @return
 	 */
 	private int doRefundSuccess(String buffer) {
-		Charge charge = (Charge)Webhooks.parseEvnet(buffer);
+		Refund refund = (Refund)Webhooks.parseEvnet(buffer); 
+		LOGGER.info(JSON.toJSONString(refund));
+		
 		Map<String,Object> paramMap=new HashMap<String,Object>();
 
-		//String chargeId=charge.getId();   //获取chargeId
-		String togetherId=charge.getOrderNo();
+		String togetherId=refund.getOrderNo();
 		paramMap.put("togetherId",togetherId);
-		final double price=charge.getAmount()*1.0/100;
-		String channel=charge.getChannel();
-		final String channelString;
-		if(channel.equals("wx")){
-			channelString="微信";
-		}else{
-			channelString="支付宝";
-		}
+		final double price=refund.getAmount()*1.0/100;
+		
 		Integer flag=orderService.updateOrderStatusRefundSuccess(paramMap);
 		final String phone=orderService.getUserPhone(paramMap);        //根据订单号获取用户手机号
 		new Thread(new Runnable() {               //开启极光推送，通知用户退款成功
@@ -150,7 +147,7 @@ public class PayController {
 			@Override public void run() { //向超级管理员推送，让其分发订单
 
 				//推送 
-				pushService.sendPush(phone,"您的一笔金额为"+price+"的订单已经退回到您的"+channelString+"账户中，请及时查看。For优。", 5);
+				pushService.sendPush(phone,"您的一笔金额为"+price+"的订单已经退回到您的账户中，请及时查看。For优。", 5);
 
 			} 
 		}).start();

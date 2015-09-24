@@ -63,7 +63,7 @@
 
      var $table=$('#table');
 	 $("#table").bootstrapTable({
-		url : '../order/getInvalideOrder.do?campusId='+campusId
+		url : '../order/getInvalideOrder.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId='+campusId
 	 });
 
      function deleteFormatter(value, row, index) {
@@ -79,7 +79,10 @@
         	
         			//校区管理员删除订单
         			$.post("../order/deleteOrderTrue.do",
-        			   {togetherId:row.togetherId},
+        			   {
+        			   	togetherId:row.togetherId,
+        			   	server:"56846a8a2fee49d14901d39cc48b8b2a"
+        			   },
         			   function(data){
         			      if(data.status=="success"){
         			          $('#info').show();

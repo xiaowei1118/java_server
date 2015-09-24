@@ -427,7 +427,7 @@
 		where food_id =
 		#{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
 	</update>
-	<select id="getAllFoods" resultMap="BaseResultMap">
+	<select id="getAllFoods" resultMap="BaseResultMap" useCache="false">
 		select
 		<include refid="Base_Column_List" />
 		from food

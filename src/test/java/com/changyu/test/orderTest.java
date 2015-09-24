@@ -4,9 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +22,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Campus;
 import com.changyu.foryou.model.Order;
-import com.changyu.foryou.model.Preferential;
 import com.changyu.foryou.model.SmallOrder;
 import com.changyu.foryou.model.TogetherOrder;
 import com.changyu.foryou.payment.ChargeInterface;
@@ -35,7 +32,7 @@ import com.changyu.foryou.service.PushService;
 import com.changyu.foryou.service.UserService;
 import com.changyu.foryou.tools.Constants;
 import com.pingplusplus.model.Charge;
-import com.pingplusplus.model.Event;
+import com.pingplusplus.model.Refund;
 import com.pingplusplus.model.Webhooks;
 
 
@@ -351,20 +348,29 @@ public class orderTest {
 		  }
 		
 		Charge charge = (Charge)Webhooks.parseEvnet(stringBuffer.toString()); 
-		System.out.println(charge.toString());
-		
 		Map<String,Object> paramMap=new HashMap<String,Object>();
+
+		String chargeId=charge.getId();
 		paramMap.put("togetherId",charge.getOrderNo());
 		paramMap.put("amount",charge.getAmount()*1.0/100);
-		
+		paramMap.put("chargeId",chargeId);
 		System.out.println(paramMap);
-		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 	
-		System.out.println("更新数据"+flag);
+		int flag=orderService.updateOrderStatusAndAmount(paramMap);         //支付完成后更新订单状态以及更新价格 ,以及chargeId
+		
+		List<Order> orders = orderService.getAllOrdersByTogetherId(charge.getOrderNo()); // 获取该笔订单的消息	
+		LOGGER.info(JSON.toJSONString(orders));
+		for(Order order:orders){
+			paramMap.put("foodId", order.getFoodId());
+			paramMap.put("orderCount", order.getOrderCount());
+			paramMap.put("campusId",order.getCampusId());
+			foodService.changeFoodCount(paramMap); // 增加销量，减少存货
+	    }
 		
 		final Integer campusId=orderService.getCampusIdByTogetherId(paramMap);
 		// 开启线程去访问极光推送
 
-		new Thread(new Runnable(){
+		new Thread(new Runnable() {
+
 			@Override public void run() { //向超级管理员推送，让其分发订单
 
 				//推送 
@@ -394,5 +400,54 @@ public class orderTest {
 	     Float price=orderService.getPriceDiscounted(orderIds,1,"18896554880");
 	    //List<Preferential> prefers = orderService.getPreferential(paramMap);
 	    System.out.println(price);
+	}
+	
+	//测试
+	@Test
+	public void testRefundOrder(){
+		String path=this.getClass().getResource("/").getPath();
+		System.out.println(path);
+		StringBuffer stringBuffer=new StringBuffer();
+		 try {
+			   File file = new File(path + "com/changyu/test/refund.json");
+			   BufferedReader br  = new BufferedReader(new FileReader(file));
+			   String temp = br.readLine();
+			   while (temp != null) {   
+				stringBuffer.append(temp);
+			    temp = br.readLine();    
+			  }
+			   br.close();
+		 }
+		  catch(Exception e){
+		   e.printStackTrace();
+		  }
+		 
+		Refund refund = (Refund)Webhooks.parseEvnet(stringBuffer.toString()); 
+		LOGGER.info(JSON.toJSONString(refund));
+		
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+
+		//String chargeId=charge.getId();   //获取chargeId
+		String togetherId=refund.getOrderNo();
+		paramMap.put("togetherId",togetherId);
+		final double price=refund.getAmount()*1.0/100;
+		/*String channel=refund.getChannel();
+		final String channelString;
+		if(channel.equals("wx")){
+			channelString="微信";
+		}else{
+			channelString="支付宝";
+		}*/
+		Integer flag=orderService.updateOrderStatusRefundSuccess(paramMap);
+		final String phone=orderService.getUserPhone(paramMap);        //根据订单号获取用户手机号
+		new Thread(new Runnable() {               //开启极光推送，通知用户退款成功
+
+			@Override public void run() { //向超级管理员推送，让其分发订单
+
+				//推送 
+				pushService.sendPush(phone,"您的一笔金额为"+price+"的订单已经退回到您的账户中，请及时查看。For优。", 5);
+
+			} 
+		}).start();
 	}
 }

@@ -108,7 +108,7 @@
     </if>
   </select>
   
-  <select id="getPcAllNews" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <select id="getPcAllNews" parameterType="java.util.Map" resultMap="BaseResultMap" useCache="false">
     select 
       <include refid="Base_Column_List" />
     from news where campus_id=#{campusId,jdbcType=INTEGER}

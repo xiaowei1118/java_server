@@ -114,7 +114,7 @@
     where category_id = #{categoryId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
   </update>
   
-   <select id="getFirstCategory" resultMap="BaseResultMap" >
+   <select id="getFirstCategory" resultMap="BaseResultMap" useCache="false">
     select 
     <include refid="Base_Column_List" />
     from food_category
@@ -134,7 +134,7 @@
     order by category_id ASC
   </select>
   
-  <select id="getAllFoodFirstCategories" resultMap="BaseResultMap">
+  <select id="getAllFoodFirstCategories" resultMap="BaseResultMap" useCache="false">
     select 
     <include refid="Base_Column_List" />
     from food_category
@@ -158,7 +158,7 @@
     order by serial
   </select>
   
-  <select id="getAllFoodCategories" resultMap="BaseResultMap">
+  <select id="getAllFoodCategories" resultMap="BaseResultMap" useCache="false">
    select 
     <include refid="Base_Column_List" />
     from food_category
@@ -174,7 +174,7 @@
     
   </select>
   
-  <select id="getAllCategoryCount" resultType="Integer">
+  <select id="getAllCategoryCount" resultType="Integer" useCache="false">
   select COUNT(*) from food_category where tag!=0
   </select>
   

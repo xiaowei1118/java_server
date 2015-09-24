@@ -106,7 +106,7 @@
   </update>
   
   <!-- 获取热搜标签 -->
-  <select id="getHotSearchs" resultMap="BaseResultMap">
+  <select id="getHotSearchs" resultMap="BaseResultMap" useCache="false">
      select
        search_tag,hot_id,display_name,is_display
      from hot_search

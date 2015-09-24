@@ -182,7 +182,7 @@
 		where campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
-	<select id="getCampusIdByAdmin" resultMap="CampusAdminMap">
+	<select id="getCampusIdByAdmin" resultMap="CampusAdminMap" useCache="false">
 		select
 		campus_admin,password,type,campus_admin.campus_id,campus.campus_name
 		as campus_name,last_login_date
@@ -192,7 +192,7 @@
 		campus_admin.campus_id=campus.campus_id
 	</select>
 
-	<select id="getAllCampusAdmin" resultMap="SmallCampusAdminMap">
+	<select id="getAllCampusAdmin" resultMap="SmallCampusAdminMap" useCache="false">
 		SELECT
 		campus_admin,
 		campus_admin.campus_id,
@@ -251,7 +251,7 @@
 	</insert>
 	
 	<!-- 获取全部城市 -->
-	<select id="selectAllCity" resultMap="CityMap">
+	<select id="selectAllCity" resultMap="CityMap" useCache="false">
 		select * from city
 	</select>
 	
@@ -278,7 +278,7 @@
 		campus_id=#{campusId,jdbcType=INTEGER}
 	</update>
 	
-	<select id="getOldPassword" resultType="String">
+	<select id="getOldPassword" resultType="String" useCache="false">
 	   select
 	      password
 	   from
@@ -294,7 +294,7 @@
 		where campus_admin=#{campusAdmin,jdbcType=VARCHAR}
 	</update>
 	
-	<select id="getCampusName" parameterType="Integer" resultType="String">
+	<select id="getCampusName" parameterType="Integer" resultType="String" useCache="false">
 	   select campus_name
 	   from campus
 	   where 

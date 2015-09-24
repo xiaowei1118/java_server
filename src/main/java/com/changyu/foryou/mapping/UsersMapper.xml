@@ -199,7 +199,7 @@
 		where phone = #{phone,jdbcType=VARCHAR}
 	</update>
 
-	<select id="getAllUser" resultMap="BaseResultMap">
+	<select id="getAllUser" resultMap="BaseResultMap" useCache="false">
 		select
 		users.phone, type, nickname, img_url,
 		last_login_date,create_time,address as default_address,token
@@ -228,7 +228,7 @@
 
 	</select>
 
-	<select id="getUserCount" resultType="Integer">
+	<select id="getUserCount" resultType="Integer" useCache="false">
 		select
 		count("*")
 		from

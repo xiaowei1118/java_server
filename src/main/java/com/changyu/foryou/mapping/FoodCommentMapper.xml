@@ -100,29 +100,46 @@
 		WHERE
 		food_id=#{foodId,jdbcType=BIGINT}
 		AND tag=1
-		and campus_id=#{campusId,jdbcType=INTEGER}
+		and
+		campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
 	<select id="getCommentsById" resultMap="BaseResultMap">
 		SELECT
-		food_comment.food_id, food_comment.campus_id,comment, date,
-		grade, food_comment.phone,nickname,users.img_url,is_hidden,order_count
-		FROM food_comment,users,orders
+		food_comment.food_id,
+		food_comment.campus_id,
+		COMMENT,
+		date,
+		grade,
+		food_comment.phone,
+		nickname,
+		users.img_url,
+		is_hidden,
+		(
+		CASE WHEN order_count is null
+		THEN 1
+		ELSE order_count
+		END
+		)order_count
+		FROM
+		food_comment
+		LEFT JOIN users on food_comment.phone = users.phone
+		left JOIN orders ON food_comment.order_id = orders.order_id
 		WHERE
-		food_comment.phone = users.phone
-		and food_comment.order_id =orders.order_id AND
-		food_comment.food_id=#{foodId,jdbcType=BIGINT} and
-		food_comment.campus_id=#{campusId,jdbcType=INTEGER}
-		AND food_comment.comment is not null
-		AND food_comment.comment !=""
+		food_comment.food_id = #{foodId,jdbcType=BIGINT}
 		AND
-		food_comment.tag=1
+		food_comment.campus_id = #{campusId,jdbcType=INTEGER}
+		AND food_comment.
+		COMMENT IS NOT NULL
+		AND food_comment. COMMENT != ""
+		AND food_comment.tag
+		= 1
 		<if test="limit!=null and offset !=null">
 			LIMIT #{limit} OFFSET #{offset,jdbcType=INTEGER}
 		</if>
 	</select>
 
-	<select id="getAllComments" resultMap="BaseResultMap">
+	<select id="getAllComments" resultMap="BaseResultMap" useCache="false">
 		SELECT
 		food.food_id,food.campus_id,
 		name,
@@ -140,7 +157,8 @@
 		food.campus_id=food_comment.campus_id
 		<where>
 			comment is not null and comment !=""
-			and food.campus_id=#{campusId,jdbcType=INTEGER}
+			and
+			food.campus_id=#{campusId,jdbcType=INTEGER}
 			<if test="search != null and search !='' ">
 				and food.food_id =
 				#{search,jdbcType=INTEGER}
@@ -158,7 +176,7 @@
 		</if>
 	</select>
 
-	<select id="getFoodCommentCount" resultType="Integer">
+	<select id="getFoodCommentCount" resultType="Integer" useCache="false">
 		SELECT
 		count(*)
 		FROM
@@ -180,30 +198,35 @@
 		food_comment
 		<where>
 			food_id=#{foodId,jdbcType=BIGINT}
-			and date_format(date,'%Y-%m-%d')=#{date,jdbcType=DATE}
-			and grade=#{grade} and campus_id=#{campusId,jdbcType=INTEGER}
+			and
+			date_format(date,'%Y-%m-%d')=#{date,jdbcType=DATE}
+			and grade=#{grade}
+			and campus_id=#{campusId,jdbcType=INTEGER}
 		</where>
 	</delete>
 
 	<select id="getAvageGrade" resultType="Float">
 		SELECT
 		AVG(grade)
-		from food_comment
+		from
+		food_comment
 		where
-		food_id=#{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+		food_id=#{foodId,jdbcType=BIGINT} and
+		campus_id=#{campusId,jdbcType=INTEGER}
 	</select>
 
 	<select id="calCommentCount" resultType="Integer">
 		SELECT
-		count(*) AS commentCount
+		count(*) AS
+		commentCount
 		FROM
 		food_comment
 		WHERE
-		food_id =#{foodId,jdbcType=BIGINT}	
+		food_id =#{foodId,jdbcType=BIGINT}
 		AND campus_id =#{campusId,jdbcType=INTEGER}
 		AND food_comment.tag = 1
 		AND COMMENT IS NOT NULL
-		AND COMMENT != ''		
+		AND COMMENT != ''
 	</select>
 
 </mapper>

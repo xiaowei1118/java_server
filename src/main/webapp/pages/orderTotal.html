@@ -88,7 +88,8 @@
 		//alert(campusId);
 		$.post("../order/getOrdersByDate.do", {
 			date : datetime,
-			campusId : campusId
+			campusId : campusId,
+			server:"56846a8a2fee49d14901d39cc48b8b2a"
 		}, function(text) {
 			var data = eval('(' + text + ')');
 			$("h2[name='counts']").text("订单列表(" + data.counts + ")");

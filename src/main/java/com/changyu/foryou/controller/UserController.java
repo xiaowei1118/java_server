@@ -408,7 +408,7 @@ public class UserController {
 		String phone=request.getParameter("phoneId");
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		//image=image.replaceAll(" ", "+");
+		image=image.replaceAll(" ", "+");
 
 		String realPath = request.getSession().getServletContext().getRealPath("/"); 		
 		realPath=realPath.replace("foryou", "ForyouImage");

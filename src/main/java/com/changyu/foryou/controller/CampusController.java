@@ -70,7 +70,7 @@ public class CampusController {
 		    List<CityWithCampus> campus=campusService.getCampusWithCity(paramMap);
 		    
 	    	resultMap.put(Constants.STATUS, Constants.SUCCESS);
-	    	resultMap.put(Constants.MESSAGE, "获取校区成功！");
+	    	resultMap.put(Constants.MESSAGE, "获取校区成功");
 	    	resultMap.put("campus", campus);
 		   
 		} catch (Exception e) {

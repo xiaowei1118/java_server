@@ -72,7 +72,7 @@
         </div>
         <form class="form-horizontal" method="post"
         enctype="multipart/form-data"
-        action="../news/uploadNewsImage.do">
+        action="../news/uploadNewsImage.do?server=56846a8a2fee49d14901d39cc48b8b2a">
         <div class="modal-body">
           <div class="control-group none">
             <label class="control-label" for="campus-id">校区Id</label>
@@ -128,7 +128,7 @@
   var $title = $("#titleId");
 
   $table.bootstrapTable({
-    url : "../news/getPCAllNews.do?campusId="+getCookie("campusId")
+    url : "../news/getPCAllNews.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId="+getCookie("campusId")
   });
     //隐藏的时候清除数据
     $("#myModal").on("hidden.bs.modal", function() {  
@@ -162,7 +162,8 @@
           //做删除的访问请求
           $.post("../../foryou/news/deleteNews.do", {
             campusId : getCookie("campusId"),
-            newsId : newsIdString
+            newsId : newsIdString,
+            server:"56846a8a2fee49d14901d39cc48b8b2a"
           }, function(text) {
             var json = eval('(' + text + ')');
             if (json.status == "success") {

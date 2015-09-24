@@ -248,7 +248,8 @@ $("#plus_form").validate({
 		$.post("../campus/addCampusAdmin.do",{
 			campusName : campusName,
 			campusAdminName : campusAdminName,
-			password : campusAdminPassword
+			password : campusAdminPassword,
+			server:"56846a8a2fee49d14901d39cc48b8b2a"
 		},function(data){
 			alert(data.message);
 			if(data.status='success'){
@@ -287,7 +288,8 @@ $("#plus_form").validate({
 		var campusAdmin = $("#delete_campus_admin").val();
 		$.post("../campus/deleteCampusAdmin.do",{
 			campusId : campusId,
-			campusAdminName : campusAdmin 
+			campusAdminName : campusAdmin,
+			server:"56846a8a2fee49d14901d39cc48b8b2a"
 		},function(data){
 			alert(data.message);
 			if(data.status=='success'){
@@ -301,7 +303,7 @@ $("#plus_form").validate({
 		var flag;		//萌萌哒flag
 		var $table = $("#table");
 		$("#table").bootstrapTable({
-			url : '../campus/getAllCampusAdmin.do'
+			url : '../campus/getAllCampusAdmin.do?server=56846a8a2fee49d14901d39cc48b8b2a'
 		});
 		
 		//下面3个button是表格的toobar的东西
@@ -314,7 +316,7 @@ $("#plus_form").validate({
 				//初始化校区列表
 				//清空校区列表
 				$("#plus_campus_name").next().empty();
-				$.getJSON("../campus/getAllCampus.do",function(data){
+				$.getJSON("../campus/getAllCampus.do?server=56846a8a2fee49d14901d39cc48b8b2a",function(data){
 					for(var i=0; i<data.length; i++){
 						$("#plus_campus_name").next().append('<li style="text-align:center;" data-campusId="'+data[i].campusId+'">'+data[i].campusName+'</li>');
 					}

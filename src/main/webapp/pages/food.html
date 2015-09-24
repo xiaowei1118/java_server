@@ -114,14 +114,8 @@
 					<h3 class="modal-title" id="myModalLabel">添加商品</h3>
 				</div>
 				<form id="dataCommit" class="form-horizontal" method="post"
-					enctype="multipart/form-data" action="../service/updateFoods.do">
+					enctype="multipart/form-data" action="../service/updateFoods.do?server=56846a8a2fee49d14901d39cc48b8b2a">
 					<div class="modal-body">
-					     <div class="form-group" style="display:none">
-							<label class="control-label col-md-4" for="campusId2">校区Id</label>
-							<div class="col-md-8">
-								<input type="text" id="campusId2" name="server" readonly="readonly" value="56846a8a2fee49d14901d39cc48b8b2a">
-							</div>
-						</div>
 						<div class="form-group" style="display:none">
 							<label class="control-label col-md-4" for="campusId2">校区Id</label>
 							<div class="col-md-8">
@@ -262,8 +256,15 @@
 			</div>
 			<form class="form-horizontal" method="post"
 			enctype="multipart/form-data"
-			action="../service/uploadHomeImage.do">
+			action="../service/uploadHomeImage.do?server=56846a8a2fee49d14901d39cc48b8b2a">
 				<div class="modal-body">
+					<div class="control-group none">
+						<label class="control-label" for="server"></label>
+						<div class="controls">
+							<input type="text" id="server"
+							name="server" readonly>
+						</div>
+					</div>
 				    <div class="control-group none">
 						<label class="control-label" for="campus-id">校区id</label>
 						<div class="controls">
@@ -312,13 +313,20 @@
 			</div>
 			<form id="detailImg" class="form-horizontal" method="post"
 			enctype="multipart/form-data"
-			action="../service/uploadDetailImage.do">
+			action="../service/uploadDetailImage.do?server=56846a8a2fee49d14901d39cc48b8b2a">
 				<div class="modal-body">
 					 <div class="control-group none">
 						<label class="control-label" for="campus_id_detail">校区id</label>
 						<div class="controls">
 							<input type="text" id="campus_id_detail"
-							name="campusId" readonly>
+							name="campusId" value="56846a8a2fee49d14901d39cc48b8b2a" readonly>
+						</div>
+					</div>
+					 <div class="control-group none">
+						<label class="control-label" for="server"></label>
+						<div class="controls">
+							<input type="text" id="server"
+							name="server" readonly>
 						</div>
 					</div>
 					<div class="control-group none">
@@ -588,7 +596,7 @@ if(adminType==1){
 							//这个兼容IE与firefox
 	//初始化表格数据
 	$table.bootstrapTable({
-		url : "../service/getAllFoods.do?campusId="+getCookie("campusId")
+		url : "../service/getAllFoods.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId="+getCookie("campusId")
 	});
 
 	$(function() {
@@ -711,7 +719,7 @@ if(adminType==1){
 			function() {
 				  
 				$.get(
-					"../service/getAllFoodCategories4Client.do?campusId="+campusId,
+					"../service/getAllFoodCategories4Client.do?server=56846a8a2fee49d14901d39cc48b8b2a&campusId="+campusId,
 					function(text) {
 						var json = eval('(' + text
 							+ ')');
@@ -753,7 +761,8 @@ if(adminType==1){
 					//做删除的访问请求
 					$.post("../../foryou/service/deleteFood.do", {
 						foodId : foodIdString,
-						campusId : getCookie("campusId")
+						campusId : getCookie("campusId"),
+						server:"56846a8a2fee49d14901d39cc48b8b2a"
 					}, function(text) {
 						var json = eval('(' + text + ')');
 						if (json.status == "success") {
@@ -1033,7 +1042,7 @@ window.detailImageOperateEvents={
         $("#food_id_detail").val(row.foodId);
 		$.post(
 			'../service/getDetailImg.do',
-			{foodId:row.foodId,campusId:getCookie("campusId")},
+			{foodId:row.foodId,campusId:getCookie("campusId"),server:"56846a8a2fee49d14901d39cc48b8b2a"},
 			function(data){
 			   var json=data.imgs;
 			   console.log(json.length);
@@ -1078,7 +1087,8 @@ window.homeImageEvents = {
 	'click .cancelRecommendOperate':function(e, value, row, index){
 		$.post("../service/cancelRecommend.do",{
 			foodId : row.foodId,
-			campusId:getCookie("campusId")
+			campusId:getCookie("campusId"),
+			server:"56846a8a2fee49d14901d39cc48b8b2a"
 		},function(data){
 			setSuccess(data.message);
 			$table.bootstrapTable('refresh');
@@ -1101,7 +1111,8 @@ $(function(){
 		var addCount = $("#count_add_count").val();
 		$.post("../service/addFoodCount.do",{
 			campusId : campusId,
-			addCount : addCount
+			addCount : addCount,
+			server:"56846a8a2fee49d14901d39cc48b8b2a"
 		},function(data){
 			//alert(data);
 			$("#addFoodCountModal").modal('hide');
