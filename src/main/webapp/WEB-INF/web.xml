@@ -9,16 +9,7 @@
 		<param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>
 	</context-param>
 
-	<filter>
-		<filter-name>signFilter</filter-name>
-		<filter-class>com.changyu.foryou.filter.SignFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>signFilter</filter-name>
-		<url-pattern>*.do</url-pattern>
-	</filter-mapping>
-	
-	<filter>
+   <filter>
 		<description>字符集过滤器</description>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -37,6 +28,17 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<filter>
+		<filter-name>signFilter</filter-name>
+		<filter-class>com.changyu.foryou.filter.SignFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>signFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	
 
 
 	<!-- xss攻击过滤 -->
@@ -48,9 +50,6 @@
 		<filter-name>xssFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
-
-
-
 
 	<listener>
 		<description>spring监听器</description>
@@ -106,11 +105,11 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<resource-ref>
+<!-- 	<resource-ref>
 		<res-ref-name>jdbc/foryouDB</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>
-	</resource-ref>
+	</resource-ref> -->
 
 	<welcome-file-list>
 		<welcome-file>/login.html</welcome-file>

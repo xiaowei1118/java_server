@@ -241,7 +241,7 @@
 			    #{foodCount,jdbcType=INTEGER},
 			</if>
 			<if test="message != null">
-			    message=#{message,jdbcType=VARCHAR},
+			    #{message,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>

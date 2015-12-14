@@ -378,7 +378,7 @@ public class UserController {
 			Calendar calendar=Calendar.getInstance();
 			Date date=calendar.getTime();   //设置反馈时的日期
 			feedback.setDate(date);
-
+             System.out.println(suggestion);
 			if(userService.addFeedbackSuggestion(feedback)!=-1){
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "添加意见成功");

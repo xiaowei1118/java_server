@@ -541,9 +541,9 @@ public class OrderController {
 	 * @param phoneId
 	 * @param orderId
 	 * @param message
-	 *            留言
+	 * 留言
 	 * @param reserveTime
-	 *            预约送达时间
+	 * 预约送达时间
 	 * @return
 	 */
 	@RequestMapping("/orderToBuy")

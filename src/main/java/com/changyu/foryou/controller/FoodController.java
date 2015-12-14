@@ -877,6 +877,7 @@ public class FoodController {
 			Float primeCost = null;
 
 			String message = request.getParameter("message");
+			System.out.println(message);
 			String temp1 = request.getParameter("primeCost"); // 获取成本价
 			String temp2 = request.getParameter("foodCount"); // 获取食品数量
 			Integer campusId = Integer
@@ -889,8 +890,6 @@ public class FoodController {
 				foodCount = Integer.valueOf(request.getParameter("foodCount"));
 			}
 
-			// Short
-			// isDefault=Short.valueOf(request.getParameter("default_special"));
 			String realPath = request.getSession().getServletContext()
 					.getRealPath("/");
 			realPath = realPath.replace("foryou", "ForyouImage");
@@ -928,16 +927,7 @@ public class FoodController {
 			if (orignFood == null) {
 				// 不存在即添加
 				flag = foodService.insertFoodSelective(food);
-				// 只有在增加食品的时候添加默认口味才有效
-				/*
-				 * if (flag!=-1&&flag!=0) { if(isDefault==1&&foodCount!=null){
-				 * //添加默认口味 FoodSpecial foodSpecial=new
-				 * FoodSpecial(campusId,foodId, "默认口味", foodCount);
-				 * foodSpecial.setSpecialId(1);
-				 * flag=foodService.addFoodSpecial(foodSpecial);
-				 * if(flag!=-1&&flag!=0){ return "redirect:/pages/food.html"; }
-				 * } }
-				 */
+			
 			} else {
 				// 存在即更新
 				flag = foodService.updateFoodByPrimaryKeySelective(food);
@@ -954,18 +944,6 @@ public class FoodController {
 						file.delete();// 删除
 					}
 				}
-
-				// 删除原食品辅助图片
-				/*
-				 * if(food.getInfo()!=null&&orignFood.getInfo()!=null){ String[]
-				 * temp=orignFood.getInfo().split("/"); String
-				 * imageName=temp[(temp.length-1)];
-				 * 
-				 * String name2=realPath+imageName;
-				 * 
-				 * File file=new File(name2); if(file.isFile()){
-				 * file.delete();//删除 } }
-				 */
 
 				if (flag != -1 && flag != 0) {
 					return "redirect:/pages/food.html";
