@@ -13,6 +13,6 @@
 ### 运行
 clone下来的代码请在eclipse下运行，需要tomcat，mysql支持。
 
-将foryou.sql导入你自己的数据库中
-修改数据库连接配置
-tomcat运行即可
+1. 将foryou.sql导入你自己的数据库中
+2. 修改数据库连接配置
+3. tomcat运行即可
