@@ -34,48 +34,39 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.selectAllCampus(paramMap);
 	}
 
-	@Override
 	public List<CityWithCampus> getCampusWithCity(Map<String, Object> paramMap) {
 		return campusMapper.getCampusWithCity(paramMap);
 	}
 
-	@Override
 	public Integer getIdByName(Map<String, Object> paramMap) {
 		return campusMapper.getIdByName(paramMap);
 	}
 
-	@Override
 	public Integer closeCampus(Map<String, Object> requestMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.closeCampus(requestMap);
 	}
 
-	@Override
 	public Campus getCampusById(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.selectCampusById(paramMap);
 	}
 
-	@Override
 	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.getCampusIdByAdmin(paramMap);
 	}
 
-	@Override
 	public List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.getAllCampusAdmin(paramMap);
 	}
-
-	@Override
 
 	public Integer updateCampusAdmin(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return campusMapper.updateCampusAdmin(paramMap);
 	}
 
-	@Override
 	public Map<String, Object> addCampus(Map<String, Object> paramMap) {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		// 只有在添加完校区且添加了8个默认分类之后才算添加校区成功
@@ -155,47 +146,38 @@ public class CampusServiceImpl implements CampusService {
 		return campusMapper.getCampusByOrder(paramMap);
 	}
 
-	@Override
 	public Integer deleteCampusAdmin(Map<String, Object> paramMap) {
 		return campusMapper.deleteCampusAdmin(paramMap);
 	}
 
-	@Override
 	public Integer addCampusAdmin(Map<String, Object> paramMap) {
 		return campusMapper.insertCampusAdmin(paramMap);
 	}
 
-	@Override
 	public List<City> getAllCity() {
 		return campusMapper.selectAllCity();
 	}
 
-	@Override
 	public Integer addCity(Map<String, Object> paramMap) {
 		return campusMapper.insertCity(paramMap);
 	}
 
-	@Override
 	public City getCityByName(String cityName) {
 		return campusMapper.getCityByName(cityName);
 	}
 
-	@Override
 	public Integer updateCampus(Map<String, Object> paramMap) {
 		return campusMapper.updateCampus(paramMap);
 	}
 
-	@Override
 	public String getOldPassword(Map<String, Object> paramMap) {
 		return campusMapper.getOldPassword(paramMap);
 	}
 
-	@Override
 	public int updateCampusAdminPassword(Map<String, Object> paramMap) {
 		return campusMapper.updateCampusAdminPassword(paramMap);
 	}
 
-	@Override
 	public String getCampusName(Integer campusId) {
 		return campusMapper.getCampusName(campusId);
 	}

@@ -41,7 +41,6 @@ public class NewsServiceImpl implements NewsService {
        return newsMapper.insert(news);		
 	}
 
-	@Override
 	public int deleteById(String id) {
 		return newsMapper.deleteByPrimaryKey(Long.valueOf(id));
 	}

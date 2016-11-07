@@ -17,7 +17,6 @@ public class KeyServiceImpl implements KeyService{
 		this.keyMapper = keyMapper;
 	}
     
-	@Override
 	public String SelectKey(Map<String, Object> paramMap) {
 		return keyMapper.SelectKey(paramMap);
 	}

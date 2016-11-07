@@ -14,24 +14,20 @@ import com.changyu.foryou.service.HotSearchService;
 
 @Service("/hotSearchService")
 public class HotSearchServiceImpl implements HotSearchService {
-    @Resource private HotSearchMapper hotSearchMapper;
+	@Resource private HotSearchMapper hotSearchMapper;
     
-	@Override
 	public List<HotSearch> getHotSearchs(Map<String,Object> paramMap) {
 		return hotSearchMapper.getHotSearchs(paramMap);
 	}
 
-	@Override
 	public int setNot2Display(Map<String, Object> paramMap) {
 		return hotSearchMapper.setNot2Display(paramMap);
 	}
 
-	@Override
 	public int set2Display(Map<String, Object> paramMap) {
 		return hotSearchMapper.set2Dispaly(paramMap);
 	}
 
-	@Override
 	public int deleteHotSearchs(Map<String, Object> paramMap) {
 		String[] hotIdsStrings=(String[])paramMap.get("hotIds");
 		
@@ -43,12 +39,10 @@ public class HotSearchServiceImpl implements HotSearchService {
 		return flag;
 	}
 
-	@Override
 	public int insert(HotSearch hotSearch) {
 		return hotSearchMapper.insertSelective(hotSearch);
 	}
 
-	@Override
 	public int update(HotSearch hotSearch) {
 		return hotSearchMapper.updateByPrimaryKeySelective(hotSearch);
 	}

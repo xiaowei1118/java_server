@@ -112,17 +112,14 @@ public class UserServiceImpl implements UserService {
 		return usersMapper.getUserPhone(togetherId);
 	}
 
-	@Override
 	public List<String> getAllSuperAdminPhone(Map<String, Object> paramterMap) {
 		return usersMapper.getAllSuperAdminPhone(paramterMap);
 	}
 
-	@Override
 	public String getUserTokenByPhone(Map<String, Object> paramterMap) {
 		return usersMapper.getUserTokenByPhone(paramterMap);
 	}
 
-	@Override
 	public Integer getCountsByDevice(Map<String, Object> paramMap) {
 		return usersMapper.getCountsByDevice(paramMap);
 	}
@@ -132,12 +129,10 @@ public class UserServiceImpl implements UserService {
 		return usersMapper.selectByPhoneAndPassword(paramMap);
 	}
 
-	@Override
 	public Users checkLogin(String phone) {
 		return usersMapper.checkLogin(phone);
 	}
 
-	@Override
 	public List<String> getUserByType(Map<String, Object> paramMap) {
 		return usersMapper.getUserByType(paramMap);
 	}

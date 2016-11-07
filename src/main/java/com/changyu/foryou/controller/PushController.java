@@ -63,7 +63,7 @@ public class PushController {
 				}
 			}else{
 				//payload = JpushInterface.buildPushObject_android_and_ios_tag_alert(push_data,String.valueOf((Integer.valueOf(alert)-2)));
-				Map<String,Object> paramMap=new HashMap<>();
+				Map<String,Object> paramMap=new HashMap<String,Object>();
 				Integer type=Integer.valueOf(alert)-2;
 				paramMap.put("type",type);
 				paramMap.put("campusId", campusId);

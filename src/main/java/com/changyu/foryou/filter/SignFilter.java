@@ -33,12 +33,10 @@ public class SignFilter implements Filter {
 
 	Logger logger = Logger.getLogger(SignFilter.class);
 
-	@Override
 	public void destroy() {
 
 	}
 
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		@SuppressWarnings("unchecked")
@@ -92,7 +90,7 @@ public class SignFilter implements Filter {
 			out.print(JSON.toJSONString(resultMap));
 			return;
 		} else {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("secrect", secret);
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			WebApplicationContext wac = WebApplicationContextUtils
@@ -118,8 +116,8 @@ public class SignFilter implements Filter {
 
 	}
 
-	@Override
 	public void init(FilterConfig arg0) throws ServletException {
+	
 	}
 
 }

@@ -178,7 +178,7 @@ public class NewsController {
 
 	@RequestMapping(value="/deleteNews",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> deleteNewsById(String newsId){
-		Map<String, Object> map=new HashMap<>(); 
+		Map<String, Object> map=new HashMap<String,Object>(); 
 		String ids[]=newsId.split(",");
 		try {
 			int flag=0;

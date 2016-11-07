@@ -246,7 +246,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 
-	@Override
 	public Float getTotalPriceByTogetherId(String togetherId) {
 		// TODO Auto-generated method stub
 		return orderMapper.selectTotalPriceByTogetherId(togetherId);
@@ -309,27 +308,22 @@ public class OrderServiceImpl implements OrderService {
 		return discountPrice-discount;
 	}
 
-	@Override
 	public Integer cancelOrderWithRefund(Map<String, Object> paramMap) {
 		return orderMapper.cancelOrderWithRefund(paramMap);
 	}
 
-	@Override
 	public List<SuperAdminOrder> getPCOrders(Map<String, Object> paramMap) {
 		return orderMapper.getPCOrdersNew(paramMap);
 	}
 
-	@Override
 	public int updateCancelRefund(Map<String, Object> paramMap) {
 		return orderMapper.updateCancelRefund(paramMap);
 	}
 
-	@Override
 	public String getChargeId(Map<String, Object> paramMap) {
 		return orderMapper.getChargeId(paramMap);       //获取支付的chargeId
 	}
 
-	@Override
 	public Integer updateRefundStatus(Map<String, Object> paramMap) {
 		return orderMapper.updateRefundStatus(paramMap);
 	}
@@ -363,17 +357,14 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.getPCInvalidOrders(paramMap);
 	}
 
-	@Override
 	public int deleteOrderTrue(Map<String, Object> paramMap) {
 		return orderMapper.deleteOrderTrue(paramMap);
 	}
 
-	@Override
 	public void deleteStatus7Order(String phone) {
          orderMapper.deleteStatus7Order(phone);		
 	}
 
-	@Override
 	public List<Order> getAllOrdersByTogetherId(String orderNo) {
 		return orderMapper.getAllOrderByTogetherId(orderNo);
 	}

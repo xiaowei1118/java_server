@@ -97,6 +97,7 @@ public class PayController {
 		request.setCharacterEncoding("UTF8");
 
 		//获取头部所有信息
+		@SuppressWarnings("rawtypes")
 		Enumeration headerNames = request.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
 			String key = (String) headerNames.nextElement();
@@ -144,7 +145,7 @@ public class PayController {
 		final String phone=orderService.getUserPhone(paramMap);        //根据订单号获取用户手机号
 		new Thread(new Runnable() {               //开启极光推送，通知用户退款成功
 
-			@Override public void run() { //向超级管理员推送，让其分发订单
+			 public void run() { //向超级管理员推送，让其分发订单
 
 				//推送 
 				pushService.sendPush(phone,"您的一笔金额为"+price+"的订单已经退回到您的账户中，请及时查看。For优。", 5);
@@ -183,7 +184,7 @@ public class PayController {
 
 		new Thread(new Runnable() {
 
-			@Override public void run() { //向超级管理员推送，让其分发订单
+			 public void run() { //向超级管理员推送，让其分发订单
 
 				//推送 
 				//pushService.sendPushByTag("0","一笔新的订单已经到达，请前往选单中查看，并尽早分派配送员进行配送。For优。", 1);

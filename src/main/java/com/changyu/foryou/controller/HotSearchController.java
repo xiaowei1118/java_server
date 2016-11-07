@@ -44,7 +44,7 @@ public class HotSearchController {
     */
    @RequestMapping("/setNot2Display")
    public @ResponseBody Map<String,Object> setNot2Display(@RequestParam Integer hotId){
-	   Map<String,Object> resultMap=new HashMap<>();
+	   Map<String,Object> resultMap=new HashMap<String,Object>();
 	  
 	   try {
 		   Map<String,Object> paramMap=new HashMap<String,Object>();
@@ -74,7 +74,7 @@ public class HotSearchController {
     */
    @RequestMapping("/set2Display")
    public @ResponseBody Map<String,Object> set2Display(@RequestParam Integer hotId){
-	   Map<String,Object> resultMap=new HashMap<>();
+	   Map<String,Object> resultMap=new HashMap<String,Object>();
 	  try {
 		  Map<String,Object> paramMap=new HashMap<String,Object>();
 		   //paramMap.put("campusId",campusId);
@@ -103,10 +103,10 @@ public class HotSearchController {
     */
    @RequestMapping("/deleteHotSearchs")
    public @ResponseBody Map<String,Object> deleteHotSearchs(@RequestParam String hotIds){
-	   Map<String,Object> resultMap=new HashMap<>();
+	   Map<String,Object> resultMap=new HashMap<String,Object>();
 	   
 	   try {
-		  Map<String,Object> paramMap=new HashMap<>();
+		  Map<String,Object> paramMap=new HashMap<String,Object>();
 		  
 		  String[] hotIdsStrings=hotIds.split(",");
 		  paramMap.put("hotIds",hotIdsStrings);

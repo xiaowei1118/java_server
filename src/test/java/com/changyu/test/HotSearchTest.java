@@ -30,7 +30,7 @@ public class HotSearchTest {
 	
 	 @Test
 	 public void setNot2Display(){
-		   Map<String,Object> resultMap=new HashMap<>();
+		   Map<String,Object> resultMap=new HashMap<String,Object>();
 		  
 		   try {
 			   Map<String,Object> paramMap=new HashMap<String,Object>();

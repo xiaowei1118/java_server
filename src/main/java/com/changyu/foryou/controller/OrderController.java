@@ -696,7 +696,7 @@ public class OrderController {
 
 				new Thread(new Runnable() {
 
-					@Override public void run() { //推送
+					 public void run() { //推送
 						String userPhone=userService.getUserPhone(togetherId);
 						System.out.println(userPhone);
 						pushService.sendPush(userPhone,
@@ -741,7 +741,7 @@ public class OrderController {
 
 				new Thread(new Runnable() {
 
-					@Override public void run() { //推送
+				   public void run() { //推送
 						pushService.sendPush(userPhone,
 								"您有一笔订单已完成交易,赶快去评价吧！For优欢迎您下次惠顾", 1);
 
@@ -1006,7 +1006,7 @@ public class OrderController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
-			Map<String, Object> parameterMap = new HashMap<>();
+			Map<String, Object> parameterMap = new HashMap<String,Object>();
 			parameterMap.put("togetherId", togetherId);
 
 			int flag = orderService.setOrderInvalid(parameterMap);
@@ -1194,7 +1194,7 @@ public class OrderController {
 				flag = orderService.modifyOrderStatus(requestMap);
 				new Thread(new Runnable() {
 
-					@Override public void run() { //推送
+					 public void run() { //推送
 						
 						pushService.sendPush(userPhone,
 								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
@@ -1206,7 +1206,7 @@ public class OrderController {
 				flag = orderService.modifyOrderStatus(requestMap);
 				new Thread(new Runnable() {
 
-					@Override public void run() { //推送
+					 public void run() { //推送
 						
 						pushService.sendPush(userPhone,
 								"您有一笔订单已经完成,赶快去评价吧。感谢您对For优的支持", 1);
@@ -1427,10 +1427,10 @@ public class OrderController {
 	 */
 	@RequestMapping("/cancelRefund")
 	public @ResponseBody Map<String,Object> cancelRefund(@RequestParam String togetherId){
-		Map<String,Object> resultMap=new HashMap<>();
+		Map<String,Object> resultMap=new HashMap<String,Object>();
 		
 		try {
-			Map<String,Object> paramMap=new HashMap<>();
+			Map<String,Object> paramMap=new HashMap<String,Object>();
 			paramMap.put("togetherId",togetherId);
 			
 			int flag=orderService.updateCancelRefund(paramMap);
@@ -1460,7 +1460,7 @@ public class OrderController {
 	 */
 	@RequestMapping("/refund")
 	public @ResponseBody Map<String,Object> refund(@RequestParam String togetherId,Float totalPrice){
-		Map<String,Object> resultMap=new HashMap<>();
+		Map<String,Object> resultMap=new HashMap<String,Object>();
 		
 		try {
 		    Map<String,Object> paramMap=new HashMap<String,Object>();
@@ -1504,7 +1504,7 @@ public class OrderController {
 	 */
 	@RequestMapping("/confirmRefund")
 	public @ResponseBody Map<String,Object> confirmRefund(String togetherId){
-		Map<String,Object> resultMap=new HashMap<>();
+		Map<String,Object> resultMap=new HashMap<String,Object>();
 		
 		try {
 		    Map<String,Object> paramMap=new HashMap<String,Object>();

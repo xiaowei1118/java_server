@@ -63,7 +63,6 @@ public class ReceiverServiceImpl implements ReceiverService {
 		return receiverMapper.setReceiverTag(phoneId);
 	}
 
-	@Override
 	public Receiver getReceiver(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return receiverMapper.getReceiver(paramMap);

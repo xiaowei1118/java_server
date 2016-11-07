@@ -233,63 +233,51 @@ public class FoodServiceImpl implements FoodService{
 		return foodCategoryMapper.getAllFoodCategories(paramMap);
 	}
 
-	@Override
 	public List<HomeCategory> getHomeCategoryInfo(Map<String, Object> paramMap) {
 		return foodCategoryMapper.getHomeCategoryInfo(paramMap);
 	}
 
-	@Override
 	public Integer getAllCategoryCount() {
 		
 		return foodCategoryMapper.getAllCategoryCount();
 	}
 
-	@Override
 	public Integer uploadHomeFoodByFoodId(Map<String, Object> paramMap) {
 		return foodMapper.uploadHomeFoodByFoodId(paramMap);
 	}
 
-	@Override
 	public Integer updateInfoByFoodId(Map<String, Object> paramMap) {
 		return foodMapper.updateInfoByFoodId(paramMap);
 	}
 
-	@Override
 	public Integer cancelRecommend(Map<String, Object> paramMap) {
 		return foodMapper.cancelRecommend(paramMap);
 	}
 
-	@Override
 	public Integer calCommentCount(Map<String, Object> paramMap) {
 		return foodCommentMapper.calCommentCount(paramMap);
 	}
 
-	@Override
 	public Integer addCategoryWhenAddCampus(Map<String, Object> paramMap) {
 		return foodCategoryMapper.addCategoryWhenAddCampus(paramMap);
 	}
 
-	@Override
 	public List<FoodWithSales> getTopFive(Map<String, Object> paramMap) {
 		return foodMapper.getTopFive(paramMap);
 	}
 
-	@Override
 	public Integer addFoodCountById(Map<String, Object> paramMap) {
 		return foodMapper.addFoodCountById(paramMap);
 	}
 
-	@Override
 	public Integer addFoodCount(Map<String, Object> paramMap) {
 		return foodMapper.addFoodCount(paramMap);
 	}
 
-	@Override
 	public String getFoodHomeImage(Map<String, Object> paramMap) {
 		return foodMapper.getFoodHomeImage(paramMap);
 	}
 
-	@Override
 	public String getDetailImg(Map<String, Object> paramMap) {
 		return foodMapper.getDetailImg(paramMap);
 	}

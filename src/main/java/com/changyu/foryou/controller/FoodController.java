@@ -132,7 +132,7 @@ public class FoodController {
 		try {
 			List<String> foodFlags = new ArrayList<String>();
 			List<ShortFoodWithIm> foods = new ArrayList<ShortFoodWithIm>();
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("campusId", campusId);
 
 			if (categoryId != null && categoryId.trim().equals("")) {
@@ -242,7 +242,7 @@ public class FoodController {
 		try {
 			DecimalFormat df = new DecimalFormat("#.0");
 
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("foodId", foodId);
 			paramMap.put("campusId", campusId);
 
@@ -290,7 +290,7 @@ public class FoodController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("campusId", campusId);
 
 			int status = 0;
@@ -343,7 +343,7 @@ public class FoodController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("foodId", foodId);
 			paramMap.put("campusId", campusId);
 
@@ -390,7 +390,7 @@ public class FoodController {
 			String search) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		Map<String, Object> paramMap = new HashMap<>();
+		Map<String, Object> paramMap = new HashMap<String,Object>();
 		if (sort != null && sort.equals("foodId")) {
 			sort = "food_id";
 		}
@@ -586,7 +586,7 @@ public class FoodController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("campusId", campusId);
 
 			if (limit != null && page != null) {
@@ -621,7 +621,7 @@ public class FoodController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("campusId", campusId);
 
 			if (limit != null && page != null) {
@@ -656,7 +656,7 @@ public class FoodController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			paramMap.put("campusId", campusId);
 
 			if (limit != null && page != null) {
@@ -816,7 +816,7 @@ public class FoodController {
 	public @ResponseBody
 	Map<String, Object> deleteFoodCategory(@RequestParam Integer campusId,
 			@RequestParam String categoryIds) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String,Object>();
 
 		String[] categoryidsString = categoryIds.split(",");
 
@@ -1157,7 +1157,7 @@ public class FoodController {
 			Integer page, Integer offset) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			Map<String, Object> paramMap = new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String,Object>();
 			if (limit != null & offset != null) {
 				paramMap.put("limit", limit);
 				paramMap.put("offset", offset);

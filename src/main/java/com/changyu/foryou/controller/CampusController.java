@@ -29,6 +29,7 @@ import com.changyu.foryou.tools.Md5;
 public class CampusController {
 	private CampusService campusService;
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private FoodService foodService;
 
@@ -391,7 +392,7 @@ public class CampusController {
 	
 	@RequestMapping("/updateCampusAdminPassword")
 	public @ResponseBody Map<String,Object> updateCampusAdminPassword(Integer campusId,String campusAdmin,String oldPassword,String newPassword){
-		Map<String,Object> resultMap=new HashMap<>();
+		Map<String,Object> resultMap=new HashMap<String,Object>();
 		
 		try {
 			Map<String,Object> paramMap=new HashMap<String,Object>();
