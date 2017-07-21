@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta charset='utf-8'>
+<head>
+	<title>For优后台管理</title>
+	<link rel='stylesheet' type='text/css' href='css/bootstrap.min.css'>
+	<link rel="shortcut icon" href="img/icon.png">
+	<script type='text/javascript' src="js/jquery-1.7.2.min.js"></script>
+	<script type='text/javascript' src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		$(function(){
+    	// $('#loginModal').modal({
+     //      backdrop: 'static'
+     //    });
+
+		$("#phone").focus(function(){
+			$("#message").html("");
+		});
+
+		$("#password").focus(function(){
+			$("#message").html("");
+		});
+	});
+
+
+		function toLogin(){
+			var phone=document.getElementById("phone").value;
+			var password=document.getElementById("password").value;
+			
+			if ((phone==null||phone=="")||(password==null||password=="")) {
+				$("#message").html("账号或者密码为空，请检查后输入");
+				return;
+			};
+			
+			if($('#dropdownMenu1').text()!='总校区管理员'&&$('#dropdownMenu1').text()!='校区管理员'){
+				$("#message").html("请选择您的角色");
+				return;
+			}
+			$.post("/seller/toLogin",
+				{campusAdmin:phone,password:password,server:"56846a8a2fee49d14901d39cc48b8b2a"},
+				function(text){
+					var json=text;
+					if (json.status=="success") {
+						//0是总校区管理员，1是校区管理员
+						if(json.type==0||json.type==1){
+							if(json.type==1){
+								//匹配下拉菜单为总校区管理员
+								if($("#dropdownMenu1").text()=='总校区管理员'){
+									//将用户名和密码存到cookie
+									document.cookie = "campusAdmin="+phone;
+									document.cookie = "password="+password;
+									//将当前管理员管理的校区id存到cookie
+									//getSellerById获取校区管理员信息
+									$.post("seller/getSellerById",{
+										campusAdmin : phone,server:"56846a8a2fee49d14901d39cc48b8b2a"
+									},function(data){
+										//alert(data);
+										//alert(data.seller.type);
+										document.cookie = "campusId="+data.seller.campusId;
+										document.cookie = "type="+data.seller.type;
+										//获取校区状态（0休息，1营业）并写入Cookie
+										$.post("campus/getCampusById",{
+											campusId : data.seller.campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"
+										},function(data){
+											document.cookie = "status="+data.campus.status;
+											//跳转到主页
+											window.location.href="index.html?backurl="+window.location.href;
+										},"json");
+										
+									},"json");
+								}else if($("#dropdownMenu1").text()=='校区管理员'){
+									$("#message").html("对不起，您不是校区管理员！");
+								}
+							}else if(json.type==0){
+								//匹配下拉菜单为校区管理员
+								if($("#dropdownMenu1").text()=='总校区管理员'){
+									$("#message").html("对不起，您不是总校区管理员！");
+								}else if($("#dropdownMenu1").text()=='校区管理员'){
+									//将用户名和密码存到cookie
+									document.cookie = "campusAdmin="+phone;
+									document.cookie = "password="+password;
+									//将当前管理员管理的校区id存到cookie
+									//getSellerById获取校区管理员信息
+									$.post("seller/getSellerById",{
+										campusAdmin : phone,server:"56846a8a2fee49d14901d39cc48b8b2a"
+									},function(data){
+										//alert(data);
+										document.cookie = "campusId="+data.seller.campusId;
+										document.cookie = "type="+data.seller.type;
+										//获取校区状态（0休息，1营业）并写入Cookie
+										$.post("campus/getCampusById",{
+											campusId : data.seller.campusId,server:"56846a8a2fee49d14901d39cc48b8b2a"
+										},function(data){
+											document.cookie = "status="+data.campus.status;
+											//跳转到主页
+											window.location.href="index.html?backurl="+window.location.href;
+										},"json");
+									},"json");
+								}
+							}
+						}else{
+                            $("#message").html("对不起，你没有登陆权限！");
+						}
+					}else{
+						$("#message").html(json.message);
+					}
+				});
+		}
+	</script>
+	<style type="text/css">
+		.message{
+			color: red
+		}
+		#dropdownMenu1, [role=presentation]{
+			width:220px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+
+
+				<div class="modal show" id="loginModal" aria-hidden="true">
+					<div class="modal-header">
+						<h2>For优管理平台</h2>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" >
+							<div class="control-group">
+								<label class="control-label" for="phone">用户名</label>
+								<div class="controls">
+									<input type="text" id="phone" placeholder="账号">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="password">密码</label>
+								<div class="controls">
+									<input type="password" id="password"
+									placeholder="密码">
+								</div>
+							</div>
+							<div class="control-group" style="height:60px">
+								<label class="control-label" for="dropdownMenu1">角色</label>
+								<div class="controls">
+								<div class="dropdown">
+								<button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1" data-toggle="dropdown">
+								角色<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0)">校区管理员</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0)">总校区管理员</a>
+									</li>
+								</ul>
+							</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<div id="message" class="pull-left message"></div>
+						<button type="button" class="btn btn-primary" onclick="toLogin();">&nbsp;登录&nbsp;</button>
+						<!-- <a href="/user/forgetPassword" target="_blank"class="inline">Forget password?</a> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	$("#dropdownMenu1").next().children().children().click(function(){
+		$('#dropdownMenu1').text($(this).text());
+	});
+	</script>
+</body>
+</html>

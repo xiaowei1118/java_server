@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.FoodSpecialMapper">
+<!-- 失效 -->
+ <!-- <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" /> -->
+	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.FoodSpecial">
+		<id column="food_id" property="foodId" jdbcType="BIGINT" />
+		<id column="special_id" property="specialId" jdbcType="INTEGER" />
+		<id column="campus_id" property="campusId" jdbcType="INTEGER"/>
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="food_count" property="foodCount" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		food_id,campus_id, special_id, name, food_count
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="com.changyu.foryou.model.FoodSpecialKey">
+		select
+		<include refid="Base_Column_List" />
+		from food_special
+		where food_id = #{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+		and special_id = #{specialId,jdbcType=INTEGER}
+	</select>
+	<update id="deleteByPrimaryKey" parameterType="com.changyu.foryou.model.FoodSpecialKey">
+		update food_special
+		set tag=0
+		where food_id = #{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+		and special_id = #{specialId,jdbcType=INTEGER}
+	</update>
+	<insert id="insert" parameterType="com.changyu.foryou.model.FoodSpecial">
+		insert into food_special (food_id, campus_id,special_id, name,tag
+		food_count)
+		values (#{foodId,jdbcType=BIGINT},#{campusId,jdbcType=INTEGER},#{specialId,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{foodCount,jdbcType=INTEGER},1)
+	</insert>
+	<insert id="insertSelective" parameterType="com.changyu.foryou.model.FoodSpecial">
+		insert into food_special
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="foodId != null">
+				food_id,
+			</if>
+			<if test="campusId !=null">
+			    campus_id,
+			</if>
+			<if test="specialId != null">
+				special_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="foodCount != null">
+				food_count,
+			</if>
+			tag
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="foodId != null">
+				#{foodId,jdbcType=BIGINT},
+			</if>
+			<if test="campusId !=null">
+			    #{campusId,jdbcType=INTEGER},
+			</if>
+			<if test="specialId != null">
+				#{specialId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="foodCount != null">
+				#{foodCount,jdbcType=INTEGER},
+			</if>
+			1
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.FoodSpecial">
+		update food_special
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="foodCount != null">
+				food_count = #{foodCount,jdbcType=INTEGER},
+			</if>
+		</set>
+		where food_id = #{foodId,jdbcType=BIGINT}
+		and special_id = #{specialId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.FoodSpecial">
+		update food_special
+		set name = #{name,jdbcType=VARCHAR},
+		food_count = #{foodCount,jdbcType=INTEGER}
+		where food_id = #{foodId,jdbcType=BIGINT}
+		and special_id = #{specialId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+	</update>
+
+    <!-- 获取食品口味 -->
+	<select id="getFoodSpecialByFoodId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from food_special
+		where food_id = #{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+		and tag=1
+	</select>
+
+    <!-- 获取某一食品口味的名称 -->
+	<select id="getSpecialName" resultType="String">
+		select
+		name
+		from food_special
+		where food_id= #{foodId,jdbcType=BIGINT} and special_id =
+		#{foodSpecial,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+		and tag=1
+	</select>
+
+   <!-- 获取某一口味的数量 -->
+	<select id="getFoodSpecialCount" resultType="Integer">
+		select
+		food_count
+		from food_special
+		where food_id= #{foodId,jdbcType=BIGINT} and special_id =
+		#{foodSpecial,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+		and tag=1
+	</select>
+	
+	<!-- 获取某一食品有几种口味 -->
+	<select id="getSpecialCount" resultType="Integer">
+		select
+		   count(*)
+		from food_special
+		where food_id= #{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+		and tag=1
+	</select>
+	
+	<!-- 添加口味 -->
+	<insert id="addFoodSpecial" parameterType="com.changyu.foryou.model.FoodSpecial">
+		insert into food_special (food_id, campus_id,special_id, name,
+		food_count,tag)
+		values (#{foodId,jdbcType=BIGINT}, #{campusId,jdbcType=INTEGER},
+		#{specialId,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{foodCount,jdbcType=INTEGER},1)
+	</insert>
+	
+	<!-- 获取口味id的最大值 -->
+	<select id="getSpecialMax" resultType="Integer">
+		select
+		   MAX(special_id)
+		from food_special
+		where food_id= #{foodId,jdbcType=BIGINT} and campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+	
+	<!--更改口味的数量 -->
+	 <update id="changeFoodCount">
+		update
+		  food_special
+		set
+		  food_count=food_count-#{orderCount,jdbcType=INTEGER}
+		where food_id=
+		#{foodId,jdbcType=BIGINT} and special_id=#{specialId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+	</update>
+	
+</mapper>

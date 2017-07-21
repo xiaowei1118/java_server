@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.FoodCategoryMapper" >
+ <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.FoodCategory" >
+    <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="tag" property="tag" jdbcType="SMALLINT" />
+    <result column="serial" property="serial" jdbcType="SMALLINT"/>
+    <result column="is_open" property="isOpen" jdbcType="SMALLINT"/>
+  </resultMap>
+  
+  <resultMap id="HomeCategoryMap" type="com.changyu.foryou.model.HomeCategory">
+  	<id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="serial" property="serial" jdbcType="SMALLINT" />
+    <result column="is_open" property="isOpen" jdbcType="SMALLINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    category_id, campus_id,category, img_url, parent_id, tag, serial, is_open
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from food_category
+    where category_id = #{categoryId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+  </select>
+  
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    update food_category
+    set tag=0
+    where category_id = #{categoryId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insert" parameterType="com.changyu.foryou.model.FoodCategory" >
+    insert into food_category (category_id, campus_id,category, img_url, 
+      parent_id, tag)
+    values (#{categoryId,jdbcType=INTEGER},#{campusId,jdbcType=INTEGER},#{category,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{tag,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.FoodCategory" >
+    insert into food_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="campusId != null">
+      	campus_id,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="campusId != null">
+      	#{campusId,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="tag != null" >
+        #{tag,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.FoodCategory" >
+    update food_category
+    <set >
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="tag != null" >
+        tag = #{tag,jdbcType=SMALLINT},
+      </if>
+      <if test="isOpen != null">
+      	is_open = #{isOpen,jdbcType=SMALLINT}
+      </if>
+    </set>
+    where category_id = #{categoryId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.FoodCategory" >
+    update food_category
+    set category = #{category,jdbcType=VARCHAR},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      tag = #{tag,jdbcType=SMALLINT}
+    where category_id = #{categoryId,jdbcType=INTEGER} and campus_id=#{campusId,jdbcType=INTEGER}
+  </update>
+  
+   <select id="getFirstCategory" resultMap="BaseResultMap" useCache="false">
+    select 
+    <include refid="Base_Column_List" />
+    from food_category
+    where parent_id=0 and tag=1 and is_open=1 and campus_id=#{campusId,jdbcType=INTEGER}
+    order by category_id
+     <if test="limit != null">
+        LIMIT #{limit,jdbcType=INTEGER} OFFSET #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+
+ <!-- 弃用 -->
+ <select id="getSecondCategoryes" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from food_category
+    where parent_id=#{categoryId,jdbcType=INTEGER} and tag=1 and campus_id=#{campusId,jdbcType=INTEGER}
+    order by category_id ASC
+  </select>
+  
+  <select id="getAllFoodFirstCategories" resultMap="BaseResultMap" useCache="false">
+    select 
+    <include refid="Base_Column_List" />
+    from food_category
+    where parent_id=0 and category_id != 0 and tag !=0 and campus_id=#{campusId,jdbcType=INTEGER}
+    
+  </select>
+  
+  <!-- 弃用 -->
+  <select id="getAllFoodSecondCategories" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from food_category
+    where parent_id!=0 and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getHomeCategoryInfo" resultMap="HomeCategoryMap">
+    select 
+       category_id,serial,is_open
+    from food_category
+    where serial is not null and serial !=0 and tag!=0 and campus_id=#{campusId,jdbcType=INTEGER}
+    order by serial
+  </select>
+  
+  <select id="getAllFoodCategories" resultMap="BaseResultMap" useCache="false">
+   select 
+    <include refid="Base_Column_List" />
+    from food_category
+    <where>
+   		 tag!=0 and category_id != 0  
+   		 <if test="campusId!=null">
+   		 and campus_id=#{campusId,jdbcType=INTEGER}
+   		 </if>
+    </where> 
+     <if test="limit != null and offset!=null">
+        LIMIT #{limit,jdbcType=INTEGER} OFFSET #{offset,jdbcType=INTEGER}
+    </if>
+    
+  </select>
+  
+  <select id="getAllCategoryCount" resultType="Integer" useCache="false">
+  select COUNT(*) from food_category where tag!=0
+  </select>
+  
+  <!-- 添加校区默认添加8个分类 -->
+  <insert id="addCategoryWhenAddCampus">
+	insert into food_category (category_id, campus_id, category, img_url,
+	parent_id, tag, serial,is_open) values (#{categoryId},#{campusId},#{category},#{imgUrl},#{parentId},#{tag},#{serial},#{isOpen})
+</insert>
+</mapper>

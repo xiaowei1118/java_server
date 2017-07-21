@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.SellerMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Sellers">
+		<id column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="SMALLINT" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="last_login_date" property="lastLoginDate"
+			jdbcType="DATE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		campus_admin,password,type,campus_id,last_login_date
+	</sql>
+
+	<select id="selectByCampusAdmin" resultMap="BaseResultMap"
+		parameterType="java.lang.String" useCache="false">
+		select
+		<include refid="Base_Column_List">
+		</include>
+		from
+		campus_admin
+		where
+		campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateLastLoginTime">
+		update campus_admin
+		set last_login_date =
+		#{date,jdbcType=DATE}
+		where
+		campus_admin = #{campusAdmin,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertSellective" parameterType="com.changyu.foryou.model.Sellers">
+		insert into campus_admin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="campusId!=null">
+				campus_id,
+			</if>
+			<if test="type!=null">
+				type,
+			</if>
+			<if test="campusAdmin!=null">
+				campus_admin,
+			</if>
+			<if test="password!=null">
+				password,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="campusId!=null">
+				#{campusId,jdbcType=INTEGER},
+			</if>
+			<if test="type!=null">
+				#{type,jdbcType=SMALLINT},
+			</if>
+			<if test="campusAdmin!=null">
+				#{campusAdmin,jdbcType=VARCHAR},
+			</if>
+			<if test="password!=null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>
+

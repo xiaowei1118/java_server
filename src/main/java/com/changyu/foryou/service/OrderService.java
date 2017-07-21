@@ -31,17 +31,11 @@ public interface OrderService {
 
 	int changeOrderStatus2Finish(String phoneId, String orderId);
 
-	int deleteAllUserOrder(String phoneId);
-
-	//	List<SmallOrder> getOrderListInMine(String phoneId);
-
 	List<SmallOrder> getOrderListInMineWait2Deliver(String phoneId);
 
 	List<SmallOrder> getOrderListInMineDeliver(String phoneId);
 
 	List<SmallOrder> getOrderListInMineFinish(String phoneId);
-
-	//List<SmallOrder> getOrderListInMine(String phoneId, String togetherId, Short status);
 
 	Map<String, Object> getOrderSummaryCount(String phone);
 
@@ -55,8 +49,6 @@ public interface OrderService {
 
 	List<SuperAdminOrder> superAdminGetOrder(Map<String,Object> paramMap);
 
-	int getExitOrderUserRank(String phoneId, String rank);
-
 	int setDeliverAdmin(String togetherId, String adminPhone);
 
 	Order selectOneOrder(String phoneId, String orderId);
@@ -64,8 +56,6 @@ public interface OrderService {
 	List<DeliverOrder> deliverGetOrder(Map<String, Object> paramMap);
 
 	List<DeliverChildOrder> getDeliverChildOrders(String togetherId);
-
-	Long getPCOrdersCount(Short status,String search);
 
 	int setOrderInvalid(Map<String, Object> parameterMap);
 

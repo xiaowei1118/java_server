@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.CampusMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.changyu.foryou.model.Campus">
+		<id column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+		<result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+		<result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+		<result column="close_reason" property="closeReason" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="custom_service" property="customService"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="CampusWithCityMap" type="com.changyu.foryou.model.CityWithCampus">
+		<id column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
+		<collection property="campuses" ofType="com.changyu.foryou.model.Campus">
+			<id column="campus_id" property="campusId" jdbcType="INTEGER" />
+			<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="com.changyu.foryou.model.CampusAdmin" id="CampusAdminMap">
+		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="SMALLINT" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		<result column="last_login_date" property="lastLoginDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap type="com.changyu.foryou.model.CampusAdmin" id="SmallCampusAdminMap">
+		<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		<result column="last_login_date" property="lastLoginDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap type="com.changyu.foryou.model.City" id="CityMap">
+		<result column="city_id" property="cityId" jdbcType="INTEGER"/>
+		<result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		campus_id, campus_name, city_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from campus
+		where campus_id = #{campusId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from campus
+		where campus_id = #{campusId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.changyu.foryou.model.Campus">
+		insert into campus (campus_id,
+		campus_name, city_id,
+		location_x, location_y)
+		values
+		(#{campusId,jdbcType=INTEGER}, #{campusName,jdbcType=VARCHAR},
+		#{cityId,jdbcType=INTEGER},
+		#{locationX,jdbcType=DOUBLE},
+		#{locationY,jdbcType=DOUBLE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.changyu.foryou.model.Campus">
+		insert into campus
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="campusId != null">
+				campus_id,
+			</if>
+			<if test="campusName != null">
+				campus_name,
+			</if>
+			<if test="cityId != null">
+				city_id,
+			</if>
+			<if test="locationX != null">
+				location_x,
+			</if>
+			<if test="locationY != null">
+				location_y,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="campusId != null">
+				#{campusId,jdbcType=INTEGER},
+			</if>
+			<if test="campusName != null">
+				#{campusName,jdbcType=VARCHAR},
+			</if>
+			<if test="cityId != null">
+				#{cityId,jdbcType=INTEGER},
+			</if>
+			<if test="locationX != null">
+				#{locationX,jdbcType=DOUBLE},
+			</if>
+			<if test="locationY != null">
+				#{locationY,jdbcType=DOUBLE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Campus">
+		update campus
+		<set>
+			<if test="campusName != null">
+				campus_name = #{campusName,jdbcType=VARCHAR},
+			</if>
+			<if test="cityId != null">
+				city_id = #{cityId,jdbcType=INTEGER},
+			</if>
+			<if test="locationX != null">
+				location_x = #{locationX,jdbcType=DOUBLE},
+			</if>
+			<if test="locationY != null">
+				location_y = #{locationY,jdbcType=DOUBLE},
+			</if>
+		</set>
+		where campus_id = #{campusId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Campus">
+		update campus
+		set
+		campus_name = #{campusName,jdbcType=VARCHAR},
+		city_id =
+		#{cityId,jdbcType=INTEGER},
+		location_x = #{locationX,jdbcType=DOUBLE},
+		location_y = #{locationY,jdbcType=DOUBLE}
+		where campus_id =
+		#{campusId,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectAllCampus" resultMap="BaseResultMap">
+		select campus_id,campus_name,campus.city_id,city.city_name,
+		open_time,close_time,status,close_reason,custom_service
+		 from 
+		 campus,city where campus.city_id=city.city_id
+	</select>
+
+	<select id="getCampusWithCity" resultMap="CampusWithCityMap">
+		select
+		city.city_id,city_name,campus_id,campus_name
+		from city
+		left outer join campus on campus.city_id =city.city_id
+	</select>
+
+	<select id="getIdByName" resultType="java.lang.Integer">
+		select
+		campus_id
+		from campus
+		where campus_name=#{campusName,jdbcType=VARCHAR}
+		limit 1
+	</select>
+
+	<update id="closeCampus">
+		update campus set
+		<if test="status != null">
+			status=#{status, jdbcType=SMALLINT}
+		</if>
+		<if test="closeReason != null">
+			,close_reason=#{closeReason, jdbcType=VARCHAR}
+		</if>
+		<where>
+			<if test="campusId != null">
+				campus_id=#{campusId, jdbcType=INTEGER}
+			</if>
+		</where>
+	</update>
+
+	<select id="selectCampusById" resultMap="BaseResultMap">
+		select * from campus
+		where campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+
+	<select id="getCampusIdByAdmin" resultMap="CampusAdminMap" useCache="false">
+		select
+		campus_admin,password,type,campus_admin.campus_id,campus.campus_name
+		as campus_name,last_login_date
+		from campus_admin,campus
+		where campus_admin=#{campusAdmin, jdbcType=VARCHAR}
+		and
+		campus_admin.campus_id=campus.campus_id
+	</select>
+
+	<select id="getAllCampusAdmin" resultMap="SmallCampusAdminMap" useCache="false">
+		SELECT
+		campus_admin,
+		campus_admin.campus_id,
+		campus.campus_name AS campus_name,
+		last_login_date
+		FROM
+		campus_admin,
+		campus
+		WHERE
+		campus_admin.campus_id = campus.campus_id
+		and type=#{type,jdbcType=SMALLINT}
+	</select>
+
+
+	<!-- 更新校区管理员管理的校区 -->
+	<update id="updateCampusAdmin">
+		UPDATE campus_admin SET campus_id=#{campusId, jdbcType=INTEGER}
+		WHERE campus_admin=#{campusAdmin, jdbcType=VARCHAR}
+	</update>
+
+	<!-- 添加校区 -->
+	<insert id="addCampus">
+		INSERT INTO campus
+		(campus_id,campus_name,city_id,open_time,close_time,status,custom_service) VALUES
+		(#{campusId,jdbcType=INTEGER},
+		#{campusName, jdbcType=VARCHAR},
+		#{cityId,jdbcType=INTEGER},
+		#{openTime,jdbcType=TIMESTAMP},
+		#{closeTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=SMALLINT},
+		#{customService,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="getCampusByOrder" resultMap="BaseResultMap">
+		select
+		campus_id,campus_name,open_time,close_time,close_reason,status
+		from
+		campus
+		where
+		campus_id = (
+		select campus_id
+		from orders
+		where order_id=#{orderId,jdbcType=BIGINT} and phone =
+		#{phoneId,jdbcType=VARCHAR} limit 1
+		)
+	</select>
+	
+	<!-- 删除某校区的某个管理员 -->
+	<delete id="deleteCampusAdmin">
+	DELETE FROM campus_admin WHERE campus_id=#{campusId} AND campus_admin=#{campusAdmin}
+	</delete>
+	
+	<!-- 添加某个校区的一个管理员 -->
+	<insert id="insertCampusAdmin">
+	INSERT INTO campus_admin (campus_admin, password, type, campus_id) VALUES (#{campusAdmin},#{password}, #{type}, #{campusId})
+	</insert>
+	
+	<!-- 获取全部城市 -->
+	<select id="selectAllCity" resultMap="CityMap" useCache="false">
+		select * from city
+	</select>
+	
+	<!-- 添加城市 -->
+	<insert id="insertCity">
+		insert into city (city_id,city_name) values (null,#{cityName,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 根据城市名称获取城市ID -->
+	<select id="getCityByName" resultMap="CityMap">
+		select * from city where city_name=#{cityName,jdbcType=VARCHAR} limit 1
+	</select>
+	
+	<!-- 更新校区 -->
+	<update id="updateCampus">
+		update campus set 
+		campus_name=#{campusName,jdbcType=VARCHAR},
+		city_id=#{cityId,jdbcType=INTEGER},
+		open_time=#{openTime,jdbcType=TIMESTAMP},
+		close_time=#{closeTime,jdbcType=TIMESTAMP},
+		status=#{status,jdbcType=SMALLINT},
+		custom_service=#{customService,jdbcType=VARCHAR}
+		where
+		campus_id=#{campusId,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getOldPassword" resultType="String" useCache="false">
+	   select
+	      password
+	   from
+	      campus_admin
+	   where campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateCampusAdminPassword">
+		update
+		  campus_admin
+		set
+		   password=#{newPassword,jdbcType=VARCHAR}
+		where campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getCampusName" parameterType="Integer" resultType="String" useCache="false">
+	   select campus_name
+	   from campus
+	   where 
+	     campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+</mapper>

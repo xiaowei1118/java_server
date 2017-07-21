@@ -19,10 +19,6 @@ import com.changyu.foryou.tools.Constants;
 public class PackageOrderController {
     private PackageService packageService;
 
-	public PackageService getPackageService() {
-		return packageService;
-	}
-
 	@Autowired
 	public void setPackageService(PackageService packageService) {
 		this.packageService = packageService;

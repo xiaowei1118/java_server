@@ -16,17 +16,17 @@ public interface CampusService {
 
 	Integer getIdByName(Map<String, Object> paramMap);
 
-	public Integer closeCampus(Map<String, Object> requestMap);
+	Integer closeCampus(Map<String, Object> requestMap);
 	
-	public Campus getCampusById(Map<String, Object> paramMap);
+	Campus getCampusById(Map<String, Object> paramMap);
 	
-	public CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
+	CampusAdmin getCampusIdByAdmin(Map<String, Object> paramMap);
 	
-	public List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
+	List<CampusAdmin> getAllCampusAdmin(Map<String, Object> paramMap);
 	
-	public Integer updateCampusAdmin(Map<String, Object> paramMap);
+	Integer updateCampusAdmin(Map<String, Object> paramMap);
 	
-	public Map<String,Object> addCampus(Map<String, Object> paramMap);
+	Map<String,Object> addCampus(Map<String, Object> paramMap);
 
 	Campus getCampus(Map<String, Object> paramMap);      //从订单信息里面获取校区信息
 	

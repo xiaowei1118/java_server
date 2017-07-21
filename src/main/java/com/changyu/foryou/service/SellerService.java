@@ -4,12 +4,11 @@ import java.util.Date;
 
 import com.changyu.foryou.model.Sellers;
 
-
 public interface SellerService {
 
-	public Sellers selectByCampusAdmin(String campusAdmin);
+	Sellers selectByCampusAdmin(String campusAdmin);
 
-	public void updateLastLoginTime(Date date, String campusAdmin);
+	void updateLastLoginTime(Date date, String campusAdmin);
 
-	public void addASeller(Sellers seller);
+	void addASeller(Sellers seller);
 }

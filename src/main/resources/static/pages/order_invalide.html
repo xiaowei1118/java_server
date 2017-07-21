@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>退款订单处理</title>
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<script src="../js/util.js"></script>
+
+</head>
+<body>
+   <div id="info"></div>
+   <div class="container">
+		<div class="page-header">
+			<h1>
+				退款订单管理
+			</h1>
+		</div>
+		<table id="table" 
+		       data-id-field="togetherId"
+		       data-pagination="true"
+		       data-side-pagination="client"
+		       data-search="true"
+		       data-height="80%"
+		       data-show-refresh="true" 
+		       data-show-columns="true"   
+		       data-show-toggle="true" 
+		       data-toolbar-align="right" 
+	      >
+			<thead>
+				<tr>
+					<th data-align="left" data-field="togetherId">订单号</th>
+					<th data-align="left" data-field="userPhone">用户手机号</th>
+					<th data-align="left" data-field="price"
+						data-sortable="true">价格</th>
+					<th data-align="left" data-field="togetherDate"
+						data-sortable="true">订购时间</th>
+					<th data-align="left" data-field="address"
+						data-sortable="true">配送地址</th>
+					<th data-field="refund" data-formatter="deleteFormatter" data-events="deleteEvents">确认退款</th>
+				</tr>
+			</thead>
+		</table>
+</div>  
+<script type="text/javascript">
+	 var campusId = getCookie("campusId");
+	 var type=getCookie("type");
+
+     var $table=$('#table');
+	 $("#table").bootstrapTable({
+		url : '../order/getInvalideOrder?server=56846a8a2fee49d14901d39cc48b8b2a&campusId='+campusId
+	 });
+
+     function deleteFormatter(value, row, index) {
+	    return [
+				 '<a class="invalide btn" herf="javascript:void(0)" title="close">',
+				 '确认删除',
+				 '</a>'
+				].join('');					
+	} 
+
+      window.deleteEvents = {
+        'click .invalide': function (e, value, row, index) {
+        	
+        			//校区管理员删除订单
+        			$.post("../order/deleteOrderTrue",
+        			   {
+        			   	togetherId:row.togetherId,
+        			   	server:"56846a8a2fee49d14901d39cc48b8b2a"
+        			   },
+        			   function(data){
+        			      if(data.status=="success"){
+        			          $('#info').show();
+		               	      $('#info').html("操作成功");
+		             	      setTimeout("$('#info').hide()", 2000 );
+		             	      $('#table').bootstrapTable('refresh', {silent: true});
+        			      }else{
+        			    	  $('#info').show();
+		               	      $('#info').html("操作失败");
+		             	      setTimeout("$('#info').hide()", 2000 );       
+        			     }
+        			 },'json'
+        			 );	
+        		}
+    };
+</script>
+</body>
+</html>

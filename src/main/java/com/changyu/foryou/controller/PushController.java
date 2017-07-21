@@ -50,9 +50,9 @@ public class PushController {
 			if(alert.equals("1")){          //群推
 				if(pushDeviceAndroid!=null&&pushDeviceIos!=null){
 					payload = JpushInterface.buildPushObject_all_all_alert(push_data);
-				}else if(pushDeviceAndroid==null&&pushDeviceIos!=null){
+				}else if(pushDeviceAndroid == null){
 					payload=JpushInterface.bulidPushObject_ios_alert(push_data);
-				}else if(pushDeviceAndroid!=null&&pushDeviceIos==null){
+				}else {
 					payload=JpushInterface.bulidPushObject_android_alert(push_data);
 				}
 			}else if(alert.equals("4")){              //向个体用户推送,默认向android和ios用户同时推，不管有没有选中android和ios
@@ -161,119 +161,4 @@ public class PushController {
 		}
 	}
 
-	/*@RequestMapping("/pushIOS")
-    public @ResponseBody void IOSPushTest(){
-		try {
-			 List<String> tokens=new ArrayList<String>();  
-		        tokens.add("eb9cd021be0ff3e622a3ad9b54d3996724c6f36c7a03bfbb37a7c3e38f2324e3");  
-		       // tokens.add("dc2cf037bd4465c851b1d96a86b0a028307bc7e443435b6fafe93c2957bb415c");  
-		        //String path="D:/push_mickeyfood_developer.p12";
-		        String path=this.getClass().getResource("").getPath()+"push_mickeyfood_developer.p12";
-		        path=path.substring(1).replace("%20", " ");
-		        System.out.println(path);
-		        String password="mickeyfood";  
-		        String message="{'aps':{'alert':'iphone推送测试 www.baidu.com'}}";  
-		        Integer count=1;  
-		        boolean sendCount=false;  
-		        sendpush(tokens, path, password, message, count, sendCount);  
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-    }
-
-
-	 public void sendpush(List<String> tokens,String path, String password, String message,Integer count,boolean sendCount) {  
-
-		    try {  
-		        //message是一个json的字符串{“aps”:{“alert”:”iphone推送测试”}}  
-
-		            PushNotificationPayload payLoad =  PushNotificationPayload.fromJSON(message);  
-
-		            payLoad.addAlert("叶帆和博文都是sb！"); // 消息内容  
-
-		            payLoad.addBadge(count); // iphone应用图标上小红圈上的数值  
-
-		            payLoad.addSound("default"); // 铃音 默认  
-
-
-
-		            PushNotificationManager pushManager = new PushNotificationManager();  
-
-		            //true：表示的是产品发布推送服务 false：表示的是产品测试推送服务  
-
-		            pushManager.initializeConnection(new AppleNotificationServerBasicImpl(path, password, false));  
-
-		            List<PushedNotification> notifications = new ArrayList<PushedNotification>();   
-
-		            // 发送push消息  
-
-		            if (sendCount) {  
-
-		            log.debug("--------------------------apple 推送 单-------");  
-
-		            Device device = new BasicDevice();  
-
-		            device.setToken(tokens.get(0));  
-
-		            PushedNotification notification = pushManager.sendNotification(device, payLoad, true);  
-
-		            notifications.add(notification);  
-
-		            } else {  
-
-		            log.debug("--------------------------apple 推送 群-------");  
-
-		            List<Device> device = new ArrayList<Device>();  
-
-		            for (String token : tokens) {  
-
-		            device.add(new BasicDevice(token));  
-
-		            }  
-
-		            notifications = pushManager.sendNotifications(payLoad, device);  
-
-		            }  
-
-		            List<PushedNotification> failedNotifications = PushedNotification.findFailedNotifications(notifications);  
-
-		            List<PushedNotification> successfulNotifications = PushedNotification.findSuccessfulNotifications(notifications);  
-
-		            int failed = failedNotifications.size();  
-
-		            int successful = successfulNotifications.size();  
-
-
-
-		            if (successful > 0 && failed == 0) {  
-
-		            log.debug("-----All notifications pushed 成功 (" + successfulNotifications.size() + "):");  
-
-		            } else if (successful == 0 && failed > 0) {  
-
-		            log.debug("-----All notifications 失败 (" + failedNotifications.size() + "):");  
-
-		            } else if (successful == 0 && failed == 0) {  
-
-		            System.out.println("No notifications could be sent, probably because of a critical error");  
-
-		            } else {  
-
-		            log.debug("------Some notifications 失败 (" + failedNotifications.size() + "):");  
-
-		            log.debug("------Others 成功 (" + successfulNotifications.size() + "):");  
-
-		            }  
-
-		    // pushManager.stopConnection();  
-
-		    } catch (Exception e) {  
-
-		    e.printStackTrace();  
-
-		    }  
-
-		}  
-	 */
 }

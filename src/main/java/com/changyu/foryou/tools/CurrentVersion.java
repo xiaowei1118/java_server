@@ -9,27 +9,6 @@ public class CurrentVersion {
 	private String android_version;
 	private String ios_version;
 
-	public String getAndroid_version() {
-		return android_version;
-	}
-	
-	public void setAndroid_version(String android_version) {
-		this.android_version = android_version;
-	}
-	
-	public String getIos_version() {
-		return ios_version;
-	}
-	
-	public void setIos_version(String ios_version) {
-		this.ios_version = ios_version;
-	}
-
-	public boolean writeAndroidVersion(){
-
-		return false;
-	}
-
 	private static String getFilePath(){
 		String path=CurrentVersion.class.getClass().getResource("/").getPath();
 		//截去一些前面6个无用的字符  

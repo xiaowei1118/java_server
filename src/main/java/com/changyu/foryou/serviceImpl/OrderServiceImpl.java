@@ -78,11 +78,7 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.changeOrderStatus2Finish(orderId, phoneId);
 	}
 
-	public int deleteAllUserOrder(String phoneId) {	
-		return orderMapper.deleteAllUserOrder(phoneId);
-	}
-
-	public List<SmallOrder> getOrderListInMine(Map<String,Object> map) {	
+	public List<SmallOrder> getOrderListInMine(Map<String,Object> map) {
 		return orderMapper.getOrderListInMine(map);
 	}
 

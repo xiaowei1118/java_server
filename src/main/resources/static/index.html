@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta charset='utf-8'>
+<head>
+<title>For优后台管理</title>
+<link rel='stylesheet' type='text/css' href='css/bootstrap.min.css'>
+<link rel='stylesheet' type='text/css' href='css/style.css'>
+<link rel="shortcut icon" href="img/icon.png">
+<script type='text/javascript' src="js/jquery-1.7.2.min.js"></script>
+<script type='text/javascript' src="js/bootstrap.min.js"></script>
+<script type='text/javascript' src="js/main.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+
+<style>
+a:hover {
+	text-decoration: none
+}
+.left{
+	width: 120px;
+	float:left;
+	margin-left:-22px;
+}
+.right{
+   float:left;
+   width:1100px;
+   margin-top:42px;
+}
+#campusDropdown{
+	visibility:hidden
+}
+.sideBar ul{
+	border-right: 1px solid #eee;
+}
+</style>
+<script type="text/javascript">
+		$(function(){
+			$.get("/user/getUserType?server=56846a8a2fee49d14901d39cc48b8b2a", function(text){
+				if (text=="1") {
+					$("#user-link").hide();
+					$("#hotsearch").hide();
+					$("#preferential").hide();
+					$("#closeStore").hide();
+					$("#valideOrder").hide();
+				};
+
+			});
+		});
+	</script>
+</head>
+<body>
+	<header class='navbar blue blue2 navbar-fixed-top'>
+		<div class='navbar-inner'>
+			<div class='container-fluid'>
+				<a class='brand pull-left'><img src="img/icon.png" width="20px" height="auto">&nbsp;For优</a>
+				<ul class='nav pull-right'>
+					<li>
+						<div>
+							<button type="button" id="one_key_open" onclick="oneKeyOpen()" class="btn btn-default">一键开店</button>						
+						</div>
+					</li>
+					<li>
+						<!-- 添加校区下拉菜单 -->
+						<div class="dropdown" id="campusDropdown">
+							<button type="button" class="btn dropdown-toggle"
+								id="dropdownMenu1" data-toggle="dropdown">
+								校区 <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu"
+								aria-labelledby="dropdownMenu1" id="dropdown-campus">
+
+							</ul>
+						</div>
+					</li>
+					<li><a href="/user/logout?server=56846a8a2fee49d14901d39cc48b8b2a" rel='tooltip'
+						title='退出'><i class='icon-white icon-off'></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<section class='container-fluid pad20'>
+		<section class='row-fluid'>
+			<div class="sideBar left">
+				<br />
+				<ul>
+					<li class="active"><figure>
+							<i class='icon-home'></i>
+							<a href="pages/main.html" target="content">首页&nbsp;&nbsp;</a>
+						</figure><hr /></li>
+					
+					<li><figure>
+							<a href="pages/user.html" target="content"> <i
+								class='icon-user'></i> 用戶&nbsp;&nbsp;
+							</a>
+						</figure><hr />
+						</li>
+					
+					<li>
+						<figure>
+						<a href="pages/food_first_category.html" target="content">
+							<i class='icon-circle-arrow-down'></i>商品分类&nbsp;&nbsp;
+						</a>
+							
+						</figure>
+						<hr/>
+					</li>
+					
+					<li><figure>
+							<a href="pages/food.html" target="content"> <i
+								class='icon-eject'></i> 商品&nbsp;&nbsp;
+
+							</a>
+						</figure><hr/></li>
+					<li id="preferential">
+						<figure>
+							<a href="pages/preferential.html" target="content">
+								<i class="icon-shopping-cart"></i>满减优惠
+							</a>
+						</figure>
+						<hr/>
+					</li>
+					<li><figure>
+							<a href="pages/food_comment.html" target="content"> <i
+								class='icon-thumbs-up'></i> 商品评价&nbsp;&nbsp;
+
+							</a>
+						</figure><hr /></li>
+
+					
+					<li><figure>
+							<a href="pages/orderTotal.html" target="content"> <i
+								class='icon-fire'></i>订单汇总&nbsp;&nbsp;
+							</a>
+						</figure><hr/></li>
+					
+					<li class='dropper'>
+						<figure>
+							<i class='icon-circle-arrow-down'></i>
+							<span>订单&nbsp;&gt;</span>
+						</figure>
+						<hr/>
+						<ul class='subSide'>
+							<li><a href="pages/order_success.html" target="content"><i
+									class='icon-fire'></i>已成功</a><hr/></li>
+							<li><a href="pages/order_wait_release.html" target="content"><i
+									class='icon-fire'></i>待发货</a><hr/></li>
+							<li><a href="pages/order_deliver.html" target="content"><i
+									class='icon-fire'></i>配送中</a><hr/></li>
+							<li><a href="pages/order_refund.html" target="content"><i
+									class='icon-fire'></i>退款中</a><hr/></li>
+							<li id="valideOrder"><a href="pages/order_invalide.html" target="content"><i
+									class='icon-fire'></i>无效订单</a><hr/></li>
+						</ul>
+					</li>
+					
+					<li><figure>
+							<a href="pages/news.html" target="content"> <i
+								class='icon-th-large'></i> 主页图片&nbsp;&nbsp;
+							</a>
+						</figure><hr/></li>
+					<li><figure>
+							<a href="pages/push.html" target="content"> <i
+								class='icon-arrow-right'></i> 消息推送&nbsp;&nbsp;
+							</a>
+						</figure><hr /></li>
+					
+					<li id="li-campus-admin">
+						<figure>
+							<a href="pages/campus_admin.html" target="content">
+								<i class="icon-wrench"></i>
+								账号管理
+							</a>
+						</figure><hr/>
+					</li>
+					<li id="li-campus">
+						<figure>
+							<a href="pages/campus.html" target="content">
+								<i class="icon-globe"></i>
+								校区管理&nbsp;&nbsp;
+							</a>
+						</figure><hr/>
+					</li>
+					<li id="hotsearch"><figure>
+							<a href="pages/hotsearch.html" id="hotsearch" target="content"><i
+								class='icon-zoom-out'></i>搜索标签 </a>
+						</figure><hr/></li>
+					<li>
+					<li id="closeStore">
+						<figure>
+							<a href="pages/close.html" target="content">
+								<i class="icon-off"></i>一键关店
+							</a>
+						</figure><hr/>
+					</li>
+					<!-- <li><figure>
+							<a href="pages/help.html" target="content"><i
+								class='icon-question-sign'></i> 帮助 </a>
+						</figure><hr/></li>
+					<li> -->
+					<li><figure>
+							<a href="pages/feedback.html" target="content"><i
+								class='icon-filter'></i> 用户反馈 </a>
+						</figure><hr/></li>						
+					</li>
+					<li><figure>
+							<a href="pages/modifypassword.html" target="content"><i
+								class='icon-cog'></i> 修改密码 </a>
+						</figure><hr/></li>					
+					</li>
+				</ul>
+
+			</div>
+			<div class='right' style="width:1050px;border-left:1px solid #eee;">
+				<iframe id="content" name="content" src="pages/main.html"
+					style="height:720px;width:1100px" scroling="yes" frameborder="0"
+					border="0" marginwidth="0" marginheight="0"></iframe>
+			</div>
+
+		</section>
+	</section>
+<script>
+//定义全局变量
+var adminType = getCookie("type");		//当前登录账号类型（总管理员、校区管理员）
+var campusId = getCookie("campusId");	
+var status = getCookie("status");		//校区状态
+</script>
+<script>
+//定义通用方法
+//一键开店
+function oneKeyOpen(){
+	$.post("campus/closeCampus",{
+		campusId : campusId,
+		status : 1,
+		server:"56846a8a2fee49d14901d39cc48b8b2a"
+	},function(data){
+		alert(data.message);
+		if(data.status==="success"){
+			//更新cookie
+			document.cookie="status=1";
+			
+		}else if(data.status==="failure"){
+			//do nothing
+		}
+	},"json");
+}
+</script>
+<script>
+$(function(){
+	//根据校区状态显示或隐藏“一键开店”按钮
+	//如果是总校区管理员，隐藏“一键开店”按钮
+	if(adminType==0){
+		//校区管理员
+		if(status==0){
+			//校区处于休息状态
+		}else if(status==1){
+			//校区处于营业状态
+			$("#one_key_open").hide();
+		}
+	}else if(adminType==1){
+		//总管理员
+		$("#one_key_open").hide();
+	}
+	
+	//根据管理员类型判断是否显示校区下拉菜单
+	//如果是校区管理员，使用他管理的校区Button替换校区下拉菜单，且隐藏校区管理和校区管理员管理
+	if(getCookie("type")==1){
+		$("#campusDropdown").css("visibility", "visible");
+		if(campusId!=null&&typeof(campusId)!="undefined"){
+			$.post('campus/getCampusById', {
+				campusId : getCookie("campusId"),server:"56846a8a2fee49d14901d39cc48b8b2a"
+			},function(data){		
+			   $("#dropdownMenu1").html(data.campus.campusName+'<span class="caret"></span>');	
+			},"json");
+		}
+	}else{
+		//隐藏校区管理和校区管理员管理
+		$("#li-campus-admin").hide();
+		$("#li-campus").hide();
+		//$("#campusDropdown").css("visibility", "hidden");
+		//根据校区id获取校区名称
+		$.post('campus/getCampusById?server=56846a8a2fee49d14901d39cc48b8b2a', {
+			campusId : getCookie("campusId")
+		},function(data){
+			//根据校区是否开通显示不同的eye
+			if(data.campus.status===1){
+				$("#campusDropdown").replaceWith(
+						'<Button class="btn btn-default">'+
+						'<i class="icon-eye-open"></i>'+
+						data.campus.campusName + '</Button>');
+			}
+			else if(data.campus.status===0){
+				$("#campusDropdown").replaceWith(
+						'<Button class="btn btn-default">'+
+						'<i class="icon-eye-close"></i>'+
+						data.campus.campusName + '</Button>');
+			}
+		},"json");
+	}
+	
+	$("#dropdown-campus").empty();//移除子元素
+	$.getJSON("campus/getAllCampus?server=56846a8a2fee49d14901d39cc48b8b2a", function(data){
+		//alert(data.campus[0].campusName);
+		for(var i=0; i < data.length; i++){
+			$("#dropdown-campus").append("<li role='presentation'><a class='campus-item' role='menuitem' tabindex='-1' href='#'>"+data[i].campusName+"</a></li>");
+		}
+		$(".campus-item").on("click", function(event){
+			//alert($(this).text());
+			var campusName = $(this).text();
+			
+			$.getJSON("campus/getIdByName?server=56846a8a2fee49d14901d39cc48b8b2a&campusName="+campusName,function(data){
+				console.log(data);
+				console.log(data.campusId);
+				//document.cookie="campusId="+data.campusId;
+				$.cookie('campusId',data.campusId);
+				$.post('campus/getCampusById',{
+					campusId : data.campusId
+				},function(data){
+					//根据校区是否开通显示不同的eye
+					if(data.campus.status===1){
+						$("#dropdownMenu1").html(
+								'<i class="icon-eye-open"></i>'+
+								data.campus.campusName);
+					}
+					else if(data.campus.status===0){
+						$("#dropdownMenu1").html(
+								'<i class="icon-eye-close"></i>'+
+								data.campus.campusName);
+					}
+				},"json");
+				$('#content').attr('src', $('li.active figure a').attr('href'));
+			});
+			
+		});
+	});
+	
+	
+});
+</script>
+</body>
+</html>

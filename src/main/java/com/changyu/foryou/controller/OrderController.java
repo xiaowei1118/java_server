@@ -131,6 +131,7 @@ public class OrderController {
 						+ oldOrders.get(0).getOrderCount());
 				orderService.deleteCartGood(order);
 			}
+
 			int flag = orderService.insertSelectiveOrder(order);
 
 			if (flag != -1 && flag != 0) {
@@ -672,8 +673,8 @@ public class OrderController {
 	/**
 	 * 改变订单至配送状态
 	 * 
-	 * @param phoneId
-	 * @param orderId
+	 * @param adminPhone
+	 * @param togetherId
 	 * @return
 	 */
 	@Deprecated
@@ -696,14 +697,13 @@ public class OrderController {
 
 				new Thread(new Runnable() {
 
-					@Override public void run() { //推送
+					 public void run() { //推送
 						String userPhone=userService.getUserPhone(togetherId);
 						System.out.println(userPhone);
 						pushService.sendPush(userPhone,
 								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
 
 					} }).start();
-
 
 			} else {
 				map.put(Constants.STATUS, Constants.FAILURE);
@@ -720,7 +720,7 @@ public class OrderController {
 	/**
 	 * 修改订单状态至完成
 	 * 
-	 * @param phoneId
+	 * @param adminPhone
 	 * @param togetherId
 	 * @return
 	 */
@@ -741,7 +741,7 @@ public class OrderController {
 
 				new Thread(new Runnable() {
 
-					@Override public void run() { //推送
+					public void run() { //推送
 						pushService.sendPush(userPhone,
 								"您有一笔订单已完成交易,赶快去评价吧！For优欢迎您下次惠顾", 1);
 
@@ -759,50 +759,6 @@ public class OrderController {
 		}
 		return map;
 	}
-
-	//
-	// /**========================================================
-	// * 超级管理员获取待发货单信息
-	// * @param isSelected
-	// * @return
-	// */
-	// @RequestMapping("/superAdminGetOrder")
-	// public @ResponseBody Map<String, Object> superAdminGetOrder(@RequestParam
-	// Integer isSelected){
-	// Map<String, Object> map=new HashMap<String, Object>();
-	// try {
-	// List<SuperAdminOrder> orders=orderService.superAdminGetOrder(isSelected);
-	//
-	// for(SuperAdminOrder superAdminOrder:orders){
-	// String togetherId=superAdminOrder.getTogetherId();
-	//
-	// List<DeliverChildOrder>
-	// deliverChildOrders=orderService.getDeliverChildOrders(togetherId);
-	// Float priceFloat=0f;
-	//
-	// //获取该笔订单总价
-	// for(DeliverChildOrder deliverChildOrder:deliverChildOrders){
-	// if(deliverChildOrder.getIsDiscount()==0){
-	// priceFloat+=deliverChildOrder.getPrice()*deliverChildOrder.getOrderCount();
-	// }else{
-	// priceFloat+=deliverChildOrder.getDiscountPrice()*deliverChildOrder.getOrderCount();
-	// }
-	// }
-	// superAdminOrder.setPrice(priceFloat);
-	// }
-	// map.put(Constants.STATUS, Constants.SUCCESS);
-	// map.put(Constants.MESSAGE, "获取订单成功！");
-	// map.put("orderList",JSONArray.parse(JSON.toJSONStringWithDateFormat(orders,
-	// "yyyy-MM-dd")));
-	// } catch (Exception e) {
-	// map.put(Constants.STATUS, Constants.FAILURE);
-	// map.put(Constants.MESSAGE, "获取订单失败！");
-	// }
-	//
-	// return map;
-	// }
-	//
-	//
 
 	/**
 	 * 超级管理员获取待发货单信息
@@ -1161,7 +1117,8 @@ public class OrderController {
 
 	/**
 	 * 修改订单状态
-	 * @param adminPhone    ?????????????????????????????
+	 * @param orderId
+	 * @param status
 	 * @param togetherId
 	 * @return
 	 */
@@ -1192,31 +1149,27 @@ public class OrderController {
 			case 3:
 				//配送中
 				flag = orderService.modifyOrderStatus(requestMap);
-				new Thread(new Runnable() {
+				new Thread(() -> { //推送
 
-					@Override public void run() { //推送
-						
-						pushService.sendPush(userPhone,
-								"您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
+                    pushService.sendPush(userPhone,
+                            "您有一笔订单正在配送中,请稍候。感谢您对For优的支持", 1);
 
-					} }).start();
+                }).start();
 				break;
 			case 4:
 				//待评价
 				flag = orderService.modifyOrderStatus(requestMap);
-				new Thread(new Runnable() {
+				new Thread(() -> { //推送
 
-					@Override public void run() { //推送
-						
-						pushService.sendPush(userPhone,
-								"您有一笔订单已经完成,赶快去评价吧。感谢您对For优的支持", 1);
+                    pushService.sendPush(userPhone,
+                            "您有一笔订单已经完成,赶快去评价吧。感谢您对For优的支持", 1);
 
-					} }).start();
+                }).start();
 				break;
 			case 5:
 				//小订单已完成
 				requestMap.put("orderId", orderId);
-				requestMap.put("isRemarked", Integer.valueOf(1));
+				requestMap.put("isRemarked", 1);
 				requestMap.put("status", 4);
 				flag = orderService.modifyOrderStatus(requestMap);
 				break;
@@ -1246,14 +1199,12 @@ public class OrderController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("togetherId", togetherId);
 		List<SmallOrder> orders=orderService.getOrdersById(paramMap);
-		if(orders.size()>0&&orders!=null)
+		if(orders.size() > 0)
 		{
 			orderService.deleteOrder(paramMap);
 			resultMap.put(Constants.STATUS, Constants.SUCCESS);
 			resultMap.put(Constants.MESSAGE, "删除订单成功");
-		}
-		else
-		{
+		} else {
 			resultMap.put(Constants.STATUS, Constants.FAILURE);
 			resultMap.put(Constants.MESSAGE, "订单不存在,删除订单失败");
 		}
@@ -1284,7 +1235,7 @@ public class OrderController {
 			paramMap.put("orderId",order.getOrderId());
 			int flag = orderService.insertSelectiveOrder(order);
 
-			if (flag == -1 && flag == 0) {			
+			if (flag == -1 || flag == 0) {
 				resultMap.put(Constants.STATUS, Constants.FAILURE);
 				resultMap.put(Constants.MESSAGE, "生成订单失败");
 			}
@@ -1499,8 +1450,7 @@ public class OrderController {
 	/**
 	 * 校区管理员确认退款
 	 * @param togetherId
-	 * @param totalPrice
-	 * @return
+s	 * @return
 	 */
 	@RequestMapping("/confirmRefund")
 	public @ResponseBody Map<String,Object> confirmRefund(String togetherId){

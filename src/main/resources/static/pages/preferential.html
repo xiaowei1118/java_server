@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>满减优惠管理</title>
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+<style>
+    #operate-success{
+		padding:10px;
+		font-size:16px;
+		background-color:#8AC007;
+		color:#FBFBFB;
+		visibility:hidden
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="page-header">
+				<h1>满减优惠管理</h1>
+			</div>
+			<div style="text-align:center;margin-bottom:20px">
+				<span id="operate-success"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div id="toolbar" class="btn-group">
+				<button id="plus" type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-plus"></i>
+				</button>
+				<button id="edit" type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-edit"></i>
+				</button>
+				<button id="delete" type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-minus"></i>
+				</button>
+			</div>
+			<table id="table"
+				data-toolbar="#toolbar"
+				data-pagination="true"
+				data-striped="true"
+				data-search="true"
+				data-show-refresh="true"
+				data-show-toggle="true"
+				data-show-columns="true"
+				data-height="80%"
+				data-click-to-select="true"
+				data-toolbar-align="right">
+				<thead>
+					<tr>
+						<th data-field="state" data-checkbox="true"></th>
+						<th data-field="preferentialId" data-sortable="true" data-visible="false">满减ID</th>
+						<th data-field="needNumber" data-sortable="true">满</th>
+						<th data-field="discountNum" data-sortable="true">减</th>
+						<th data-field="campusId" data-sortable="true" data-visible="false">校区ID</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<!-- Add Preferential Modal Start -->
+		<div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="plusModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="plusModalLabel">添加满减优惠方案</h4>
+					</div>
+					<div class="modal-body">
+						<form id="plus_form" class="form-horizontal" role="form">
+							<div class="form-group" style="display:none">
+								<label for="plus_campus_id" class="col-sm-2 control-label">当前校区ID</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_campus_id" name="campusId" placeholder="当前校区ID" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="plus_need_number" class="col-sm-2 control-label">满</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_need_number" name="needNumber" placeholder="满">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="plus_discount_num" class="col-sm-2 control-label">减</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="plus_discount_num" name="discountNum" placeholder="减">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" id="addPrefSubmitButton" class="btn btn-primary" onclick="plusSubmit()">提交更改</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Add Preferential Modal End -->
+		
+		<!-- Edit Preferential Modal Start -->
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-ttitle" id="editModalLabel">修改</h4>
+					</div>
+					<div class="modal-body">
+						<form id="edit_form" class="form-horizontal" role="form">
+							<div class="form-group" style="display:none">
+								<label for="edit_preferential_id" class="col-sm-2 control-label">满减优惠ID</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="edit_preferential_id" name="preferentialId" placeholder="满减优惠ID" readonly>
+								</div>
+							</div>
+							<div class="form-group" style="display:none">
+								<label for="edit_campus_id" class="col-sm-2 control-label">当前校区ID</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="edit_campus_id" name="campusId" placeholder="当前校区ID">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="edit_need_number" class="col-sm-2 control-label">满</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="edit_need_number" name="needNumber" placeholder="满">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="edit_discount_num" class="col-sm-2 control-label">减</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="edit_discount_num" name="discountNum" placeholder="减">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" onclick="editSubmit()">提交更改</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Edit Preferential Modal End -->
+		
+		<!-- Delete Preferential Modal Start -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="deleteModalLabel">删除满减优惠</h4>
+					</div>
+					<div class="modal-body">
+						<p>确认删除该满减优惠吗？</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" onclick="deleteSubmit()">提交更改</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Delete Preferential Modal End -->
+		
+	</div>
+	<script src="../assets/bootstrap-table/jquery.min.js"></script>
+	<script src="../assets/bootstrap-table/jquery.validate.js"></script>
+	<script src="../assets/bootstrap-table/messages_cn.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+	<script src="../assets/bootstrap-table/tableExport.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+	<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+	<![endif]-->
+	<script src="../js/util.js"></script>
+	<script>
+	//定义全局变量，注意如果该变量在使用过程中值会发生改变，请不要使用全局变量
+	//尤其是Cookie和input中的值
+		var $plusButton = $("#plus");
+		var $editButton = $("#edit");
+		var $deleteButton = $("#delete");
+		var $plusModal = $("#plusModal");
+		var $editModal = $("#editModal");
+		var $deleteModal = $("#deleteModal");
+	</script>
+	
+	<script>
+	//定义方法
+	$("#plus_form").validate({
+			debug: true,
+			focusInvalid: false,
+			onkeyup: false,
+			rules:{
+				campusId:{
+					required: true
+				},
+				needNumber:{
+					required: true,
+					digits: true
+				},
+				discountNum:{
+					required: true,
+					digits: true
+				}
+			},
+			submitHandler:function(form){
+				var campusId = $("#plus_campus_id").val().trim();
+				var needNumber = $("#plus_need_number").val().trim();
+				var discountNum = $("#plus_discount_num").val().trim();
+				$.post("../preferential/addPref",{
+					campusId : campusId,
+					needNumber : needNumber,
+					discountNum : discountNum,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
+				},function(data){
+					$("#plusModal").modal('hide');
+					$("#table").bootstrapTable('refresh',{silent:true});
+					setSuccess(data.message);
+				},"json");
+			}
+		});
+		
+		$("#edit_form").validate({
+			debug: true,
+			focusInvalid: false,
+			onkeyup: false,
+			rules:{
+				campusId:{
+					required: true,
+					digits: true
+				},
+				needNumber:{
+					required: true,
+					digits: true
+				},
+				discountNum:{
+					required: true,
+					digits: true
+				}
+			},
+			submitHandler:function(form){
+				var preferentialId = $("#edit_preferential_id").val().trim();
+				var campusId = $("#edit_campus_id").val().trim();
+				var needNumber = $("#edit_need_number").val().trim();
+				var discountNum = $("#edit_discount_num").val().trim();
+				$.post("../preferential/updatePref",{
+					preferentialId : preferentialId,
+					campusId : campusId,
+					needNumber : needNumber,
+					discountNum : discountNum,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
+				},function(data){
+					$("#editModal").modal('hide');
+					$("#table").bootstrapTable('refresh',{silent:true});
+					setSuccess(data.message);
+				},"json");
+			}
+		});
+		
+		function setSuccess(message){
+    		if(!message){
+       			$("#operate-success").text("Well, it works!");
+    		}else{
+    			$("#operate-success").text(message);
+    		}
+			//$("#operate-success").show();
+			$("#operate-success").css("visibility", "visible");
+			window.setTimeout(function(){
+				//$("#operate-success").hide();
+				$("#operate-success").css("visibility", "hidden");
+				}, 2000);
+		}
+	
+		$plusButton.click(function(){
+			$("#plus_campus_id").val(getCookie("campusId"));
+			$plusModal.modal('show');
+		});
+		$editButton.click(function(){
+			var array = $("#table").bootstrapTable('getSelections');
+			if(array.length==0){
+				alert("请选中至少一条记录");
+			}else if(array.length>1){
+				alert("无法编辑多条记录");
+			}else if(array.length==1){
+				$("#edit_preferential_id").val(array[0].preferentialId);
+				$("#edit_campus_id").val(array[0].campusId);
+				$("#edit_need_number").val(array[0].needNumber);
+				$("#edit_discount_num").val(array[0].discountNum);
+				$editModal.modal('show');
+			}
+			
+		});
+		$deleteButton.click(function(){
+			$deleteModal.modal('show');
+		});
+		
+		function plusSubmit(){
+			$("#plus_form").submit();
+		}
+		
+		function editSubmit(){
+			$("#edit_form").submit();
+		}
+		
+		function deleteSubmit(){
+			var array = $("#table").bootstrapTable('getSelections');
+			if(array.length==0){
+				alert("请选中至少一条记录");
+			}else if(array.length>1){
+				alert("无法删除多条记录");
+			}else if(array.length==1){
+				$.post("../preferential/deletePref",{
+					preferentialId : array[0].preferentialId,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
+				},function(data){
+					$("#deleteModal").modal('hide');
+					$("#table").bootstrapTable('refresh',{silent:true});
+					setSuccess(data.message);
+				},'json');
+			}
+			
+		}
+	</script>
+	
+	<script>
+	//方法执行
+	$(function(){
+		$("table").bootstrapTable({
+			url : '../preferential/getAllPref?server=56846a8a2fee49d14901d39cc48b8b2a&campusId='+getCookie("campusId")
+		});
+		
+		
+	});
+	</script>
+</body>
+</html>

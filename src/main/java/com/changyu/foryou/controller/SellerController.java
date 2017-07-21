@@ -21,21 +21,15 @@ import com.changyu.foryou.tools.Md5;
 @Controller
 @RequestMapping("/seller")
 public class SellerController {
+	@Autowired
 	private SellerService sellerService;
-
-	public SellerService getSellerService() {
-		return sellerService;
-	}
 
 	@Autowired
 	public void setSellerService(SellerService sellerService) {
 		this.sellerService = sellerService;
 	}
 	
-	
 
-	
-	
 	/**
 	 * 商家登录
 	 * @param campusAdmin
@@ -45,14 +39,13 @@ public class SellerController {
 	public @ResponseBody Map<String, Object> toLogin(
 			@RequestParam String campusAdmin, @RequestParam String password,
 			HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		if (campusAdmin != null && password != null
 				&& !campusAdmin.trim().equals("")
 				&& !password.trim().equals("")) {
 			Sellers sellers = sellerService.selectByCampusAdmin(campusAdmin);
 			if (sellers != null) {
 				if (sellers.getPassword().equals(Md5.GetMD5Code(password))) {
-				//if (sellers.getPassword().equals(password)) {
 					map.put(Constants.STATUS, Constants.SUCCESS);
 					map.put(Constants.MESSAGE, "登陆成功");
 					map.put("type", sellers.getType());

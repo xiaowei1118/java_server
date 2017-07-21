@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.NewsMapper" >
+ <cache eviction="LRU" flushInterval="600000" size="512" readOnly="true" />
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.News" >
+    <id column="news_id" property="newsId" jdbcType="BIGINT" />
+    <result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap id="SmallResultMap" type="com.changyu.foryou.model.SmallNews" >
+    <id column="news_id" property="newsId" jdbcType="BIGINT" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    news_id, campus_id, create_time, title, img_url, content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from news
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from news
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.changyu.foryou.model.News" >
+    insert into news (news_id, campus_id, create_time, title, 
+      img_url, content)
+    values (#{newsId,jdbcType=BIGINT}, #{campusId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{imgUrl,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.News" >
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newsId != null" >
+        news_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newsId != null" >
+        #{newsId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.News" >
+    update news
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.News" >
+    update news
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="getSmallNews" parameterType="java.util.Map" resultMap="SmallResultMap">
+    select 
+      news_id,img_url
+    from news
+    where campus_id=#{campusId} 
+    <if test="limit!=null and offset !=null">
+    	  limit #{offset},#{limit}
+    </if>
+  </select>
+  
+  <select id="getPcAllNews" parameterType="java.util.Map" resultMap="BaseResultMap" useCache="false">
+    select 
+      <include refid="Base_Column_List" />
+    from news where campus_id=#{campusId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

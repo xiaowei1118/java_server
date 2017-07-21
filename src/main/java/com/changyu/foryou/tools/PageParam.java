@@ -11,8 +11,6 @@ public class PageParam {
 	
 	public static int pageSize = 10; // 页大小
 	
-	//private List<TableIp> data ; // 数据
-
 	public int getCurrPage() {
 		return currPage;
 	}
@@ -38,6 +36,7 @@ public class PageParam {
 		if (rowCount % pageSize > 0) {
 			totalPage += 1;
 		}
+
 		setTotalPage(totalPage);
 		this.rowCount = rowCount;
 	}
@@ -49,14 +48,5 @@ public class PageParam {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-
-	/*public List<TableIp> getData() {
-		return data;
-	}
-
-	public void setData(List<TableIp> data) {
-		this.data = data;
-	}*/
-	
 	
 }

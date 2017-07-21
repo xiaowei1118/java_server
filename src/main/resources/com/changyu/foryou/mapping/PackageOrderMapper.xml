@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.PackageOrderMapper" >
+<!-- 失效 -->
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.PackageOrder" >
+    <id column="package_id" property="packageId" jdbcType="VARCHAR" />
+    <result column="phone_id" property="phoneId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="reserve_time" property="reserveTime" jdbcType="VARCHAR" />
+     <result column="message" property="message" jdbcType="VARCHAR" />
+     <result column="price"   property="price" jdbcType="REAL"/>
+    <result column="rank" property="rank" jdbcType="VARCHAR" />
+    <result column="tag" property="tag" jdbcType="TINYINT" />
+    <result column="deliver_type" property="deliverType" jdbcType="TINYINT" />
+    <result column="admin_phone" property="adminPhone" jdbcType="VARCHAR"/>
+    <result column="deliver_phone" property="deliverPhone" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    package_id, phone_id, create_time, reserve_time, rank, tag, deliver_type,price,message,deliver_phone,admin_phone
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from package_order
+    where package_id = #{packageId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from package_order
+    where package_id = #{packageId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.changyu.foryou.model.PackageOrder" >
+    insert into package_order (package_id, phone_id, create_time, 
+      reserve_time, rank, tag, 
+      deliver_type)
+    values (#{packageId,jdbcType=VARCHAR}, #{phoneId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{reserveTime,jdbcType=VARCHAR}, #{rank,jdbcType=VARCHAR}, #{tag,jdbcType=TINYINT}, 
+      #{deliverType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.PackageOrder" >
+    insert into package_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="packageId != null" >
+        package_id,
+      </if>
+      <if test="phoneId != null" >
+        phone_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="reserveTime != null" >
+        reserve_time,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="rank != null" >
+        rank,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="deliver_phone != null" >
+        deliver_phone,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+      <if test="deliverType != null" >
+        deliver_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="packageId != null" >
+        #{packageId,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneId != null" >
+        #{phoneId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserveTime != null" >
+        #{reserveTime,jdbcType=VARCHAR},
+      </if>  
+        <if test="price != null" >
+        price,
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=VARCHAR},
+      </if>
+       <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+       <if test="deliver_phone != null" >
+        #{deliverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        #{tag,jdbcType=TINYINT},
+      </if>
+      <if test="deliverType != null" >
+        #{deliverType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.PackageOrder" >
+    update package_order
+    <set >
+      <if test="phoneId != null" >
+        phone_id = #{phoneId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserveTime != null" >
+        reserve_time = #{reserveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="message!= null">
+         message=#{message,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        tag = #{tag,jdbcType=TINYINT},
+      </if>
+      <if test="deliverType != null" >
+        deliver_type = #{deliverType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where package_id = #{packageId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.PackageOrder" >
+    update package_order
+    set phone_id = #{phoneId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      reserve_time = #{reserveTime,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=TINYINT},
+      deliver_type = #{deliverType,jdbcType=TINYINT}
+    where package_id = #{packageId,jdbcType=VARCHAR}
+  </update>
+  
+   <!-- 为快递选择取货人 -->
+  <update id="setAdminPhone">
+	update package_order
+	set admin_phone=#{adminPhone,jdbcType=VARCHAR}
+	where package_id = #{packageId,jdbcType=VARCHAR}
+  </update>
+</mapper>

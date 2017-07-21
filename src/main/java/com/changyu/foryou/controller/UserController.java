@@ -37,26 +37,10 @@ import com.changyu.foryou.tools.Md5;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	@Autowired
 	private UserService userService;
+	@Autowired
 	private OrderService orderService;
-
-	public UserService getUserService() {
-		return userService;
-	}
-
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	public OrderService getOrderService() {
-		return orderService;
-	}
-
-	@Autowired
-	public void setOrderService(OrderService orderService) {
-		this.orderService = orderService;
-	}
 
 	/**
 	 * 取得用户信息
@@ -315,7 +299,7 @@ public class UserController {
 
 	/**
 	 * 获取我的用户总信息
-	 * @param phoneId 用户id
+	 * @param phone 用户id
 	 * @return
 	 */
 	@RequestMapping(value="mineInfo")
@@ -324,7 +308,6 @@ public class UserController {
 		try {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			Users users=userService.selectByUsername(phone);
-			//Map<String, Object> counts=orderService.getOrderSummaryCount(phone);
 			paramMap.put("phoneId", phone);
 			paramMap.put("status", 1);
 			List<String> togetherId1=orderService.getTogetherId(paramMap);

@@ -34,17 +34,9 @@ public class FoodServiceImpl implements FoodService{
     private FoodSpecialMapper foodSpecialMapper;
     private FoodCommentMapper foodCommentMapper;
     
-    public FoodCommentMapper getFoodCommentMapper() {
-		return foodCommentMapper;
-	}
-
     @Autowired
 	public void setFoodCommentMapper(FoodCommentMapper foodCommentMapper) {
 		this.foodCommentMapper = foodCommentMapper;
-	}
-
-	public FoodSpecialMapper getFoodSpecialMapper() {
-		return foodSpecialMapper;
 	}
 
     @Autowired
@@ -52,17 +44,10 @@ public class FoodServiceImpl implements FoodService{
 		this.foodSpecialMapper = foodSpecialMapper;
 	}
 
-	public FoodMapper getFoodMapper() {
-		return foodMapper;
-	}
 
     @Autowired
 	public void setFoodMapper(FoodMapper foodMapper) {
 		this.foodMapper = foodMapper;
-	}
-
-	public FoodCategoryMapper getFoodCategoryMapper() {
-		return foodCategoryMapper;
 	}
 
 	@Autowired
@@ -107,10 +92,6 @@ public class FoodServiceImpl implements FoodService{
 		return foodCategoryMapper.getFirstCategory(paramMap);
 	}
 
-//	//获取食品二级分类
-//	public List<FoodCategory> getSecondCategories(Integer id) {		
-//		return foodCategoryMapper.getSecondCategoryes(id);
-//	}
 
 	//根据食品分类，和食品标签查询食品
 	public List<ShortFoodWithIm> selectFoods(Map<String,Object> paramMap) {
@@ -195,8 +176,7 @@ public class FoodServiceImpl implements FoodService{
 	}
 
 	public Integer changeFoodCount(Map<String,Object> paramMap) {
-		int flag=0;
-		//flag= foodSpecialMapper.changeFoodCount(paramMap);
+		int flag;
 		flag=foodMapper.changeFoodNumber(paramMap);
 		return flag;		
 	}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>销售额分析</title>
+<link href="//cdn.bootcss.com/bootstrap/3.0.0/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="//cdn.bootcss.com/bootstrap-datetimepicker/4.15.35/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+	<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+</head>
+<body >
+	<div class="container">
+		<div class="row">
+			<h1>销售额分析</h1>
+		</div>
+		<div class="row">
+			<div id="toolbar" class="col-sm-3 col-md-3">
+				<div class="form-group">
+					<div class='input-group date' id='datetimepicker1'>
+						<input id="input_month" type='text' class="form-control"/>
+						<span class="input-group-addon ">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<table id="table"
+			data-toolbar="#toolbar"
+			data-striped="true"
+			data-search="true"
+			data-show-refresh="true"
+			data-show-toggle="true"
+			data-show-columns="true"
+			data-undefined-text="0"
+			data-height="80%"
+			data-click-to-select="true"
+			data-toolbar-align="left">
+				<thead>
+					<tr>
+						<th data-field="infoDateType">时间</th>
+						<th data-field="orderCount">订单数量</th>
+						<th data-field="tradeVolume">交易额</th>
+						<th data-field="tradeVolumeAliPay">支付宝交易额</th>
+						<th data-field="tradeVolumeWeChatPay">微信交易额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	
+	<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+	<script src="../assets/bootstrap-table/jquery.validate.js"></script>
+	<script src="../assets/bootstrap-table/messages_cn.js"></script>
+	<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+	<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+	<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+	<script src="//cdn.bootcss.com/moment.js/2.10.6/locale/zh-cn.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap/3.0.0/js/transition.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap/3.0.0/js/collapse.js"></script>
+	<script
+		src="//cdn.bootcss.com/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../js/util.js"></script>
+	<script>
+		$(function() {
+			var month = $("#input_month").val();
+			//document.cookie="month="+month;
+			$("#table").bootstrapTable({
+				url : "../order/getSalesInfoByCampusId?server=56846a8a2fee49d14901d39cc48b8b2a&"+"campusId="+getCookie("campusId")+"&month="+month
+			});
+			$('#datetimepicker1').datetimepicker({
+				format : 'YYYY-MM',
+				viewMode : 'months'
+			});
+			$('#datetimepicker1').on("dp.change",function(e){
+				//alert(e.date);
+				//alert($('#datetimepicker1').data("DateTimePicker").date());
+				//根据选择的年月重新加载表格数据
+				month = $("#input_month").val();
+				//document.cookie="month="+month;
+				$("#table").bootstrapTable('refresh',{silent:true,url : "../order/getSalesInfoByCampusId?server=56846a8a2fee49d14901d39cc48b8b2a&"+"campusId="+getCookie("campusId")+"&month="+month});
+			});
+		});
+	</script>
+</body>
+</html>

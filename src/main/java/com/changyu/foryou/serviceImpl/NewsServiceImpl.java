@@ -16,10 +16,6 @@ import com.changyu.foryou.service.NewsService;
 public class NewsServiceImpl implements NewsService {
 	private NewsMapper newsMapper;
 
-	public NewsMapper getNewsMapper() {
-		return newsMapper;
-	}
-
 	@Autowired
 	public void setNewsMapper(NewsMapper newsMapper) {
 		this.newsMapper = newsMapper;

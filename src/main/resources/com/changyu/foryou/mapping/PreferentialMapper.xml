@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.PreferentialMapper" >
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.Preferential" >
+    <id column="preferential_id" property="preferentialId" jdbcType="INTEGER" /><!-- 是否自增 -->
+    <result column="need_number" property="needNumber" jdbcType="INTEGER" />
+    <result column="discount_num" property="discountNum" jdbcType="INTEGER" />
+      <result column="campus_id" property="campusId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    preferential_id, need_number, discount_num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from preferential
+    where  preferential_id = #{preferentialId,jdbcType=INTEGER}
+  
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from preferential
+    where  preferential_id = #{preferentialId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.changyu.foryou.model.Preferential" >
+    insert into preferential ( preferential_id, need_number, discount_num,campus_id
+      )
+    values (null, #{needNumber,jdbcType=INTEGER}, #{discountNum,jdbcType=INTEGER},#{campusId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.Preferential" >
+    insert into preferential
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="preferentialId != null" >
+         preferential_id,
+      </if>
+      <if test="needNumber != null" >
+        need_number,
+      </if>
+      <if test="discountNum != null" >
+        discount_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="preferentialId != null" >
+        #{preferentialId,jdbcType=INTEGER},
+      </if>
+      <if test="needNumber != null" >
+        #{needNumber,jdbcType=INTEGER},
+      </if>
+      <if test="discountNum != null" >
+        #{discountNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 弃用，功能和updateByPrimaryKey重复了 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.Preferential" >
+    update preferential
+    <set >
+      <if test="needNumber != null" >
+        need_number = #{needNumber,jdbcType=INTEGER}
+      </if>
+      <if test="discountNum != null" >
+        ,discount_num = #{discountNum,jdbcType=INTEGER}
+      </if>
+      <if test="campusId != null">
+        ,campus_id = #{campusId,jdbcType=INTEGER}
+      </if>
+    </set>
+    where  preferential_id = #{preferentialId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.Preferential" >
+    update preferential
+    set
+    <if test="needNumber != null">
+    need_number = #{needNumber,jdbcType=INTEGER}
+    </if>
+    <if test="discountNum != null">
+    ,discount_num = #{discountNum,jdbcType=INTEGER}
+    </if>
+    <if test="campusId != null">
+    ,campus_id = #{campusId,jdbcType=INTEGER}
+    </if>
+    where  preferential_id = #{preferentialId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 获取满减优惠信息（校区参数可选） -->
+  <select id="getPreferential" resultMap="BaseResultMap">
+  select preferential_id, need_number, discount_num ,campus_id
+  from preferential
+  <where>
+  <if test="campusId != null">
+  campus_id=#{campusId,jdbcType=INTEGER} 
+  </if>
+  </where>
+  order by need_number desc
+  </select>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changyu.foryou.mapper.PushMessageMapper" >
+<!-- 失效 -->
+ <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+  <resultMap id="BaseResultMap" type="com.changyu.foryou.model.PushMessage" >
+    <id column="push_id" property="pushId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="push_tag" property="pushTag" jdbcType="VARCHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="valid_length" property="validLength" jdbcType="INTEGER" />
+    <result column="is_send_now" property="isSendNow" jdbcType="VARCHAR" />
+    <result column="device_tag" property="deviceTag" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    push_id, title, content, push_tag, alias, create_time, valid_length, is_send_now, 
+    device_tag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from push_message
+    where push_id = #{pushId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from push_message
+    where push_id = #{pushId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.changyu.foryou.model.PushMessage" >
+    insert into push_message (push_id, title, content, 
+      push_tag, alias, create_time, 
+      valid_length, is_send_now, device_tag
+      )
+    values (#{pushId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{pushTag,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{validLength,jdbcType=INTEGER}, #{isSendNow,jdbcType=VARCHAR}, #{deviceTag,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.changyu.foryou.model.PushMessage" >
+    insert into push_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pushId != null" >
+        push_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="pushTag != null" >
+        push_tag,
+      </if>
+      <if test="alias != null" >
+        alias,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="validLength != null" >
+        valid_length,
+      </if>
+      <if test="isSendNow != null" >
+        is_send_now,
+      </if>
+      <if test="deviceTag != null" >
+        device_tag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pushId != null" >
+        #{pushId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="pushTag != null" >
+        #{pushTag,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validLength != null" >
+        #{validLength,jdbcType=INTEGER},
+      </if>
+      <if test="isSendNow != null" >
+        #{isSendNow,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceTag != null" >
+        #{deviceTag,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.changyu.foryou.model.PushMessage" >
+    update push_message
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="pushTag != null" >
+        push_tag = #{pushTag,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validLength != null" >
+        valid_length = #{validLength,jdbcType=INTEGER},
+      </if>
+      <if test="isSendNow != null" >
+        is_send_now = #{isSendNow,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceTag != null" >
+        device_tag = #{deviceTag,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where push_id = #{pushId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.changyu.foryou.model.PushMessage" >
+    update push_message
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      push_tag = #{pushTag,jdbcType=VARCHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      valid_length = #{validLength,jdbcType=INTEGER},
+      is_send_now = #{isSendNow,jdbcType=VARCHAR},
+      device_tag = #{deviceTag,jdbcType=SMALLINT}
+    where push_id = #{pushId,jdbcType=INTEGER}
+  </update>
+</mapper>

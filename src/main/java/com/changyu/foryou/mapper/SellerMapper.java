@@ -8,12 +8,10 @@ import com.changyu.foryou.model.Sellers;
 
 public interface SellerMapper {
 
+    Sellers selectByCampusAdmin(String campusAdmin);
 
-	Sellers selectByCampusAdmin(String campusAdmin);
+    void updateLastLoginTime(@Param(value = "date") Date date, @Param(value = "campusAdmin") String campusAdmin);
 
-	void updateLastLoginTime(@Param(value="date")Date date, @Param(value="campusAdmin") String campusAdmin
-			);
-
-	int insertSellective(Sellers seller); 
+    int insertSellective(Sellers seller);
 
 }

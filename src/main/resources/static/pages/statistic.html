@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>热销商品统计</title>
+</head>
+<body>
+<div id="containerMonth" style="min-width: 800px; height: 400px;"></div>
+
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/highcharts/4.1.5/highcharts.js"></script>
+<script src="//cdn.bootcss.com/highcharts/4.1.5/modules/exporting.js"></script>
+<script>
+//日期格式化函数
+Date.prototype.format = function(format){ 
+	var o = { 
+		"M+" : this.getMonth()+1, //month 
+		"d+" : this.getDate(), //day 
+		"h+" : this.getHours(), //hour 
+		"m+" : this.getMinutes(), //minute 
+		"s+" : this.getSeconds(), //second 
+		"q+" : Math.floor((this.getMonth()+3)/3), //quarter 
+		"S" : this.getMilliseconds() //millisecond 
+	} 
+
+	if(/(y+)/.test(format)) { 
+		format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+	} 
+
+	for(var k in o) { 
+		if(new RegExp("("+ k +")").test(format)) { 
+		format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length)); 
+		} 
+	} 
+return format; 
+};
+//过去一个月热销
+$(function() {
+	//alert(new Date().format("yyyy-MM-dd"));
+	var dateEnd = new Date();
+	//alert(myDate.format("yyyy-MM-dd"));
+	var dateStart = new Date();
+	dateStart.setDate(dateEnd.getDate() - 60);
+	var xCategories = new Array();
+	var seriesData = new Array();
+	var start = dateStart.format("yyyy-MM-dd");
+	var end = dateEnd.format("yyyy-MM-dd");
+	//alert(start);
+	$.get("../service/getTopFive" + "?dateStart=" + start + "&dateEnd="
+			+ end+"&limit=5&page=1", function(text) {
+
+		var json = eval('(' + text + ')');
+		$.each(json.hotFive, function(index, obj) {
+			//alert(obj.sellCount);
+			xCategories.push(obj.foodName);
+			seriesData.push(obj.sales);
+		});
+		$('#containerMonth').highcharts({
+			chart : {
+				type : 'column'
+			},
+			colors : [ '#0d233a' ],
+			title : {
+				text : ''
+			},
+			xAxis : {
+				categories : xCategories
+			},
+			yAxis : {
+				title : {
+					text : '销售量'
+				}
+			},
+			series : [ {
+				name : '过去一个月热销',
+				data : seriesData
+			} ],
+			lang : {
+				noData:'抱歉，无法获取过去一个月热销数据'
+			}
+		});
+
+	});
+});
+</script>
+</body>
+</html>

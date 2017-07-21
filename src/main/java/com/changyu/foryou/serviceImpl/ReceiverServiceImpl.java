@@ -59,7 +59,7 @@ public class ReceiverServiceImpl implements ReceiverService {
 		return receiverMapper.insert(receiver);
 	}
 
-	public int setRecevierTag(String phoneId) {
+	public int setReceiverTag(String phoneId) {
 		return receiverMapper.setReceiverTag(phoneId);
 	}
 

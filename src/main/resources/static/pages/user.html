@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap.min.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="../assets/bootstrap-table/bootstrap-editable.css">
+<script src="../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../assets/bootstrap-table/tableExport.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<script src="../js/util.js"></script>
+<style>
+.ml10 {
+	margin-left: 10px;
+}
+
+#operate-success {
+	padding: 10px;
+	font-size: 16px;
+	background-color: #8AC007;
+	color: #FBFBFB;
+	visibility: hidden
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>用户管理&nbsp;&nbsp;</h1>
+		</div>
+		<div style="text-align: center;">
+			<span id="operate-success">设置成功</span>
+		</div>
+		<div>
+			<table id="table" data-toggle="table" data-show-export="false"
+				data-url="../user/getAllUser?server=56846a8a2fee49d14901d39cc48b8b2a" data-search="true"
+				data-show-refresh="true" data-show-toggle="true"
+				data-side-pagination="server" data-pagination="true">
+				<thead>
+					<tr>
+						<!-- <th data-field="state" data-checkbox="true"></th> -->
+						<th data-field="phone">手机号</th>
+						<th data-field="nickname">昵称</th>
+						<th data-field="type">权限</th>
+						<th data-field="createTime">注册时间</th>
+						<th data-field="lastLoginDate">最后登录时间</th>
+						<th data-field="defaultAddress">默认地址</th>
+						<th data-field="type" data-formatter="typeFormatter">用户类型</th>
+						<th data-field="action" data-formatter="actionFormatter"
+							data-events="actionEvents">权限修改</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<script>
+		//全局变量
+		var adminType = getCookie("type"); //0校区管理员，1总校区管理员
+		var campusId=getCookie("campusId");
+	</script>
+	<script>
+		//通用方法定义
+		function setSuccess(message) {
+			if (!message) {
+				$("#operate-success").text("Well, it works!");
+			} else {
+				$("#operate-success").text(message);
+			}
+			//$("#operate-success").show();
+			$("#operate-success").css("visibility", "visible");
+			window.setTimeout(function() {
+				//$("#operate-success").hide();
+				$("#operate-success").css("visibility", "hidden");
+			}, 2000);
+		}
+		function typeFormatter(value, row, index) {
+			var type = "未定义";
+			switch (value) {
+			case 0:
+				type = "分派员";
+				break;
+			case 1:
+				type = "配送员";
+				break;
+			case 2:
+				type = "普通用户";
+				break;
+			}
+			return type;
+		}
+		function actionFormatter(value, row, index) {
+			if (adminType == 0) {
+				//当前角色是校区管理员
+				return [
+						'<a class="admin ml8" href="javascript:void(0)" title="设为配送员">',
+						'&nbsp;<i class="glyphicon glyphicon-heart-empty"></i>&nbsp;',
+						'</a>',
+						'<a class="common ml8" href="javascript:void(0)" title="设为普通用户">',
+						'&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp;',
+						'</a>',
+						'<a class="superAdmin ml8" href="javascript:void(0)" title="设置分派员">',
+						'&nbsp;<i class="glyphicon glyphicon-heart"></i>&nbsp;',
+						'</a>' ].join('');
+			} else if (adminType == 1) {
+				//当前角色是总校区管理员
+				return "无权操作";
+			}
+		}
+		window.actionEvents = {
+			'click .admin' : function(e, value, row, index) {
+				//alert("admin");
+				$.post("user/setUserAdmin", {
+					phone : row.phone,
+                    campusId:campusId,
+                    server:"56846a8a2fee49d14901d39cc48b8b2a"
+				}, function(text) {
+					if (text == -1 || text == 0) {
+						setSuccess("设置配送员失败。");
+					} else {
+						setSuccess("设置配送员成功。");
+						$('#table').bootstrapTable('updateRow', {
+							index : index,
+							row : {
+								type : 1
+							}
+						});
+						//$('#table').bootstrapTable('refresh', {silent: true});
+					}
+
+				});
+			},
+			'click .common' : function(e, value, row, index) {
+				//alert("common");
+				$.post("user/setUserCommon", {
+					phone : row.phone,
+					campusId:campusId,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
+				}, function(text) {
+					if (text == -1 || text == 0) {
+						setSuccess("设置为普通用户失败。");
+					} else {
+						setSuccess("设置为普通用户成功。");
+						$('#table').bootstrapTable('updateRow', {
+							index : index,
+							row : {
+								type : 2
+							}
+						});
+						//$('#table').bootstrapTable('refresh', {silent: true});
+					}
+
+				});
+			},
+			'click .superAdmin' : function(e, value, row, index) {
+				//alert("superAdmin");
+				$.post("user/setUserSuperAdmin", {
+					phone : row.phone,
+					campusId:campusId,
+					server:"56846a8a2fee49d14901d39cc48b8b2a"
+				}, function(text) {
+					if (text == -1 || text == 0) {
+						setSuccess("设置分派员失败。");
+					} else {
+						setSuccess("设置分派员成功。");
+						$('#table').bootstrapTable('updateRow', {
+							index : index,
+							row : {
+								type : 0
+							}
+						});
+						//$('#table').bootstrapTable('refresh', {silent: true});
+					}
+
+				});
+			}
+		};
+	</script>
+	<script>
+		//需要执行的方法
+		$("#table").bootstrapTable('refreshOptions', function() {
+			exportDataType: 'all'
+		});
+	</script>
+</body>
+</html>

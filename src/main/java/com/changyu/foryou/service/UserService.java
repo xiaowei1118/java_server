@@ -7,7 +7,6 @@ import java.util.Map;
 import com.changyu.foryou.model.Feedback;
 import com.changyu.foryou.model.Users;
 
-
 public interface UserService {
 	Users selectByUsername(String id);//根据用户手机号获取用户信息
 

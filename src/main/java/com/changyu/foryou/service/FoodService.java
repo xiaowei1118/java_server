@@ -32,9 +32,6 @@ public interface FoodService {
 
 	List<FoodCategory>getFirstCategory(Map<String, Object> paramMap);
 
-	//List<FoodCategory> getSecondCategories(Integer id);
-
-
 	List<FoodSpecial> getFoodSpecial(Map<String, Object> paramMap);
 
 	int insertSelective(FoodComment record);
@@ -46,10 +43,6 @@ public interface FoodService {
 	Integer getFoodSpecialCount(Map<String, Object> paramMap);
 
 	String getSpecialName(Map<String, Object> paramMap);
-
-//	List<FoodCategory> getAllFoodSecondCategories();
-//
-//	List<FoodCategory> getAllFoodFirstCategories();
 
 	int getSpecialCount(Map<String, Object> paramMap);
 

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.changyu.foryou.model.Receiver;
-import com.changyu.foryou.service.OrderService;
 import com.changyu.foryou.service.ReceiverService;
 import com.changyu.foryou.tools.Constants;
 
@@ -27,26 +26,8 @@ import com.changyu.foryou.tools.Constants;
 @Controller
 @RequestMapping("/receiver")
 public class ReceiverController {
-	private ReceiverService receiverService;
-    private OrderService orderService;
-    
-	public OrderService getOrderService() {
-		return orderService;
-	}
-
-	public void setOrderService(OrderService orderService) {
-		this.orderService = orderService;
-	}
-
-	public ReceiverService getReceiverService() {
-		return receiverService;
-	}
-
 	@Autowired
-	public void setReceiverService(ReceiverService receiverService) {
-		this.receiverService = receiverService;
-	}
-
+	private ReceiverService receiverService;
 
 	/**
 	 * 添加收貨人信息
@@ -158,7 +139,7 @@ public class ReceiverController {
 	public @ResponseBody Map<String, Object> setDefaultAddress(@RequestParam String phoneId,@RequestParam String rank){
 		Map<String, Object> map=new HashMap<String ,Object>();
 		try{
-			receiverService.setRecevierTag(phoneId);   //将原先的默认收货地址改成非默认
+			receiverService.setReceiverTag(phoneId);   //将原先的默认收货地址改成非默认
 			if(receiverService.setDefaultAddress(phoneId, rank)!=-1){
 				map.put(Constants.STATUS, Constants.SUCCESS);
 				map.put(Constants.MESSAGE, "设置默认收货地址成功");
