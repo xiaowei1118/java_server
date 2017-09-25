@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2017-07-21 14:42:54
+Date: 2017-09-22 17:26:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -73,6 +73,7 @@ CREATE TABLE `campus_admin` (
 -- Records of campus_admin
 -- ----------------------------
 INSERT INTO `campus_admin` VALUES ('admin', 'e10adc3949ba59abbe56e057f20f883e', '0', '1', '2017-07-21');
+INSERT INTO `campus_admin` VALUES ('admin_1', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '2017-09-22');
 
 -- ----------------------------
 -- Table structure for campus_admin_type
