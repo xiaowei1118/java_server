@@ -4,12 +4,15 @@
 <p align="center">
 <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html"><img src="https://img.shields.io/badge/language-java%208.0-orange.svg"></a>
 <a href="https://www.jetbrains.com/idea/"><img src="https://img.shields.io/badge/platform-jetbrains-66FF99.svg"></a>
-<a href="https://www.jetbrains.com/idea/"><img src="https://img.shields.io/badge/platform-eclipse-46aae6.svg"></a>
+<a href="http://www.eclipse.org/"><img src="https://img.shields.io/badge/platform-eclipse-46aae6.svg"></a>
 <img src="https://img.shields.io/badge/license-MIT%203.0-CC3333.svg">
 <img src="https://img.shields.io/badge/release-1.0.0-brightgreen.svg">
 </p>
 
 本项目是校园o2o电商项目的服务端和管理平台代码，采用`SpringBoot-Mybatis`架构，集成了丰富的短信，推送，支付，权限管理等功能。
+=======
+本项目是基于`SpringMVC+spring+Mybatis`的校园o2o电商项目的后台和管理平台。
+>>>>>>> 11336ab7ac04c65c771deaeda2bc38d6a063580a
 
 #### 更新
 
@@ -51,4 +54,4 @@ clone下来的代码支持在eclipse或者intellij下运行，mysql支持，本�
 #### License
 
 -----------
-本项目基于MIT开源协议. 
+本项目基于[MIT](https://www.opensource.org/licenses/mit-license.php)开源协议. 
