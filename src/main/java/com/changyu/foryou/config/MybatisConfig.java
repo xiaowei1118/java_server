@@ -1,7 +1,6 @@
 package com.changyu.foryou.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.mysql.cj.jdbc.Driver;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +12,8 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.mysql.jdbc.Driver;
 
 /**
  * Created by zhengzh on 2016/8/17.

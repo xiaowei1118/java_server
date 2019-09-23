@@ -12,7 +12,7 @@ import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication
 @PropertySource("application.properties")
-public class PortraitApplication extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
 
 	@Bean
 	public MultipartConfigElement multipartConfigElement() {
@@ -29,10 +29,10 @@ public class PortraitApplication extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(PortraitApplication.class);
+		return application.sources(Application.class);
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(PortraitApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
